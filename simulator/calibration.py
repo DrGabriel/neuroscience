@@ -1,0 +1,193 @@
+"""Parameters of the cross-species phase-oscillator study, with their basis and source.
+
+Each value is one of:
+    measured    taken from published physiology (source given);
+    calibrated  fitted to one published measurement (target given), then held fixed;
+    free        not measurable at this level of description; the sensitivity analysis
+                reports how the results change across a range.
+
+The percolation model (dpc_simulator.py), the congestion test (excitatory_inhibitory.py,
+congestion_study.py) and the threshold formulas (percolation_thresholds.py) keep their own
+constants beside the code that uses them, each labelled with the same three categories.
+"""
+
+from __future__ import annotations
+
+from dataclasses import asdict, dataclass
+
+import dpc_simulator as dpc
+import phase_dynamics as dynamics
+import plant_tissue
+
+BASE_SEED = dpc.REFERENCE_SEED
+CONNECTOME_SEED = dpc.REFERENCE_SEED
+
+
+@dataclass(frozen=True)
+class OrganismSpec:
+    display_name: str
+    has_tract_lengths: bool
+    full_study_seeds: int
+    worker_processes: int
+    # Numerical resolution for the full study; None keeps the study-wide setting.
+    concentration_step: float | None = None
+    relaxation_steps: int | None = None
+
+
+# Numerical: the fly connectome has 2.7 million connections, about 80 ms per integration step on
+# the machine used, so it is run on a coarser concentration grid with a shorter settling period.
+# The measurement window is kept at full length because entrainment needs whole stimulus cycles.
+DROSOPHILA_CONCENTRATION_STEP = 0.1
+DROSOPHILA_RELAXATION_STEPS = 200
+
+ORGANISMS: dict[str, OrganismSpec] = {
+    "celegans": OrganismSpec("C. elegans", has_tract_lengths=False, full_study_seeds=20, worker_processes=10),
+    "drosophila": OrganismSpec(
+        "Drosophila",
+        has_tract_lengths=False,
+        full_study_seeds=2,
+        worker_processes=6,
+        concentration_step=DROSOPHILA_CONCENTRATION_STEP,
+        relaxation_steps=DROSOPHILA_RELAXATION_STEPS,
+    ),
+    "human": OrganismSpec("Human", has_tract_lengths=True, full_study_seeds=20, worker_processes=10),
+}
+
+
+@dataclass(frozen=True)
+class ParameterRecord:
+    name: str
+    value: object
+    basis: str
+    source: str
+
+
+# ---------------------------------------------------------------------------
+# Anaesthetic agents (shared with the percolation model)
+# ---------------------------------------------------------------------------
+
+GABAERGIC_AGENT = dpc.GABAERGIC_LIKE_AGENT
+NMDA_ANTAGONIST_AGENT = dpc.NMDA_ANTAGONIST_LIKE_AGENT
+
+# ---------------------------------------------------------------------------
+# Population dynamics
+# ---------------------------------------------------------------------------
+
+# Measured: gamma band 30-90 Hz (Fries, 2015); 40 Hz lies within it (Llinás & Ribary, 1993).
+OSCILLATION_FREQUENCY_HZ = 40.0
+# Free: calibration against the human propofol inertia ratio (1.11) was attempted with
+# calibrate_phase_feedback.py on the human connectome and failed. For λ from 0 to 0.6 the mean
+# ratio stayed within run-to-run noise (0.96-1.04), and at 0.75 some runs never recovered.
+# The mid-range value is used, and inertia is tested in the percolation model instead.
+PHASE_REFERENCE_FEEDBACK = 0.45
+INERTIA_TARGET_RATIO = 1.11
+# Free: in units of the natural-frequency spread, coupling well above the synchronisation
+# threshold so that the awake network is coherent; noise small relative to coupling.
+SYNAPTIC_COUPLING = 4.0
+NATURAL_FREQUENCY_SPREAD = 0.5
+NOISE_INTENSITY = 0.05
+
+POPULATION_DYNAMICS = dynamics.PopulationDynamics(
+    synaptic_coupling=SYNAPTIC_COUPLING,
+    natural_frequency_spread=NATURAL_FREQUENCY_SPREAD,
+    noise_intensity=NOISE_INTENSITY,
+    reference_feedback=PHASE_REFERENCE_FEEDBACK,
+    oscillation_frequency_hz=OSCILLATION_FREQUENCY_HZ,
+    baseline_jitter_ms=dpc.REFERENCE_BASELINE_JITTER_MS,
+    arousal_level=dpc.REFERENCE_AROUSAL_LEVEL,
+)
+
+# Measured: frontal alpha at propofol-induced loss of consciousness lies in the 8-12 Hz band
+# (Purdon et al., 2013); its centre is the rate the reference falls back to under P8.
+ALPHA_FALLBACK_FREQUENCY_HZ = 10.0
+
+# Measured: median axonal conduction velocity of human cortico-cortical connections, 3.9 m/s
+# (Lemaréchal et al., 2022), giving delays of about 10 ms over the connectome's tract lengths.
+CORTICOCORTICAL_CONDUCTION_VELOCITY_M_PER_S = 3.9
+
+# ---------------------------------------------------------------------------
+# Protocol
+# ---------------------------------------------------------------------------
+
+# Free: quorum as a fraction of awake coherence, shared with the percolation model.
+QUORUM_FRACTION = dpc.REFERENCE_QUORUM_FRACTION
+CONCENTRATION_GRID = dpc.ConcentrationGrid(maximum=3.0, step=0.05)
+# Numerical: Euler-Maruyama step well below the fastest coupling time scale (1 / K); the
+# relaxation and measurement windows span many cycles of the slowest population.
+FULL_INTEGRATION = dynamics.IntegrationSettings(time_step=0.05, relaxation_steps=400, measurement_steps=600)
+QUICK_INTEGRATION = dynamics.IntegrationSettings(time_step=0.05, relaxation_steps=100, measurement_steps=100)
+
+def base_sweep_design(integration: dynamics.IntegrationSettings, seed: int = BASE_SEED) -> dynamics.SweepDesign:
+    """The reference sweep: GABAergic-like agent, calibrated dynamics, reference grid and quorum."""
+    return dynamics.SweepDesign(
+        agent=GABAERGIC_AGENT,
+        dynamics=POPULATION_DYNAMICS,
+        integration=integration,
+        grid=CONCENTRATION_GRID,
+        quorum_fraction=QUORUM_FRACTION,
+        seed=seed,
+    )
+
+
+# Free: strong enough to entrain the stimulated populations, weak enough that the awake
+# network still propagates the stimulus (at twice this strength it does not).
+SENSORY_STIMULUS = dynamics.SensoryStimulus(strength=1.0, angular_frequency=0.3)
+
+# ---------------------------------------------------------------------------
+# Pillar thresholds (definitions, stated before the results are seen)
+# ---------------------------------------------------------------------------
+
+# A surge is a peak at least one order of magnitude above the awake value ...
+MINIMUM_SUSCEPTIBILITY_SURGE = 10.0
+# ... located within three grid steps of the loss of quorum.
+SURGE_WINDOW = 3 * CONCENTRATION_GRID.step
+# Broadcast has collapsed when it falls to half its awake value or less.
+BROADCAST_COLLAPSE_FRACTION = 0.5
+
+# Post hoc (set after the first smoke run, reported as secondary analyses only):
+# the stimulated area "keeps processing" if it retains at least this share of its awake entrainment.
+POST_HOC_SENSORY_RETENTION = 0.8
+
+# ---------------------------------------------------------------------------
+# Plant tissue
+# ---------------------------------------------------------------------------
+
+PLANT_JUNCTION_CONDUCTANCES = (0.5, 1.0, 2.0, 4.0)
+PLANT_SEEDS = 10
+# Propagation has failed when the action potential reaches less than half the sheet.
+PROPAGATION_FAILURE_FRACTION = 0.5
+PLANT_TISSUE = plant_tissue.TissueDesign(
+    geometry=plant_tissue.TissueGeometry(rows=60, columns=60),
+    junction_conductance=PLANT_JUNCTION_CONDUCTANCES[0],
+    time_step=0.05,
+    duration_steps=4000,
+    agent=GABAERGIC_AGENT,
+    grid=dpc.ConcentrationGrid(maximum=3.0, step=0.05),
+    seed=BASE_SEED,
+)
+
+
+def parameter_table() -> tuple[ParameterRecord, ...]:
+    return (
+        ParameterRecord("Baseline timing jitter (ms)", dpc.REFERENCE_BASELINE_JITTER_MS, "measured", "Mainen & Sejnowski (1995)"),
+        ParameterRecord("Integration window W (ms)", dpc.REFERENCE_INTEGRATION_WINDOW_MS, "measured", "Fries (2015)"),
+        ParameterRecord("Oscillation frequency (Hz)", OSCILLATION_FREQUENCY_HZ, "measured", "Fries (2015); Llinás & Ribary (1993)"),
+        ParameterRecord("Percolation feedback λ (ms)", dpc.REFERENCE_FEEDBACK_JITTER_MS, "calibrated", "ratio 1.11, Iwakiri et al. (2005)"),
+        ParameterRecord("Oscillator feedback λ", PHASE_REFERENCE_FEEDBACK, "free", "calibration to ratio 1.11 failed: inertia within noise"),
+        ParameterRecord("Conduction velocity (m/s)", CORTICOCORTICAL_CONDUCTION_VELOCITY_M_PER_S, "measured", "Lemaréchal et al. (2022)"),
+        ParameterRecord("Arousal level", dpc.REFERENCE_AROUSAL_LEVEL, "free", "inertia ratios reproduced at every level tested"),
+        ParameterRecord("Fallback reference rate, P8 (Hz)", ALPHA_FALLBACK_FREQUENCY_HZ, "measured", "frontal alpha 8-12 Hz, Purdon et al. (2013)"),
+        ParameterRecord("Synaptic coupling K", SYNAPTIC_COUPLING, "free", "sensitivity analysis"),
+        ParameterRecord("Natural-frequency spread", NATURAL_FREQUENCY_SPREAD, "free", "sensitivity analysis"),
+        ParameterRecord("Noise intensity D", NOISE_INTENSITY, "free", "sensitivity analysis"),
+        ParameterRecord("Quorum fraction", QUORUM_FRACTION, "free", "sensitivity analysis"),
+        ParameterRecord("GABAergic-like agent", asdict(GABAERGIC_AGENT), "free", "maximal effects not measurable at this scale"),
+        ParameterRecord("NMDA-antagonist-like agent", asdict(NMDA_ANTAGONIST_AGENT), "free", "maximal effects not measurable at this scale"),
+        ParameterRecord("Sensory stimulus", asdict(SENSORY_STIMULUS), "free", "see comment in calibration.py"),
+        ParameterRecord("FitzHugh-Nagumo a, b, ε", (plant_tissue.FITZHUGH_A, plant_tissue.FITZHUGH_B, plant_tissue.FITZHUGH_EPSILON), "measured", "FitzHugh (1961)"),
+        ParameterRecord("Plant junction conductance", PLANT_JUNCTION_CONDUCTANCES, "free", "reported across the range"),
+    )
+
+
+def as_record() -> list[dict[str, object]]:
+    return [asdict(record) for record in parameter_table()]

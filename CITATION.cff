@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it using the metadata below."
+title: "The Distributed Perceptual Consensus hypothesis of general anaesthesia"
+type: software
+authors:
+  - given-names: Gabriel
+    family-names: Santos de Oliveira
+    affiliation: Independent researcher
+    orcid: "https://orcid.org/0009-0003-9528-9731"
+  - given-names: Callina
+    family-names: Gertrudes Ferreira
+    affiliation: Universidade Veiga de Almeida
+    orcid: "https://orcid.org/0009-0002-8512-213X"
+version: 1.0.0
+date-released: 2026-10-17
+license:
+  - Apache-2.0
+  - CC-BY-4.0
+keywords:
+  - general anaesthesia
+  - consciousness
+  - thalamocortical system
+  - percolation
+  - distributed consensus
+  - neural synchrony
+  - neural inertia
+abstract: >-
+  A hypothesis and theory paper, with a reference simulator, proposing that
+  anaesthetic-induced unconsciousness occurs when the timing-coherent subgraph
+  of the thalamocortical network falls below a percolation threshold,
+  preventing distributed neural populations from reaching quorum on a shared
+  state.
