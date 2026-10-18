@@ -129,5 +129,8 @@ This repository contains theoretical research and computer simulations. It is no
 |---|---|
 | Source code (`simulator/` and any other code) | [Apache License 2.0](LICENSE) |
 | Paper, figures, diagrams and other documentation | [Creative Commons Attribution 4.0 International (CC BY 4.0)](LICENSE-CC-BY-4.0) |
+| Explainer text and study reports in `explainer/data/results/` | CC BY 4.0 |
+| Third-party data and typefaces redistributed in `explainer/` | Their own licences (MIT, CC BY 4.0, SIL OFL 1.1), listed in [`NOTICE.md`](NOTICE.md) |
+| Photographs of the authors (`explainer/assets/*.jpg`) | All rights reserved; published with consent; not covered by CC BY |
 
 Third-party software and data used by this repository, with their licences and required attributions, are listed in [`NOTICE.md`](NOTICE.md).

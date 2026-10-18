@@ -12,7 +12,7 @@ This file lists every third-party item that this repository uses or redistribute
 | SciPy 1.18.1 | Sparse eigenvectors and k-means for spectral modules | BSD-3-Clause | No |
 | Matplotlib 3.11.2 | Figures | Matplotlib License (PSF-based, BSD-compatible) | No |
 | PyArrow 26.0.0 | Reads the FlyWire connection table | Apache-2.0 | No |
-| Spectral, Spectral SC and IBM Plex Mono typefaces | Text of the interactive explainer, loaded from Google Fonts | SIL Open Font License 1.1 | No |
+| Source Serif 4, Barlow Condensed and IBM Plex Mono typefaces | Text of the interactive explainer, served from this repository (`explainer/assets/fonts/`) so that no visitor data go to a third party | SIL Open Font License 1.1; licence texts in `explainer/assets/fonts/licences/`. Source Serif 4 and Barlow Condensed are Google Fonts' Latin subsets, unmodified; IBM Plex Mono is IBM's own unmodified WOFF2 file, since "Plex" is a Reserved Font Name | Yes, unmodified |
 | Okabe–Ito colour palette | Colour-blind-safe colours of the explainer (Wong, B. (2011). Points of view: Color blindness. *Nature Methods*, 8, 441. https://doi.org/10.1038/nmeth.1618) | Colour values; credited, no licence applies | Not applicable |
 
 Transitive dependencies installed with these packages (contourpy, cycler, fonttools, kiwisolver, packaging, pillow, pyparsing, python-dateutil, six) are under BSD, MIT, MIT-CMU or Apache-2.0 licences. None is redistributed.
@@ -28,7 +28,11 @@ Three third-party datasets are redistributed, in derived form, in the interactiv
 | Consensus structural and functional connectome from 70 young healthy adults, Zenodo record 3067849 (`Consensus_Connectomes.mat`) | Human brain in 3D in the explainer only; not used by the paper's studies | CC BY 4.0; 219-region scale redistributed in `explainer/data/` with changes stated | Shafiei, G., Markello, R. D., Talpalaru, T., Makowski, C., Kirschner, M., Devenyi, G. A., et al. (2019). [Data set]. Zenodo. https://doi.org/10.5281/zenodo.3067849; described in Shafiei, G., et al. (2020). *Biological Psychiatry*, 87(8), 727–735. https://doi.org/10.1016/j.biopsych.2019.09.031 |
 | The Virtual Brain 998-region connectivity (`connectivity_998.zip`) | Human network | GPL-3.0; used, not redistributed | Hagmann, P., et al. (2008). *PLoS Biology*, 6(7), e159; Sanz Leon, P., et al. (2013). *Frontiers in Neuroinformatics*, 7, 10 |
 
-The official licence text of each source accompanies the source itself; none is reproduced here because no data are redistributed.
+Data that are only used are downloaded from their source, where their licence text lives. Data redistributed in derived form carry their notices at the top of `explainer/data/explainer-data.js`, as described above.
+
+## Author photographs
+
+The photographs of the authors in `explainer/assets/` are published with the consent of the people shown. They are **not** covered by the CC BY 4.0 licence of this repository: all rights are reserved, and they may not be reused without the subject's permission.
 
 ## Algorithms and published findings
 
