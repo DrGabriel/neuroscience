@@ -34,3 +34,6 @@ simulator/results/live/
 # Third-party datasets: downloaded by the study, never committed (licences in NOTICE.md)
 data/raw/
 drafts/
+
+# PDF build tool dependencies
+tools/pdf/node_modules/

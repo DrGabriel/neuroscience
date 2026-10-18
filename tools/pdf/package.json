@@ -1,0 +1,14 @@
+{
+  "name": "dpc-paper-pdf",
+  "private": true,
+  "description": "Builds the paper PDFs from the Markdown sources.",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "dependencies": {
+    "katex": "0.16.11",
+    "marked": "12.0.2",
+    "playwright-core": "1.63.0"
+  }
+}

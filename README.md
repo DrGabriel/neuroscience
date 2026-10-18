@@ -24,14 +24,14 @@ The feedback loop in the diagram makes the transition bistable. As a result, the
 
 - **Paper:** [`white_paper_anesthesia_consensus.md`](white_paper_anesthesia_consensus.md) ([PDF](white_paper_anesthesia_consensus.pdf); Brazilian Portuguese translation: [`.pt-BR.md`](white_paper_anesthesia_consensus.pt-BR.md), [PDF](white_paper_anesthesia_consensus.pt-BR.pdf))
 - **Falsifiable predictions:** Section 7 of the paper
-- **Simulations and results:** Appendices C and D of the paper and the [`simulator/`](simulator/) directory
+- **Simulations and results:** Appendices B and C of the paper and the [`simulator/`](simulator/) directory
 
 ## Repository layout
 
 | Path | Contents |
 |---|---|
-| [`white_paper_anesthesia_consensus.md`](white_paper_anesthesia_consensus.md) | Hypothesis and theory paper, with results and code listings in Appendices C and D |
-| [`white_paper_anesthesia_consensus.pt-BR.md`](white_paper_anesthesia_consensus.pt-BR.md), [`.pdf`](white_paper_anesthesia_consensus.pt-BR.pdf) | Brazilian Portuguese translation of the paper, for review; the English text is authoritative. References and Appendices C and D are not translated |
+| [`white_paper_anesthesia_consensus.md`](white_paper_anesthesia_consensus.md) | Hypothesis and theory paper, with results and code listings in Appendices B and C |
+| [`white_paper_anesthesia_consensus.pt-BR.md`](white_paper_anesthesia_consensus.pt-BR.md), [`.pdf`](white_paper_anesthesia_consensus.pt-BR.pdf) | Brazilian Portuguese translation of the paper, for review; the English text is authoritative. References and Appendices B and C are not translated |
 | [`figures/`](figures/) | Figures of the paper, generated from the result files |
 | [`explainer/`](explainer/) | Interactive explainer: open `explainer/index.html` in a browser to watch the percolation model break quorum on the *C. elegans* connectome. Each figure says whether it is a live model, a schematic, data or a reported result; parameters and results are exported from the simulator by `simulator/explainer_export.py`, and every study report, current and superseded, can be opened in its results archive (`simulator/results_catalogue.py`). Tests: `node --test explainer/tests/explainer.test.js` |
 | [`simulator/`](simulator/) | Models, studies and tests (below) |
@@ -65,13 +65,13 @@ The feedback loop in the diagram makes the transition bistable. As a result, the
 | [`congestion_study.py`](simulator/congestion_study.py) | Tests the congestion account and graceful degradation; `--confirm` runs the confirmatory test on fresh seeds |
 | [`species_study.py`](simulator/species_study.py) | Tests the pillars on the three connectomes and on plant tissue |
 | [`convergence_study.py`](simulator/convergence_study.py) | Checks that the oscillator results do not depend on the integration time or step |
-| [`preregistered_study.py`](simulator/preregistered_study.py) | Runs the tests fixed in advance in Appendix D.7 (K2, feedback faults; P1c, replication of P1b) on fresh seeds |
+| [`preregistered_study.py`](simulator/preregistered_study.py) | Runs the tests fixed in advance in Appendix C.7 (K2, feedback faults; P1c, replication of P1b) on fresh seeds |
 | [`results_catalogue.py`](simulator/results_catalogue.py) | Lists every report, current and archived, for the explainer's results archive; reports are never changed or removed |
-| [`figures.py`](simulator/figures.py), [`paper_appendices.py`](simulator/paper_appendices.py) | Build the figures and Appendices C and D from the latest reports |
+| [`figures.py`](simulator/figures.py), [`paper_appendices.py`](simulator/paper_appendices.py) | Build the figures and Appendices B and C from the latest reports |
 
 ## Reproducing the results
 
-The percolation model and its studies need only Python 3.10 or later. Everything else needs Python 3.13 and the packages pinned in [`simulator/requirements.txt`](simulator/requirements.txt). The three connectome datasets are downloaded on first use into `data/raw/` and checked against pinned SHA-256 digests; they are not redistributed (see `NOTICE.md`).
+The percolation model and its studies need only Python 3.10 or later. Everything else needs Python 3.13 and the packages pinned in [`simulator/requirements.txt`](simulator/requirements.txt). The three connectome datasets are downloaded on first use into `data/raw/` and checked against pinned SHA-256 digests; the studies use them as downloaded and do not redistribute them; the explainer redistributes derived summaries under their licences (see `NOTICE.md`).
 
 ```sh
 git clone <repository-url>
@@ -84,11 +84,24 @@ cd simulator
 python3 validation_study.py --quick                       # short check, seconds
 ```
 
-Appendix D.8 of the paper lists the commands that reproduce every result in order. The full set takes several hours on a ten-core laptop, mostly for the *Drosophila* connectome. Every study prints its progress, with the share completed and the estimated time remaining.
+Appendix C.9 of the paper lists the commands that reproduce every result in order. The full set takes several hours on a ten-core laptop, mostly for the *Drosophila* connectome. Every study prints its progress, with the share completed and the estimated time remaining.
 
 Each report records the start and end time, the machine model, processor, core count, memory, operating system, Python and package versions, Git commit and the SHA-256 hash of every simulator module that ran, together with every parameter. A study exits with a non-zero status when a pre-specified test fails; that is a result, recorded in the report, not an error.
 
 Every random draw is seeded. A rerun with the same Python and package versions should reproduce the published numbers exactly on any hardware, apart from the timings. Other versions may draw different random sequences, so their results should agree statistically rather than exactly.
+
+### Building the PDFs
+
+The PDFs are built from the Markdown sources by [`tools/pdf/build.mjs`](tools/pdf/build.mjs), which needs Node.js and an installed Google Chrome. The body text is set in Source Serif 4 from `explainer/assets/fonts/`, so the PDFs embed openly licensed fonts.
+
+```sh
+cd tools/pdf
+npm install
+node build.mjs ../../white_paper_anesthesia_consensus.md ../../white_paper_anesthesia_consensus.pdf
+node build.mjs ../../white_paper_anesthesia_consensus.pt-BR.md ../../white_paper_anesthesia_consensus.pt-BR.pdf
+```
+
+Adding `--draft "<text>"` prints the text as a banner and in every page footer, for internal review copies.
 
 ### Tests and coverage
 

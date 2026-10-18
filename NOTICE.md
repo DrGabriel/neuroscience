@@ -8,6 +8,9 @@ This file lists every third-party item that this repository uses or redistribute
 |---|---|---|---|
 | Python and its standard library | Runs the simulator and validation study | [Python Software Foundation License](https://docs.python.org/3/license.html) | No |
 | Mermaid | Renders the diagrams written in Mermaid syntax, on GitHub or locally | [MIT](https://github.com/mermaid-js/mermaid/blob/develop/LICENSE) | No |
+| KaTeX 0.16.11 | Typesets the mathematics in the PDFs (`tools/pdf/`); its fonts are embedded in the PDFs | MIT, including the KaTeX fonts (katex-fonts repository) | Embedded in the PDFs only |
+| marked 12.0.2 | Converts the Markdown paper to HTML for the PDFs | MIT | No |
+| Playwright (playwright-core 1.63.0) | Drives the installed Chrome to print the PDFs | Apache-2.0 | No |
 | NumPy 2.5.4 | Numerical arrays for the cross-species study | BSD-3-Clause (with bundled MIT, Zlib, 0BSD and CC0 components) | No |
 | SciPy 1.18.1 | Sparse eigenvectors and k-means for spectral modules | BSD-3-Clause | No |
 | Matplotlib 3.11.2 | Figures | Matplotlib License (PSF-based, BSD-compatible) | No |

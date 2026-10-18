@@ -44,6 +44,16 @@ QUICK_SEEDS_PER_SIZE = 3
 # ---------------------------------------------------------------------------
 
 
+# Measured spatial extent of human slow waves (Nir et al., 2011, depth electrodes): on average a slow wave
+# involves 27.1% of monitored regions (25.0% late in the night, which equals HUMAN_SLEEP_DOWN_STATE_FRACTION_UPPER,
+# so O4 already covers it). Used as the share of populations silent together during one slow wave.
+HUMAN_SLOW_WAVE_EXTENT = 0.271
+POPULATION_SLEEP_SHARES = (
+    ("sleep, populations", dpc.SLEEP_DOWN_STATE_FRACTION),
+    ("deep sleep, populations", dpc.HUMAN_SLEEP_DOWN_STATE_FRACTION_UPPER),
+    ("slow wave, populations", HUMAN_SLOW_WAVE_EXTENT),
+)
+
 @dataclass(frozen=True)
 class StudyDesign:
     label: str
@@ -125,7 +135,7 @@ def measure_seed(task: SeedTask, transform: ScenarioTransform = unchanged) -> Se
     states = dpc.sleep_versus_anaesthesia(reference, connection_sleep, dpc.DEEP_ANAESTHESIA_CONCENTRATION)
     deep_sleep = replace(connection_sleep, down_state_fraction=dpc.HUMAN_SLEEP_DOWN_STATE_FRACTION_UPPER)
     states["deep sleep"] = dpc.stable_states(replace(reference, state=deep_sleep), concentration=0.0)
-    for name, share in (("sleep, populations", dpc.SLEEP_DOWN_STATE_FRACTION), ("deep sleep, populations", dpc.HUMAN_SLEEP_DOWN_STATE_FRACTION_UPPER)):
+    for name, share in POPULATION_SLEEP_SHARES:
         population_sleep = dpc.BrainState(dpc.SLEEP_AROUSAL_LEVEL, share, dpc.DownStates.POPULATIONS)
         states[name] = dpc.stable_states(replace(reference, state=population_sleep), concentration=0.0)
     reference_result = dpc.run_scenario(reference)
@@ -288,6 +298,11 @@ OBSERVATIONS = (
         "O4",
         f"Sleep with population-level down-states at the human share ({dpc.HUMAN_SLEEP_DOWN_STATE_FRACTION_UPPER}) loses quorum",
         lambda m: not m.stable_states["deep sleep, populations"].holds_quorum,
+    ),
+    Claim(
+        "O5",
+        f"Sleep with one typical human slow wave silencing its measured share of regions ({HUMAN_SLOW_WAVE_EXTENT}) loses quorum (Nir et al., 2011)",
+        lambda m: not m.stable_states["slow wave, populations"].holds_quorum,
     ),
 )
 
