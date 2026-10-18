@@ -3,16 +3,19 @@
 Implements the formal model of Section 4 of the white paper:
 
     pi(c, S)  = (1 - p(c)) * erf(W / (2 * sqrt(2) * sigma_eff))
-    sigma_eff = sigma_0(c) + lambda * (1 - S)
+    sigma_eff = sqrt(sigma_b^2 + sigma_agent(c)^2 + sigma_ref(c, S)^2)
+    sigma_ref = lambda * (1 - S) * (1 - A(c, S))
     S         = F(pi(c, S))
 
-where F is the giant-component fraction of the network under bond percolation.
-F is computed exactly for a fixed set of random edge draws with the Newman-Ziff
-algorithm, so every fixed-point evaluation is a lookup rather than a new
-Monte Carlo run.
+The three timing errors are independent, so their standard deviations add in quadrature.
+F is the giant-component fraction of the network under bond percolation, computed exactly
+for a fixed set of random edge draws with the Newman-Ziff algorithm, so every fixed-point
+evaluation is a lookup rather than a new Monte Carlo run. Sleep down-states silence whole
+populations (Nir et al., 2011, report that slow waves are often regional), so they remove
+nodes rather than individual connections.
 
-The simulator demonstrates that the model behaves as the paper claims. It is
-not evidence about the brain: every parameter below is illustrative, not fitted.
+The simulator shows whether the model behaves as the paper claims. It is not evidence about
+the brain. Each parameter below is labelled assumed, calibrated or free.
 
 Standard library only. Run with: python3 dpc_simulator.py
 """
@@ -23,6 +26,8 @@ import bisect
 import math
 import random
 from dataclasses import dataclass, replace
+from enum import Enum
+from functools import lru_cache
 from typing import Callable, Protocol, Sequence, TypeVar
 
 Edge = tuple[int, int]
@@ -31,7 +36,7 @@ Edge = tuple[int, int]
 # ---------------------------------------------------------------------------
 # Reference parameters
 #
-# Measured: taken from published physiology (source given).
+# Assumed: set from a published estimate (source given), not measured for this model.
 # Calibrated: fitted to one published measurement (target given), then held fixed.
 # Free: not measurable at this level of description; results are reported over a range.
 # ---------------------------------------------------------------------------
@@ -42,10 +47,14 @@ REFERENCE_NODE_COUNT = 2_000
 REFERENCE_MEAN_DEGREE = 8.0
 REFERENCE_EDGES_PER_NEW_NODE = 4  # preferential attachment; gives mean degree 8
 
-# Measured: about 3 ms window for effective excitatory input within a gamma cycle (Fries, 2015).
+# Measured range: cortical integration windows for coincident synaptic input span 1-10 ms
+# (Gabernet et al., 2005; under 2 ms in hippocampus, Pouille & Scanziani, 2001); 3 ms lies
+# within it, and the sensitivity analysis covers 1-10 ms.
 REFERENCE_INTEGRATION_WINDOW_MS = 3.0
-# Measured: cortical spike timing is reproducible to under 1 ms (Mainen & Sejnowski, 1995).
-REFERENCE_BASELINE_JITTER_MS = 1.0
+# Measured: spike timing in awake macaque cortex is precise to about 3 ms (Buracas et al., 1998);
+# single neurons in vitro reach under 1 ms (Mainen & Sejnowski, 1995). No trial-to-trial timing
+# variability between cortical areas has been measured, so the sensitivity analysis covers 1-10 ms.
+REFERENCE_BASELINE_JITTER_MS = 3.0
 # Free: share of the timing reference sustained by wake-active arousal systems. The measured
 # inertia ratios are reproduced at every level tested (calibrate_feedback.py), so they do not
 # determine it; the midpoint of the tested range is used and results are reported across it.
@@ -53,7 +62,7 @@ REFERENCE_AROUSAL_LEVEL = 0.5
 # Calibrated: λ giving a loss-to-recovery concentration ratio of 1.11, the value measured for
 # propofol in humans (Iwakiri et al., 2005), at each arousal level tested (calibrate_feedback.py;
 # test_dpc_simulator checks that the stored values still reproduce the ratio).
-CALIBRATED_FEEDBACK_MS_BY_AROUSAL = {0.0: 4.50, 0.3: 5.77, 0.5: 6.99, 0.7: 8.90}
+CALIBRATED_FEEDBACK_MS_BY_AROUSAL = {0.0: 6.06, 0.3: 7.93, 0.5: 10.06, 0.7: 14.13}
 REFERENCE_FEEDBACK_JITTER_MS = CALIBRATED_FEEDBACK_MS_BY_AROUSAL[REFERENCE_AROUSAL_LEVEL]
 # Free.
 REFERENCE_QUORUM_FRACTION = 0.5
@@ -66,7 +75,7 @@ REFERENCE_LESION_FRACTION = 0.05
 # No feedback, then the values calibrated at the reference arousal level to each published
 # inertia ratio (calibrate_feedback.py): 1.07 (Warnaby et al., 2017), 1.11 (Iwakiri et al., 2005)
 # and 1.63 (Sepulveda et al., 2018).
-REFERENCE_FEEDBACK_SERIES_MS = (0.0, 5.56, 6.99, 14.51)
+REFERENCE_FEEDBACK_SERIES_MS = (0.0, 8.49, 10.06, 16.52)
 # Free: share of arousal drive left after orexinergic neurons are lost (Kelz et al., 2008);
 # other arousal systems remain, so the share is partial rather than zero.
 OREXIN_ABLATION_REMAINING_SHARE = 0.5
@@ -280,18 +289,38 @@ class TimingParameters:
     feedback_jitter_ms: float
 
 
+class DownStates(Enum):
+    """What a slow-oscillation down-state silences.
+
+    POPULATIONS: whole populations fall silent together, as down-states are population-wide
+    OFF periods (Vyazovskiy et al., 2009) that are often regional (Nir et al., 2011).
+    CONNECTIONS: each connection fails independently, the alternative in which signals stop
+    crossing between regions (Section 5.6).
+    """
+
+    POPULATIONS = "populations"
+    CONNECTIONS = "connections"
+
+
 @dataclass(frozen=True)
 class BrainState:
     """Physiological state independent of any agent (P7).
 
     arousal_level: share of the timing reference that wake-active arousal systems sustain on
     their own, independent of cortical coherence (0 none, 1 the reference never weakens).
-    down_state_fraction: share of integration cycles that fall in slow-oscillation down-states,
-    during which cortical transmission fails (0 in wakefulness).
+    down_state_fraction: share of populations (or connections) silenced by slow-oscillation
+    down-states at any moment (0 in wakefulness).
     """
 
     arousal_level: float
     down_state_fraction: float = 0.0
+    down_states: DownStates = DownStates.POPULATIONS
+
+    def silenced_connection_share(self) -> float:
+        return self.down_state_fraction if self.down_states is DownStates.CONNECTIONS else 0.0
+
+    def silenced_population_share(self) -> float:
+        return self.down_state_fraction if self.down_states is DownStates.POPULATIONS else 0.0
 
 
 def sustained_arousal(arousal_level: float, agent: AnaestheticAgent, concentration: float) -> float:
@@ -319,20 +348,26 @@ class CoherenceModel:
         """Arousal drive, suppressed by the agent as anaesthetics inhibit orexinergic neurons (Kelz et al., 2008)."""
         return sustained_arousal(self._state.arousal_level, self._agent, concentration)
 
+    def arousal_at(self, concentration: float, coherent_fraction: float) -> float:
+        """Arousal drive in a given network state; independent of the state here, overridden by extensions."""
+        return self.arousal(concentration)
+
     def reference_error_ms(self, concentration: float, coherent_fraction: float) -> float:
         """Timing error added by a weakened reference: grows as the coherent core shrinks, unless arousal sustains it."""
-        return self._timing.feedback_jitter_ms * (1 - coherent_fraction) * (1 - self.arousal(concentration))
+        unsustained = 1 - self.arousal_at(concentration, coherent_fraction)
+        return self._timing.feedback_jitter_ms * (1 - coherent_fraction) * unsustained
 
     def effective_jitter_ms(self, concentration: float, coherent_fraction: float) -> float:
-        return (
-            self._timing.baseline_jitter_ms
-            + self._agent.added_jitter_ms(concentration)
-            + self.reference_error_ms(concentration, coherent_fraction)
+        """Independent timing errors combine in quadrature."""
+        return math.hypot(
+            self._timing.baseline_jitter_ms,
+            self._agent.added_jitter_ms(concentration),
+            self.reference_error_ms(concentration, coherent_fraction),
         )
 
     def coherence_probability(self, concentration: float, coherent_fraction: float) -> float:
         jitter_ms = self.effective_jitter_ms(concentration, coherent_fraction)
-        transmits = (1 - self._agent.transmission_failure(concentration)) * (1 - self._state.down_state_fraction)
+        transmits = (1 - self._agent.transmission_failure(concentration)) * (1 - self._state.silenced_connection_share())
         return transmits * within_window(self._timing.integration_window_ms, jitter_ms)
 
 
@@ -498,19 +533,67 @@ HUB_SCENARIO = replace(
 )
 
 GraphTransform = Callable[[Graph, random.Random], Graph]
+CoherenceFactory = Callable[[TimingParameters, AnaestheticAgent, BrainState], CoherenceModel]
 
 
-def build_solver(scenario: Scenario, transform_graph: GraphTransform | None = None) -> CoherentCoreSolver:
-    rng = random.Random(scenario.seed)
-    graph = scenario.graph_builder.build(rng)
+@dataclass(frozen=True)
+class ModelVariant:
+    """Changes to the reference model: a lesion of the graph and/or a different coherence model."""
+
+    transform_graph: GraphTransform | None = None
+    coherence: CoherenceFactory = CoherenceModel
+
+
+REFERENCE_MODEL = ModelVariant()
+
+
+# A million-node graph and its curve take a few hundred megabytes, so each worker keeps only the
+# most recent ones. The many experiments of one seed share them, which removes repeated builds.
+GRAPH_CACHE_SIZE = 1
+CURVE_CACHE_SIZE = 2
+
+
+@lru_cache(maxsize=GRAPH_CACHE_SIZE)
+def built_graph(builder: GraphBuilder, seed: int) -> tuple[Graph, object]:
+    """The seed's graph and the random-generator state right after building it."""
+    rng = random.Random(seed)
+    graph = builder.build(rng)
+    return graph, rng.getstate()
+
+
+@lru_cache(maxsize=CURVE_CACHE_SIZE)
+def percolation_curve(builder: GraphBuilder, seed: int, transform_graph: GraphTransform | None, silenced_share: float) -> PercolationCurve:
+    """Draws exactly as building the graph afresh would, so a cached graph gives identical results."""
+    graph, state = built_graph(builder, seed)
+    rng = random.Random()
+    rng.setstate(state)
     if transform_graph is not None:
         graph = transform_graph(graph, rng)
-    curve = PercolationCurve.from_graph(graph, rng)
-    return CoherentCoreSolver(curve, CoherenceModel(scenario.timing, scenario.agent, scenario.state))
+    if silenced_share > 0:
+        graph = remove_random_nodes(silenced_share)(graph, rng)
+    return PercolationCurve.from_graph(graph, rng)
 
 
-def run_scenario(scenario: Scenario, transform_graph: GraphTransform | None = None) -> SweepResult:
-    return AnaestheticSweep(build_solver(scenario, transform_graph), scenario.quorum_fraction).run(scenario.grid)
+def build_curve(scenario: Scenario, transform_graph: GraphTransform | None = None) -> PercolationCurve:
+    """The scenario's percolation curve; down-states silence a random share of whole populations."""
+    return percolation_curve(scenario.graph_builder, scenario.seed, transform_graph, scenario.state.silenced_population_share())
+
+
+def solver_on(curve: PercolationCurve, scenario: Scenario, variant: ModelVariant = REFERENCE_MODEL) -> CoherentCoreSolver:
+    return CoherentCoreSolver(curve, variant.coherence(scenario.timing, scenario.agent, scenario.state))
+
+
+def build_solver(scenario: Scenario, variant: ModelVariant = REFERENCE_MODEL) -> CoherentCoreSolver:
+    return solver_on(build_curve(scenario, variant.transform_graph), scenario, variant)
+
+
+def run_on_curve(curve: PercolationCurve, scenario: Scenario, variant: ModelVariant = REFERENCE_MODEL) -> SweepResult:
+    """A sweep on an already-built curve, so that variants of one network share its percolation draws."""
+    return AnaestheticSweep(solver_on(curve, scenario, variant), scenario.quorum_fraction).run(scenario.grid)
+
+
+def run_scenario(scenario: Scenario, variant: ModelVariant = REFERENCE_MODEL) -> SweepResult:
+    return run_on_curve(build_curve(scenario, variant.transform_graph), scenario, variant)
 
 
 @dataclass(frozen=True)
@@ -521,6 +604,11 @@ class StableStates:
     from_awake: float
     from_collapsed: float
     quorum_fraction: float
+
+    @property
+    def holds_quorum(self) -> bool:
+        """The state reached from wakefulness keeps quorum."""
+        return self.from_awake >= self.quorum_fraction
 
     @property
     def can_be_woken(self) -> bool:
@@ -535,8 +623,8 @@ class StableStates:
 COLLAPSED_FRACTION = 0.0
 
 
-def stable_states(scenario: Scenario, concentration: float) -> StableStates:
-    solver = build_solver(scenario)
+def stable_states(scenario: Scenario, concentration: float, variant: ModelVariant = REFERENCE_MODEL) -> StableStates:
+    solver = build_solver(scenario, variant)
     return StableStates(
         concentration=concentration,
         from_awake=solver.solve(concentration, AnaestheticSweep.AWAKE_FRACTION),
@@ -570,6 +658,56 @@ def sleep_versus_anaesthesia(base: Scenario, sleep: BrainState, deep_concentrati
         "sleep": stable_states(replace(base, state=sleep), concentration=0.0),
         "deep anaesthesia": stable_states(base, concentration=deep_concentration),
     }
+
+
+@dataclass(frozen=True)
+class LossPoint:
+    """What the agent is doing to connections at the last concentration before quorum is lost."""
+
+    concentration: float
+    transmission_failure: float
+    agent_jitter_ms: float
+    effective_jitter_ms: float
+    coherence_probability: float
+
+
+def loss_point(scenario: Scenario, result: SweepResult, variant: ModelVariant = REFERENCE_MODEL) -> LossPoint | None:
+    if result.loss_concentration is None:
+        return None
+    point = next(p for p in result.induction if p.concentration == result.loss_concentration)
+    model = variant.coherence(scenario.timing, scenario.agent, scenario.state)
+    return LossPoint(
+        concentration=point.concentration,
+        transmission_failure=scenario.agent.transmission_failure(point.concentration),
+        agent_jitter_ms=scenario.agent.added_jitter_ms(point.concentration),
+        effective_jitter_ms=model.effective_jitter_ms(point.concentration, point.coherent_fraction),
+        coherence_probability=model.coherence_probability(point.concentration, point.coherent_fraction),
+    )
+
+
+SILENCED_SHARE_BISECTION_STEPS = 8
+
+
+def smallest_crossing(crosses: Callable[[float], bool], steps: int) -> float:
+    """Smallest value in [0, 1] at which crosses becomes true, by bisection; 1.0 if it never does.
+
+    crosses must be false below the crossing and true above it.
+    """
+    low, high = 0.0, 1.0
+    for _ in range(steps):
+        middle = (low + high) / 2
+        low, high = (low, middle) if crosses(middle) else (middle, high)
+    return high
+
+
+def silenced_share_for_sleep(base: Scenario, sleep: BrainState) -> float:
+    """Smallest share of silenced populations at which the sleeping network, started awake, loses quorum."""
+
+    def loses_quorum(share: float) -> bool:
+        state = replace(sleep, down_state_fraction=share, down_states=DownStates.POPULATIONS)
+        return not stable_states(replace(base, state=state), concentration=0.0).holds_quorum
+
+    return smallest_crossing(loses_quorum, SILENCED_SHARE_BISECTION_STEPS)
 
 
 def remove_highest_degree_nodes(fraction: float) -> GraphTransform:
@@ -613,8 +751,8 @@ def lesion_comparison(hub_scenario: Scenario, lesion_fraction: float) -> dict[st
     """Prediction 6: losing hubs lowers the loss concentration more than losing random nodes."""
     return {
         "intact": run_scenario(hub_scenario),
-        "random lesion": run_scenario(hub_scenario, remove_random_nodes(lesion_fraction)),
-        "hub lesion": run_scenario(hub_scenario, remove_highest_degree_nodes(lesion_fraction)),
+        "random lesion": run_scenario(hub_scenario, ModelVariant(transform_graph=remove_random_nodes(lesion_fraction))),
+        "hub lesion": run_scenario(hub_scenario, ModelVariant(transform_graph=remove_highest_degree_nodes(lesion_fraction))),
     }
 
 

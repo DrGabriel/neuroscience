@@ -106,9 +106,20 @@ class CoherenceModelTests(unittest.TestCase):
     def test_agent_suppresses_arousal(self) -> None:
         self.assertLess(self.model.arousal(2.0), self.model.arousal(0.0))
 
-    def test_down_states_reduce_coherence_without_any_agent(self) -> None:
-        sleeping = coherence_model(dpc.BrainState(0.0, down_state_fraction=0.3))
+    def test_connection_level_down_states_reduce_coherence_without_any_agent(self) -> None:
+        sleeping = coherence_model(dpc.BrainState(0.0, 0.3, dpc.DownStates.CONNECTIONS))
         self.assertLess(sleeping.coherence_probability(0.0, 1.0), self.model.coherence_probability(0.0, 1.0))
+
+    def test_population_level_down_states_leave_connection_coherence_alone(self) -> None:
+        sleeping = coherence_model(dpc.BrainState(0.0, 0.3, dpc.DownStates.POPULATIONS))
+        self.assertEqual(sleeping.coherence_probability(0.0, 1.0), coherence_model(dpc.BrainState(0.0)).coherence_probability(0.0, 1.0))
+
+    def test_independent_timing_errors_combine_in_quadrature(self) -> None:
+        awake_and_coherent = self.model.effective_jitter_ms(0.0, 1.0)
+        self.assertAlmostEqual(awake_and_coherent, dpc.REFERENCE_BASELINE_JITTER_MS)
+        collapsed = self.model.effective_jitter_ms(0.0, 0.0)
+        reference_error = self.model.reference_error_ms(0.0, 0.0)
+        self.assertAlmostEqual(collapsed, (dpc.REFERENCE_BASELINE_JITTER_MS**2 + reference_error**2) ** 0.5)
 
 
 class SweepIntegrationTests(unittest.TestCase):
@@ -144,6 +155,28 @@ class SweepIntegrationTests(unittest.TestCase):
         self.assertIsNone(never_lost.hysteresis_width)
 
 
+class SleepAndLossPointTests(unittest.TestCase):
+    def test_silenced_populations_lower_the_coherent_fraction(self) -> None:
+        sleeping = replace(small(dpc.REFERENCE_SCENARIO), state=dpc.BrainState(0.0, 0.3))
+        self.assertLess(dpc.stable_states(sleeping, 0.0).from_awake, 1 - 0.3 + 1e-9)
+
+    def test_silenced_share_for_sleep_is_where_quorum_is_first_lost(self) -> None:
+        base = small(dpc.REFERENCE_SCENARIO)
+        share = dpc.silenced_share_for_sleep(base, dpc.BrainState(0.0))
+        just_below = replace(base, state=dpc.BrainState(0.0, share - 1 / 2**dpc.SILENCED_SHARE_BISECTION_STEPS))
+        at_share = replace(base, state=dpc.BrainState(0.0, share))
+        self.assertGreaterEqual(dpc.stable_states(just_below, 0.0).from_awake, base.quorum_fraction)
+        self.assertLess(dpc.stable_states(at_share, 0.0).from_awake, base.quorum_fraction)
+
+    def test_loss_point_reports_the_agent_effect_at_c_off(self) -> None:
+        scenario = small(dpc.REFERENCE_SCENARIO)
+        result = dpc.run_scenario(scenario)
+        point = dpc.loss_point(scenario, result)
+        self.assertEqual(point.concentration, result.loss_concentration)
+        self.assertAlmostEqual(point.transmission_failure, scenario.agent.transmission_failure(result.loss_concentration))
+        self.assertIsNone(dpc.loss_point(scenario, dpc.SweepResult((dpc.SweepPoint(0.0, 1.0, True),), ())))
+
+
 class CalibrationTests(unittest.TestCase):
     def test_stored_feedback_still_reproduces_the_reference_inertia_ratio(self) -> None:
         import calibrate_feedback
@@ -165,15 +198,21 @@ class ValidationStudyTests(unittest.TestCase):
         self.assertEqual((distribution.defined_count, distribution.total_count), (2, 3))
         self.assertAlmostEqual(distribution.mean, 2.0)
 
-    def test_every_claim_holds_for_a_small_network(self) -> None:
+    def test_consistency_checks_hold_and_every_claim_is_decided(self) -> None:
+        """Consistency checks follow from the equations; whether a test passes is a result, not a test of the code."""
+        import reporting
+
         measurement = study.measure_seed(study.SeedTask(SMALL_NODE_COUNT, dpc.REFERENCE_SEED))
-        for claim in study.CLAIMS:
+        for claim in study.CLAIMS + study.EXTENSION_TESTS + study.OBSERVATIONS:
             with self.subTest(claim=claim.identifier):
-                self.assertTrue(claim.holds_for(measurement))
+                verdict = claim.holds_for(measurement)
+                self.assertIn(verdict, (True, False, None))
+                if claim.kind == reporting.CONSISTENCY_CHECK:
+                    self.assertTrue(verdict)
 
 
 class ValidationEndToEndTests(unittest.TestCase):
-    def test_quick_study_writes_both_reports_and_passes(self) -> None:
+    def test_quick_study_writes_both_reports(self) -> None:
         import contextlib
         import io
         import tempfile
@@ -185,7 +224,7 @@ class ValidationEndToEndTests(unittest.TestCase):
             with contextlib.redirect_stdout(io.StringIO()):
                 exit_status = study.main(["--quick"])
             written = sorted(path.suffix for path in Path(directory).iterdir())
-        self.assertEqual(exit_status, 0)
+        self.assertIn(exit_status, (0, 1))
         self.assertEqual(written, [".json", ".md"])
 
 

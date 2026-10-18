@@ -37,7 +37,40 @@ class ReportingTests(unittest.TestCase):
         check = reporting.Check("X", "always true", lambda run: True)
         outcomes = reporting.evaluate([check], {"A": [1, 2], "B": []})
         table = reporting.outcome_table(outcomes, ["A", "B"])
-        self.assertIn("| X | always true | 2/2 | not run |", table)
+        self.assertIn("| X | always true | test | 2/2 (34–100%) | not run |", table)
+
+    def test_consistency_checks_are_labelled(self) -> None:
+        check = reporting.Check("Y", "follows from the equations", lambda run: True, reporting.CONSISTENCY_CHECK)
+        outcome = reporting.evaluate([check], {"A": [1]})[0]
+        self.assertEqual(outcome.kind, reporting.CONSISTENCY_CHECK)
+
+    def test_wilson_interval_matches_published_values(self) -> None:
+        low, high = reporting.wilson_interval(0, 20)
+        self.assertAlmostEqual(low, 0.0)
+        self.assertAlmostEqual(high, 0.1611, places=3)
+        low, high = reporting.wilson_interval(20, 20)
+        self.assertAlmostEqual(low, 0.8389, places=3)
+
+
+class DirectedAndNullModelTests(unittest.TestCase):
+    def test_a_one_way_cycle_is_strongly_connected_but_a_chain_is_not(self) -> None:
+        cycle = replace(_tiny_connectome(), sources=np.array([0, 1, 2]), targets=np.array([1, 2, 0]), weights=np.ones(3, dtype=np.float32))
+        chain = replace(cycle, sources=np.array([0, 1]), targets=np.array([1, 2]), weights=np.ones(2, dtype=np.float32))
+        self.assertEqual(thresholds.largest_strong_component_share(cycle, np.ones(3, dtype=bool)), 1.0)
+        self.assertAlmostEqual(thresholds.largest_strong_component_share(chain, np.ones(2, dtype=bool)), 1 / 3)
+
+    def test_rewiring_keeps_out_degrees_and_removes_self_connections(self) -> None:
+        connectome = replace(_tiny_connectome(), sources=np.array([0, 0, 1, 2]), targets=np.array([1, 2, 2, 0]), weights=np.ones(4, dtype=np.float32))
+        rewired = connectome.rewired(seed=3)
+        self.assertFalse(np.any(rewired.sources == rewired.targets))
+        self.assertTrue(np.all(np.bincount(rewired.sources, minlength=3) <= np.bincount(connectome.sources, minlength=3)))
+
+
+def _tiny_connectome() -> connectomes.Connectome:
+    return connectomes.Connectome(
+        name="tiny", organism="test", node_count=3, sources=np.array([0]), targets=np.array([1]), weights=np.ones(1, dtype=np.float32),
+        modules=np.zeros(3, dtype=int), module_basis="none", sensory_nodes=np.array([0]), sensory_description="node 0",
+    )
 
 
 class PercolationFormulaTests(unittest.TestCase):

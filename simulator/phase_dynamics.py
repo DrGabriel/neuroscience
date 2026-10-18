@@ -10,8 +10,10 @@ Breakspear, 2017), integrated with the Euler-Maruyama scheme:
     synaptic_i  = (K / s_i) Σ_j w_ji m_ji sin(θ_j − θ_i − α_ji)
                   m_ji: 1 if connection j→i transmits, 0 if it has failed   (failure p(c), P4a)
                   α_ji: phase error = fixed conduction lag (if delays are modelled) plus timing
-                        jitter, Gaussian with SD 2π f σ(c), redrawn at every step by default
-                        (trial-to-trial variability) or fixed per connection          (P4b)
+                        jitter, Gaussian with SD 2π f σ(c); by default it persists for a
+                        correlation time τ (Ornstein-Uhlenbeck), so it acts as a timing
+                        error during each exchange rather than averaging out within it;
+                        it can instead be redrawn at every step or fixed per connection (P4b)
     reference_i = λ [R + A(c)(1 − R)] sin(ψ − θ_i)
                                           shared phase reference whose strength grows with global
                                           coherence R (P5), partly sustained by arousal A (P7),
@@ -57,6 +59,8 @@ class PopulationDynamics:
     # P8 (adaptive reference rate): when set, the reference rhythm slows from
     # oscillation_frequency_hz towards this value as the agent takes effect. None keeps it fixed.
     fallback_frequency_hz: float | None = None
+    # How long a connection's timing error persists before it changes, in model time units.
+    jitter_correlation_time: float = 1.0
 
 
 @dataclass(frozen=True)
@@ -81,8 +85,11 @@ class JitterScaling(Enum):
 class JitterDynamics(Enum):
     """Whether timing error varies over time or is a fixed offset of each connection."""
 
-    # Redrawn at every integration step: trial-to-trial timing variability, the quantity measured
-    # by Mainen & Sejnowski (1995): the "latency variance" of the consensus analogy.
+    # Persists for a correlation time, then changes (Ornstein-Uhlenbeck): trial-to-trial timing
+    # variability whose statistics do not depend on the integration step.
+    CORRELATED = "correlated"
+    # Redrawn at every integration step. As the step shrinks, its effect averages to a uniform
+    # weakening of coupling, indistinguishable from transmission failure; kept for comparison.
     FLUCTUATING = "fluctuating"
     # Drawn once per connection: a systematic timing offset, the "clock skew" of the consensus analogy.
     FIXED = "fixed"
@@ -107,7 +114,7 @@ class SweepDesign:
     quorum_fraction: float
     seed: int
     jitter_scaling: JitterScaling = JitterScaling.UNIFORM
-    jitter_dynamics: JitterDynamics = JitterDynamics.FLUCTUATING
+    jitter_dynamics: JitterDynamics = JitterDynamics.CORRELATED
     stimulus: SensoryStimulus | None = None
     # When set, constant conduction delays (tract length / velocity) enter as fixed phase lags.
     conduction_velocity_m_per_s: float | None = None
@@ -275,22 +282,52 @@ def jitter_weights(connectome: Connectome, scaling: JitterScaling) -> tuple[np.n
     return by_length, by_length
 
 
-class SynapticDrive:
-    """Input from connected populations, normalised by each population's intact in-strength.
+class TimingJitter:
+    """Per-connection timing error as phase: independent at every step, or correlated over time.
 
-    Fluctuating jitter is redrawn at every call, so each step sees a new timing error.
+    The correlated process is Ornstein-Uhlenbeck with the given stationary SD; its persistence
+    per step is exp(-step / τ), so its statistics do not depend on the integration step.
     """
 
-    def __init__(
-        self, connectome: Connectome, coupling: float, connectivity: ImpairedConnectivity, rng: np.random.Generator
-    ) -> None:
+    def __init__(self, sd: np.ndarray, persistence: float, rng: np.random.Generator) -> None:
+        self._sd = sd
+        self._persistence = persistence
+        self._innovation_sd = np.sqrt(1 - persistence**2) * sd
+        self._rng = rng
+        self._state = sd * rng.standard_normal(sd.size) if persistence > 0 else None
+
+    @property
+    def persistence(self) -> float:
+        return self._persistence
+
+    @classmethod
+    def for_design(cls, sd: np.ndarray, design: SweepDesign, rng: np.random.Generator) -> TimingJitter:
+        if design.jitter_dynamics is not JitterDynamics.CORRELATED:
+            return cls(sd, 0.0, rng)
+        return cls(sd, float(np.exp(-design.integration.time_step / design.dynamics.jitter_correlation_time)), rng)
+
+    def next(self) -> np.ndarray:
+        """This step's phase errors; the correlated state is updated in place, so read it before the next call."""
+        noise = self._rng.standard_normal(self._sd.size)
+        if self._state is None:
+            return self._sd * noise
+        self._state *= self._persistence
+        noise *= self._innovation_sd
+        self._state += noise
+        return self._state
+
+
+class SynapticDrive:
+    """Input from connected populations, normalised by each population's intact in-strength."""
+
+    def __init__(self, connectome: Connectome, coupling: float, connectivity: ImpairedConnectivity, jitter: TimingJitter) -> None:
         # Normalised by the total strength of all intact inputs, excitatory and inhibitory alike.
         in_strength = np.bincount(connectome.targets, weights=connectome.weights, minlength=connectome.node_count)
         self._gain = np.divide(coupling, in_strength, out=np.zeros_like(in_strength), where=in_strength > 0)
         self._connectivity = connectivity
         # Converted once here rather than at every step; float32 to float64 is exact.
         self._weights = connectivity.weights.astype(np.float64)
-        self._rng = rng
+        self._jitter = jitter
         self._fluctuates = bool(np.any(connectivity.jitter_sd > 0))
         self._has_lags = bool(np.any(connectivity.fixed_lags != 0))
 
@@ -308,7 +345,7 @@ class SynapticDrive:
         c = self._connectivity
         if not self._fluctuates:
             return c.fixed_lags if self._has_lags else None
-        jitter = c.jitter_sd * self._rng.standard_normal(c.jitter_sd.size)
+        jitter = self._jitter.next()
         return c.fixed_lags + jitter if self._has_lags else jitter
 
 
@@ -427,12 +464,16 @@ class PhaseNetwork:
     def _drives_at(self, concentration: float) -> list[PhaseDrive]:
         dynamics = self._design.dynamics
         drives: list[PhaseDrive] = [
-            SynapticDrive(self._connectome, dynamics.synaptic_coupling, self._impairment.at(concentration), self._rng),
+            self._synaptic_drive(self._impairment.at(concentration)),
             PhaseReferenceDrive(dynamics.reference_feedback, self._arousal_at(concentration)),
         ]
         if self._design.stimulus is not None:
             drives.append(SensoryDrive(self._is_sensory, self._design.stimulus))
         return drives
+
+    def _synaptic_drive(self, connectivity: ImpairedConnectivity) -> SynapticDrive:
+        jitter = TimingJitter.for_design(connectivity.jitter_sd, self._design, self._rng)
+        return SynapticDrive(self._connectome, self._design.dynamics.synaptic_coupling, connectivity, jitter)
 
     def _arousal_at(self, concentration: float) -> float:
         return dpc.sustained_arousal(self._design.dynamics.arousal_level, self._design.agent, concentration)

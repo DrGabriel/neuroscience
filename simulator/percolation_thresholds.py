@@ -1,6 +1,7 @@
 """Percolation and quorum thresholds of empirical connectomes: formulas against measurement.
 
-Two thresholds are computed for each connectome (treated as undirected):
+Two thresholds are computed for each connectome treated as undirected, and the quorum threshold
+is also measured on the directed wiring:
 
 1. Onset π_c: below it no giant component exists in a random network with the same degree
    distribution, π_c = <k> / (<k²> − <k>) (Callaway et al., 2000).
@@ -10,7 +11,9 @@ Two thresholds are computed for each connectome (treated as undirected):
    et al., 2000): S = 1 − G0(u), where u = 1 − π + π G1(u). This is the general formula: it
    needs only an organism's degree distribution and the quorum.
 
-π_q is also measured on the real wiring with the Newman-Ziff algorithm. Both are converted
+π_q is also measured on the real wiring with the Newman-Ziff algorithm. Agreement needs signals
+to travel both ways, so on the directed wiring the quorum is measured on the largest strongly
+connected component, whose members can each reach every other member. Both are converted
 into the critical transmission failure and critical timing jitter of the coherence model
 (Section 4.1), π = (1 − p) · erf(W / (2√2 σ)):
 
@@ -33,6 +36,8 @@ from datetime import datetime, timezone
 from typing import Sequence
 
 import numpy as np
+from scipy.sparse import csr_matrix
+from scipy.sparse.csgraph import connected_components
 from scipy.special import erfinv
 
 import calibration as cal
@@ -45,6 +50,7 @@ REPORTED_PACKAGES = ("numpy", "scipy", "pyarrow")
 OCCUPATION_RESOLUTION = 1e-4
 FIXED_POINT_ITERATIONS = 2000
 BISECTION_STEPS = 60
+DIRECTED_BISECTION_STEPS = 16
 FULL_SEEDS = 10
 QUICK_SEEDS = 2
 
@@ -64,6 +70,10 @@ class OrganismThreshold:
     critical_failure_measured: float
     critical_jitter_ms_formula: float
     critical_jitter_ms_measured: float
+    quorum_threshold_directed_mean: float
+    quorum_threshold_directed_sd: float
+    critical_failure_directed: float
+    critical_jitter_ms_directed: float
 
 
 def undirected_graph(connectome: connectomes.Connectome) -> dpc.Graph:
@@ -107,17 +117,28 @@ class DegreeDistribution:
 
     def quorum_threshold(self, quorum: float) -> float:
         """Smallest occupation at which the giant component reaches the quorum, by bisection."""
-        low, high = 0.0, 1.0
-        for _ in range(BISECTION_STEPS):
-            middle = (low + high) / 2
-            low, high = (middle, high) if self.giant_fraction(middle) < quorum else (low, middle)
-        return high
+        return dpc.smallest_crossing(lambda occupation: self.giant_fraction(occupation) >= quorum, BISECTION_STEPS)
 
 
 def quorum_threshold_measured(graph: dpc.Graph, quorum: float, seed: int) -> float:
     curve = dpc.PercolationCurve.from_graph(graph, random.Random(seed))
     occupations = np.arange(0.0, 1.0 + OCCUPATION_RESOLUTION, OCCUPATION_RESOLUTION)
     return float(next(p for p in occupations if curve.giant_fraction(p) >= quorum))
+
+
+def largest_strong_component_share(connectome: connectomes.Connectome, kept: np.ndarray) -> float:
+    adjacency = csr_matrix(
+        (np.ones(int(kept.sum())), (connectome.sources[kept], connectome.targets[kept])),
+        shape=(connectome.node_count, connectome.node_count),
+    )
+    _, labels = connected_components(adjacency, directed=True, connection="strong")
+    return float(np.bincount(labels).max() / connectome.node_count)
+
+
+def quorum_threshold_directed(connectome: connectomes.Connectome, quorum: float, seed: int) -> float:
+    """Smallest occupation at which the largest strongly connected component reaches the quorum."""
+    draws = np.random.default_rng(seed).random(connectome.edge_count)
+    return dpc.smallest_crossing(lambda occupation: largest_strong_component_share(connectome, draws < occupation) >= quorum, DIRECTED_BISECTION_STEPS)
 
 
 def critical_failure(threshold: float) -> float:
@@ -132,12 +153,15 @@ def critical_jitter_ms(threshold: float) -> float:
 
 
 def threshold_for(organism: str, seeds: int) -> OrganismThreshold:
-    graph = undirected_graph(connectomes.LOADERS[organism](cal.CONNECTOME_SEED))
+    connectome = connectomes.LOADERS[organism](cal.CONNECTOME_SEED)
+    graph = undirected_graph(connectome)
     degrees = np.asarray(graph.degrees(), dtype=float)
     mean, mean_square, onset = onset_threshold(degrees)
     formula = DegreeDistribution.of(degrees).quorum_threshold(cal.QUORUM_FRACTION)
     measured = [quorum_threshold_measured(graph, cal.QUORUM_FRACTION, cal.BASE_SEED + index) for index in range(seeds)]
     measured_mean = statistics.fmean(measured)
+    directed = [quorum_threshold_directed(connectome, cal.QUORUM_FRACTION, cal.BASE_SEED + index) for index in range(seeds)]
+    directed_mean = statistics.fmean(directed)
     return OrganismThreshold(
         organism=cal.ORGANISMS[organism].display_name,
         node_count=graph.node_count,
@@ -152,6 +176,10 @@ def threshold_for(organism: str, seeds: int) -> OrganismThreshold:
         critical_failure_measured=critical_failure(measured_mean),
         critical_jitter_ms_formula=critical_jitter_ms(formula),
         critical_jitter_ms_measured=critical_jitter_ms(measured_mean),
+        quorum_threshold_directed_mean=directed_mean,
+        quorum_threshold_directed_sd=statistics.stdev(directed) if len(directed) > 1 else 0.0,
+        critical_failure_directed=critical_failure(directed_mean),
+        critical_jitter_ms_directed=critical_jitter_ms(directed_mean),
     )
 
 
@@ -174,11 +202,26 @@ def to_markdown(document: dict[str, object]) -> str:
         "Organism", "Nodes", "Connections", "Mean degree", "Onset π_c (formula)", f"Quorum π_q, q* = {cal.QUORUM_FRACTION} (formula)",
         "Quorum π_q (measured)", "Critical failure p_q (formula / measured)", "Critical jitter σ_q, ms (formula / measured)",
     ]
+    directed_rows = [
+        [
+            t["organism"],
+            f"{t['quorum_threshold_measured_mean']:.4f}",
+            f"{t['quorum_threshold_directed_mean']:.4f} ± {t['quorum_threshold_directed_sd']:.4f}",
+            f"{t['critical_failure_directed']:.3f}",
+            f"{t['critical_jitter_ms_directed']:.1f}",
+        ]
+        for t in document["thresholds"]
+    ]
+    directed_header = ["Organism", "Quorum π_q, undirected", "Quorum π_q, directed (strong component)", "Critical failure p_q", "Critical jitter σ_q, ms"]
     return "\n".join([
         *reporting.run_metadata_section(document, provenance.markdown_rows(document["provenance"])),
         "### Percolation and quorum thresholds (connectomes treated as undirected)",
         "",
         *reporting.markdown_table(header, rows),
+        "",
+        "### Quorum threshold on the directed wiring (largest strongly connected component)",
+        "",
+        *reporting.markdown_table(directed_header, directed_rows),
         "",
     ])
 

@@ -45,26 +45,24 @@ class MicroglialLoopTests(unittest.TestCase):
         self.assertAlmostEqual(self.model.arousal_at(1.0, 0.0), (1 - LOOP_GAIN) * self.plain.arousal(1.0))
 
 
-class SharedCurveTests(unittest.TestCase):
-    """Reusing one curve per seed must give exactly the results of the reference model's own functions."""
-
-    def setUp(self) -> None:
-        self.curve = glia.percolation_curve(SMALL_SCENARIO)
+class ModelVariantTests(unittest.TestCase):
+    """Variants of one network must reproduce the reference model exactly when they change nothing."""
 
     def test_depleted_loop_reproduces_the_reference_sweep(self) -> None:
-        self.assertEqual(glia.sweep(self.curve, SMALL_SCENARIO), dpc.run_scenario(SMALL_SCENARIO))
+        depleted = dpc.run_scenario(SMALL_SCENARIO, glia.with_microglia(glia.MICROGLIAL_DEPLETED_GAIN))
+        self.assertEqual(depleted, dpc.run_scenario(SMALL_SCENARIO))
 
-    def test_steady_states_reproduce_the_reference_function(self) -> None:
-        sleep = replace(SMALL_SCENARIO, state=glia.DEEP_SLEEP)
-        self.assertEqual(glia.steady_states(self.curve, sleep, 0.0), dpc.stable_states(sleep, 0.0))
+    def test_shared_curve_reproduces_a_freshly_built_one(self) -> None:
+        shared = dpc.run_on_curve(dpc.build_curve(SMALL_SCENARIO), SMALL_SCENARIO)
+        self.assertEqual(shared, dpc.run_scenario(SMALL_SCENARIO))
 
 
 class AstrocyteTests(unittest.TestCase):
     def test_silencing_removes_the_astrocytic_share_of_down_states(self) -> None:
-        silenced = glia.astrocytes_silenced(glia.DEEP_SLEEP)
-        expected = glia.DEEP_SLEEP.down_state_fraction * (1 - glia.ASTROCYTIC_DOWN_STATE_SHARE)
+        silenced = glia.astrocytes_silenced(glia.GLOBAL_SLEEP)
+        expected = glia.GLOBAL_SLEEP.down_state_fraction * (1 - glia.ASTROCYTIC_DOWN_STATE_SHARE)
         self.assertAlmostEqual(silenced.down_state_fraction, expected)
-        self.assertEqual(silenced.arousal_level, glia.DEEP_SLEEP.arousal_level)
+        self.assertEqual(silenced.arousal_level, glia.GLOBAL_SLEEP.arousal_level)
 
 
 def measurement_with_microglia(depleted: ThresholdSummary, strongest: ThresholdSummary) -> glial_study.GlialMeasurement:
@@ -74,8 +72,8 @@ def measurement_with_microglia(depleted: ThresholdSummary, strongest: ThresholdS
         seed=dpc.REFERENCE_SEED,
         by_myelin_integrity=(),
         by_microglial_gain=((glia.MICROGLIAL_DEPLETED_GAIN, depleted), (glia.STRONGEST_MICROGLIAL_GAIN, strongest)),
-        deep_sleep=unused,
-        deep_sleep_astrocytes_silenced=unused,
+        global_sleep=unused,
+        global_sleep_astrocytes_silenced=unused,
         duration_seconds=0.0,
     )
 
@@ -92,11 +90,14 @@ class GlialStudyTests(unittest.TestCase):
         )
         self.assertTrue(glial_study.depletion_hastens_emergence(measurement))
 
-    def test_every_test_passes_for_a_small_network(self) -> None:
+    def test_consistency_checks_hold_and_every_test_is_decided(self) -> None:
         measurement = glial_study.measure_seed(SeedTask(1_000, dpc.REFERENCE_SEED))
         for test in glial_study.TESTS:
             with self.subTest(test=test.identifier):
-                self.assertTrue(test.holds_for(measurement))
+                verdict = test.holds_for(measurement)
+                self.assertIn(verdict, (True, False))
+                if test.kind == reporting.CONSISTENCY_CHECK:
+                    self.assertTrue(verdict)
 
     def test_quick_study_writes_both_reports(self) -> None:
         with tempfile.TemporaryDirectory() as directory, unittest.mock.patch.object(reporting, "RESULTS_DIRECTORY", Path(directory)):

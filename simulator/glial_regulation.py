@@ -13,14 +13,13 @@ of timescales):
 - Astrocytes: trigger slow-oscillation states (Poskanzer & Yuste, 2016); modelled as the share
   of sleep down-states that depends on astrocytic signalling.
 
-None of these changes the network, so every variant of one seed reuses one percolation curve.
-Standard library only, like dpc_simulator.py, which it extends without modifying.
+Standard library only, like dpc_simulator.py, which it extends through its model variants.
 """
 
 from __future__ import annotations
 
-import random
 from dataclasses import replace
+from functools import partial
 
 import dpc_simulator as dpc
 
@@ -28,14 +27,17 @@ import dpc_simulator as dpc
 # Complete loss of myelin doubles the baseline conduction-time jitter.
 DEMYELINATION_JITTER_GAIN = 1.0
 MYELIN_INTEGRITY_SERIES = (1.0, 0.75, 0.5)
-# 0 represents microglial depletion (PLX5622 in Cao et al., 2023, and He et al., 2023).
+# 0 represents microglial depletion (PLX5622 in He et al., 2023; pharmacological in Cao et al., 2023).
 MICROGLIAL_DEPLETED_GAIN = 0.0
 MICROGLIAL_GAIN_SERIES = (MICROGLIAL_DEPLETED_GAIN, 0.25, 0.5)
 STRONGEST_MICROGLIAL_GAIN = max(MICROGLIAL_GAIN_SERIES)
 # Share of sleep down-states lost when astrocytic signalling is silenced.
 ASTROCYTIC_DOWN_STATE_SHARE = 0.5
 
-DEEP_SLEEP = dpc.BrainState(dpc.SLEEP_AROUSAL_LEVEL, dpc.HUMAN_SLEEP_DOWN_STATE_FRACTION_UPPER)
+# Measured definition: a slow wave is global when it is detected at more than half of the
+# recording locations (Nir et al., 2011), so a global down-state silences half the populations.
+GLOBAL_DOWN_STATE_SHARE = 0.5
+GLOBAL_SLEEP = dpc.BrainState(dpc.SLEEP_AROUSAL_LEVEL, GLOBAL_DOWN_STATE_SHARE)
 
 
 def demyelinated(scenario: dpc.Scenario, myelin_integrity: float) -> dpc.Scenario:
@@ -67,38 +69,7 @@ class MicroglialCoherenceModel(dpc.CoherenceModel):
     def arousal_at(self, concentration: float, coherent_fraction: float) -> float:
         return self.arousal(concentration) * (1 - self._microglial_gain * (1 - coherent_fraction))
 
-    def reference_error_ms(self, concentration: float, coherent_fraction: float) -> float:
-        # Same expression as dpc.CoherenceModel.reference_error_ms, with arousal depending on the core.
-        unsustained = 1 - self.arousal_at(concentration, coherent_fraction)
-        return self._timing.feedback_jitter_ms * (1 - coherent_fraction) * unsustained
 
+def with_microglia(microglial_gain: float) -> dpc.ModelVariant:
+    return dpc.ModelVariant(coherence=partial(MicroglialCoherenceModel, microglial_gain=microglial_gain))
 
-def percolation_curve(scenario: dpc.Scenario) -> dpc.PercolationCurve:
-    """The network's percolation curve, drawn in the same order as dpc.build_solver so results match run_scenario."""
-    rng = random.Random(scenario.seed)
-    return dpc.PercolationCurve.from_graph(scenario.graph_builder.build(rng), rng)
-
-
-def solver_on(
-    curve: dpc.PercolationCurve, scenario: dpc.Scenario, microglial_gain: float = MICROGLIAL_DEPLETED_GAIN
-) -> dpc.CoherentCoreSolver:
-    coherence = MicroglialCoherenceModel(scenario.timing, scenario.agent, scenario.state, microglial_gain)
-    return dpc.CoherentCoreSolver(curve, coherence)
-
-
-def sweep(
-    curve: dpc.PercolationCurve, scenario: dpc.Scenario, microglial_gain: float = MICROGLIAL_DEPLETED_GAIN
-) -> dpc.SweepResult:
-    solver = solver_on(curve, scenario, microglial_gain)
-    return dpc.AnaestheticSweep(solver, scenario.quorum_fraction).run(scenario.grid)
-
-
-def steady_states(curve: dpc.PercolationCurve, scenario: dpc.Scenario, concentration: float) -> dpc.StableStates:
-    """As dpc.stable_states, on an already-built curve."""
-    solver = solver_on(curve, scenario)
-    return dpc.StableStates(
-        concentration=concentration,
-        from_awake=solver.solve(concentration, dpc.AnaestheticSweep.AWAKE_FRACTION),
-        from_collapsed=solver.solve(concentration, dpc.COLLAPSED_FRACTION),
-        quorum_fraction=scenario.quorum_fraction,
-    )

@@ -12,7 +12,8 @@ coverage.xml
 htmlcov/
 
 # Simulator: keep full validation runs (they are the scientific record), drop smoke runs
-simulator/results/validation_quick_*
+simulator/results/*_quick_*
+simulator/results/live/
 
 # macOS
 .DS_Store

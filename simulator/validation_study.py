@@ -87,6 +87,8 @@ class SeedMeasurement:
     node_count: int
     seed: int
     reference: ThresholdSummary
+    reference_loss_point: dpc.LossPoint | None
+    silenced_share_for_sleep: float
     # Ordered from no feedback to the strongest calibrated feedback, as (λ in ms, thresholds) pairs.
     feedback_series: tuple[tuple[float, ThresholdSummary], ...]
     by_agent: dict[str, ThresholdSummary]
@@ -119,14 +121,20 @@ def measure_seed(task: SeedTask, transform: ScenarioTransform = unchanged) -> Se
     lesions = dpc.lesion_comparison(hub, dpc.REFERENCE_LESION_FRACTION)
     arousal = dpc.arousal_ablation(reference, dpc.OREXIN_ABLATION_REMAINING_SHARE)
     shutdown = dpc.active_shutdown_removed(reference)
-    sleep = dpc.BrainState(dpc.SLEEP_AROUSAL_LEVEL, dpc.SLEEP_DOWN_STATE_FRACTION)
-    states = dpc.sleep_versus_anaesthesia(reference, sleep, dpc.DEEP_ANAESTHESIA_CONCENTRATION)
-    deep_sleep = dpc.BrainState(dpc.SLEEP_AROUSAL_LEVEL, dpc.HUMAN_SLEEP_DOWN_STATE_FRACTION_UPPER)
+    connection_sleep = dpc.BrainState(dpc.SLEEP_AROUSAL_LEVEL, dpc.SLEEP_DOWN_STATE_FRACTION, dpc.DownStates.CONNECTIONS)
+    states = dpc.sleep_versus_anaesthesia(reference, connection_sleep, dpc.DEEP_ANAESTHESIA_CONCENTRATION)
+    deep_sleep = replace(connection_sleep, down_state_fraction=dpc.HUMAN_SLEEP_DOWN_STATE_FRACTION_UPPER)
     states["deep sleep"] = dpc.stable_states(replace(reference, state=deep_sleep), concentration=0.0)
+    for name, share in (("sleep, populations", dpc.SLEEP_DOWN_STATE_FRACTION), ("deep sleep, populations", dpc.HUMAN_SLEEP_DOWN_STATE_FRACTION_UPPER)):
+        population_sleep = dpc.BrainState(dpc.SLEEP_AROUSAL_LEVEL, share, dpc.DownStates.POPULATIONS)
+        states[name] = dpc.stable_states(replace(reference, state=population_sleep), concentration=0.0)
+    reference_result = dpc.run_scenario(reference)
     return SeedMeasurement(
         node_count=task.node_count,
         seed=task.seed,
-        reference=ThresholdSummary.of(dpc.run_scenario(reference)),
+        reference=ThresholdSummary.of(reference_result),
+        reference_loss_point=dpc.loss_point(reference, reference_result),
+        silenced_share_for_sleep=dpc.silenced_share_for_sleep(reference, dpc.BrainState(dpc.SLEEP_AROUSAL_LEVEL)),
         feedback_series=tuple((feedback_ms, ThresholdSummary.of(result)) for feedback_ms, result in feedback),
         by_agent={agent.name: ThresholdSummary.of(result) for agent, result in agents},
         by_lesion={label: ThresholdSummary.of(result) for label, result in lesions.items()},
@@ -216,8 +224,13 @@ def active_shutdown_accelerates_but_is_not_required(measurement: SeedMeasurement
 
 CLAIMS = (
     Claim("C1", "Crash-like and noise-like agents both abolish quorum (Section 6.2)", all_agents_lose_quorum),
-    Claim("C2", "Without reference feedback (lambda = 0) there is no hysteresis (Section 4.3)", no_hysteresis_without_feedback),
-    Claim("C3", "Hysteresis (neural inertia) grows with lambda; no recovery counts as unbounded (prediction 5)", hysteresis_grows_with_feedback),
+    Claim("C2", "Without reference feedback (lambda = 0) there is no hysteresis (Section 4.3)", no_hysteresis_without_feedback, reporting.CONSISTENCY_CHECK),
+    Claim(
+        "C3",
+        "Hysteresis (neural inertia) grows with lambda; no recovery counts as unbounded (prediction 5)",
+        hysteresis_grows_with_feedback,
+        reporting.CONSISTENCY_CHECK,
+    ),
     Claim("C4", "Reference feedback sharpens the loss-of-consciousness transition (prediction 1)", feedback_sharpens_transition),
     Claim("C5", "Hub lesions lower the loss concentration more than random lesions (prediction 6)", hub_lesion_lowers_threshold_more),
     Claim(
@@ -229,6 +242,7 @@ CLAIMS = (
         "C7",
         "Without the agent's action on arousal circuits, quorum is still lost but at a higher concentration (Moore et al., 2012; Eikermann et al., 2011)",
         active_shutdown_accelerates_but_is_not_required,
+        reporting.CONSISTENCY_CHECK,
     ),
 )
 
@@ -237,12 +251,12 @@ CLAIMS = (
 EXTENSION_TESTS = (
     Claim(
         "E1",
-        f"Sleep (no arousal, down-state fraction {dpc.SLEEP_DOWN_STATE_FRACTION}, rat) has a wakeable stable unconscious state",
+        f"Sleep (no arousal, connection-level down-states, share {dpc.SLEEP_DOWN_STATE_FRACTION}, rat) has a wakeable stable unconscious state",
         lambda m: m.stable_states["sleep"].can_be_woken,
     ),
     Claim(
         "E2",
-        f"Deeper sleep (down-state fraction {dpc.HUMAN_SLEEP_DOWN_STATE_FRACTION_UPPER}, human upper estimate) has a wakeable stable unconscious state",
+        f"Deeper sleep (connection-level down-states, share {dpc.HUMAN_SLEEP_DOWN_STATE_FRACTION_UPPER}, human upper estimate) has a wakeable stable unconscious state",
         lambda m: m.stable_states["deep sleep"].can_be_woken,
     ),
     Claim(
@@ -264,6 +278,16 @@ OBSERVATIONS = (
         "O2",
         f"Trapped unconscious at zero concentration after hub lesion, lambda = {dpc.REFERENCE_FEEDBACK_JITTER_MS:g} ms",
         lambda m: is_trapped_unconscious(m.by_lesion["hub lesion"]),
+    ),
+    Claim(
+        "O3",
+        f"Sleep with population-level down-states at the rat share ({dpc.SLEEP_DOWN_STATE_FRACTION}) loses quorum",
+        lambda m: not m.stable_states["sleep, populations"].holds_quorum,
+    ),
+    Claim(
+        "O4",
+        f"Sleep with population-level down-states at the human share ({dpc.HUMAN_SLEEP_DOWN_STATE_FRACTION_UPPER}) loses quorum",
+        lambda m: not m.stable_states["deep sleep, populations"].holds_quorum,
     ),
 )
 
@@ -292,6 +316,10 @@ REPORTED_QUANTITIES: tuple[tuple[str, SummarySelector], ...] = (
     ("c_on, GABAergic-like", lambda m: m.reference.recovery_concentration),
     ("Hysteresis, GABAergic-like", lambda m: m.reference.hysteresis_width),
     ("Transition width, GABAergic-like", lambda m: m.reference.transition_width),
+    ("Transmission failure p at c_off, GABAergic-like", lambda m: m.reference_loss_point and m.reference_loss_point.transmission_failure),
+    ("Effective jitter (ms) at c_off, GABAergic-like", lambda m: m.reference_loss_point and m.reference_loss_point.effective_jitter_ms),
+    ("Coherence probability π at c_off, GABAergic-like", lambda m: m.reference_loss_point and m.reference_loss_point.coherence_probability),
+    ("Share of populations silent at once for sleep to lose quorum", lambda m: m.silenced_share_for_sleep),
     ("c_off, NMDA-antagonist-like", lambda m: m.by_agent[dpc.NMDA_ANTAGONIST_LIKE_AGENT.name].loss_concentration),
     ("c_off, hub graph intact", lambda m: m.by_lesion["intact"].loss_concentration),
     ("c_off, random lesion", lambda m: m.by_lesion["random lesion"].loss_concentration),
@@ -420,11 +448,20 @@ def to_markdown(report: StudyReport) -> str:
 # ---------------------------------------------------------------------------
 
 
+def claims_markdown(measurements: Sequence[SeedMeasurement], node_counts: Sequence[int]) -> str:
+    sections = [
+        (title, evaluate_claims(checks, measurements, node_counts))
+        for title, checks in (("Claims", CLAIMS), ("Observations", OBSERVATIONS), ("Extension tests", EXTENSION_TESTS))
+    ]
+    return reporting.outcome_sections(sections, [size_label(n) for n in node_counts])
+
+
 def run_study(design: StudyDesign, worker_count: int) -> StudyReport:
     started = datetime.now(timezone.utc)
     provenance = collect_provenance(design, worker_count)
     tasks = design.tasks()
-    measurements = reporting.run_in_parallel(measure_seed, tasks, "validation", worker_count)
+    live = reporting.ParallelRun("validation", worker_count, live_markdown=lambda done: claims_markdown(done, design.node_counts))
+    measurements = reporting.run_in_parallel(measure_seed, tasks, live)
     finished = datetime.now(timezone.utc)
     return StudyReport(
         started_utc=started,

@@ -9,7 +9,7 @@ from __future__ import annotations
 import json
 from dataclasses import replace
 from pathlib import Path
-from typing import Sequence
+from typing import Callable, Sequence
 
 import matplotlib
 
@@ -104,9 +104,8 @@ def figure_percolation_hysteresis() -> None:
     save(figure, "figure_1_percolation_hysteresis")
 
 
-def figure_finite_size() -> None:
+def figure_finite_size(report: dict[str, object]) -> None:
     """Figure 2: loss and recovery concentrations against network size."""
-    report = latest("validation")
     statistics = report["statistics"]
     sizes = [int(n) for n in report["provenance"]["design"]["node_counts"]]
     figure, axis = plt.subplots(figsize=PANEL_SIZE_INCHES)
@@ -173,9 +172,8 @@ def figure_plant(report: dict[str, object]) -> None:
     save(figure, "figure_5_plant_tissue")
 
 
-def figure_congestion() -> None:
+def figure_congestion(report: dict[str, object]) -> None:
     """Figure 6: hub activity and global synchrony during induction, Wilson-Cowan human connectome."""
-    report = latest("congestion")
     coupling = 1.0
     figure, axes = plt.subplots(1, 2, figsize=(2 * PANEL_SIZE_INCHES[0], PANEL_SIZE_INCHES[1]))
     for colour, mode in zip(SERIES, ("none", "slow", "fast")):
@@ -196,14 +194,27 @@ def figure_congestion() -> None:
     save(figure, "figure_6_congestion")
 
 
+# Each figure with the report it is drawn from, so that figures can be redrawn after every study.
+REPORT_FIGURES: tuple[tuple[str, Callable[[dict[str, object]], None]], ...] = (
+    ("validation", figure_finite_size),
+    ("species", figure_species_coherence),
+    ("species", figure_broadcast),
+    ("species", figure_plant),
+    ("congestion", figure_congestion),
+)
+
+
 def main() -> None:
-    species = latest("species")
     figure_percolation_hysteresis()
-    figure_finite_size()
-    figure_species_coherence(species)
-    figure_broadcast(species)
-    figure_plant(species)
-    figure_congestion()
+    reports: dict[str, dict[str, object]] = {}
+    for kind, draw in REPORT_FIGURES:
+        if kind not in reports:
+            try:
+                reports[kind] = latest(kind)
+            except FileNotFoundError:
+                print(f"Skipped {draw.__name__}: no full {kind} report yet")
+                continue
+        draw(reports[kind])
     print(f"Figures written to {FIGURES_DIRECTORY.name}/")
 
 

@@ -9,8 +9,8 @@ Phase-oscillator model (human connectome): coupling, frequency spread, noise and
 varied in the same way, and pillars P2a, P2b and P3 of species_study.py are evaluated.
 
 Usage: ../.venv/bin/python sensitivity_study.py [--quick]
-Exit status is non-zero if a claim fails at the reference values (a fault in the study itself);
-failures elsewhere in a range are results, reported in the tables.
+Exit status is non-zero if a claim fails at the reference values; like every failure in a range,
+that is a result, reported in the tables.
 """
 
 from __future__ import annotations
@@ -68,11 +68,28 @@ def with_mean_degree(value: float) -> ScenarioChange:
     return lambda s: replace(s, graph_builder=s.graph_builder.with_mean_degree(value))
 
 
+def with_integration_window(value: float) -> ScenarioChange:
+    return lambda s: replace(s, timing=replace(s.timing, integration_window_ms=value))
+
+
+def with_baseline_jitter(value: float) -> ScenarioChange:
+    return lambda s: replace(s, timing=replace(s.timing, baseline_jitter_ms=value))
+
+
+def with_maximal_failure(value: float) -> ScenarioChange:
+    """Applies to the GABAergic-like agent only; the comparison agents in claim C1 keep their own values."""
+    return lambda s: replace(s, agent=replace(s.agent, max_transmission_failure=value))
+
+
 PERCOLATION_RANGES: dict[str, tuple[tuple[float, ...], float, Callable[[float], ScenarioChange]]] = {
     "Quorum fraction": ((0.3, 0.5, 0.7), dpc.REFERENCE_QUORUM_FRACTION, with_quorum),
     "Arousal level (λ recalibrated)": (tuple(dpc.CALIBRATED_FEEDBACK_MS_BY_AROUSAL), dpc.REFERENCE_AROUSAL_LEVEL, with_arousal_level),
     "Hill coefficient": ((2.0, 4.0, 8.0), dpc.GABAERGIC_LIKE_AGENT.hill_coefficient, with_hill_coefficient),
     "Mean degree": ((4.0, 8.0, 16.0), dpc.REFERENCE_MEAN_DEGREE, with_mean_degree),
+    # λ is held at its reference value, so the inertia ratio is not recalibrated across these ranges.
+    "Integration window W (ms)": ((1.0, 3.0, 10.0), dpc.REFERENCE_INTEGRATION_WINDOW_MS, with_integration_window),
+    "Baseline jitter (ms)": ((1.0, 3.0, 10.0), dpc.REFERENCE_BASELINE_JITTER_MS, with_baseline_jitter),
+    "Maximal transmission failure, GABAergic-like": ((0.6, 0.8, 0.95), dpc.GABAERGIC_LIKE_AGENT.max_transmission_failure, with_maximal_failure),
 }
 
 OSCILLATOR_RANGES: dict[str, tuple[tuple[float, ...], float, Callable[[float], DesignChange]]] = {
@@ -80,6 +97,7 @@ OSCILLATOR_RANGES: dict[str, tuple[tuple[float, ...], float, Callable[[float], D
     "Natural-frequency spread": ((0.25, 0.5, 1.0), cal.NATURAL_FREQUENCY_SPREAD, lambda v: lambda d: replace(d, dynamics=replace(d.dynamics, natural_frequency_spread=v))),
     "Noise intensity D": ((0.02, 0.05, 0.1), cal.NOISE_INTENSITY, lambda v: lambda d: replace(d, dynamics=replace(d.dynamics, noise_intensity=v))),
     "Quorum fraction": ((0.3, 0.5, 0.7), cal.QUORUM_FRACTION, lambda v: lambda d: replace(d, quorum_fraction=v)),
+    "Jitter correlation time τ": ((0.25, 1.0, 4.0), cal.JITTER_CORRELATION_TIME, lambda v: lambda d: replace(d, dynamics=replace(d.dynamics, jitter_correlation_time=v))),
 }
 
 
@@ -177,8 +195,14 @@ def main(arguments: Sequence[str]) -> int:
     oscillator_tasks = [
         OscillatorTask(v, c, cal.BASE_SEED + i) for v in variations(OSCILLATOR_RANGES) for c in conditions for i in range(oscillator_seeds)
     ]
-    percolation_results = reporting.run_in_parallel(run_percolation, percolation_tasks, "sensitivity: percolation")
-    oscillator_results = reporting.run_in_parallel(run_oscillator, oscillator_tasks, "sensitivity: oscillator")
+    percolation_live = reporting.ParallelRun(
+        "sensitivity: percolation", live_markdown=lambda done: "\n".join(reporting.outcome_table(percolation_outcomes(done), [label(v) for v in variations(PERCOLATION_RANGES)]))
+    )
+    oscillator_live = reporting.ParallelRun(
+        "sensitivity: oscillator", live_markdown=lambda done: "\n".join(reporting.outcome_table(oscillator_outcomes(done), [label(v) for v in variations(OSCILLATOR_RANGES)]))
+    )
+    percolation_results = reporting.run_in_parallel(run_percolation, percolation_tasks, percolation_live)
+    oscillator_results = reporting.run_in_parallel(run_oscillator, oscillator_tasks, oscillator_live)
 
     percolation = percolation_outcomes(percolation_results)
     oscillator = oscillator_outcomes(oscillator_results)

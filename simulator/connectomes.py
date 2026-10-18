@@ -10,7 +10,7 @@ from __future__ import annotations
 import csv
 import urllib.request
 import zipfile
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 from typing import Callable
 
@@ -71,6 +71,24 @@ class Connectome:
     @property
     def edge_count(self) -> int:
         return int(self.sources.size)
+
+    def rewired(self, seed: int) -> Connectome:
+        """Null model: targets shuffled across connections, keeping every node's in- and out-degree.
+
+        Self-connections created by the shuffle are dropped, so a few degrees fall by one.
+        Tract lengths and connection signs no longer belong to the shuffled connections and are removed.
+        """
+        targets = np.random.default_rng(seed).permutation(self.targets)
+        kept = targets != self.sources
+        return replace(
+            self,
+            name=f"{self.name}, rewired",
+            sources=self.sources[kept],
+            targets=targets[kept],
+            weights=self.weights[kept],
+            lengths_mm=None,
+            signs={},
+        )
 
     @property
     def module_count(self) -> int:

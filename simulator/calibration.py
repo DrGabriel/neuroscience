@@ -1,14 +1,16 @@
 """Parameters of the cross-species phase-oscillator study, with their basis and source.
 
 Each value is one of:
-    measured    taken from published physiology (source given);
+    measured    a published measurement used as it stands (source given);
+    assumed     a published estimate that is not a direct measurement of the quantity in the
+                model (source given); the sensitivity analysis varies it;
     calibrated  fitted to one published measurement (target given), then held fixed;
-    free        not measurable at this level of description; the sensitivity analysis
+    free        not measured at this level of description; the sensitivity analysis
                 reports how the results change across a range.
 
 The percolation model (dpc_simulator.py), the congestion test (excitatory_inhibitory.py,
 congestion_study.py) and the threshold formulas (percolation_thresholds.py) keep their own
-constants beside the code that uses them, each labelled with the same three categories.
+constants beside the code that uses them, each labelled with the same categories.
 """
 
 from __future__ import annotations
@@ -41,6 +43,10 @@ class OrganismSpec:
 # The measurement window is kept at full length because entrainment needs whole stimulus cycles.
 DROSOPHILA_CONCENTRATION_STEP = 0.1
 DROSOPHILA_RELAXATION_STEPS = 200
+
+# The rewired-network null model is run for the two connectomes whose runs take under a minute;
+# one Drosophila run takes about 20 minutes.
+NULL_MODEL_ORGANISMS = ("celegans", "human")
 
 ORGANISMS: dict[str, OrganismSpec] = {
     "celegans": OrganismSpec("C. elegans", has_tract_lengths=False, full_study_seeds=20, worker_processes=10),
@@ -76,7 +82,8 @@ NMDA_ANTAGONIST_AGENT = dpc.NMDA_ANTAGONIST_LIKE_AGENT
 # Population dynamics
 # ---------------------------------------------------------------------------
 
-# Measured: gamma band 30-90 Hz (Fries, 2015); 40 Hz lies within it (Llinás & Ribary, 1993).
+# Assumed: gamma band 30-90 Hz (Fries, 2015); 40 Hz lies within it, and coherent 40 Hz activity
+# is found in waking and dreaming but much reduced in deep sleep (Llinás & Ribary, 1993).
 OSCILLATION_FREQUENCY_HZ = 40.0
 # Free: calibration against the human propofol inertia ratio (1.11) was attempted with
 # calibrate_phase_feedback.py on the human connectome and failed. For λ from 0 to 0.6 the mean
@@ -89,6 +96,9 @@ INERTIA_TARGET_RATIO = 1.11
 SYNAPTIC_COUPLING = 4.0
 NATURAL_FREQUENCY_SPREAD = 0.5
 NOISE_INTENSITY = 0.05
+# Free: how long a connection's timing error persists, in model time units; about one coupling
+# time (1 / K) and longer, so that an error acts during an exchange rather than averaging out.
+JITTER_CORRELATION_TIME = 1.0
 
 POPULATION_DYNAMICS = dynamics.PopulationDynamics(
     synaptic_coupling=SYNAPTIC_COUPLING,
@@ -98,6 +108,7 @@ POPULATION_DYNAMICS = dynamics.PopulationDynamics(
     oscillation_frequency_hz=OSCILLATION_FREQUENCY_HZ,
     baseline_jitter_ms=dpc.REFERENCE_BASELINE_JITTER_MS,
     arousal_level=dpc.REFERENCE_AROUSAL_LEVEL,
+    jitter_correlation_time=JITTER_CORRELATION_TIME,
 )
 
 # Measured: frontal alpha at propofol-induced loss of consciousness lies in the 8-12 Hz band
@@ -172,9 +183,10 @@ PLANT_TISSUE = plant_tissue.TissueDesign(
 
 def parameter_table() -> tuple[ParameterRecord, ...]:
     return (
-        ParameterRecord("Baseline timing jitter (ms)", dpc.REFERENCE_BASELINE_JITTER_MS, "measured", "Mainen & Sejnowski (1995)"),
-        ParameterRecord("Integration window W (ms)", dpc.REFERENCE_INTEGRATION_WINDOW_MS, "measured", "Fries (2015)"),
-        ParameterRecord("Oscillation frequency (Hz)", OSCILLATION_FREQUENCY_HZ, "measured", "Fries (2015); Llinás & Ribary (1993)"),
+        ParameterRecord("Baseline timing jitter (ms)", dpc.REFERENCE_BASELINE_JITTER_MS, "measured", "cortical spike-timing precision in vivo, Buracas et al. (1998); swept 1-10"),
+        ParameterRecord("Integration window W (ms)", dpc.REFERENCE_INTEGRATION_WINDOW_MS, "measured range", "1-10 ms, Gabernet et al. (2005); Pouille and Scanziani (2001); swept 1-10"),
+        ParameterRecord("Oscillation frequency (Hz)", OSCILLATION_FREQUENCY_HZ, "assumed", "within the gamma band, Fries (2015); Llinás and Ribary (1993)"),
+        ParameterRecord("Jitter correlation time τ", JITTER_CORRELATION_TIME, "free", "sensitivity analysis"),
         ParameterRecord("Percolation feedback λ (ms)", dpc.REFERENCE_FEEDBACK_JITTER_MS, "calibrated", "ratio 1.11, Iwakiri et al. (2005)"),
         ParameterRecord("Oscillator feedback λ", PHASE_REFERENCE_FEEDBACK, "free", "calibration to ratio 1.11 failed: inertia within noise"),
         ParameterRecord("Conduction velocity (m/s)", CORTICOCORTICAL_CONDUCTION_VELOCITY_M_PER_S, "measured", "Lemaréchal et al. (2022)"),
@@ -184,10 +196,10 @@ def parameter_table() -> tuple[ParameterRecord, ...]:
         ParameterRecord("Natural-frequency spread", NATURAL_FREQUENCY_SPREAD, "free", "sensitivity analysis"),
         ParameterRecord("Noise intensity D", NOISE_INTENSITY, "free", "sensitivity analysis"),
         ParameterRecord("Quorum fraction", QUORUM_FRACTION, "free", "sensitivity analysis"),
-        ParameterRecord("GABAergic-like agent", asdict(GABAERGIC_AGENT), "free", "maximal effects not measurable at this scale"),
+        ParameterRecord("GABAergic-like agent", asdict(GABAERGIC_AGENT), "free", "maximal failure swept 0.6-0.95; failure at loss of quorum compared with 62% inhibition of release, Baumgart et al. (2015)"),
         ParameterRecord("NMDA-antagonist-like agent", asdict(NMDA_ANTAGONIST_AGENT), "free", "maximal effects not measurable at this scale"),
         ParameterRecord("Sensory stimulus", asdict(SENSORY_STIMULUS), "free", "see comment in calibration.py"),
-        ParameterRecord("FitzHugh-Nagumo a, b, ε", (plant_tissue.FITZHUGH_A, plant_tissue.FITZHUGH_B, plant_tissue.FITZHUGH_EPSILON), "measured", "FitzHugh (1961)"),
+        ParameterRecord("FitzHugh-Nagumo a, b, ε", (plant_tissue.FITZHUGH_A, plant_tissue.FITZHUGH_B, plant_tissue.FITZHUGH_EPSILON), "standard model values", "FitzHugh (1961)"),
         ParameterRecord("Plant junction conductance", PLANT_JUNCTION_CONDUCTANCES, "free", "reported across the range"),
     )
 

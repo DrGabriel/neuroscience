@@ -21,7 +21,7 @@ import time
 from dataclasses import asdict, dataclass, replace
 from enum import StrEnum
 from datetime import datetime, timezone
-from functools import lru_cache
+from functools import lru_cache, partial
 from typing import Callable, Sequence
 
 import calibration as cal
@@ -54,6 +54,8 @@ class ConditionName(StrEnum):
     NMDA_ADAPTIVE_RATE = "NMDA-antagonist-like, adaptive reference rate"
     SIGNED = "GABAergic-like, signed connections (GABA inhibitory)"
     SIGNED_WITH_GLUTAMATE = "GABAergic-like, signed connections (GABA and glutamate inhibitory)"
+    NULL_REWIRED = "GABAergic-like, rewired connectome (null model)"
+    NULL_REWIRED_STIMULUS = "GABAergic-like, sensory stimulus, rewired connectome (null model)"
 
 
 @dataclass(frozen=True)
@@ -63,6 +65,7 @@ class Condition:
     name: str
     design: dynamics.SweepDesign
     organisms: tuple[str, ...]
+    rewired: bool = False
 
 
 def build_conditions(integration: dynamics.IntegrationSettings) -> tuple[Condition, ...]:
@@ -104,6 +107,8 @@ def build_conditions(integration: dynamics.IntegrationSettings) -> tuple[Conditi
             replace(base, conduction_velocity_m_per_s=cal.CORTICOCORTICAL_CONDUCTION_VELOCITY_M_PER_S),
             with_tract_lengths,
         ),
+        Condition(ConditionName.NULL_REWIRED, base, cal.NULL_MODEL_ORGANISMS, rewired=True),
+        Condition(ConditionName.NULL_REWIRED_STIMULUS, replace(base, stimulus=cal.SENSORY_STIMULUS), cal.NULL_MODEL_ORGANISMS, rewired=True),
         Condition(
             ConditionName.KETAMINE_PATHWAYS,
             replace(
@@ -180,7 +185,10 @@ def design_for(task: RunTask) -> dynamics.SweepDesign:
 
 def run_task(task: RunTask) -> RunSummary:
     started = time.perf_counter()
-    record = dynamics.run_induction_emergence(load_connectome(task.organism), design_for(task))
+    connectome = load_connectome(task.organism)
+    if task.condition.rewired:
+        connectome = connectome.rewired(task.seed)
+    record = dynamics.run_induction_emergence(connectome, design_for(task))
     unconscious = record.first_unconscious
     awake = record.induction[0]
     return RunSummary(
@@ -378,6 +386,8 @@ SECONDARY_ANALYSES = (
     Pillar("P1b", "Post hoc: fluctuations rise at least tenfold on the conscious side of the threshold", ConditionName.GABAERGIC, fluctuations_rise_before_collapse),
     Pillar("P3b", "Post hoc: sensory area retains at least 80% of its entrainment while broadcast collapses", ConditionName.SENSORY_STIMULUS, local_processing_without_broadcast_post_hoc),
     Pillar("H0", "No hysteresis without reference feedback", ConditionName.NO_REFERENCE_FEEDBACK, no_hysteresis),
+    Pillar("N1", "Null model: on a rewired connectome with the same degrees, the GABAergic-like agent abolishes quorum", ConditionName.NULL_REWIRED, quorum_is_lost),
+    Pillar("N2", "Null model: on a rewired connectome, the stimulated area keeps processing while broadcast collapses", ConditionName.NULL_REWIRED_STIMULUS, local_processing_without_broadcast),
     Pillar("H1", "Hysteresis is never negative with reference feedback", ConditionName.GABAERGIC, non_negative_hysteresis),
     Pillar("S1", "Spontaneous local coherence outlasts global coherence (uniform jitter)", ConditionName.NMDA_ANTAGONIST, local_coherence_outlasts_global),
     Pillar("S2", "Spontaneous local coherence outlasts global coherence (conduction-length jitter)", ConditionName.NMDA_CONDUCTION_LENGTH_JITTER, local_coherence_outlasts_global),
@@ -467,15 +477,24 @@ class SpeciesResults:
     plants: list[PlantSummary]
 
 
+def pillars_markdown(runs: Sequence[RunSummary], organisms: Sequence[str]) -> str:
+    sections = [
+        (title, evaluate(pillars, runs, organisms))
+        for title, pillars in (("Pillars", PILLARS), ("Extension tests", EXTENSION_TESTS), ("Secondary analyses", SECONDARY_ANALYSES))
+    ]
+    return reporting.outcome_sections(sections, [cal.ORGANISMS[o].display_name for o in organisms])
+
+
 def run_study(design: StudyDesign) -> SpeciesResults:
     started = datetime.now(timezone.utc).isoformat()
     runs: list[RunSummary] = []
-    for organism in cal.ORGANISMS:
-        organism_tasks = [task for task in tasks_for(design) if task.organism == organism]
-        spec = cal.ORGANISMS[organism]
-        runs.extend(reporting.run_in_parallel(run_task, organism_tasks, f"species: {spec.display_name}", spec.worker_processes))
+    tasks = tasks_for(design)
+    for organism, spec in cal.ORGANISMS.items():
+        organism_tasks = [task for task in tasks if task.organism == organism]
+        live = reporting.ParallelRun(f"species: {spec.display_name}", spec.worker_processes, live_markdown=partial(pillars_markdown, organisms=[organism]))
+        runs.extend(reporting.run_in_parallel(run_task, organism_tasks, live))
     plant_inputs = [(g, cal.BASE_SEED + i) for g in cal.PLANT_JUNCTION_CONDUCTANCES for i in range(design.plant_seeds)]
-    plants = reporting.run_in_parallel(run_plant_task, plant_inputs, "species: plant tissue")
+    plants = reporting.run_in_parallel(run_plant_task, plant_inputs, reporting.ParallelRun("species: plant tissue"))
     design_record = {"integration": asdict(design.integration), "seeds_per_organism": design.seeds_per_organism, "plant_seeds": design.plant_seeds}
     return SpeciesResults(design.label, started, design_record, runs, plants)
 

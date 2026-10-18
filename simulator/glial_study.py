@@ -50,8 +50,8 @@ class GlialMeasurement:
     # (parameter value, thresholds) pairs, in the order of glial_regulation's series.
     by_myelin_integrity: tuple[tuple[float, ThresholdSummary], ...]
     by_microglial_gain: tuple[tuple[float, ThresholdSummary], ...]
-    deep_sleep: dpc.StableStates
-    deep_sleep_astrocytes_silenced: dpc.StableStates
+    global_sleep: dpc.StableStates
+    global_sleep_astrocytes_silenced: dpc.StableStates
     duration_seconds: float
 
     def microglial(self, gain: float) -> ThresholdSummary:
@@ -61,20 +61,21 @@ class GlialMeasurement:
 def measure_seed(task: SeedTask) -> GlialMeasurement:
     started = time.perf_counter()
     reference = sized(dpc.REFERENCE_SCENARIO, task)
-    curve = glia.percolation_curve(reference)
+    curve = dpc.build_curve(reference)
     return GlialMeasurement(
         node_count=task.node_count,
         seed=task.seed,
         by_myelin_integrity=tuple(
-            (integrity, ThresholdSummary.of(glia.sweep(curve, glia.demyelinated(reference, integrity))))
+            (integrity, ThresholdSummary.of(dpc.run_on_curve(curve, glia.demyelinated(reference, integrity))))
             for integrity in glia.MYELIN_INTEGRITY_SERIES
         ),
         by_microglial_gain=tuple(
-            (gain, ThresholdSummary.of(glia.sweep(curve, reference, gain))) for gain in glia.MICROGLIAL_GAIN_SERIES
+            (gain, ThresholdSummary.of(dpc.run_on_curve(curve, reference, glia.with_microglia(gain))))
+            for gain in glia.MICROGLIAL_GAIN_SERIES
         ),
-        deep_sleep=glia.steady_states(curve, replace(reference, state=glia.DEEP_SLEEP), concentration=0.0),
-        deep_sleep_astrocytes_silenced=glia.steady_states(
-            curve, replace(reference, state=glia.astrocytes_silenced(glia.DEEP_SLEEP)), concentration=0.0
+        global_sleep=dpc.stable_states(replace(reference, state=glia.GLOBAL_SLEEP), concentration=0.0),
+        global_sleep_astrocytes_silenced=dpc.stable_states(
+            replace(reference, state=glia.astrocytes_silenced(glia.GLOBAL_SLEEP)), concentration=0.0
         ),
         duration_seconds=time.perf_counter() - started,
     )
@@ -114,10 +115,10 @@ def inertia_grows_with_microglial_gain(m: GlialMeasurement) -> bool:
     return consecutive_pairs_hold(widths, operator.le) and widths[-1] > widths[0]
 
 
-def silenced_astrocytes_destabilise_sleep(m: GlialMeasurement) -> bool:
-    """Deep sleep is a wakeable stable state, but without astrocytic down-states the sleeper wakes spontaneously."""
-    silenced = m.deep_sleep_astrocytes_silenced
-    return m.deep_sleep.can_be_woken and silenced.from_collapsed >= silenced.quorum_fraction
+def silenced_astrocytes_wake_the_sleeper(m: GlialMeasurement) -> bool:
+    """Sleep with global down-states has lost quorum; without the astrocytic share of them, quorum returns."""
+    asleep, silenced = m.global_sleep, m.global_sleep_astrocytes_silenced
+    return not asleep.holds_quorum and silenced.holds_quorum
 
 
 TESTS = (
@@ -125,16 +126,31 @@ TESTS = (
         "M1",
         f"Damaged myelin lowers the loss concentration (integrity {' > '.join(map(str, glia.MYELIN_INTEGRITY_SERIES))})",
         damaged_myelin_lowers_loss_concentration,
+        reporting.CONSISTENCY_CHECK,
     ),
-    reporting.Check("G1", "Microglial depletion hastens emergence (Cao et al., 2023; He et al., 2023)", depletion_hastens_emergence),
     reporting.Check(
-        "G2", "Microglial depletion does not hasten induction (Cao et al., 2023; He et al., 2023)", depletion_does_not_hasten_induction
+        "G1",
+        "Microglial depletion hastens emergence (Cao et al., 2023; He et al., 2023)",
+        depletion_hastens_emergence,
+        reporting.CONSISTENCY_CHECK,
     ),
-    reporting.Check("G3", "Neural inertia grows with the strength of the microglial loop", inertia_grows_with_microglial_gain),
+    reporting.Check(
+        "G2",
+        "Microglial depletion does not hasten induction (Cao et al., 2023; He et al., 2023)",
+        depletion_does_not_hasten_induction,
+        reporting.CONSISTENCY_CHECK,
+    ),
+    reporting.Check(
+        "G3",
+        "Neural inertia grows with the strength of the microglial loop",
+        inertia_grows_with_microglial_gain,
+        reporting.CONSISTENCY_CHECK,
+    ),
     reporting.Check(
         "A1",
-        f"Silencing astrocytes' share ({glia.ASTROCYTIC_DOWN_STATE_SHARE}) of deep-sleep down-states destabilises sleep",
-        silenced_astrocytes_destabilise_sleep,
+        f"Re-specified after the down-state model changed: with global down-states ({glia.GLOBAL_DOWN_STATE_SHARE} of populations), "
+        f"sleep loses quorum, and silencing astrocytes' share ({glia.ASTROCYTIC_DOWN_STATE_SHARE}) of them restores it",
+        silenced_astrocytes_wake_the_sleeper,
     ),
 )
 
@@ -189,6 +205,7 @@ def collect_provenance(design: StudyDesign, worker_count: int) -> dict[str, obje
             "myelin_integrity_series": list(glia.MYELIN_INTEGRITY_SERIES),
             "microglial_gain_series": list(glia.MICROGLIAL_GAIN_SERIES),
             "astrocytic_down_state_share": glia.ASTROCYTIC_DOWN_STATE_SHARE,
+            "global_down_state_share": glia.GLOBAL_DOWN_STATE_SHARE,
         },
     }
 
@@ -248,10 +265,16 @@ def to_document(report: GlialReport, label: str) -> dict[str, object]:
 # ---------------------------------------------------------------------------
 
 
+def tests_markdown(measurements: Sequence[GlialMeasurement], node_counts: Sequence[int]) -> str:
+    outcomes = evaluate_claims(TESTS, measurements, node_counts)
+    return "\n".join(reporting.outcome_table(outcomes, [size_label(n) for n in node_counts]))
+
+
 def run_study(design: StudyDesign, worker_count: int) -> GlialReport:
     started = datetime.now(timezone.utc)
     record = collect_provenance(design, worker_count)
-    measurements = reporting.run_in_parallel(measure_seed, design.tasks(), "glia", worker_count)
+    live = reporting.ParallelRun("glia", worker_count, live_markdown=lambda done: tests_markdown(done, design.node_counts))
+    measurements = reporting.run_in_parallel(measure_seed, design.tasks(), live)
     return GlialReport(
         started_utc=started,
         finished_utc=datetime.now(timezone.utc),

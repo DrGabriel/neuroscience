@@ -275,7 +275,8 @@ def main(arguments: Sequence[str]) -> int:
     design, seeds = (QUICK_DESIGN, QUICK_SEEDS) if options.quick else (FULL_DESIGN, FULL_SEEDS)
     seed_offset = CONFIRMATORY_SEED_OFFSET if options.confirm else 0
     started = datetime.now(timezone.utc)
-    runs = reporting.run_in_parallel(run_pair, paired_tasks(design, seeds, seed_offset), f"congestion: {mode.value}", CONGESTION_WORKERS)
+    live = reporting.ParallelRun(f"congestion: {mode.value}", CONGESTION_WORKERS)
+    runs = reporting.run_in_parallel(run_pair, paired_tasks(design, seeds, seed_offset), live)
     analysis = analyse(runs, mode)
     document = {
         "label": "quick" if options.quick else mode.value,

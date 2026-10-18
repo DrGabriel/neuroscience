@@ -10,6 +10,7 @@ Standard library only.
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import provenance
@@ -18,19 +19,22 @@ import reporting
 PAPER = provenance.SIMULATOR_DIRECTORY.parent / "white_paper_anesthesia_consensus.md"
 APPENDIX_C_HEADING = "## Appendix C: Computational reference simulator (percolation model)"
 SEPARATOR = "\n---\n\n"
-LISTED_SOURCES = ("dpc_simulator.py", "validation_study.py", "glial_regulation.py")
 REPORT_HEADING_LEVEL = "#### "
 
 
-def latest_report(kind: str, label: str = "full") -> str:
+def latest_report_path(kind: str, label: str = "full") -> Path:
     paths = sorted(reporting.RESULTS_DIRECTORY.glob(f"{kind}_{label}_*.md"))
     if not paths:
         raise FileNotFoundError(f"No {label} {kind} report in {reporting.RESULTS_DIRECTORY}")
-    return paths[-1].read_text().replace("### ", REPORT_HEADING_LEVEL).strip()
+    return paths[-1]
+
+
+def latest_report(kind: str, label: str = "full") -> str:
+    return latest_report_path(kind, label).read_text().replace("### ", REPORT_HEADING_LEVEL).strip()
 
 
 def report_name(kind: str, label: str = "full") -> str:
-    return sorted(reporting.RESULTS_DIRECTORY.glob(f"{kind}_{label}_*.md"))[-1].name
+    return latest_report_path(kind, label).name
 
 
 def listing(name: str) -> str:
@@ -44,6 +48,13 @@ def source_hash_rows() -> list[str]:
         for path in sorted(provenance.SIMULATOR_DIRECTORY.glob("*.py"))
     ]
     return reporting.markdown_table(["File", "SHA-256"], rows)
+
+
+def parameter_table() -> str:
+    """The parameter records stored in the latest cross-species report, so the table matches the run."""
+    records = json.loads(latest_report_path("species").with_suffix(".json").read_text())["calibration"]
+    rows = [[record["name"], f"`{record['value']}`", record["basis"], record["source"]] for record in records]
+    return "\n".join(reporting.markdown_table(["Parameter", "Value", "Basis", "Source"], rows))
 
 
 def appendix_c() -> str:
@@ -75,7 +86,7 @@ Source: `simulator/results/{report_name("calibration_feedback")}`.
 
 ### C.4 Validation across network sizes
 
-Network sizes run from 302 nodes, the number of *C. elegans* neurons (White et al., 1986), and 1,000, the finest common cortical parcellation (Schaefer et al., 2018), to 1,000,000. Claims C1-C7 are properties the paper attributes to the model; observations O1-O2 and extension tests E1-E3 are reported without entering the verdict. Source: `simulator/results/{report_name("validation")}`.
+Network sizes run from 302 nodes, the number of *C. elegans* neurons (White et al., 1986), and 1,000, the finest common cortical parcellation (Schaefer et al., 2018), to 1,000,000. Claims C1-C7 are properties the paper attributes to the model; observations O1-O4 and extension tests E1-E3 are reported without entering the verdict. Each check is labelled either a test, which the model could fail, or a consistency check, which follows from the model's equations and confirms only that the code implements them. Every count of seeds is given with its Wilson 95% confidence interval (Wilson, 1927); a check is said to hold only when it holds in every seed. Source: `simulator/results/{report_name("validation")}`.
 
 {latest_report("validation")}
 
@@ -116,7 +127,9 @@ def appendix_d() -> str:
 
 ### D.1 Methods
 
-The phase-oscillator model (`simulator/phase_dynamics.py`), a Kuramoto-Sakaguchi network (Kuramoto, 1984; Sakaguchi and Kuramoto, 1986) of the kind used for large-scale brain dynamics (Cabral et al., 2011; Breakspear, 2017), is run on three empirical connectomes (`simulator/connectomes.py`): *C. elegans* (OpenWorm c302 edge list of the complete hermaphrodite wiring diagram, derived from Cook et al., 2019; 448 nodes, comprising the 302 neurons and the muscles and other cells they synapse onto), adult *Drosophila* (FlyWire v783, Dorkenwald et al., 2024, with synapses detected by Buhmann et al., 2021, and Heinrich et al., 2018, and transmitters predicted by Eckstein et al., 2024; connections of at least five synapses) and a 998-region human structural connectome (Hagmann et al., 2008; Sanz Leon et al., 2013). Each dataset is checked against a pinned SHA-256 digest before use. All parameters, with their basis, are listed in `simulator/calibration.py`. The congestion test uses Wilson-Cowan excitatory-inhibitory populations (Wilson and Cowan, 1972) with the local parameters and inhibitory plasticity rule of Abeysuriya et al. (2018), after Vogels et al. (2011), on the human connectome; synchrony is measured with the index of Golomb and Rinzel (1993) with measured conduction delays (`simulator/excitatory_inhibitory.py`). Plant tissue is a sheet of FitzHugh-Nagumo cells (FitzHugh, 1961; Nagumo et al., 1962) coupled through junctions (`simulator/plant_tissue.py`); on a square lattice the bond-percolation threshold is exactly 1/2 (Kesten, 1980). Pre-specified tests were fixed before the runs that evaluate them; post hoc analyses are labelled as such and do not enter any verdict.
+The phase-oscillator model (`simulator/phase_dynamics.py`), a Kuramoto-Sakaguchi network (Kuramoto, 1984; Sakaguchi and Kuramoto, 1986) of the kind used for large-scale brain dynamics (Cabral et al., 2011; Breakspear, 2017), is run on three empirical connectomes (`simulator/connectomes.py`): *C. elegans* (OpenWorm c302 edge list of the complete hermaphrodite wiring diagram, derived from Cook et al., 2019; 448 nodes, comprising the 302 neurons and the muscles and other cells they synapse onto), adult *Drosophila* (FlyWire v783, Dorkenwald et al., 2024, with synapses detected by Buhmann et al., 2021, and Heinrich et al., 2018, and transmitters predicted by Eckstein et al., 2024; connections of at least five synapses) and a 998-region human structural connectome (Hagmann et al., 2008; Sanz Leon et al., 2013). Each dataset is checked against a pinned SHA-256 digest before use. All parameters, with their basis, are listed in `simulator/calibration.py`. The congestion test uses Wilson-Cowan excitatory-inhibitory populations (Wilson and Cowan, 1972) with the local parameters and inhibitory plasticity rule of Abeysuriya et al. (2018), after Vogels et al. (2011), on the human connectome; synchrony is measured with the index of Golomb and Rinzel (1993) with measured conduction delays (`simulator/excitatory_inhibitory.py`). Plant tissue is a sheet of FitzHugh-Nagumo cells (FitzHugh, 1961; Nagumo et al., 1962) coupled through junctions (`simulator/plant_tissue.py`); on a square lattice the bond-percolation threshold is exactly 1/2 (Kesten, 1980). Pre-specified tests were fixed before the runs that evaluate them; post hoc analyses are labelled as such and do not enter any verdict. Timing jitter in the phase model persists for a correlation time τ before it changes (an Ornstein-Uhlenbeck process), so that it acts as a timing error during each exchange; jitter redrawn at every integration step would average to a uniform weakening of coupling, indistinguishable from transmission failure. As a null model, the GABAergic-like and sensory-stimulus conditions are repeated on rewired copies of the *C. elegans* and human connectomes in which the targets of connections are shuffled, which keeps every node's number of inputs and outputs (conditions N1 and N2). Every parameter is listed below with its basis: measured, a measured range, calibrated, or free; the sensitivity analysis varies each one that is not measured.
+
+{parameter_table()}
 
 ### D.2 Oscillator feedback calibration
 

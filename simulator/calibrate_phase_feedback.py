@@ -41,7 +41,7 @@ def main(arguments: Sequence[str]) -> None:
     started = datetime.now(timezone.utc).isoformat()
     candidates = tuple(float(value) for value in arguments) or DEFAULT_CANDIDATES
     jobs = [(feedback, seed) for feedback in candidates for seed in CALIBRATION_SEEDS]
-    results = reporting.run_in_parallel(inertia_ratio, jobs, "oscillator feedback calibration")
+    results = reporting.run_in_parallel(inertia_ratio, jobs, reporting.ParallelRun("oscillator feedback calibration"))
     rows = []
     for feedback in candidates:
         ratios = [ratio for value, ratio in results if value == feedback]

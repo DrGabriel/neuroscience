@@ -96,7 +96,8 @@ class DriveTests(unittest.TestCase):
         connectivity = dynamics.ImpairedConnectivity(
             connectome.sources, connectome.targets, connectome.weights, no_timing_error, no_timing_error
         )
-        drive = dynamics.SynapticDrive(connectome, 4.0, connectivity, np.random.default_rng(1))
+        jitter = dynamics.TimingJitter(no_timing_error, 0.0, np.random.default_rng(1))
+        drive = dynamics.SynapticDrive(connectome, 4.0, connectivity, jitter)
         self.assertTrue(np.allclose(drive(np.zeros(RING_SIZE), 1.0 + 0j, 0.0), 0.0))
 
     def test_fluctuating_jitter_weakens_effective_coupling_by_the_gaussian_factor(self) -> None:
@@ -104,6 +105,25 @@ class DriveTests(unittest.TestCase):
         rng = np.random.default_rng(1)
         mean_drive = np.mean(np.sin(0.5 - sd * rng.standard_normal(400_000)))
         self.assertAlmostEqual(mean_drive, np.sin(0.5) * np.exp(-sd**2 / 2), places=2)
+
+    def test_correlated_jitter_keeps_its_standard_deviation(self) -> None:
+        sd = np.full(20_000, 0.7)
+        jitter = dynamics.TimingJitter(sd, persistence=0.9, rng=np.random.default_rng(1))
+        samples = np.concatenate([jitter.next() for _ in range(5)])
+        self.assertAlmostEqual(float(np.std(samples)), 0.7, places=2)
+
+    def test_correlated_jitter_persists_between_steps(self) -> None:
+        jitter = dynamics.TimingJitter(np.ones(20_000), persistence=0.9, rng=np.random.default_rng(1))
+        first = jitter.next().copy()
+        second = jitter.next()
+        self.assertAlmostEqual(float(np.corrcoef(first, second)[0, 1]), 0.9, places=1)
+
+    def test_correlated_jitter_statistics_do_not_depend_on_the_step(self) -> None:
+        coarse, fine = design(), replace(design(), integration=replace(design().integration, time_step=design().integration.time_step / 4))
+        sd = np.ones(4)
+        coarse_jitter = dynamics.TimingJitter.for_design(sd, coarse, np.random.default_rng(1))
+        fine_jitter = dynamics.TimingJitter.for_design(sd, fine, np.random.default_rng(1))
+        self.assertAlmostEqual(coarse_jitter.persistence, fine_jitter.persistence**4)
 
     def test_fixed_jitter_produces_no_fluctuation(self) -> None:
         connectome = all_to_all(RING_SIZE)
