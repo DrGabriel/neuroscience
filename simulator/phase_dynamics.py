@@ -80,6 +80,11 @@ class JitterScaling(Enum):
     # The agent's added jitter acts only on connections leaving the sensory populations
     # (the ketamine pathway hypothesis); baseline jitter still acts everywhere.
     SENSORY_PATHWAYS = "sensory pathways"
+    # The agent's added jitter acts only on feedback connections, which run towards the sensory
+    # populations, so loops cannot close (test K2); baseline jitter still acts everywhere.
+    FEEDBACK_CONNECTIONS = "feedback connections"
+    # Control for K2: as many connections as are feedback, drawn at random for each seed.
+    MATCHED_RANDOM_CONNECTIONS = "random connections, as many as feedback"
 
 
 class JitterDynamics(Enum):
@@ -210,7 +215,7 @@ class ConnectionImpairment:
         self._dynamics = design.dynamics
         self._failure_draws = rng.random(connectome.edge_count)
         self._jitter_draws = rng.standard_normal(connectome.edge_count)
-        self._baseline_weights, self._agent_weights = jitter_weights(connectome, design.jitter_scaling)
+        self._baseline_weights, self._agent_weights = jitter_weights(connectome, design.jitter_scaling, design.seed)
         self._delays_ms = conduction_delays_ms(connectome, design)
         self._jitter_dynamics = design.jitter_dynamics
         self._weights = signed_weights(connectome, design)
@@ -267,14 +272,23 @@ def conduction_delays_ms(connectome: Connectome, design: SweepDesign) -> np.ndar
     return connectome.lengths_mm.astype(float) / design.conduction_velocity_m_per_s
 
 
-def jitter_weights(connectome: Connectome, scaling: JitterScaling) -> tuple[np.ndarray, np.ndarray]:
+# Keeps the draw of the K2 control connections independent of the seed's other random draws.
+MATCHED_RANDOM_STREAM = 2
+
+
+def jitter_weights(connectome: Connectome, scaling: JitterScaling, seed: int) -> tuple[np.ndarray, np.ndarray]:
     """Per-connection multipliers for the baseline jitter and for the agent's added jitter."""
     uniform = np.ones(connectome.edge_count)
     if scaling is JitterScaling.UNIFORM:
         return uniform, uniform
     if scaling is JitterScaling.SENSORY_PATHWAYS:
-        leaves_sensory = np.isin(connectome.sources, connectome.sensory_nodes).astype(float)
-        return uniform, leaves_sensory
+        return uniform, np.isin(connectome.sources, connectome.sensory_nodes).astype(float)
+    if scaling is JitterScaling.FEEDBACK_CONNECTIONS:
+        return uniform, connectome.feedback_connections().astype(float)
+    if scaling is JitterScaling.MATCHED_RANDOM_CONNECTIONS:
+        count = int(connectome.feedback_connections().sum())
+        rng = np.random.default_rng([seed, MATCHED_RANDOM_STREAM])
+        return uniform, connectome.random_connections(count, rng).astype(float)
     if connectome.lengths_mm is None:
         raise ValueError(f"{connectome.name} has no tract lengths for {scaling.value} jitter")
     lengths = connectome.lengths_mm.astype(float)

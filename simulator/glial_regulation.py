@@ -7,9 +7,10 @@ of timescales):
 - Oligodendrocytes (myelin): set conduction timing; damaged myelin adds conduction-time
   variability (Kato et al., 2020), modelled as a higher baseline jitter.
 - Microglia: under anaesthesia, low noradrenaline activates microglia, which lower
-  noradrenaline further (Liu et al., 2019; Stowell et al., 2019; Ma et al., 2024); removing
-  microglia delays induction and hastens emergence (Cao et al., 2023; He et al., 2023).
-  Modelled as an arousal drive that weakens further as the coherent core collapses.
+  noradrenaline further (Liu et al., 2019; Stowell et al., 2019; Ma et al., 2024); genetic
+  loss of their P2Y12 receptor speeds recovery (Cao et al., 2023). Drug depletion (PLX5622)
+  also hastens emergence, but that drug speeds anaesthetic clearance (Cao et al., 2026).
+  Modelled as an arousal drive that weakens further as the giant component collapses.
 - Astrocytes: trigger slow-oscillation states (Poskanzer & Yuste, 2016); modelled as the share
   of sleep down-states that depends on astrocytic signalling.
 
@@ -27,7 +28,7 @@ import dpc_simulator as dpc
 # Complete loss of myelin doubles the baseline conduction-time jitter.
 DEMYELINATION_JITTER_GAIN = 1.0
 MYELIN_INTEGRITY_SERIES = (1.0, 0.75, 0.5)
-# 0 represents microglial depletion (PLX5622 in He et al., 2023; pharmacological in Cao et al., 2023).
+# 0 represents removing the microglial loop entirely.
 MICROGLIAL_DEPLETED_GAIN = 0.0
 MICROGLIAL_GAIN_SERIES = (MICROGLIAL_DEPLETED_GAIN, 0.25, 0.5)
 STRONGEST_MICROGLIAL_GAIN = max(MICROGLIAL_GAIN_SERIES)
@@ -53,7 +54,7 @@ def astrocytes_silenced(sleep: dpc.BrainState) -> dpc.BrainState:
 
 
 class MicroglialCoherenceModel(dpc.CoherenceModel):
-    """Coherence model in which a microglial loop weakens arousal as the coherent core collapses.
+    """Coherence model in which a microglial loop weakens arousal as the giant component collapses.
 
     In wakefulness (coherent fraction 1) the loop is silent; in the collapsed state it removes
     the share microglial_gain of the arousal drive, which stabilises the unconscious state.

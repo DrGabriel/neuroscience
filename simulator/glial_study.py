@@ -130,13 +130,13 @@ TESTS = (
     ),
     reporting.Check(
         "G1",
-        "Microglial depletion hastens emergence (Cao et al., 2023; He et al., 2023)",
+        "Removing the microglial loop hastens emergence (direction of Cao et al., 2023, P2Y12 loss)",
         depletion_hastens_emergence,
         reporting.CONSISTENCY_CHECK,
     ),
     reporting.Check(
         "G2",
-        "Microglial depletion does not hasten induction (Cao et al., 2023; He et al., 2023)",
+        "Removing the microglial loop does not hasten induction",
         depletion_does_not_hasten_induction,
         reporting.CONSISTENCY_CHECK,
     ),

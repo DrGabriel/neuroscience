@@ -557,10 +557,12 @@ def outcomes_from(records: Sequence[dict[str, object]]) -> list[reporting.CheckO
     return [reporting.CheckOutcome(**{key: value for key, value in record.items() if key != "holds"}) for record in records]
 
 
-def measurement_rows(runs: Sequence[dict[str, object]], organisms: Sequence[str]) -> list[list[str]]:
+def measurement_rows_for(
+    quantities: Sequence[tuple[str, str, str]], runs: Sequence[dict[str, object]], organisms: Sequence[str]
+) -> list[list[str]]:
     return [
         [label, condition, *[reporting.describe([r[field] for r in runs if r["organism"] == o and r["condition"] == condition]) for o in organisms]]
-        for label, condition, field in QUANTITIES
+        for label, condition, field in quantities
     ]
 
 
@@ -591,7 +593,7 @@ def to_markdown(report: dict[str, object]) -> str:
         "",
         "### Measurements (mean ± SD across seeds; concentrations relative to EC50)",
         "",
-        *reporting.markdown_table(["Quantity", "Condition", *names], measurement_rows(report["runs"], organisms)),
+        *reporting.markdown_table(["Quantity", "Condition", *names], measurement_rows_for(QUANTITIES, report["runs"], organisms)),
         "",
         "### Plant tissue (cellular control)",
         "",

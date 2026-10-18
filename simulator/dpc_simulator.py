@@ -276,8 +276,8 @@ class AnaestheticAgent:
         return self.max_added_jitter_ms * self.effect_fraction(concentration)
 
 
-GABAERGIC_LIKE_AGENT = AnaestheticAgent("GABAergic-like (crash faults)", max_transmission_failure=0.95, max_added_jitter_ms=1.0)
-NMDA_ANTAGONIST_LIKE_AGENT = AnaestheticAgent("NMDA-antagonist-like (noise faults)", max_transmission_failure=0.2, max_added_jitter_ms=40.0)
+GABAERGIC_LIKE_AGENT = AnaestheticAgent("GABAergic-like (omission faults)", max_transmission_failure=0.95, max_added_jitter_ms=1.0)
+NMDA_ANTAGONIST_LIKE_AGENT = AnaestheticAgent("NMDA-antagonist-like (timing faults)", max_transmission_failure=0.2, max_added_jitter_ms=40.0)
 
 
 @dataclass(frozen=True)
@@ -353,7 +353,7 @@ class CoherenceModel:
         return self.arousal(concentration)
 
     def reference_error_ms(self, concentration: float, coherent_fraction: float) -> float:
-        """Timing error added by a weakened reference: grows as the coherent core shrinks, unless arousal sustains it."""
+        """Timing error added by a weakened reference: grows as the giant component shrinks, unless arousal sustains it."""
         unsustained = 1 - self.arousal_at(concentration, coherent_fraction)
         return self._timing.feedback_jitter_ms * (1 - coherent_fraction) * unsustained
 
@@ -372,7 +372,7 @@ class CoherenceModel:
 
 
 # ---------------------------------------------------------------------------
-# Self-consistent coherent core and concentration sweeps
+# Self-consistent giant component and concentration sweeps
 # ---------------------------------------------------------------------------
 
 
@@ -395,7 +395,7 @@ class CoherentCoreSolver:
             if abs(next_fraction - fraction) < SOLVER_TOLERANCE:
                 return next_fraction
             fraction = next_fraction
-        raise RuntimeError(f"Coherent core did not converge at concentration {concentration:.3f}")
+        raise RuntimeError(f"Giant component did not converge at concentration {concentration:.3f}")
 
 
 @dataclass(frozen=True)
@@ -743,7 +743,7 @@ def feedback_strength_series(base: Scenario, feedback_values_ms: Sequence[float]
 
 
 def agent_comparison(base: Scenario, agents: Sequence[AnaestheticAgent]) -> list[tuple[AnaestheticAgent, SweepResult]]:
-    """Section 6.2: crash-like and noise-like agents both abolish quorum."""
+    """Section 6.2: omission-fault and timing-fault agents both abolish quorum."""
     return [(agent, run_scenario(replace(base, agent=agent))) for agent in agents]
 
 

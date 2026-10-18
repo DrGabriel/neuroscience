@@ -41,6 +41,24 @@ def all_to_all(node_count: int) -> connectomes.Connectome:
     )
 
 
+# Sensory node 0 feeds 1, which feeds 2 and 3; 2 -> 1 and 1 -> 0 run back towards the senses,
+# 2 -> 3 is lateral (both two steps out), and node 4, which nothing reaches, projects into 1.
+CHAIN_CONNECTIONS = ((0, 1), (1, 2), (2, 1), (1, 0), (1, 3), (2, 3), (4, 1))
+CHAIN_FEEDBACK = (False, False, True, True, False, False, False)
+
+
+def chain() -> connectomes.Connectome:
+    sources, targets = (np.array(column, dtype=np.int32) for column in zip(*CHAIN_CONNECTIONS))
+    return replace(
+        all_to_all(5),
+        name="chain",
+        sources=sources,
+        targets=targets,
+        weights=np.ones(sources.size, dtype=np.float32),
+        sensory_nodes=np.array([0], dtype=np.int32),
+    )
+
+
 def design(**overrides: object) -> dynamics.SweepDesign:
     base = replace(cal.base_sweep_design(SHORT_INTEGRATION, seed=1), grid=SMALL_GRID)
     return replace(base, **overrides)
@@ -163,10 +181,30 @@ class DriveTests(unittest.TestCase):
 
     def test_pathway_jitter_acts_only_on_connections_leaving_sensory_populations(self) -> None:
         connectome = all_to_all(RING_SIZE)
-        _, agent_weights = dynamics.jitter_weights(connectome, dynamics.JitterScaling.SENSORY_PATHWAYS)
+        _, agent_weights = dynamics.jitter_weights(connectome, dynamics.JitterScaling.SENSORY_PATHWAYS, seed=1)
         leaves_sensory = np.isin(connectome.sources, connectome.sensory_nodes)
         self.assertTrue(np.all(agent_weights[leaves_sensory] == 1.0))
         self.assertTrue(np.all(agent_weights[~leaves_sensory] == 0.0))
+
+    def test_feedback_connections_run_towards_the_sensory_populations(self) -> None:
+        self.assertEqual(tuple(chain().feedback_connections().tolist()), CHAIN_FEEDBACK)
+
+    def test_feedback_jitter_acts_only_on_feedback_connections(self) -> None:
+        _, agent_weights = dynamics.jitter_weights(chain(), dynamics.JitterScaling.FEEDBACK_CONNECTIONS, seed=1)
+        self.assertEqual(tuple(agent_weights.tolist()), tuple(float(f) for f in CHAIN_FEEDBACK))
+
+    def test_matched_random_jitter_acts_on_as_many_connections_as_are_feedback(self) -> None:
+        connectome = all_to_all(RING_SIZE)
+        feedback = int(connectome.feedback_connections().sum())
+        _, agent_weights = dynamics.jitter_weights(connectome, dynamics.JitterScaling.MATCHED_RANDOM_CONNECTIONS, seed=1)
+        self.assertEqual(int(agent_weights.sum()), feedback)
+        self.assertGreater(feedback, 0)
+
+    def test_matched_random_connections_depend_on_the_seed_only(self) -> None:
+        scaling = dynamics.JitterScaling.MATCHED_RANDOM_CONNECTIONS
+        first, again, other = (dynamics.jitter_weights(all_to_all(RING_SIZE), scaling, seed)[1] for seed in (1, 1, 2))
+        self.assertTrue(np.array_equal(first, again))
+        self.assertFalse(np.array_equal(first, other))
 
     def test_failed_connections_stay_failed_at_higher_concentrations(self) -> None:
         connectome = all_to_all(RING_SIZE)
@@ -179,7 +217,7 @@ class DriveTests(unittest.TestCase):
 
     def test_conduction_length_jitter_requires_tract_lengths(self) -> None:
         with self.assertRaises(ValueError):
-            dynamics.jitter_weights(all_to_all(RING_SIZE), dynamics.JitterScaling.CONDUCTION_LENGTH)
+            dynamics.jitter_weights(all_to_all(RING_SIZE), dynamics.JitterScaling.CONDUCTION_LENGTH, seed=1)
 
 
 class SignedConnectionTests(unittest.TestCase):
@@ -267,6 +305,24 @@ class ConnectomeTests(unittest.TestCase):
         self.assertEqual(human.module_count, 66)
         self.assertEqual(human.sensory_nodes.size, 7)
         self.assertEqual(human.lengths_mm.size, human.edge_count)
+
+
+class ConvergenceSettingsTests(unittest.TestCase):
+    def test_finer_integration_covers_the_same_simulated_time(self) -> None:
+        import convergence_study
+
+        reference = design().integration
+        finer = convergence_study.finer(reference)
+        self.assertAlmostEqual(finer.time_step * finer.measurement_steps, reference.time_step * reference.measurement_steps)
+        self.assertAlmostEqual(finer.time_step, reference.time_step / 2)
+
+    def test_longer_integration_doubles_the_simulated_time(self) -> None:
+        import convergence_study
+
+        reference = design().integration
+        longer = convergence_study.longer(reference)
+        self.assertEqual(longer.time_step, reference.time_step)
+        self.assertEqual(longer.measurement_steps, 2 * reference.measurement_steps)
 
 
 if __name__ == "__main__":

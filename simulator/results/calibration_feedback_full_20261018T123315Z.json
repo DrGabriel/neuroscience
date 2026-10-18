@@ -1,0 +1,247 @@
+{
+  "label": "full",
+  "started_utc": "2026-10-18T12:33:15.830476+00:00",
+  "finished_utc": "2026-10-18T12:35:14.870534+00:00",
+  "provenance": {
+    "hardware": {
+      "hw.model": "Mac14,9",
+      "machdep.cpu.brand_string": "Apple M2 Pro",
+      "hw.memsize": "34359738368",
+      "hw.ncpu": "10",
+      "hw.perflevel0.physicalcpu": "6",
+      "hw.perflevel1.physicalcpu": "4"
+    },
+    "memory_gibibytes": 32.0,
+    "operating_system": {
+      "product_version": "26.7.1",
+      "build_version": "25G241",
+      "platform": "macOS-26.7.1-arm64-arm-64bit-Mach-O",
+      "machine": "arm64"
+    },
+    "python": {
+      "implementation": "CPython",
+      "version": "3.13.2",
+      "packages": "standard library only"
+    },
+    "source": {
+      "git_commit": "5c7512c46abc11bc56b1dfc5fe78c529892aab97",
+      "git_working_tree_dirty": false,
+      "sha256": {
+        "calibrate_feedback.py": "6d2ca5d374b35c8fa39ba76719b874b1efc00ffa552cce2e8f04b286441c7b23",
+        "dpc_simulator.py": "9080470f6134967e13b6f6bee7b295c1f04cbac75f545a5bbd89d7e5aca8da25",
+        "provenance.py": "94071e252347139bab3c5f113d52a38f65feaeaa0c03738ec8d81090c9139cb2",
+        "reporting.py": "de80a53d63e90383ed325db5098aea06b71b3f846d8368ddeb12347ce3c4470b"
+      }
+    }
+  },
+  "design": {
+    "node_count": 10000,
+    "seeds": [
+      20261017,
+      20261018,
+      20261019,
+      20261020,
+      20261021,
+      20261022,
+      20261023,
+      20261024,
+      20261025,
+      20261026
+    ],
+    "grid_step": 0.01
+  },
+  "calibrations": [
+    {
+      "target": {
+        "ratio": 1.07,
+        "source": "Warnaby et al. (2017), propofol, humans"
+      },
+      "calibration": {
+        "arousal_level": 0.0,
+        "feedback_ms": 5.42724609375,
+        "model_ratio": 1.0688594625152057
+      },
+      "reproduced": true
+    },
+    {
+      "target": {
+        "ratio": 1.08,
+        "source": "Friedman et al. (2010), isoflurane, mice"
+      },
+      "calibration": {
+        "arousal_level": 0.0,
+        "feedback_ms": 5.6396484375,
+        "model_ratio": 1.0798368541473402
+      },
+      "reproduced": true
+    },
+    {
+      "target": {
+        "ratio": 1.11,
+        "source": "Iwakiri et al. (2005), propofol, humans"
+      },
+      "calibration": {
+        "arousal_level": 0.0,
+        "feedback_ms": 6.05712890625,
+        "model_ratio": 1.1087676180420811
+      },
+      "reproduced": true
+    },
+    {
+      "target": {
+        "ratio": 1.63,
+        "source": "Sepúlveda et al. (2018), propofol, humans"
+      },
+      "calibration": {
+        "arousal_level": 0.0,
+        "feedback_ms": 8.43017578125,
+        "model_ratio": 1.6247452915416964
+      },
+      "reproduced": true
+    },
+    {
+      "target": {
+        "ratio": 1.07,
+        "source": "Warnaby et al. (2017), propofol, humans"
+      },
+      "calibration": {
+        "arousal_level": 0.3,
+        "feedback_ms": 6.89208984375,
+        "model_ratio": 1.0696000731741833
+      },
+      "reproduced": true
+    },
+    {
+      "target": {
+        "ratio": 1.08,
+        "source": "Friedman et al. (2010), isoflurane, mice"
+      },
+      "calibration": {
+        "arousal_level": 0.3,
+        "feedback_ms": 7.177734375,
+        "model_ratio": 1.0794776984456556
+      },
+      "reproduced": true
+    },
+    {
+      "target": {
+        "ratio": 1.11,
+        "source": "Iwakiri et al. (2005), propofol, humans"
+      },
+      "calibration": {
+        "arousal_level": 0.3,
+        "feedback_ms": 7.93212890625,
+        "model_ratio": 1.10936734642875
+      },
+      "reproduced": true
+    },
+    {
+      "target": {
+        "ratio": 1.63,
+        "source": "Sepúlveda et al. (2018), propofol, humans"
+      },
+      "calibration": {
+        "arousal_level": 0.3,
+        "feedback_ms": 11.923828125,
+        "model_ratio": 1.627040978829299
+      },
+      "reproduced": true
+    },
+    {
+      "target": {
+        "ratio": 1.07,
+        "source": "Warnaby et al. (2017), propofol, humans"
+      },
+      "calibration": {
+        "arousal_level": 0.5,
+        "feedback_ms": 8.48876953125,
+        "model_ratio": 1.0693407778727444
+      },
+      "reproduced": true
+    },
+    {
+      "target": {
+        "ratio": 1.08,
+        "source": "Friedman et al. (2010), isoflurane, mice"
+      },
+      "calibration": {
+        "arousal_level": 0.5,
+        "feedback_ms": 8.85498046875,
+        "model_ratio": 1.0790452227026572
+      },
+      "reproduced": true
+    },
+    {
+      "target": {
+        "ratio": 1.11,
+        "source": "Iwakiri et al. (2005), propofol, humans"
+      },
+      "calibration": {
+        "arousal_level": 0.5,
+        "feedback_ms": 10.0634765625,
+        "model_ratio": 1.1099521384677946
+      },
+      "reproduced": true
+    },
+    {
+      "target": {
+        "ratio": 1.63,
+        "source": "Sepúlveda et al. (2018), propofol, humans"
+      },
+      "calibration": {
+        "arousal_level": 0.5,
+        "feedback_ms": 16.51611328125,
+        "model_ratio": 1.623154781292362
+      },
+      "reproduced": true
+    },
+    {
+      "target": {
+        "ratio": 1.07,
+        "source": "Warnaby et al. (2017), propofol, humans"
+      },
+      "calibration": {
+        "arousal_level": 0.7,
+        "feedback_ms": 11.3232421875,
+        "model_ratio": 1.06955722489908
+      },
+      "reproduced": true
+    },
+    {
+      "target": {
+        "ratio": 1.08,
+        "source": "Friedman et al. (2010), isoflurane, mice"
+      },
+      "calibration": {
+        "arousal_level": 0.7,
+        "feedback_ms": 12.0849609375,
+        "model_ratio": 1.0787838581133837
+      },
+      "reproduced": true
+    },
+    {
+      "target": {
+        "ratio": 1.11,
+        "source": "Iwakiri et al. (2005), propofol, humans"
+      },
+      "calibration": {
+        "arousal_level": 0.7,
+        "feedback_ms": 14.12841796875,
+        "model_ratio": 1.109451938469242
+      },
+      "reproduced": true
+    },
+    {
+      "target": {
+        "ratio": 1.63,
+        "source": "Sepúlveda et al. (2018), propofol, humans"
+      },
+      "calibration": {
+        "arousal_level": 0.7,
+        "feedback_ms": 27.0556640625,
+        "model_ratio": 1.6267233383580035
+      },
+      "reproduced": true
+    }
+  ]
+}

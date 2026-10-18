@@ -50,6 +50,32 @@ def source_hash_rows() -> list[str]:
     return reporting.markdown_table(["File", "SHA-256"], rows)
 
 
+# Fixed before preregistered_study.py was first run; the wording must not change after it.
+PRESPECIFIED_TESTS = """The tests below, their conditions and their pass rule were written into this paper before the study that evaluates them was run (`simulator/preregistered_study.py`). Before that, the code was checked with one shortened run (one *C. elegans* seed, with a quarter of the integration time); it is not part of the results. The study uses seeds that no earlier run used (from the base seed plus 2000): 20 for *C. elegans*, 6 for *Drosophila* and 20 for the human connectome. A test passes for an organism when it holds in at least 80% of that organism's seeds.
+
+**Feedback connections.** A connection is classed as feedback when its target lies fewer steps from the sensory populations than its source, counting steps along directed connections from the nearest sensory population (breadth-first search). Connections from populations that no sensory population reaches are not classed. By this rule 21% of *C. elegans* connections and 27% of *Drosophila* connections are feedback. The human connectome is not used for K2: diffusion imaging gives no direction, so every connection appears in both directions and the classification would be arbitrary.
+
+**K2 (ketamine's timing faults on feedback connections).** The NMDA-antagonist-like agent adds its timing error only on feedback connections; baseline timing error and transmission failure act as before, and the sensory stimulus of P3 is applied.
+
+- K2a: quorum is lost within the concentration range.
+- K2b: at the first concentration without quorum, the stimulus still spreads: the broadcast ratio is at least half its awake value. Seeds in which quorum is never lost count as failing.
+- K2c (control, paired by seed): with the same added timing error on an equal number of connections drawn at random, quorum is lost at a higher concentration than with feedback faults, or not at all, while feedback faults abolish it.
+
+What we expect, stated before the run: the phase model has no rule that agreement requires closed loops, and forward and lateral connections alone can keep populations in step. Test K1 showed that timing error confined to a minority of connections left quorum intact. K2 may therefore fail in this model. A failure would show that the model cannot decide where ketamine acts; it would not refute the proposal, which then rests on prediction 7 (Section 7) and on directional connectivity measured in patients (U. Lee et al., 2013). A pass would show that, in these two wiring diagrams, feedback connections are where timing faults break agreement.
+
+**P1c (replication of P1b).** P1b, found post hoc in Appendix D.3, states that under the GABAergic-like agent the susceptibility at the last conscious concentration is at least ten times its awake value. P1c applies exactly this criterion to the fresh seeds on all three connectomes. A rise of fluctuations near a threshold is expected of threshold models in general, so P1c tests whether the model behaviour repeats, not whether DPC is right."""
+
+
+RUN_NOTES = """A first launch of the study was stopped after its *C. elegans* runs, before any of its results were read, so that agent names and comments in the simulator could be brought into line with the paper's terms (omission and timing faults; giant component). No equation or parameter changed. The study was then run again from the start on the same seeds; the report below is from that run."""
+
+
+def preregistered_results() -> str:
+    try:
+        return f"Source: `simulator/results/{report_name('preregistered')}`.\n\n{latest_report('preregistered')}"
+    except FileNotFoundError:
+        return "Results: not yet run."
+
+
 def parameter_table() -> str:
     """The parameter records stored in the latest cross-species report, so the table matches the run."""
     records = json.loads(latest_report_path("species").with_suffix(".json").read_text())["calibration"]
@@ -143,19 +169,33 @@ Source: `simulator/results/{report_name("species")}`.
 
 {latest_report("species")}
 
-### D.4 Congestion and graceful degradation (exploratory run)
+### D.4 Numerical convergence of the phase model
+
+The human-connectome conditions are repeated with twice the simulated time and with half the integration step. Source: `simulator/results/{report_name("convergence")}`.
+
+{latest_report("convergence")}
+
+### D.5 Congestion and graceful degradation (exploratory run)
 
 Source: `simulator/results/{report_name("congestion")}`.
 
 {latest_report("congestion")}
 
-### D.5 Synchrony surge (confirmatory run on fresh seeds)
+### D.6 Synchrony surge (confirmatory run on fresh seeds)
 
 Source: `simulator/results/{report_name("congestion", "confirmatory")}`.
 
 {latest_report("congestion", "confirmatory")}
 
-### D.6 Figures
+### D.7 Pre-specified tests on fresh seeds: K2 and P1c
+
+{PRESPECIFIED_TESTS}
+
+{RUN_NOTES}
+
+{preregistered_results()}
+
+### D.8 Figures
 
 ![Figure 1. Coherent fraction during induction and emergence in the percolation model, without and with calibrated reference feedback.](figures/figure_1_percolation_hysteresis.png)
 
@@ -169,7 +209,7 @@ Source: `simulator/results/{report_name("congestion", "confirmatory")}`.
 
 ![Figure 6. Hub activity and global synchrony during induction in the Wilson-Cowan model of the human connectome.](figures/figure_6_congestion.png)
 
-### D.7 Reproducing every result
+### D.9 Reproducing every result
 
 ```sh
 cd simulator
@@ -181,6 +221,8 @@ python3 calibrate_feedback.py && python3 validation_study.py && python3 glial_st
 ../.venv/bin/python sensitivity_study.py
 ../.venv/bin/python congestion_study.py && ../.venv/bin/python congestion_study.py --confirm
 ../.venv/bin/python species_study.py
+../.venv/bin/python convergence_study.py
+../.venv/bin/python preregistered_study.py
 ../.venv/bin/python figures.py
 python3 paper_appendices.py
 ```

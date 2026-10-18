@@ -223,7 +223,7 @@ def active_shutdown_accelerates_but_is_not_required(measurement: SeedMeasurement
 
 
 CLAIMS = (
-    Claim("C1", "Crash-like and noise-like agents both abolish quorum (Section 6.2)", all_agents_lose_quorum),
+    Claim("C1", "Omission-fault and timing-fault agents both abolish quorum (Section 6.2)", all_agents_lose_quorum),
     Claim("C2", "Without reference feedback (lambda = 0) there is no hysteresis (Section 4.3)", no_hysteresis_without_feedback, reporting.CONSISTENCY_CHECK),
     Claim(
         "C3",

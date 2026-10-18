@@ -14,7 +14,7 @@ General anaesthetics are chemically unrelated and act on many molecular targets,
 flowchart LR
     A["Molecular action<br/>(GABA-A, NMDA, K2P, membrane)"] --> B["Circuit effect<br/>transmission failure p(c)<br/>timing jitter σ(c)"]
     B --> C["Network effect<br/>fewer timing-coherent connections"]
-    C --> D{"Giant coherent<br/>component ≥ quorum?"}
+    C --> D{"Giant component<br/>≥ quorum?"}
     D -- yes --> E["Integrated, reportable<br/>conscious state"]
     D -- no --> F["Fragmented local activity<br/>(unconsciousness)"]
     F -. "weaker phase reference<br/>(feedback λ)" .-> C
@@ -22,7 +22,7 @@ flowchart LR
 
 The feedback loop in the diagram makes the transition bistable. As a result, the model predicts that consciousness returns at a lower concentration than the one at which it was lost. This hysteresis is observed experimentally and is known as neural inertia.
 
-- **Paper:** [`white_paper_anesthesia_consensus.md`](white_paper_anesthesia_consensus.md) (Brazilian Portuguese translation: [`.pt-BR.md`](white_paper_anesthesia_consensus.pt-BR.md), [PDF](white_paper_anesthesia_consensus.pt-BR.pdf))
+- **Paper:** [`white_paper_anesthesia_consensus.md`](white_paper_anesthesia_consensus.md) ([PDF](white_paper_anesthesia_consensus.pdf); Brazilian Portuguese translation: [`.pt-BR.md`](white_paper_anesthesia_consensus.pt-BR.md), [PDF](white_paper_anesthesia_consensus.pt-BR.pdf))
 - **Falsifiable predictions:** Section 7 of the paper
 - **Simulations and results:** Appendices C and D of the paper and the [`simulator/`](simulator/) directory
 
@@ -33,6 +33,7 @@ The feedback loop in the diagram makes the transition bistable. As a result, the
 | [`white_paper_anesthesia_consensus.md`](white_paper_anesthesia_consensus.md) | Hypothesis and theory paper, with results and code listings in Appendices C and D |
 | [`white_paper_anesthesia_consensus.pt-BR.md`](white_paper_anesthesia_consensus.pt-BR.md), [`.pdf`](white_paper_anesthesia_consensus.pt-BR.pdf) | Brazilian Portuguese translation of the paper, for review; the English text is authoritative. References and Appendices C and D are not translated |
 | [`figures/`](figures/) | Figures of the paper, generated from the result files |
+| [`explainer/`](explainer/) | Interactive explainer: open `explainer/index.html` in a browser to watch the percolation model break quorum on the *C. elegans* connectome. Each figure says whether it is a live model, a schematic, data or a reported result; parameters and results are exported from the simulator by `simulator/explainer_export.py`, and every study report, current and superseded, can be opened in its results archive (`simulator/results_catalogue.py`). Tests: `node --test explainer/tests/explainer.test.js` |
 | [`simulator/`](simulator/) | Models, studies and tests (below) |
 | [`simulator/results/`](simulator/results/) | Every study's report: JSON with every measurement, and a Markdown summary, each recording machine, software, timestamps and source hashes |
 | [`CITATION.cff`](CITATION.cff) | Citation metadata |
@@ -63,6 +64,9 @@ The feedback loop in the diagram makes the transition bistable. As a result, the
 | [`sensitivity_study.py`](simulator/sensitivity_study.py) | Varies every free parameter one at a time |
 | [`congestion_study.py`](simulator/congestion_study.py) | Tests the congestion account and graceful degradation; `--confirm` runs the confirmatory test on fresh seeds |
 | [`species_study.py`](simulator/species_study.py) | Tests the pillars on the three connectomes and on plant tissue |
+| [`convergence_study.py`](simulator/convergence_study.py) | Checks that the oscillator results do not depend on the integration time or step |
+| [`preregistered_study.py`](simulator/preregistered_study.py) | Runs the tests fixed in advance in Appendix D.7 (K2, feedback faults; P1c, replication of P1b) on fresh seeds |
+| [`results_catalogue.py`](simulator/results_catalogue.py) | Lists every report, current and archived, for the explainer's results archive; reports are never changed or removed |
 | [`figures.py`](simulator/figures.py), [`paper_appendices.py`](simulator/paper_appendices.py) | Build the figures and Appendices C and D from the latest reports |
 
 ## Reproducing the results
@@ -80,7 +84,7 @@ cd simulator
 python3 validation_study.py --quick                       # short check, seconds
 ```
 
-Appendix D.7 of the paper lists the commands that reproduce every result in order. The full set takes several hours on a ten-core laptop, mostly for the *Drosophila* connectome. Every study prints its progress, with the share completed and the estimated time remaining.
+Appendix D.8 of the paper lists the commands that reproduce every result in order. The full set takes several hours on a ten-core laptop, mostly for the *Drosophila* connectome. Every study prints its progress, with the share completed and the estimated time remaining.
 
 Each report records the start and end time, the machine model, processor, core count, memory, operating system, Python and package versions, Git commit and the SHA-256 hash of every simulator module that ran, together with every parameter. A study exits with a non-zero status when a pre-specified test fails; that is a result, recorded in the report, not an error.
 

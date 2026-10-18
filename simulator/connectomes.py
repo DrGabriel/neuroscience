@@ -17,6 +17,7 @@ from typing import Callable
 import numpy as np
 from scipy.cluster.vq import kmeans2
 from scipy.sparse import coo_matrix, diags
+from scipy.sparse.csgraph import dijkstra
 from scipy.sparse.linalg import eigsh
 
 from provenance import file_sha256
@@ -89,6 +90,27 @@ class Connectome:
             lengths_mm=None,
             signs={},
         )
+
+    def sensory_distances(self) -> np.ndarray:
+        """Fewest directed connections from any sensory population to each node; infinite where no path leads."""
+        adjacency = coo_matrix((np.ones(self.edge_count), (self.sources, self.targets)), shape=(self.node_count, self.node_count))
+        return dijkstra(adjacency.tocsr(), indices=self.sensory_nodes, unweighted=True, min_only=True)
+
+    def feedback_connections(self) -> np.ndarray:
+        """Connections whose target lies fewer steps from the sensory populations than their source.
+
+        Only connections whose source the sensory populations reach are classed; the rest are neither
+        feedback nor feedforward.
+        """
+        distance = self.sensory_distances()
+        source, target = distance[self.sources], distance[self.targets]
+        return np.isfinite(source) & (target < source)
+
+    def random_connections(self, count: int, rng: np.random.Generator) -> np.ndarray:
+        """A mask of count connections drawn uniformly without replacement."""
+        chosen = np.zeros(self.edge_count, dtype=bool)
+        chosen[rng.choice(self.edge_count, size=count, replace=False)] = True
+        return chosen
 
     @property
     def module_count(self) -> int:
