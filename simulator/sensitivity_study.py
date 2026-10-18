@@ -4,7 +4,7 @@ Percolation model: each free parameter of dpc_simulator is set to each value in 
 every other parameter at its reference value, and claims C1-C7 of validation_study.py are
 evaluated over independent seeds. When the arousal level changes, λ is taken from the
 calibration at that level, so the inertia ratio stays at its measured value. λ itself is also
-set to the value calibrated to each published inertia ratio in turn (calibrate_feedback.py).
+set to the value calibrated to each published inertia ratio the model reproduces (calibrate_feedback.py).
 
 Phase-oscillator model (human connectome): coupling, frequency spread, noise, quorum and the
 jitter correlation time τ are varied in the same way, and pillars P2a, P2b and P3 of species_study.py are evaluated.
@@ -91,8 +91,8 @@ CALIBRATED_FEEDBACK_SERIES_MS = tuple(value for value in dpc.REFERENCE_FEEDBACK_
 PERCOLATION_RANGES: dict[str, tuple[tuple[float, ...], float, Callable[[float], ScenarioChange]]] = {
     "Quorum fraction": ((0.3, 0.5, 0.7), dpc.REFERENCE_QUORUM_FRACTION, with_quorum),
     "Arousal level (λ recalibrated)": (tuple(dpc.CALIBRATED_FEEDBACK_MS_BY_AROUSAL), dpc.REFERENCE_AROUSAL_LEVEL, with_arousal_level),
-    # λ calibrated to each published inertia ratio in turn (calibrate_feedback.py), the zero-feedback entry excluded.
-    "Feedback λ (ms), one per measured inertia ratio": (CALIBRATED_FEEDBACK_SERIES_MS, dpc.REFERENCE_FEEDBACK_JITTER_MS, with_feedback),
+    # λ calibrated to each published inertia ratio the model reproduces (calibrate_feedback.py), the zero-feedback entry excluded.
+    "Feedback λ (ms), one per reproduced inertia ratio": (CALIBRATED_FEEDBACK_SERIES_MS, dpc.REFERENCE_FEEDBACK_JITTER_MS, with_feedback),
     "Hill coefficient": ((2.0, 4.0, 8.0), dpc.GABAERGIC_LIKE_AGENT.hill_coefficient, with_hill_coefficient),
     "Mean degree": ((4.0, 8.0, 16.0), dpc.REFERENCE_MEAN_DEGREE, with_mean_degree),
     # λ is held at its reference value, so the inertia ratio is not recalibrated across these ranges.

@@ -21,6 +21,26 @@ globalThis.DPC_RESULTS_CATALOGUE = Object.freeze([
   "script": "data/results/current/calibration_feedback_full_20261018T123315Z.js"
  },
  {
+  "identifier": "current/calibration_feedback_full_20261018T205648Z",
+  "kind": "calibration_feedback",
+  "label": "full",
+  "report_set": "current",
+  "set_note": "",
+  "started_utc": "2026-10-18T20:56:48.778932+00:00",
+  "machine": "Mac14,9 · Apple M2 Pro",
+  "git_commit": "4bf724b5cf808aeaff38d791f9391dc8967a5375",
+  "working_tree_dirty": false,
+  "checks": {
+   "checks": 0,
+   "holding_in_every_run": 0,
+   "holding_in_none": 0
+  },
+  "has_curves": false,
+  "json_link": "../simulator/results/calibration_feedback_full_20261018T205648Z.json",
+  "markdown_link": "../simulator/results/calibration_feedback_full_20261018T205648Z.md",
+  "script": "data/results/current/calibration_feedback_full_20261018T205648Z.js"
+ },
+ {
   "identifier": "current/calibration_phase_feedback_full_20261018T124535Z",
   "kind": "calibration_phase_feedback",
   "label": "full",

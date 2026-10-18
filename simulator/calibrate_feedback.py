@@ -2,11 +2,11 @@
 
 Neural inertia is expressed as the ratio of the concentration at which responsiveness is
 lost to the concentration at which it returns. For each arousal level, λ is found by
-bisection so that the mean ratio across seeds matches each published ratio. A level is
-usable only if every target is reproduced with every seed recovering at zero concentration.
+bisection so that the mean ratio across seeds matches each published ratio, with every seed
+recovering at zero concentration; a target the bisection cannot reach is reported as not reproduced.
 
 The inertia ratios do not determine the arousal level: on the first run (2026-10-17) the
-level 0 already reproduced every target. Arousal is therefore a free parameter, and the
+level 0 already reproduced every target then used (1.07 to 1.63). Arousal is therefore a free parameter, and the
 studies report results across the levels listed here.
 
 The published targets and their sources are listed in PUBLISHED_TARGETS below; the

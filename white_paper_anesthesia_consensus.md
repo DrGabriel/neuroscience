@@ -146,7 +146,7 @@ The Meyer-Overton correlation, which relates anaesthetic potency to lipid solubi
 2. Optical isomers of isoflurane, which have identical lipid solubility, differ in their effects on neuronal ion channels (Franks and Lieb, 1991).
 3. Some lipophilic halogenated compounds violate the correlation (Koblin et al., 1994); such compounds were later termed *non-immobilisers*.
 4. A single point mutation (N265M) in the β3 subunit of the GABA-A receptor strongly reduces the in vivo effects of propofol and etomidate in mice (Jurd et al., 2003).
-5. Xenon acts principally as an NMDA receptor antagonist (Franks et al., 1998).
+5. Xenon has negligible effects on GABA-A receptors, which most general anaesthetics enhance, and instead potently inhibits NMDA receptors (Franks et al., 1998).
 
 Membrane-mediated mechanisms remain biologically plausible as *contributing* routes. These include changes in the lateral pressure profile of the lipid bilayer that alter the conformational equilibria of embedded channels (Cantor, 1997), and the disruption of ordered lipid domains that activates TREK-1 potassium channels via phospholipase D2 (Pavel et al., 2020). The current view is that anaesthetics act on multiple targets, chiefly GABA-A receptors, NMDA receptors and two-pore-domain potassium (K2P) channels, with agent-specific profiles (Rudolph and Antkowiak, 2004; Hemmings et al., 2019).
 
@@ -155,17 +155,17 @@ The known routes differ in mechanism. Most shift ion currents so as to reduce ex
 | Molecular route | Agents with evidence | Effect on ion flow | DPC fault type (P4) [H] | Sources |
 |---|---|---|---|---|
 | GABA-A receptor potentiation (prolonging channel opening) | Propofol, etomidate, barbiturates, isoflurane, sevoflurane | More Cl⁻ inhibitory current | Transmission failure | Mihic et al. (1997); Jurd et al. (2003) |
-| NMDA receptor block: open-channel block (ketamine) or competition at the glycine co-agonist site (xenon) | Ketamine, xenon, nitrous oxide | Less Na⁺ and Ca²⁺ excitatory current | Timing variability and transmission failure | Franks et al. (1998); Jevtović-Todorović et al. (1998); Dickinson et al. (2007) |
-| Two-pore-domain K⁺ channel activation (TREK-1, TASK) | Volatile agents (isoflurane, halothane, chloroform, diethyl ether); xenon, nitrous oxide, cyclopropane | More K⁺ leak, hyperpolarisation | Transmission failure | Patel et al. (1999); Gruss et al. (2004); Heurteaux et al. (2004) |
+| NMDA receptor block: open-channel block together with fewer channel openings (ketamine), or binding at the glycine co-agonist site (xenon, isoflurane) | Ketamine, xenon, nitrous oxide; isoflurane | Less Na⁺ and Ca²⁺ excitatory current | Timing variability and transmission failure | Orser et al. (1997); Franks et al. (1998); Jevtović-Todorović et al. (1998); Dickinson et al. (2007) |
+| Two-pore-domain K⁺ channel activation (TREK-1, TASK) | TREK-1: chloroform, diethyl ether, halothane, isoflurane, and the gases xenon, nitrous oxide and cyclopropane; TASK: halothane and isoflurane only, the gases having no effect on TASK-3 | More K⁺ leak, hyperpolarisation | Transmission failure | Patel et al. (1999); Gruss et al. (2004); Heurteaux et al. (2004) |
 | HCN channel inhibition | Volatile agents (subunit-specific); propofol | Less pacemaker cation current | Altered rhythm and timing | Chen et al. (2005); Ying et al. (2006) |
 | Presynaptic Na⁺ channel inhibition, reducing Ca²⁺ entry and vesicle release | Isoflurane | Less transmitter released per spike | Transmission failure | Herold and Hemmings (2012) for Na⁺ channels; Baumgart et al. (2015) for reduced Ca²⁺ entry and release |
 | α2-adrenoceptor agonism, acting through the endogenous sleep pathway | Dexmedetomidine | Indirect: inhibition of locus coeruleus neurons | Arousal suppression (P7) | Nelson et al. (2003) |
 | Disruption of membrane lipid domains, releasing PLD2, which activates TREK-1 | Chloroform, isoflurane | Indirect: more K⁺ current | Transmission failure | Pavel et al. (2020) |
-| Mitochondrial complex I (a sensitivity factor rather than an ion channel) | Volatile agents | Not a channel effect; complex I dysfunction increases sensitivity | Modulates susceptibility | Kayser et al. (1999); Morgan et al. (2002) |
+| Mitochondrial complex I (a sensitivity factor rather than an ion channel) | Volatile agents | Not a channel effect; complex I dysfunction increases sensitivity | Modulates susceptibility | Kayser et al. (1999) |
 
 Glycine receptors, which are abundant in the spinal cord, are also potentiated by volatile agents (Mihic et al., 1997) and are thought to contribute to immobility, which is outside the scope of this paper (Section 1.3).
 
-Two further proposals are unconfirmed and are noted only for completeness. Anaesthetic binding to tubulin and altered microtubule stability have been reported (Emerson et al., 2013), and a microtubule-stabilising drug delayed isoflurane-induced loss of righting in rats (Khan et al., 2024), but these findings have not been independently replicated. A single study reported that xenon isotopes carrying nuclear spin are less potent in mice than spin-free isotopes (Li et al., 2018); no independent replication has been found.
+Two further proposals are unconfirmed and are noted only for completeness. A photoactive anaesthetic analogue was found bound to β-tubulin in tadpoles (Emerson et al., 2013), and a microtubule-stabilising drug delayed isoflurane-induced loss of righting in rats (Khan et al., 2024); the two studies used different agents and species, and whether microtubules contribute to anaesthesia remains unsettled. A single study reported that xenon isotopes carrying nuclear spin are less potent in mice than spin-free isotopes (Li et al., 2018); no independent replication has been found.
 
 **Implication for this paper:** the DPC hypothesis does not depend on which molecular mechanism operates. It requires only that, at the circuit level, agents increase transmission failure, timing jitter, or both.
 
@@ -530,13 +530,13 @@ where $p_1$ is the fraction of significant (value 1) elements. PCI is high in co
 ## 9. Limitations
 
 1. **Analogy risk.** Computing concepts (consensus, quorum, clock skew) do not imply that the brain implements an algorithm. The predictions in Section 7 are stated in neurophysiological terms so that they can be tested without the analogy.
-2. **Measured, calibrated and free parameters.** $W$ and the baseline jitter are measured within neurons or local circuits, not between cortical areas (Section 4.7), and $\lambda$ is calibrated to one measured inertia ratio (Appendix B): 1.08, for isoflurane in mice (Friedman et al., 2010), chosen because its authors showed that the hysteresis is not fully explained by pharmacokinetics, and because it lies between the human propofol estimates of 1.07 and 1.11. Those estimates are weaker reference points, since their authors found no consistent hysteresis (Warnaby et al., 2017) or describe the two concentrations as similar (Iwakiri et al., 2005). The other measured ratios, from 1.07 to 2.85, give other values of $\lambda$; Appendix B reports them, and the sensitivity analysis (Appendix B.6) repeats the tests with each. The quorum $q^*$, the oscillator coupling and the maximal effects of each agent class are free parameters; the sensitivity analysis (Appendix B.6) reports how the results depend on them.
+2. **Measured, calibrated and free parameters.** $W$ and the baseline jitter are measured within neurons or local circuits, not between cortical areas (Section 4.7), and $\lambda$ is calibrated to one measured inertia ratio (Appendix B): 1.08, for isoflurane in mice (Friedman et al., 2010), chosen because its authors showed that the hysteresis is not fully explained by pharmacokinetics, and because it lies between the human propofol estimates of 1.07 and 1.11. Those estimates are weaker reference points, since their authors found no consistent hysteresis (Warnaby et al., 2017) or describe the two concentrations as similar (Iwakiri et al., 2005). The other measured ratios from 1.07 to 1.63 give other values of $\lambda$, which Appendix B reports and with which the sensitivity analysis (Appendix B.6) repeats the tests. The largest measured ratio, 2.85 for halothane in mice (Friedman et al., 2010), could not be reproduced: as $\lambda$ grows, the mean ratio reaches only about 2.0 to 2.4, rising with the arousal level, before some seeds no longer recover at zero concentration (Appendix B.3). The model's neural inertia is therefore bounded, and an agent with inertia as large as halothane's lies outside it. The quorum $q^*$, the oscillator coupling and the maximal effects of each agent class are free parameters; the sensitivity analysis (Appendix B.6) reports how the results depend on them.
 3. **Simplified topology.** Random-graph percolation ignores spatial embedding, modularity, directionality and synaptic dynamics. It also treats each connection as either coherent or not, although a fibre bundle between regions contains many synapses, so that synaptic failure weakens a bundle rather than removing it.
 4. **Measurement confounds.** EEG phase synchrony is affected by volume conduction, reference choice and changes in signal-to-noise ratio. These must be controlled before connectivity changes are interpreted.
 5. **Ketamine.** DPC's account of disconnected consciousness under ketamine is provisional: its first version failed in the model (test K1), the revised version failed its pre-specified test (K2) and is kept only as a contributing factor, and neither explains why complexity is preserved under ketamine (Section 6.2).
 6. **Criticality.** Claims that cortical networks operate near criticality, first made from neuronal avalanches in rat cortical slices and cultures (Beggs and Plenz, 2003), remain an open question; an fMRI analysis of propofol-induced unconsciousness reported a departure from critical dynamics (Tagliazucchi et al., 2016), and cortical recordings (electrocorticography and magnetoencephalography) in humans and macaques reported near-critical slow cortical dynamics during consciousness (Toker et al., 2022). DPC does not require self-organised criticality; it requires only a percolation-like threshold in the coherent subgraph.
 7. **Experience.** DPC addresses the conditions for integrated, reportable content, not why such integration is accompanied by experience.
-8. **Arousal is modelled only as a share of the reference.** Without an arousal term, the reference simulator can remain unconscious even at zero concentration after strong reference feedback or loss of hub nodes, which patients do not. P7 adds an arousal drive that sustains part of the reference and is suppressed by the agent. With it, most runs recover, but not all: some stay trapped unconscious at zero concentration (test O1: 4 of 20 seeds at 302 nodes and 2 of 20 at 1,000, none in larger networks), and more do after a hub lesion (test O2: 1 to 10 of 20 seeds, depending on network size; Appendix B). The arousal level itself is a free parameter, because the measured inertia ratios are reproduced at every level tested, and the arousal systems are represented by a single number rather than by their own dynamics (Kelz et al., 2008).
+8. **Arousal is modelled only as a share of the reference.** Without an arousal term, the reference simulator can remain unconscious even at zero concentration after strong reference feedback or loss of hub nodes, which patients do not. P7 adds an arousal drive that sustains part of the reference and is suppressed by the agent. With it, most runs recover, but not all: some stay trapped unconscious at zero concentration (test O1: 4 of 20 seeds at 302 nodes and 2 of 20 at 1,000, none in larger networks), and more do after a hub lesion (test O2: 1 to 10 of 20 seeds, depending on network size; Appendix B). The arousal level itself is a free parameter, because the measured inertia ratios from 1.07 to 1.63 are reproduced at every level tested (the halothane ratio of 2.85 at none, limitation 2), and the arousal systems are represented by a single number rather than by their own dynamics (Kelz et al., 2008).
 9. **Neural inertia depends on the model class.** The percolation model reproduces the measured loss-to-recovery ratio when $\lambda$ is calibrated, but in the phase-oscillator model on the human connectome the reference feedback produced either no hysteresis distinguishable from run-to-run variation or, when stronger, a trapped unconscious state (Appendix C). Hysteresis is therefore not a robust consequence of P5 across model classes, and other mechanisms, including adaptive feedback (Kim et al., 2018) and noise-driven switching between metastable states (Proekt and Hudson, 2018), remain candidates.
 10. **Local processing is narrower than local module integrity.** In the simulations, spontaneous coherence within anatomical modules generally fell together with global coherence; it did not persist inside every module. What persisted was stimulus-driven entrainment of the stimulated sensory area while propagation to the rest of the network failed. Section 6.4 is stated in that narrower form, which is also what intracranial recordings show (Krom et al., 2020).
 11. **Paradoxical excitation.** The congestion account failed in the model (tests W1 to W4). In the oscillator model, fluctuations of global coherence peak at or after the loss of quorum rather than clearly before it, so the pre-specified test P1 failed; they do rise at least tenfold on the conscious side of the threshold, a post hoc finding (P1b) that replicated on fresh seeds (P1c). The revised account of Section 5.1, survivor lock-in with critical fluctuations, therefore rests on a replicated but generic threshold behaviour and on a synchrony surge reproduced only at one coupling, and interneuron antisynchrony (McCarthy et al., 2008) remains the more developed explanation.
@@ -931,8 +931,6 @@ Moon, J.-Y., Lee, U., Blain-Moraes, S., & Mashour, G. A. (2015). General relatio
 
 Moore, J. T., Chen, J., Han, B., et al. (2012). Direct Activation of Sleep-Promoting VLPO Neurons by Volatile Anesthetics Contributes to Anesthetic Hypnosis. *Current Biology*, 22(21), 2008–2016. https://doi.org/10.1016/j.cub.2012.08.042
 
-Morgan, P. G., Hoppel, C. L., & Sedensky, M. M. (2002). Mitochondrial Defects and Anesthetic Sensitivity. *Anesthesiology*, 96(5), 1268–1270. https://doi.org/10.1097/00000542-200205000-00036
-
 Nagumo, J., Arimoto, S., & Yoshizawa, S. (1962). An active pulse transmission line simulating nerve axon. *Proceedings of the IRE*, 50(10), 2061–2070. https://doi.org/10.1109/JRPROC.1962.288235
 
 Neckelmann, D., & Ursin, R. (1993). Sleep stages and EEG power spectrum in relation to acoustical stimulus arousal threshold in the rat. *Sleep*, 16(5), 467–477. https://doi.org/10.1093/sleep/16.5.467
@@ -948,6 +946,8 @@ Nir, Y., & Tononi, G. (2010). Dreaming and the brain: from phenomenology to neur
 Nir, Y., Staba, R. J., Andrillon, T., et al. (2011). Regional Slow Waves and Spindles in Human Sleep. *Neuron*, 70(1), 153–169. https://doi.org/10.1016/j.neuron.2011.02.043
 
 Noori, R., Park, D., Griffiths, J. D., et al. (2020). Activity-dependent myelination: A glial mechanism of oscillatory self-organization in large-scale brain networks. *Proceedings of the National Academy of Sciences*, 117(24), 13227–13237. https://doi.org/10.1073/pnas.1916646117
+
+Orser, B. A., Pennefather, P. S., & MacDonald, J. F. (1997). Multiple mechanisms of ketamine blockade of N-methyl-D-aspartate receptors. *Anesthesiology*, 86(4), 903–917. https://doi.org/10.1097/00000542-199704000-00021
 
 Overton, C. E. (1901). *Studien über die Narkose*. Jena: Gustav Fischer.
 
@@ -1117,22 +1117,22 @@ The percolation model implements Section 4 exactly as written. The studies below
 
 ### B.3 Calibration of the reference feedback
 
-Source: `simulator/results/calibration_feedback_full_20261018T123315Z.md`.
+Source: `simulator/results/calibration_feedback_full_20261018T205648Z.md`.
 
 #### Run metadata
 
 | Field | Value |
 |---|---|
-| Started (UTC) | 2026-10-18T12:33:15.830476+00:00 |
-| Finished (UTC) | 2026-10-18T12:35:14.870534+00:00 |
+| Started (UTC) | 2026-10-18T20:56:48.778932+00:00 |
+| Finished (UTC) | 2026-10-18T20:58:55.351957+00:00 |
 | Machine | Mac14,9, Apple M2 Pro |
 | CPU cores | 10 (6 performance, 4 efficiency) |
 | Memory | 32 GiB |
 | Operating system | macOS 26.7.1 (build 25G241), arm64 |
-| Python | CPython 3.13.2; standard library only |
-| Git commit | `5c7512c46abc11bc56b1dfc5fe78c529892aab97` (working tree dirty: False) |
-| SHA-256 `calibrate_feedback.py` | `6d2ca5d374b35c8fa39ba76719b874b1efc00ffa552cce2e8f04b286441c7b23` |
-| SHA-256 `dpc_simulator.py` | `9080470f6134967e13b6f6bee7b295c1f04cbac75f545a5bbd89d7e5aca8da25` |
+| Python | CPython 3.15.0; standard library only |
+| Git commit | `4bf724b5cf808aeaff38d791f9391dc8967a5375` (working tree dirty: False) |
+| SHA-256 `calibrate_feedback.py` | `741457cf62f7255f5aecd0913ef46483e634617c92286a446c8b5122cd25f767` |
+| SHA-256 `dpc_simulator.py` | `692013943404bb9271683d374bba0a08b511a67ad7dc59b27d051dee987a0a07` |
 | SHA-256 `provenance.py` | `94071e252347139bab3c5f113d52a38f65feaeaa0c03738ec8d81090c9139cb2` |
 | SHA-256 `reporting.py` | `de80a53d63e90383ed325db5098aea06b71b3f846d8368ddeb12347ce3c4470b` |
 
@@ -1141,21 +1141,25 @@ Source: `simulator/results/calibration_feedback_full_20261018T123315Z.md`.
 | Arousal level | Target ratio | λ (ms) | Model ratio | Reproduced | Source |
 |---|---|---|---|---|---|
 | 0 | 1.07 | 5.43 | 1.069 | yes | Warnaby et al. (2017), propofol, humans |
-| 0 | 1.08 | 5.64 | 1.080 | yes | Friedman et al. (2010), isoflurane, mice |
-| 0 | 1.11 | 6.06 | 1.109 | yes | Iwakiri et al. (2005), propofol, humans (reference target) |
+| 0 | 1.08 | 5.64 | 1.080 | yes | Friedman et al. (2010), isoflurane, mice (reference target) |
+| 0 | 1.11 | 6.06 | 1.109 | yes | Iwakiri et al. (2005), propofol, humans |
 | 0 | 1.63 | 8.43 | 1.625 | yes | Sepúlveda et al. (2018), propofol, humans |
+| 0 | 2.85 | 8.53 | 2.045 | no | Friedman et al. (2010), halothane, mice |
 | 0.3 | 1.07 | 6.89 | 1.070 | yes | Warnaby et al. (2017), propofol, humans |
-| 0.3 | 1.08 | 7.18 | 1.079 | yes | Friedman et al. (2010), isoflurane, mice |
-| 0.3 | 1.11 | 7.93 | 1.109 | yes | Iwakiri et al. (2005), propofol, humans (reference target) |
+| 0.3 | 1.08 | 7.18 | 1.079 | yes | Friedman et al. (2010), isoflurane, mice (reference target) |
+| 0.3 | 1.11 | 7.93 | 1.109 | yes | Iwakiri et al. (2005), propofol, humans |
 | 0.3 | 1.63 | 11.92 | 1.627 | yes | Sepúlveda et al. (2018), propofol, humans |
+| 0.3 | 2.85 | 12.19 | 2.085 | no | Friedman et al. (2010), halothane, mice |
 | 0.5 | 1.07 | 8.49 | 1.069 | yes | Warnaby et al. (2017), propofol, humans |
-| 0.5 | 1.08 | 8.85 | 1.079 | yes | Friedman et al. (2010), isoflurane, mice |
-| 0.5 | 1.11 | 10.06 | 1.110 | yes | Iwakiri et al. (2005), propofol, humans (reference target) |
+| 0.5 | 1.08 | 8.85 | 1.079 | yes | Friedman et al. (2010), isoflurane, mice (reference target) |
+| 0.5 | 1.11 | 10.06 | 1.110 | yes | Iwakiri et al. (2005), propofol, humans |
 | 0.5 | 1.63 | 16.52 | 1.623 | yes | Sepúlveda et al. (2018), propofol, humans |
+| 0.5 | 2.85 | 17.07 | 2.213 | no | Friedman et al. (2010), halothane, mice |
 | 0.7 | 1.07 | 11.32 | 1.070 | yes | Warnaby et al. (2017), propofol, humans |
-| 0.7 | 1.08 | 12.08 | 1.079 | yes | Friedman et al. (2010), isoflurane, mice |
-| 0.7 | 1.11 | 14.13 | 1.109 | yes | Iwakiri et al. (2005), propofol, humans (reference target) |
+| 0.7 | 1.08 | 12.08 | 1.079 | yes | Friedman et al. (2010), isoflurane, mice (reference target) |
+| 0.7 | 1.11 | 14.13 | 1.109 | yes | Iwakiri et al. (2005), propofol, humans |
 | 0.7 | 1.63 | 27.06 | 1.627 | yes | Sepúlveda et al. (2018), propofol, humans |
+| 0.7 | 2.85 | 28.45 | 2.402 | no | Friedman et al. (2010), halothane, mice |
 
 ### B.4 Validation across network sizes
 
@@ -1462,8 +1466,8 @@ REFERENCE_INTEGRATION_WINDOW_MS = 3.0
 # variability between cortical areas has been measured, so the sensitivity analysis covers 1-10 ms.
 REFERENCE_BASELINE_JITTER_MS = 3.0
 # Free: share of the timing reference sustained by wake-active arousal systems. The measured
-# inertia ratios are reproduced at every level tested (calibrate_feedback.py), so they do not
-# determine it; the midpoint of the tested range is used and results are reported across it.
+# inertia ratios from 1.07 to 1.63 are reproduced at every level tested (calibrate_feedback.py), so
+# they do not determine it; the midpoint of the tested range is used and results are reported across it.
 REFERENCE_AROUSAL_LEVEL = 0.5
 # Measured: loss-to-recovery concentration ratio for isoflurane in mice (Friedman et al., 2010), the
 # reference target; the other published ratios give the sensitivity range (calibrate_feedback.py).
@@ -1482,7 +1486,9 @@ REFERENCE_CONCENTRATION_STEP = 0.01
 REFERENCE_LESION_FRACTION = 0.05
 # No feedback, then the values calibrated at the reference arousal level to each published
 # inertia ratio (calibrate_feedback.py): 1.07 (Warnaby et al., 2017), 1.08 (Friedman et al., 2010,
-# isoflurane), 1.11 (Iwakiri et al., 2005) and 1.63 (Sepulveda et al., 2018).
+# isoflurane), 1.11 (Iwakiri et al., 2005) and 1.63 (Sepulveda et al., 2018). The halothane ratio of
+# 2.85 (Friedman et al., 2010) is not reproduced at any arousal level: before the mean ratio reaches
+# it, some seeds no longer recover at zero concentration.
 REFERENCE_FEEDBACK_SERIES_MS = (0.0, 8.49, 8.85, 10.06, 16.52)
 # Free: share of arousal drive left after orexinergic neurons are lost (Kelz et al., 2008);
 # other arousal systems remain, so the share is partial rather than zero.
@@ -3221,15 +3227,15 @@ Every report records the machine, operating system, Python and package versions,
 
 | File | SHA-256 |
 |---|---|
-| `simulator/calibrate_feedback.py` | `741457cf62f7255f5aecd0913ef46483e634617c92286a446c8b5122cd25f767` |
+| `simulator/calibrate_feedback.py` | `fcdf7a99af69780b32150dbd9c12868165ce3d578fa27a6fc4ad6817ff56536f` |
 | `simulator/calibrate_phase_feedback.py` | `427cbedc68b9bf39030d5ceb1e483ae863a6e65b87343acac1c29bbb5c05250f` |
-| `simulator/calibration.py` | `eacc5faaef48a493f70a8359355e4e6afac9d0acd150221286d0ad3973622ec2` |
+| `simulator/calibration.py` | `7ea6348cdb8c88f692e6f61bec42de8d733a2d52b2d1cabfa09facd7323b1c6c` |
 | `simulator/congestion_study.py` | `2a5ce75670eaa049838768925d1df2e9bf4591e7e7938731373f7f1d16c3f73a` |
 | `simulator/connectomes.py` | `b6c0dfb53639d036ca42b1f9710afa944d5c29bb620ec7e584185ab363e35127` |
 | `simulator/convergence_study.py` | `b667648748e61d97043cc376238f7e5ff1b5bcd3afcfd78ef004979931c28d44` |
-| `simulator/dpc_simulator.py` | `692013943404bb9271683d374bba0a08b511a67ad7dc59b27d051dee987a0a07` |
+| `simulator/dpc_simulator.py` | `07f3b3f1828859c628f596f543d65e33c45403483d5696bd355d8f48fd856fdf` |
 | `simulator/excitatory_inhibitory.py` | `9dd9c862a90dd444e51e660ee716e42b363428ecf4aac2ba583d0effaed843bc` |
-| `simulator/explainer_export.py` | `ee3f22a65b1873c387442b8f21f73d8e7a338b2482c7ea9a39260e07586ea662` |
+| `simulator/explainer_export.py` | `665997c7c5dfb11b6306c30f736840c9bf74dbf3a665f681faf5b1fdf8a4f85e` |
 | `simulator/figures.py` | `15aad57577c0702e9c5f0616e4689dafcf42323c6b59221a1bdd8e104aacf717` |
 | `simulator/glial_regulation.py` | `1f026a6ceb6d92f47d84f291a156bce5d2fb4e134366a57b77c990c90c1d9f2c` |
 | `simulator/glial_study.py` | `88aec7c8cb884154737ba13390fe763b854e738b0ff8bed859f6f23c43813eb8` |
@@ -3241,7 +3247,7 @@ Every report records the machine, operating system, Python and package versions,
 | `simulator/provenance.py` | `94071e252347139bab3c5f113d52a38f65feaeaa0c03738ec8d81090c9139cb2` |
 | `simulator/reporting.py` | `de80a53d63e90383ed325db5098aea06b71b3f846d8368ddeb12347ce3c4470b` |
 | `simulator/results_catalogue.py` | `f3e82cd33873cc407bea9c6dc9158ea8286ee0d3c9983e6bcc51ac4281635305` |
-| `simulator/sensitivity_study.py` | `af5761ff98e4915c6060800970e75161225d8d3b8f0f1076fd32e4b99601c11e` |
+| `simulator/sensitivity_study.py` | `b2b548e25d2b6b28215c161611003844674865c971db093cb483b41af96945fd` |
 | `simulator/species_study.py` | `f68310bd49f5e36700c57cca19b82a7e097186d38481ae0843edfc75f2503f8e` |
 | `simulator/validation_study.py` | `e0cd77946cfd8269d64fb91d2fdfe1465b6654ca3b72743903a00af9421492b3` |
 

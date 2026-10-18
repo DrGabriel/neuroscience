@@ -57,8 +57,8 @@ REFERENCE_INTEGRATION_WINDOW_MS = 3.0
 # variability between cortical areas has been measured, so the sensitivity analysis covers 1-10 ms.
 REFERENCE_BASELINE_JITTER_MS = 3.0
 # Free: share of the timing reference sustained by wake-active arousal systems. The measured
-# inertia ratios are reproduced at every level tested (calibrate_feedback.py), so they do not
-# determine it; the midpoint of the tested range is used and results are reported across it.
+# inertia ratios from 1.07 to 1.63 are reproduced at every level tested (calibrate_feedback.py), so
+# they do not determine it; the midpoint of the tested range is used and results are reported across it.
 REFERENCE_AROUSAL_LEVEL = 0.5
 # Measured: loss-to-recovery concentration ratio for isoflurane in mice (Friedman et al., 2010), the
 # reference target; the other published ratios give the sensitivity range (calibrate_feedback.py).
@@ -77,7 +77,9 @@ REFERENCE_CONCENTRATION_STEP = 0.01
 REFERENCE_LESION_FRACTION = 0.05
 # No feedback, then the values calibrated at the reference arousal level to each published
 # inertia ratio (calibrate_feedback.py): 1.07 (Warnaby et al., 2017), 1.08 (Friedman et al., 2010,
-# isoflurane), 1.11 (Iwakiri et al., 2005) and 1.63 (Sepulveda et al., 2018).
+# isoflurane), 1.11 (Iwakiri et al., 2005) and 1.63 (Sepulveda et al., 2018). The halothane ratio of
+# 2.85 (Friedman et al., 2010) is not reproduced at any arousal level: before the mean ratio reaches
+# it, some seeds no longer recover at zero concentration.
 REFERENCE_FEEDBACK_SERIES_MS = (0.0, 8.49, 8.85, 10.06, 16.52)
 # Free: share of arousal drive left after orexinergic neurons are lost (Kelz et al., 2008);
 # other arousal systems remain, so the share is partial rather than zero.
