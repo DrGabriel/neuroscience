@@ -183,12 +183,14 @@ def design_for(task: RunTask) -> dynamics.SweepDesign:
     return design
 
 
-def run_task(task: RunTask) -> RunSummary:
+def run_task(task: RunTask, design: dynamics.SweepDesign | None = None) -> RunSummary:
+    """One sweep. design replaces design_for(task) when a caller, such as the convergence study, has already
+    adjusted the organism's numerical settings and must not have them reapplied."""
     started = time.perf_counter()
     connectome = load_connectome(task.organism)
     if task.condition.rewired:
         connectome = connectome.rewired(task.seed)
-    record = dynamics.run_induction_emergence(connectome, design_for(task))
+    record = dynamics.run_induction_emergence(connectome, design or design_for(task))
     unconscious = record.first_unconscious
     awake = record.induction[0]
     return RunSummary(

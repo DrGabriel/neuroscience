@@ -1,6 +1,6 @@
 """Pre-registered tests on fresh seeds: K2 (ketamine's timing faults on feedback connections) and P1c.
 
-The tests, their conditions, the seeds and the pass rule were written into the paper (Appendix D.9)
+The tests, their conditions, the seeds and the pass rule were written into the paper (Appendix C.7)
 before this study was first run. Seeds start at BASE_SEED + SEED_OFFSET, which no earlier run used.
 A test passes for an organism when it holds in at least PASS_SHARE of that organism's seeds.
 

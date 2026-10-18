@@ -1,10 +1,13 @@
-"""Numerical convergence of the phase-oscillator results on the human connectome.
+"""Numerical convergence of the phase-oscillator results on the human and Drosophila connectomes.
 
 The species study integrates each concentration step for a fixed simulated time with a fixed
-Euler-Maruyama step. This study repeats its GABAergic-like and sensory-stimulus conditions with
-twice the simulated time, and with half the step over the same simulated time, and reports how
-much the loss concentration and the broadcast ratios change. Results that move by much less
-than their spread across seeds do not depend on the numerical settings.
+Euler-Maruyama step; Drosophila runs settle for fewer steps than the others (calibration.py).
+This study repeats the GABAergic-like and sensory-stimulus conditions, starting from each
+organism's own numerical settings, with twice the simulated time and with half the step over
+the same simulated time, and reports how much the loss concentration and the broadcast ratios
+change. Results that move by much less than their spread across seeds do not depend on the
+numerical settings, and a hysteresis that survives twice the settling time is not an artefact
+of changing the concentration too fast.
 
 Usage: ../.venv/bin/python convergence_study.py [--quick]
 """
@@ -24,10 +27,11 @@ import reporting
 import species_study
 from species_study import ConditionName, RunSummary
 
-ORGANISM = "human"
 CONDITIONS = (ConditionName.GABAERGIC, ConditionName.SENSORY_STIMULUS)
-FULL_SEEDS, QUICK_SEEDS = 5, 1
-REPORTED_PACKAGES = ("numpy", "scipy")
+# A Drosophila run takes about 25 minutes at the reference settings and twice that with either change.
+FULL_SEEDS = {"human": 5, "drosophila": 2}
+QUICK_SEEDS = {"human": 1}
+REPORTED_PACKAGES = ("numpy", "scipy", "pyarrow")
 
 
 def longer(settings: dynamics.IntegrationSettings) -> dynamics.IntegrationSettings:
@@ -50,22 +54,39 @@ VARIANTS: dict[str, Callable[[dynamics.IntegrationSettings], dynamics.Integratio
 
 @dataclass(frozen=True)
 class ConvergenceTask:
+    organism: str
     variant: str
     condition: species_study.Condition
     seed: int
 
 
-def run(task: ConvergenceTask) -> tuple[str, RunSummary]:
-    return task.variant, species_study.run_task(species_study.RunTask(ORGANISM, task.condition, task.seed))
+@dataclass(frozen=True)
+class ConvergenceRun:
+    organism: str
+    variant: str
+    summary: RunSummary
 
 
-def tasks_for(seeds: int, integration: dynamics.IntegrationSettings) -> list[ConvergenceTask]:
-    tasks = []
-    for variant, change in VARIANTS.items():
-        for condition in species_study.build_conditions(change(integration)):
-            if condition.name in CONDITIONS:
-                tasks.extend(ConvergenceTask(variant, condition, cal.BASE_SEED + index) for index in range(seeds))
-    return tasks
+def variant_design(task: ConvergenceTask) -> dynamics.SweepDesign:
+    """The organism's own design, then the variant's change to its integration, so that no setting is capped back."""
+    design = species_study.design_for(species_study.RunTask(task.organism, task.condition, task.seed))
+    return replace(design, integration=VARIANTS[task.variant](design.integration))
+
+
+def run(task: ConvergenceTask) -> ConvergenceRun:
+    base = species_study.RunTask(task.organism, task.condition, task.seed)
+    return ConvergenceRun(task.organism, task.variant, species_study.run_task(base, variant_design(task)))
+
+
+def tasks_for(seeds: dict[str, int], integration: dynamics.IntegrationSettings) -> list[ConvergenceTask]:
+    conditions = [c for c in species_study.build_conditions(integration) if c.name in CONDITIONS]
+    return [
+        ConvergenceTask(organism, variant, condition, cal.BASE_SEED + index)
+        for organism, count in seeds.items()
+        for variant in VARIANTS
+        for condition in conditions
+        for index in range(count)
+    ]
 
 
 QUANTITIES: tuple[tuple[str, str, str], ...] = (
@@ -75,12 +96,19 @@ QUANTITIES: tuple[tuple[str, str, str], ...] = (
 )
 
 
-def table(results: Sequence[tuple[str, RunSummary]]) -> list[str]:
-    rows = [
-        [label, *[reporting.describe([getattr(r, field) for v, r in results if v == variant and r.condition == condition]) for variant in VARIANTS]]
-        for label, condition, field in QUANTITIES
-    ]
+def table(runs: Sequence[ConvergenceRun], organism: str) -> list[str]:
+    def values(variant: str, condition: str, field: str) -> list[float | None]:
+        return [getattr(r.summary, field) for r in runs if r.organism == organism and r.variant == variant and r.summary.condition == condition]
+
+    rows = [[label, *[reporting.describe(values(variant, condition, field)) for variant in VARIANTS]] for label, condition, field in QUANTITIES]
     return reporting.markdown_table(["Quantity (mean ± SD across seeds)", *VARIANTS], rows)
+
+
+def tables(runs: Sequence[ConvergenceRun], organisms: Sequence[str]) -> list[str]:
+    lines = []
+    for organism in organisms:
+        lines += [f"### Phase model on the {cal.ORGANISMS[organism].display_name} connectome: reference settings against longer and finer integration", "", *table(runs, organism), ""]
+    return lines
 
 
 def main(arguments: Sequence[str]) -> int:
@@ -88,27 +116,25 @@ def main(arguments: Sequence[str]) -> int:
     parser.add_argument("--quick", action="store_true")
     quick = parser.parse_args(arguments).quick
     integration = cal.QUICK_INTEGRATION if quick else cal.FULL_INTEGRATION
+    seeds = QUICK_SEEDS if quick else FULL_SEEDS
     started = datetime.now(timezone.utc)
-    live = reporting.ParallelRun("convergence", cal.ORGANISMS[ORGANISM].worker_processes, live_markdown=lambda done: "\n".join(table(done)))
-    results = reporting.run_in_parallel(run, tasks_for(QUICK_SEEDS if quick else FULL_SEEDS, integration), live)
+    tasks = tasks_for(seeds, integration)
+    runs: list[ConvergenceRun] = []
+    for organism in seeds:
+        live = reporting.ParallelRun(f"convergence: {cal.ORGANISMS[organism].display_name}", cal.ORGANISMS[organism].worker_processes, live_markdown=lambda done, o=organism: "\n".join(table(done, o)))
+        runs.extend(reporting.run_in_parallel(run, [t for t in tasks if t.organism == organism], live))
     document = {
         "label": "quick" if quick else "full",
         "started_utc": started.isoformat(),
         "finished_utc": datetime.now(timezone.utc).isoformat(),
         "provenance": provenance.collect(provenance.loaded_sources(), REPORTED_PACKAGES),
         "reference_integration": asdict(integration),
-        "runs": [{"variant": variant, "run": asdict(summary)} for variant, summary in results],
+        "seeds": seeds,
+        "runs": [{"organism": r.organism, "variant": r.variant, "run": asdict(r.summary)} for r in runs],
     }
-    markdown = "\n".join([
-        *reporting.run_metadata_section(document, provenance.markdown_rows(document["provenance"])),
-        f"### Phase model on the {cal.ORGANISMS[ORGANISM].display_name} connectome: reference settings against longer and finer integration",
-        "",
-        *table(results),
-        "",
-    ])
+    markdown = "\n".join([*reporting.run_metadata_section(document, provenance.markdown_rows(document["provenance"])), *tables(runs, list(seeds))])
     reporting.publish("convergence", document, markdown)
     return 0
-
 
 if __name__ == "__main__":
     sys.exit(main(sys.argv[1:]))

@@ -308,6 +308,14 @@ class ConnectomeTests(unittest.TestCase):
 
 
 class ConvergenceSettingsTests(unittest.TestCase):
+    def test_longer_fly_runs_are_not_capped_back_to_the_fly_settling_time_regression(self) -> None:
+        import convergence_study
+
+        task = next(t for t in convergence_study.tasks_for({"drosophila": 1}, cal.FULL_INTEGRATION) if t.variant == "twice the simulated time")
+        design = convergence_study.variant_design(task)
+        self.assertEqual(design.integration.relaxation_steps, 2 * cal.DROSOPHILA_RELAXATION_STEPS)
+        self.assertEqual(design.grid.step, cal.DROSOPHILA_CONCENTRATION_STEP)
+
     def test_finer_integration_covers_the_same_simulated_time(self) -> None:
         import convergence_study
 
