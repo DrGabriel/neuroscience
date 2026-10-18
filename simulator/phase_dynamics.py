@@ -111,6 +111,9 @@ class SweepDesign:
     stimulus: SensoryStimulus | None = None
     # When set, constant conduction delays (tract length / velocity) enter as fixed phase lags.
     conduction_velocity_m_per_s: float | None = None
+    # When set, connections are signed by this rule (connectomes.FLYWIRE_INHIBITORY_TRANSMITTERS):
+    # inhibitory connections (sign -1) push phases apart instead of together.
+    sign_rule: str | None = None
 
 
 # ---------------------------------------------------------------------------
@@ -203,6 +206,7 @@ class ConnectionImpairment:
         self._baseline_weights, self._agent_weights = jitter_weights(connectome, design.jitter_scaling)
         self._delays_ms = conduction_delays_ms(connectome, design)
         self._jitter_dynamics = design.jitter_dynamics
+        self._weights = signed_weights(connectome, design)
 
     def at(self, concentration: float) -> ImpairedConnectivity:
         """Timing errors are converted to phase at the reference rate in force at this concentration."""
@@ -219,10 +223,19 @@ class ConnectionImpairment:
         return ImpairedConnectivity(
             sources=self._connectome.sources[transmits],
             targets=self._connectome.targets[transmits],
-            weights=self._connectome.weights[transmits],
+            weights=self._weights[transmits],
             fixed_lags=fixed_lags[transmits],
             jitter_sd=np.broadcast_to(jitter_sd, transmits.shape)[transmits],
         )
+
+
+def signed_weights(connectome: Connectome, design: SweepDesign) -> np.ndarray:
+    """Connection weights, negative for inhibitory connections when a sign rule is used."""
+    if design.sign_rule is None:
+        return connectome.weights
+    if design.sign_rule not in connectome.signs:
+        raise ValueError(f"{connectome.name} has no connection signs for rule {design.sign_rule!r}")
+    return connectome.weights * connectome.signs[design.sign_rule]
 
 
 def reference_frequency_hz(dynamics: PopulationDynamics, agent: AnaestheticAgent, concentration: float) -> float:
@@ -271,6 +284,7 @@ class SynapticDrive:
     def __init__(
         self, connectome: Connectome, coupling: float, connectivity: ImpairedConnectivity, rng: np.random.Generator
     ) -> None:
+        # Normalised by the total strength of all intact inputs, excitatory and inhibitory alike.
         in_strength = np.bincount(connectome.targets, weights=connectome.weights, minlength=connectome.node_count)
         self._gain = np.divide(coupling, in_strength, out=np.zeros_like(in_strength), where=in_strength > 0)
         self._connectivity = connectivity

@@ -22,7 +22,7 @@ flowchart LR
 
 The feedback loop in the diagram makes the transition bistable. As a result, the model predicts that consciousness returns at a lower concentration than the one at which it was lost. This hysteresis is observed experimentally and is known as neural inertia.
 
-- **Paper:** [`white_paper_anesthesia_consensus.md`](white_paper_anesthesia_consensus.md)
+- **Paper:** [`white_paper_anesthesia_consensus.md`](white_paper_anesthesia_consensus.md) (Brazilian Portuguese translation: [`.pt-BR.md`](white_paper_anesthesia_consensus.pt-BR.md), [PDF](white_paper_anesthesia_consensus.pt-BR.pdf))
 - **Falsifiable predictions:** Section 7 of the paper
 - **Simulations and results:** Appendices C and D of the paper and the [`simulator/`](simulator/) directory
 
@@ -31,6 +31,7 @@ The feedback loop in the diagram makes the transition bistable. As a result, the
 | Path | Contents |
 |---|---|
 | [`white_paper_anesthesia_consensus.md`](white_paper_anesthesia_consensus.md) | Hypothesis and theory paper, with results and code listings in Appendices C and D |
+| [`white_paper_anesthesia_consensus.pt-BR.md`](white_paper_anesthesia_consensus.pt-BR.md), [`.pdf`](white_paper_anesthesia_consensus.pt-BR.pdf) | Brazilian Portuguese translation of the paper, for review; the English text is authoritative. References and Appendices C and D are not translated |
 | [`figures/`](figures/) | Figures of the paper, generated from the result files |
 | [`simulator/`](simulator/) | Models, studies and tests (below) |
 | [`simulator/results/`](simulator/results/) | Every study's report: JSON with every measurement, and a Markdown summary, each recording machine, software, timestamps and source hashes |
@@ -43,6 +44,7 @@ The feedback loop in the diagram makes the transition bistable. As a result, the
 | File | Model |
 |---|---|
 | [`dpc_simulator.py`](simulator/dpc_simulator.py) | Percolation model of the hypothesis (Section 4); standard library only |
+| [`glial_regulation.py`](simulator/glial_regulation.py) | Glial extensions of the percolation model: myelin, microglia and astrocytes (postulate P9); standard library only |
 | [`phase_dynamics.py`](simulator/phase_dynamics.py) | Phase-oscillator (Kuramoto-Sakaguchi) model on empirical connectomes |
 | [`excitatory_inhibitory.py`](simulator/excitatory_inhibitory.py) | Wilson-Cowan excitatory-inhibitory model, used to test the congestion account |
 | [`plant_tissue.py`](simulator/plant_tissue.py) | FitzHugh-Nagumo excitable tissue, the cellular control |
@@ -55,6 +57,7 @@ The feedback loop in the diagram makes the transition bistable. As a result, the
 |---|---|
 | [`calibrate_feedback.py`](simulator/calibrate_feedback.py) | Calibrates the percolation model to published neural-inertia ratios |
 | [`validation_study.py`](simulator/validation_study.py) | Tests the model's claims across network sizes from 302 to 1,000,000 nodes |
+| [`glial_study.py`](simulator/glial_study.py) | Tests the glial predictions of postulate P9 across network sizes |
 | [`percolation_thresholds.py`](simulator/percolation_thresholds.py) | Quorum thresholds of the three connectomes: formula against measurement |
 | [`calibrate_phase_feedback.py`](simulator/calibrate_phase_feedback.py) | Attempted calibration of the oscillator model's feedback |
 | [`sensitivity_study.py`](simulator/sensitivity_study.py) | Varies every free parameter one at a time |
@@ -100,7 +103,7 @@ The simulations show that the formal model is internally consistent and produces
 ## Authors
 
 - Gabriel Santos de Oliveira, software engineer and independent researcher. ORCID: [0009-0003-9528-9731](https://orcid.org/0009-0003-9528-9731). Lattes CV: [lattes.cnpq.br/2102695116731989](https://lattes.cnpq.br/2102695116731989). BSc in Computer Science, Universidade Federal Rural do Rio de Janeiro (UFRRJ), Brazil, 2015–2021.
-- Callina Gertrudes Ferreira, undergraduate student of psychology, Universidade Veiga de Almeida (UVA), Brazil, since February 2025. ORCID: [0009-0002-8512-213X](https://orcid.org/0009-0002-8512-213X).
+- Callina Gertrudes Ferreira, undergraduate student of psychology, Universidade Veiga de Almeida (UVA), Brazil, since February 2025. ORCID: [0009-0002-8512-213X](https://orcid.org/0009-0002-8512-213X). Lattes CV: [lattes.cnpq.br/2112739936897542](https://lattes.cnpq.br/2112739936897542).
 
 ## Citing this work
 

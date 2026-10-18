@@ -32,6 +32,8 @@ class OrganismSpec:
     # Numerical resolution for the full study; None keeps the study-wide setting.
     concentration_step: float | None = None
     relaxation_steps: int | None = None
+    # Whether the dataset gives transmitter identity, so connections can be signed.
+    has_connection_signs: bool = False
 
 
 # Numerical: the fly connectome has 2.7 million connections, about 80 ms per integration step on
@@ -49,6 +51,7 @@ ORGANISMS: dict[str, OrganismSpec] = {
         worker_processes=6,
         concentration_step=DROSOPHILA_CONCENTRATION_STEP,
         relaxation_steps=DROSOPHILA_RELAXATION_STEPS,
+        has_connection_signs=True,
     ),
     "human": OrganismSpec("Human", has_tract_lengths=True, full_study_seeds=20, worker_processes=10),
 }

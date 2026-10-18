@@ -162,6 +162,34 @@ class DriveTests(unittest.TestCase):
             dynamics.jitter_weights(all_to_all(RING_SIZE), dynamics.JitterScaling.CONDUCTION_LENGTH)
 
 
+class SignedConnectionTests(unittest.TestCase):
+    def test_inhibitory_connections_get_negative_weight(self) -> None:
+        connectome = all_to_all(4)
+        signs = np.where(connectome.sources == 0, -1, 1).astype(np.int8)
+        signed = replace(connectome, signs={"rule": signs})
+        weights = dynamics.signed_weights(signed, design(sign_rule="rule"))
+        self.assertTrue(np.all(weights[connectome.sources == 0] < 0))
+        self.assertTrue(np.all(weights[connectome.sources != 0] > 0))
+
+    def test_unknown_sign_rule_is_rejected(self) -> None:
+        with self.assertRaises(ValueError):
+            dynamics.signed_weights(all_to_all(4), design(sign_rule="missing"))
+
+    def test_dominant_transmitter_decides_the_sign(self) -> None:
+        pairs = connectomes.NeuronPairs(
+            pair_of_row=np.array([0, 0, 1]), kept=np.array([True, True]),
+            sources=np.array([0, 1]), targets=np.array([1, 0]), synapses=np.array([10.0, 5.0]),
+        )
+        synapses = np.array([6.0, 4.0, 5.0])
+        probabilities = {name: np.zeros(3) for name in connectomes.FLYWIRE_TRANSMITTERS}
+        probabilities["gaba"] = np.array([0.9, 0.1, 0.0])
+        probabilities["ach"] = np.array([0.1, 0.9, 0.0])
+        probabilities["glut"] = np.array([0.0, 0.0, 1.0])
+        signs = connectomes.connection_signs(pairs, synapses, probabilities)
+        self.assertEqual(signs[connectomes.SIGN_RULE_GABA].tolist(), [-1, 1])
+        self.assertEqual(signs[connectomes.SIGN_RULE_GABA_AND_GLUTAMATE].tolist(), [-1, -1])
+
+
 class PhaseSweepIntegrationTests(unittest.TestCase):
     def test_awake_network_is_coherent_and_agent_abolishes_quorum(self) -> None:
         sweep = dynamics.run_induction_emergence(all_to_all(RING_SIZE), design())

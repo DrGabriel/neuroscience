@@ -189,6 +189,22 @@ class ReportAssemblyTests(unittest.TestCase):
         self.assertIn("Dataset", markdown)
 
 
+class FallbackComparisonTests(unittest.TestCase):
+    def test_gains_and_the_jitter_comparison(self) -> None:
+        import species_study
+
+        comparison = species_study.FallbackComparison("human", 1, 1.0, 1.1, 0.6, 0.8)
+        self.assertAlmostEqual(comparison.gabaergic_gain, 0.1)
+        self.assertAlmostEqual(comparison.nmda_gain, 0.2)
+        self.assertTrue(species_study.larger_gain_against_jitter(comparison))
+
+    def test_comparison_is_undefined_when_a_loss_is_missing(self) -> None:
+        import species_study
+
+        comparison = species_study.FallbackComparison("human", 1, None, 1.1, 0.6, 0.8)
+        self.assertIsNone(species_study.larger_gain_against_jitter(comparison))
+
+
 class FlyWireTests(unittest.TestCase):
     @unittest.skipUnless(connectomes.DROSOPHILA.path.exists(), "FlyWire data not downloaded")
     def test_flywire_matches_the_published_connection_count(self) -> None:

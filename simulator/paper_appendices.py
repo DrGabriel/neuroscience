@@ -18,7 +18,7 @@ import reporting
 PAPER = provenance.SIMULATOR_DIRECTORY.parent / "white_paper_anesthesia_consensus.md"
 APPENDIX_C_HEADING = "## Appendix C: Computational reference simulator (percolation model)"
 SEPARATOR = "\n---\n\n"
-LISTED_SOURCES = ("dpc_simulator.py", "validation_study.py")
+LISTED_SOURCES = ("dpc_simulator.py", "validation_study.py", "glial_regulation.py")
 REPORT_HEADING_LEVEL = "#### "
 
 
@@ -57,9 +57,9 @@ The percolation model implements Section 4 exactly as written. The studies below
 
 | Component | Method | Reference |
 |---|---|---|
-| Homogeneous network | Erdős-Rényi $G(n, m)$ random graph | Erdős & Rényi (1959) |
-| Hub-dominated network | Barabási-Albert preferential attachment | Barabási & Albert (1999) |
-| Giant component $F(\\pi)$ | Newman-Ziff algorithm: edges added in random order, giving the giant-component fraction for every $\\pi$ in one pass | Newman & Ziff (2000) |
+| Homogeneous network | Erdős-Rényi $G(n, m)$ random graph | Erdős and Rényi (1959) |
+| Hub-dominated network | Barabási-Albert preferential attachment | Barabási and Albert (1999) |
+| Giant component $F(\\pi)$ | Newman-Ziff algorithm: edges added in random order, giving the giant-component fraction for every $\\pi$ in one pass | Newman and Ziff (2000) |
 | Connected components | Union-find with union by size and path compression | Tarjan (1975) |
 | Self-consistent state | Fixed-point iteration of $S = F(\\pi(c, S))$ from the previous state, so that induction and emergence follow their own branches | Section 4.3 |
 | Dose-response | Hill equation | Hill (1910) |
@@ -75,7 +75,7 @@ Source: `simulator/results/{report_name("calibration_feedback")}`.
 
 ### C.4 Validation across network sizes
 
-Claims C1-C7 are properties the paper attributes to the model; observations O1-O2 and extension tests E1-E3 are reported without entering the verdict. Source: `simulator/results/{report_name("validation")}`.
+Network sizes run from 302 nodes, the number of *C. elegans* neurons (White et al., 1986), and 1,000, the finest common cortical parcellation (Schaefer et al., 2018), to 1,000,000. Claims C1-C7 are properties the paper attributes to the model; observations O1-O2 and extension tests E1-E3 are reported without entering the verdict. Source: `simulator/results/{report_name("validation")}`.
 
 {latest_report("validation")}
 
@@ -91,13 +91,23 @@ Each free parameter is varied with the others held at their reference values. So
 
 {latest_report("sensitivity")}
 
-### C.7 Listing: `simulator/dpc_simulator.py`
+### C.7 Glial regulation (postulate P9)
+
+The glial extensions of Section 4.6 run on the same networks and seeds. The checks were fixed before the multi-seed run; a single exploratory seed at N = 1,000 was run beforehand to confirm that the code executes, and its results were seen before the checks were written, so the checks are not blind to the direction of the effects. Source: `simulator/results/{report_name("glia")}`.
+
+{latest_report("glia")}
+
+### C.8 Listing: `simulator/dpc_simulator.py`
 
 {listing("dpc_simulator.py")}
 
-### C.8 Listing: `simulator/validation_study.py`
+### C.9 Listing: `simulator/validation_study.py`
 
 {listing("validation_study.py")}
+
+### C.10 Listing: `simulator/glial_regulation.py`
+
+{listing("glial_regulation.py")}
 """
 
 
@@ -106,7 +116,7 @@ def appendix_d() -> str:
 
 ### D.1 Methods
 
-The phase-oscillator model (`simulator/phase_dynamics.py`) is run on three empirical connectomes (`simulator/connectomes.py`): *C. elegans* (OpenWorm c302 edge list, derived from Cook et al., 2019), adult *Drosophila* (FlyWire v783, Dorkenwald et al., 2024; connections of at least five synapses) and a 998-region human structural connectome (Hagmann et al., 2008; Sanz Leon et al., 2013). Each dataset is checked against a pinned SHA-256 digest before use. All parameters, with their basis, are listed in `simulator/calibration.py`. The congestion test uses Wilson-Cowan excitatory-inhibitory populations (Wilson & Cowan, 1972) with the local parameters and plasticity rule of Abeysuriya et al. (2018), on the human connectome with measured conduction delays (`simulator/excitatory_inhibitory.py`). Plant tissue is a sheet of FitzHugh-Nagumo cells (FitzHugh, 1961; Nagumo et al., 1962) coupled through junctions (`simulator/plant_tissue.py`). Pre-specified tests were fixed before the runs that evaluate them; post hoc analyses are labelled as such and do not enter any verdict.
+The phase-oscillator model (`simulator/phase_dynamics.py`), a Kuramoto-Sakaguchi network (Kuramoto, 1984; Sakaguchi and Kuramoto, 1986) of the kind used for large-scale brain dynamics (Cabral et al., 2011; Breakspear, 2017), is run on three empirical connectomes (`simulator/connectomes.py`): *C. elegans* (OpenWorm c302 edge list of the complete hermaphrodite wiring diagram, derived from Cook et al., 2019; 448 nodes, comprising the 302 neurons and the muscles and other cells they synapse onto), adult *Drosophila* (FlyWire v783, Dorkenwald et al., 2024, with synapses detected by Buhmann et al., 2021, and Heinrich et al., 2018, and transmitters predicted by Eckstein et al., 2024; connections of at least five synapses) and a 998-region human structural connectome (Hagmann et al., 2008; Sanz Leon et al., 2013). Each dataset is checked against a pinned SHA-256 digest before use. All parameters, with their basis, are listed in `simulator/calibration.py`. The congestion test uses Wilson-Cowan excitatory-inhibitory populations (Wilson and Cowan, 1972) with the local parameters and inhibitory plasticity rule of Abeysuriya et al. (2018), after Vogels et al. (2011), on the human connectome; synchrony is measured with the index of Golomb and Rinzel (1993) with measured conduction delays (`simulator/excitatory_inhibitory.py`). Plant tissue is a sheet of FitzHugh-Nagumo cells (FitzHugh, 1961; Nagumo et al., 1962) coupled through junctions (`simulator/plant_tissue.py`); on a square lattice the bond-percolation threshold is exactly 1/2 (Kesten, 1980). Pre-specified tests were fixed before the runs that evaluate them; post hoc analyses are labelled as such and do not enter any verdict.
 
 ### D.2 Oscillator feedback calibration
 
@@ -152,7 +162,7 @@ Source: `simulator/results/{report_name("congestion", "confirmatory")}`.
 cd simulator
 python3 -m venv ../.venv && ../.venv/bin/pip install -r requirements.txt
 ../.venv/bin/python -m unittest discover -s tests -t .
-python3 calibrate_feedback.py && python3 validation_study.py
+python3 calibrate_feedback.py && python3 validation_study.py && python3 glial_study.py
 ../.venv/bin/python percolation_thresholds.py
 ../.venv/bin/python calibrate_phase_feedback.py
 ../.venv/bin/python sensitivity_study.py

@@ -51,6 +51,9 @@ class ConditionName(StrEnum):
     CONDUCTION_DELAYS = "GABAergic-like, conduction delays"
     KETAMINE_PATHWAYS = "NMDA-antagonist-like on sensory pathways, sensory stimulus"
     ADAPTIVE_RATE = "GABAergic-like, adaptive reference rate"
+    NMDA_ADAPTIVE_RATE = "NMDA-antagonist-like, adaptive reference rate"
+    SIGNED = "GABAergic-like, signed connections (GABA inhibitory)"
+    SIGNED_WITH_GLUTAMATE = "GABAergic-like, signed connections (GABA and glutamate inhibitory)"
 
 
 @dataclass(frozen=True)
@@ -68,6 +71,7 @@ def build_conditions(integration: dynamics.IntegrationSettings) -> tuple[Conditi
     without_feedback = replace(cal.POPULATION_DYNAMICS, reference_feedback=0.0)
     with_fallback = replace(cal.POPULATION_DYNAMICS, fallback_frequency_hz=cal.ALPHA_FALLBACK_FREQUENCY_HZ)
     with_tract_lengths = tuple(organism for organism in cal.ORGANISMS if cal.ORGANISMS[organism].has_tract_lengths)
+    with_connection_signs = tuple(organism for organism in cal.ORGANISMS if cal.ORGANISMS[organism].has_connection_signs)
     return (
         Condition(ConditionName.GABAERGIC, base, every_organism),
         Condition(ConditionName.NMDA_ANTAGONIST, replace(base, agent=cal.NMDA_ANTAGONIST_AGENT), every_organism),
@@ -78,6 +82,17 @@ def build_conditions(integration: dynamics.IntegrationSettings) -> tuple[Conditi
         ),
         Condition(ConditionName.NO_REFERENCE_FEEDBACK, replace(base, dynamics=without_feedback), every_organism),
         Condition(ConditionName.ADAPTIVE_RATE, replace(base, dynamics=with_fallback), every_organism),
+        Condition(
+            ConditionName.NMDA_ADAPTIVE_RATE,
+            replace(base, agent=cal.NMDA_ANTAGONIST_AGENT, dynamics=with_fallback),
+            every_organism,
+        ),
+        Condition(ConditionName.SIGNED, replace(base, sign_rule=connectomes.SIGN_RULE_GABA), with_connection_signs),
+        Condition(
+            ConditionName.SIGNED_WITH_GLUTAMATE,
+            replace(base, sign_rule=connectomes.SIGN_RULE_GABA_AND_GLUTAMATE),
+            with_connection_signs,
+        ),
         Condition(ConditionName.SENSORY_STIMULUS, replace(base, stimulus=cal.SENSORY_STIMULUS), every_organism),
         Condition(
             ConditionName.NMDA_CONDUCTION_LENGTH_JITTER,
@@ -279,47 +294,83 @@ PILLARS = (
 # Reported, not part of the verdict. Neural inertia is tested by the percolation model, where
 # it is calibrated; in the oscillator model it stayed within run-to-run noise (calibration.py).
 @dataclass(frozen=True)
-class PairedLoss:
-    """Loss concentrations of the same organism and seed under a fixed and an adaptive reference rate."""
+class FallbackComparison:
+    """Loss concentrations of one organism and seed with a fixed and an adaptive reference rate, for both agents."""
 
     organism: str
     seed: int
-    fixed_rate: float | None
-    adaptive_rate: float | None
+    gabaergic_fixed: float | None
+    gabaergic_adaptive: float | None
+    nmda_fixed: float | None
+    nmda_adaptive: float | None
+
+    @property
+    def gabaergic_gain(self) -> float | None:
+        return gain(self.gabaergic_fixed, self.gabaergic_adaptive)
+
+    @property
+    def nmda_gain(self) -> float | None:
+        return gain(self.nmda_fixed, self.nmda_adaptive)
 
 
-def paired_losses(runs: Sequence[RunSummary]) -> list[PairedLoss]:
-    by_key = {(r.organism, r.condition, r.seed): r for r in runs}
-    pairs = []
-    for (organism, condition, seed), run in by_key.items():
-        adaptive = by_key.get((organism, ConditionName.ADAPTIVE_RATE, seed))
-        if condition == ConditionName.GABAERGIC and adaptive is not None:
-            pairs.append(PairedLoss(organism, seed, run.loss_concentration, adaptive.loss_concentration))
-    return pairs
+def gain(fixed: float | None, adaptive: float | None) -> float | None:
+    """Rise in the loss concentration produced by the adaptive rate; undefined if either loss is."""
+    return None if fixed is None or adaptive is None else adaptive - fixed
 
 
-def fallback_delays_loss(pair: PairedLoss) -> bool | None:
-    """P8: slowing the reference raises the concentration at which quorum is lost; undefined if never lost."""
-    if pair.fixed_rate is None or pair.adaptive_rate is None:
+FALLBACK_CONDITIONS = (
+    ConditionName.GABAERGIC, ConditionName.ADAPTIVE_RATE, ConditionName.NMDA_ANTAGONIST, ConditionName.NMDA_ADAPTIVE_RATE,
+)
+
+
+def fallback_comparisons(runs: Sequence[RunSummary]) -> list[FallbackComparison]:
+    by_key = {(r.organism, r.condition, r.seed): r.loss_concentration for r in runs}
+    keys = {(r.organism, r.seed) for r in runs}
+    comparisons = []
+    for organism, seed in sorted(keys):
+        losses = [by_key.get((organism, condition, seed), MISSING) for condition in FALLBACK_CONDITIONS]
+        if MISSING not in losses:
+            comparisons.append(FallbackComparison(organism, seed, *losses))
+    return comparisons
+
+
+MISSING = object()
+
+
+def larger_gain_against_jitter(comparison: FallbackComparison) -> bool | None:
+    if comparison.gabaergic_gain is None or comparison.nmda_gain is None:
         return None
-    return pair.adaptive_rate > pair.fixed_rate
+    return comparison.nmda_gain > comparison.gabaergic_gain
 
 
-FALLBACK_TEST = reporting.Check(
-    "F1", "Adaptive reference rate (P8) raises the loss concentration, paired by organism and seed", fallback_delays_loss
+FALLBACK_TESTS = (
+    reporting.Check(
+        "F1", "Adaptive reference rate (P8) raises the loss concentration, GABAergic-like agent, paired by seed",
+        lambda c: None if c.gabaergic_gain is None else c.gabaergic_gain > 0,
+    ),
+    reporting.Check(
+        "F2", "Adaptive reference rate (P8) raises the loss concentration, NMDA-antagonist-like agent, paired by seed",
+        lambda c: None if c.nmda_gain is None else c.nmda_gain > 0,
+    ),
+    reporting.Check(
+        "F3", "The adaptive rate protects more against the jitter-type than the failure-type agent, paired by seed",
+        larger_gain_against_jitter,
+    ),
 )
 
 
 def evaluate_fallback(runs: Sequence[RunSummary], organisms: Sequence[str]) -> list[reporting.CheckOutcome]:
-    pairs = paired_losses(runs)
-    groups = {cal.ORGANISMS[o].display_name: [p for p in pairs if p.organism == o] for o in organisms}
-    return reporting.evaluate([FALLBACK_TEST], groups)
+    comparisons = fallback_comparisons(runs)
+    groups = {cal.ORGANISMS[o].display_name: [c for c in comparisons if c.organism == o] for o in organisms}
+    return reporting.evaluate(FALLBACK_TESTS, groups)
 
 
 # Pre-specified tests of the extensions the author adopted to answer reviewer objections
 # (Section 9). Reported, not part of the verdict.
 EXTENSION_TESTS = (
     Pillar("D1", "With measured conduction delays, the GABAergic-like agent still abolishes quorum", ConditionName.CONDUCTION_DELAYS, quorum_is_lost),
+    Pillar("SG1", "With GABA connections signed inhibitory, the GABAergic-like agent still abolishes quorum", ConditionName.SIGNED, quorum_is_lost),
+    Pillar("SG2", "With GABA and glutamate connections signed inhibitory, the GABAergic-like agent still abolishes quorum", ConditionName.SIGNED_WITH_GLUTAMATE, quorum_is_lost),
     Pillar("K1", "Ketamine pathway hypothesis: quorum persists while the stimulus stops propagating", ConditionName.KETAMINE_PATHWAYS, disconnected_but_internally_coherent),
 )
 
@@ -441,7 +492,7 @@ def assemble_report(results: SpeciesResults) -> dict[str, object]:
         "design": results.design,
         "pillars": [asdict(o) | {"holds": o.holds} for o in evaluate(PILLARS, results.runs, organisms)],
         "extension_tests": [asdict(o) for o in evaluate(EXTENSION_TESTS, results.runs, organisms) + evaluate_fallback(results.runs, organisms)],
-        "fallback_pairs": [asdict(p) for p in paired_losses(results.runs)],
+        "fallback_comparisons": [asdict(c) for c in fallback_comparisons(results.runs)],
         "secondary": [asdict(o) for o in evaluate(SECONDARY_ANALYSES, results.runs, organisms)],
         "plant_claims": plant_claims(results.plants),
         "runs": [asdict(run) for run in results.runs],

@@ -10,7 +10,7 @@ from __future__ import annotations
 import csv
 import urllib.request
 import zipfile
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Callable
 
@@ -29,6 +29,15 @@ RAW_DATA_DIRECTORY = REPOSITORY_ROOT / "data" / "raw"
 FLYWIRE_MINIMUM_SYNAPSES = 5
 # Spectral partition size for networks without an anatomical parcellation.
 NODES_PER_SPECTRAL_MODULE = 25
+
+# FlyWire predicts each synapse's transmitter (Eckstein et al., 2024). A connection is inhibitory
+# when its synapse-weighted dominant transmitter is inhibitory under the sign rule in use.
+FLYWIRE_TRANSMITTERS = ("gaba", "ach", "glut", "oct", "ser", "da")
+# GABA only: conservative. GABA and glutamate: glutamate is inhibitory in the antennal lobe via
+# glutamate-gated chloride channels (Liu & Wilson, 2013), not shown for the whole brain.
+SIGN_RULE_GABA = "GABA inhibitory"
+SIGN_RULE_GABA_AND_GLUTAMATE = "GABA and glutamate inhibitory"
+FLYWIRE_INHIBITORY_TRANSMITTERS = {SIGN_RULE_GABA: ("gaba",), SIGN_RULE_GABA_AND_GLUTAMATE: ("gaba", "glut")}
 
 # FlyWire neuropil of the antennal lobe, the first olfactory relay (left and right).
 DROSOPHILA_SENSORY_NEUROPILS = ("AL_L", "AL_R")
@@ -55,6 +64,9 @@ class Connectome:
     sensory_nodes: np.ndarray
     sensory_description: str
     lengths_mm: np.ndarray | None = None
+    # Connection signs (+1 excitatory, -1 inhibitory) under each sign rule; empty when the dataset
+    # gives no transmitter identity.
+    signs: dict[str, np.ndarray] = field(default_factory=dict)
 
     @property
     def edge_count(self) -> int:
@@ -233,15 +245,41 @@ def load_human(_: int) -> Connectome:
     )
 
 
+@dataclass(frozen=True)
+class NeuronPairs:
+    """Rows of the FlyWire table grouped into neuron pairs, with the pairs kept at the threshold."""
+
+    pair_of_row: np.ndarray
+    kept: np.ndarray
+    sources: np.ndarray
+    targets: np.ndarray
+    synapses: np.ndarray
+
+
 def thresholded_connections(
     sources_by_row: np.ndarray, targets_by_row: np.ndarray, synapses: np.ndarray, node_count: int
-) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+) -> NeuronPairs:
     """Synapses summed over neuropils for each neuron pair, keeping pairs at the FlyWire threshold."""
     pair_keys, pair_of_row = np.unique(sources_by_row.astype(np.int64) * node_count + targets_by_row, return_inverse=True)
     pair_synapses = np.bincount(pair_of_row, weights=synapses)
     kept = pair_synapses >= FLYWIRE_MINIMUM_SYNAPSES
     sources, targets = np.divmod(pair_keys[kept], node_count)
-    return sources, targets, pair_synapses[kept]
+    return NeuronPairs(pair_of_row, kept, sources, targets, pair_synapses[kept])
+
+
+def connection_signs(
+    pairs: NeuronPairs, synapses: np.ndarray, transmitter_probabilities: dict[str, np.ndarray]
+) -> dict[str, np.ndarray]:
+    """For each sign rule, -1 where a kept pair's synapse-weighted dominant transmitter is inhibitory, else +1."""
+    weighted = np.stack([
+        np.bincount(pairs.pair_of_row, weights=synapses * transmitter_probabilities[name])[pairs.kept]
+        for name in FLYWIRE_TRANSMITTERS
+    ])
+    dominant = np.asarray(FLYWIRE_TRANSMITTERS)[weighted.argmax(axis=0)]
+    return {
+        rule: np.where(np.isin(dominant, inhibitory), -1, 1).astype(np.int8)
+        for rule, inhibitory in FLYWIRE_INHIBITORY_TRANSMITTERS.items()
+    }
 
 
 def load_drosophila(_: int) -> Connectome:
@@ -251,7 +289,7 @@ def load_drosophila(_: int) -> Connectome:
     """
     import pyarrow.feather as feather
 
-    columns = ["pre_pt_root_id", "post_pt_root_id", "neuropil", "syn_count"]
+    columns = ["pre_pt_root_id", "post_pt_root_id", "neuropil", "syn_count", *(f"{name}_avg" for name in FLYWIRE_TRANSMITTERS)]
     table = feather.read_table(fetch(DROSOPHILA), columns=columns, memory_map=True)
     pre = table["pre_pt_root_id"].to_numpy()
     post = table["post_pt_root_id"].to_numpy()
@@ -263,7 +301,8 @@ def load_drosophila(_: int) -> Connectome:
     _, neuron_index = np.unique(np.concatenate([pre, post]), return_inverse=True)
     node_count = int(neuron_index.max()) + 1
     sources_by_row, targets_by_row = neuron_index[: pre.size], neuron_index[pre.size :]
-    sources, targets, pair_synapses = thresholded_connections(sources_by_row, targets_by_row, synapses, node_count)
+    pairs = thresholded_connections(sources_by_row, targets_by_row, synapses, node_count)
+    probabilities = {name: table[f"{name}_avg"].to_numpy() for name in FLYWIRE_TRANSMITTERS}
     input_by_neuropil = coo_matrix(
         (synapses, (targets_by_row, row_neuropils)), shape=(node_count, len(neuropil_names))
     ).toarray()
@@ -274,11 +313,12 @@ def load_drosophila(_: int) -> Connectome:
         name="Drosophila",
         organism=DROSOPHILA.organism,
         node_count=node_count,
-        sources=sources.astype(np.int32),
-        targets=targets.astype(np.int32),
-        weights=pair_synapses.astype(np.float32),
+        sources=pairs.sources.astype(np.int32),
+        targets=pairs.targets.astype(np.int32),
+        weights=pairs.synapses.astype(np.float32),
         modules=modules,
         module_basis="neuropil receiving most of each neuron's input synapses (FlyWire, 79 neuropils)",
+        signs=connection_signs(pairs, synapses, probabilities),
         sensory_nodes=np.flatnonzero(np.isin(modules, sensory_codes) & receives_input).astype(np.int32),
         sensory_description="neurons whose main input neuropil is the antennal lobe (first olfactory relay), left and right",
     )

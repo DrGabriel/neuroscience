@@ -22,7 +22,7 @@ No third-party data are redistributed in this repository. The cross-species stud
 | Dataset | Use | Licence | Required attribution |
 |---|---|---|---|
 | *C. elegans* hermaphrodite connectome, OpenWorm c302 edge list (`herm_full_edgelist.csv`) | Nematode network | MIT (OpenWorm) | OpenWorm c302; the underlying connectome: Cook, S. J., et al. (2019). *Nature*, 571, 63–71 |
-| FlyWire v783 proofread connections, Zenodo record 10676866 | Adult *Drosophila* network | CC BY 4.0 | Dorkenwald, S., et al. (2024). Neuronal wiring diagram of an adult brain. *Nature*, 634, 124–138 |
+| FlyWire v783 proofread connections, Zenodo record 10676866 | Adult *Drosophila* network | CC BY 4.0 | Dorkenwald, S., et al. (2024). Neuronal wiring diagram of an adult brain. *Nature*, 634, 124–138. Synapses: Buhmann, J., et al. (2021), *Nature Methods*, 18, 771–774, and Heinrich, L., et al. (2018), MICCAI 2018, LNCS 11071, 317–325. Transmitter predictions: Eckstein, N., et al. (2024), *Cell*, 187, 2574–2594 |
 | The Virtual Brain 998-region connectivity (`connectivity_998.zip`) | Human network | GPL-3.0; used, not redistributed | Hagmann, P., et al. (2008). *PLoS Biology*, 6(7), e159; Sanz Leon, P., et al. (2013). *Frontiers in Neuroinformatics*, 7, 10 |
 
 The official licence text of each source accompanies the source itself; none is reproduced here because no data are redistributed.

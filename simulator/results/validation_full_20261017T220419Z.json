@@ -1,7 +1,7 @@
 {
-  "started_utc": "2026-10-17T21:37:42.349480+00:00",
-  "finished_utc": "2026-10-17T21:52:34.675925+00:00",
-  "wall_seconds": 892.326445,
+  "started_utc": "2026-10-17T22:04:19.548321+00:00",
+  "finished_utc": "2026-10-17T22:20:30.903812+00:00",
+  "wall_seconds": 971.355491,
   "all_claims_hold": true,
   "provenance": {
     "hardware": {
@@ -25,7 +25,7 @@
       "packages": "standard library only"
     },
     "source": {
-      "git_commit": "b6a4fca845093eaf193fb5bc966f44c4660d2aa2",
+      "git_commit": "f9d4ba1152281dc5d583dfc1ca6f56acbff3a54e",
       "git_working_tree_dirty": true,
       "sha256": {
         "dpc_simulator.py": "a0967c8fd20968eb7dfd2b1c3a739c2302f484e6f7aec801f600320e5d17ea64",
@@ -905,37 +905,37 @@
       "302": {
         "defined_count": 20,
         "total_count": 20,
-        "mean": 0.04771187719888985,
-        "standard_deviation": 0.006083524698194847,
-        "confidence_half_width_95": 0.002666173283091499
+        "mean": 0.04924076671013609,
+        "standard_deviation": 0.008028558048017225,
+        "confidence_half_width_95": 0.0035186060764616253
       },
       "1000": {
         "defined_count": 20,
         "total_count": 20,
-        "mean": 0.1255297811119817,
-        "standard_deviation": 0.010360842654572988,
-        "confidence_half_width_95": 0.004540756098867169
+        "mean": 0.12999799159588293,
+        "standard_deviation": 0.023029751197821056,
+        "confidence_half_width_95": 0.010093048093993017
       },
       "10000": {
         "defined_count": 20,
         "total_count": 20,
-        "mean": 1.583546252164524,
-        "standard_deviation": 0.057635709958642145,
-        "confidence_half_width_95": 0.025259499659685707
+        "mean": 1.8093367438938004,
+        "standard_deviation": 0.07690986817533721,
+        "confidence_half_width_95": 0.033706616790101764
       },
       "100000": {
         "defined_count": 20,
         "total_count": 20,
-        "mean": 29.01724141468294,
-        "standard_deviation": 1.1698594274590024,
-        "confidence_half_width_95": 0.5127040827810593
+        "mean": 30.35176312929834,
+        "standard_deviation": 1.1242613004667854,
+        "confidence_half_width_95": 0.4927201895650531
       },
       "1000000": {
         "defined_count": 20,
         "total_count": 20,
-        "mean": 412.03797743121976,
-        "standard_deviation": 8.938128959717199,
-        "confidence_half_width_95": 3.9172357827848745
+        "mean": 449.274301783368,
+        "standard_deviation": 6.891333532187293,
+        "confidence_half_width_95": 3.0202046116196852
       }
     }
   },
@@ -1070,7 +1070,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.04238158301450312
+      "duration_seconds": 0.0398142080521211
     },
     {
       "node_count": 302,
@@ -1202,7 +1202,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.0509727499447763
+      "duration_seconds": 0.050257832976058125
     },
     {
       "node_count": 302,
@@ -1334,7 +1334,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.05353958404157311
+      "duration_seconds": 0.037972665973939
     },
     {
       "node_count": 302,
@@ -1466,7 +1466,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.049871499999426305
+      "duration_seconds": 0.05720437504351139
     },
     {
       "node_count": 302,
@@ -1598,7 +1598,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.057104417006485164
+      "duration_seconds": 0.043437540996819735
     },
     {
       "node_count": 302,
@@ -1730,7 +1730,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.03575195907615125
+      "duration_seconds": 0.05546183395199478
     },
     {
       "node_count": 302,
@@ -1862,7 +1862,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.03935245797038078
+      "duration_seconds": 0.05283791699912399
     },
     {
       "node_count": 302,
@@ -1994,7 +1994,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.046005125041119754
+      "duration_seconds": 0.043021250050514936
     },
     {
       "node_count": 302,
@@ -2126,7 +2126,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.046126959030516446
+      "duration_seconds": 0.05448150006122887
     },
     {
       "node_count": 302,
@@ -2258,7 +2258,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.049283791915513575
+      "duration_seconds": 0.05246949999127537
     },
     {
       "node_count": 302,
@@ -2390,7 +2390,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.05560408299788833
+      "duration_seconds": 0.05098879209253937
     },
     {
       "node_count": 302,
@@ -2522,7 +2522,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.05306850001215935
+      "duration_seconds": 0.03801037499215454
     },
     {
       "node_count": 302,
@@ -2654,7 +2654,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.04296570899896324
+      "duration_seconds": 0.056657167035155
     },
     {
       "node_count": 302,
@@ -2786,7 +2786,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.04444104200229049
+      "duration_seconds": 0.060509542003273964
     },
     {
       "node_count": 302,
@@ -2918,7 +2918,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.04275591694749892
+      "duration_seconds": 0.038467374979518354
     },
     {
       "node_count": 302,
@@ -3050,7 +3050,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.05002058297395706
+      "duration_seconds": 0.05187987501267344
     },
     {
       "node_count": 302,
@@ -3182,7 +3182,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.0462409999454394
+      "duration_seconds": 0.03667375002987683
     },
     {
       "node_count": 302,
@@ -3314,7 +3314,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.043746375013142824
+      "duration_seconds": 0.04856820893473923
     },
     {
       "node_count": 302,
@@ -3446,7 +3446,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.0595232080668211
+      "duration_seconds": 0.06221674999687821
     },
     {
       "node_count": 302,
@@ -3578,7 +3578,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.04548099997919053
+      "duration_seconds": 0.053884875029325485
     },
     {
       "node_count": 1000,
@@ -3710,7 +3710,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.13755345798563212
+      "duration_seconds": 0.12929887499194592
     },
     {
       "node_count": 1000,
@@ -3842,7 +3842,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.1379435829585418
+      "duration_seconds": 0.1190500829834491
     },
     {
       "node_count": 1000,
@@ -3974,7 +3974,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.10419700003694743
+      "duration_seconds": 0.12864324997644871
     },
     {
       "node_count": 1000,
@@ -4106,7 +4106,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.12684079201426357
+      "duration_seconds": 0.09588979196269065
     },
     {
       "node_count": 1000,
@@ -4238,7 +4238,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.1083481659879908
+      "duration_seconds": 0.15976762503851205
     },
     {
       "node_count": 1000,
@@ -4370,7 +4370,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.12371954205445945
+      "duration_seconds": 0.1293144579976797
     },
     {
       "node_count": 1000,
@@ -4502,7 +4502,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.12929895799607038
+      "duration_seconds": 0.12012866698205471
     },
     {
       "node_count": 1000,
@@ -4634,7 +4634,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.12306825001724064
+      "duration_seconds": 0.1516196250449866
     },
     {
       "node_count": 1000,
@@ -4766,7 +4766,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.14370783302001655
+      "duration_seconds": 0.11769850004930049
     },
     {
       "node_count": 1000,
@@ -4898,7 +4898,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.12483916699420661
+      "duration_seconds": 0.20441216696053743
     },
     {
       "node_count": 1000,
@@ -5030,7 +5030,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.13352045801002532
+      "duration_seconds": 0.1262311249738559
     },
     {
       "node_count": 1000,
@@ -5162,7 +5162,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.14297029096633196
+      "duration_seconds": 0.11529316601809114
     },
     {
       "node_count": 1000,
@@ -5294,7 +5294,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.11713470902759582
+      "duration_seconds": 0.11389516689814627
     },
     {
       "node_count": 1000,
@@ -5426,7 +5426,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.12739179097115993
+      "duration_seconds": 0.11468662496190518
     },
     {
       "node_count": 1000,
@@ -5558,7 +5558,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.12586429109796882
+      "duration_seconds": 0.12968958297278732
     },
     {
       "node_count": 1000,
@@ -5690,7 +5690,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.11414479103405029
+      "duration_seconds": 0.11691637500189245
     },
     {
       "node_count": 1000,
@@ -5822,7 +5822,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.12416925001889467
+      "duration_seconds": 0.11347862507682294
     },
     {
       "node_count": 1000,
@@ -5954,7 +5954,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.12572566699236631
+      "duration_seconds": 0.12558154109865427
     },
     {
       "node_count": 1000,
@@ -6086,7 +6086,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.11923166702035815
+      "duration_seconds": 0.13866149995010346
     },
     {
       "node_count": 1000,
@@ -6218,7 +6218,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 0.12092595803551376
+      "duration_seconds": 0.1497030829777941
     },
     {
       "node_count": 10000,
@@ -6350,7 +6350,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 1.6382528750691563
+      "duration_seconds": 1.7465328340185806
     },
     {
       "node_count": 10000,
@@ -6482,7 +6482,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 1.6007497500395402
+      "duration_seconds": 1.711702625034377
     },
     {
       "node_count": 10000,
@@ -6614,7 +6614,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 1.6005808749468997
+      "duration_seconds": 1.9377185410121456
     },
     {
       "node_count": 10000,
@@ -6746,7 +6746,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 1.6480821670265868
+      "duration_seconds": 1.9513003749307245
     },
     {
       "node_count": 10000,
@@ -6878,7 +6878,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 1.5944861250463873
+      "duration_seconds": 1.7797604590887204
     },
     {
       "node_count": 10000,
@@ -7010,7 +7010,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 1.6439607500797138
+      "duration_seconds": 1.7393095419974998
     },
     {
       "node_count": 10000,
@@ -7142,7 +7142,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 1.5799205420771614
+      "duration_seconds": 1.7530288340058178
     },
     {
       "node_count": 10000,
@@ -7274,7 +7274,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 1.6278984999516979
+      "duration_seconds": 1.8180900409352034
     },
     {
       "node_count": 10000,
@@ -7406,7 +7406,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 1.6732213749783114
+      "duration_seconds": 1.8263578749028966
     },
     {
       "node_count": 10000,
@@ -7538,7 +7538,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 1.5934685830725357
+      "duration_seconds": 1.7214805419789627
     },
     {
       "node_count": 10000,
@@ -7670,7 +7670,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 1.5599889589939266
+      "duration_seconds": 1.805077249999158
     },
     {
       "node_count": 10000,
@@ -7802,7 +7802,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 1.5760098750470206
+      "duration_seconds": 1.756384375039488
     },
     {
       "node_count": 10000,
@@ -7934,7 +7934,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 1.5329113329062238
+      "duration_seconds": 1.7240938330069184
     },
     {
       "node_count": 10000,
@@ -8066,7 +8066,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 1.4989165419247001
+      "duration_seconds": 1.8142563339788467
     },
     {
       "node_count": 10000,
@@ -8198,7 +8198,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 1.5282815409591421
+      "duration_seconds": 1.8625569170108065
     },
     {
       "node_count": 10000,
@@ -8330,7 +8330,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 1.6620766250416636
+      "duration_seconds": 1.810398708912544
     },
     {
       "node_count": 10000,
@@ -8462,7 +8462,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 1.527555458014831
+      "duration_seconds": 1.9362240419723094
     },
     {
       "node_count": 10000,
@@ -8594,7 +8594,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 1.473274333984591
+      "duration_seconds": 1.9048376251012087
     },
     {
       "node_count": 10000,
@@ -8726,7 +8726,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 1.6059977920958772
+      "duration_seconds": 1.8512224999722093
     },
     {
       "node_count": 10000,
@@ -8858,7 +8858,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 1.5052910420345142
+      "duration_seconds": 1.7364016249775887
     },
     {
       "node_count": 100000,
@@ -8990,7 +8990,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 27.564277458004653
+      "duration_seconds": 29.9092647919897
     },
     {
       "node_count": 100000,
@@ -9122,7 +9122,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 27.941129833925515
+      "duration_seconds": 29.663597624981776
     },
     {
       "node_count": 100000,
@@ -9254,7 +9254,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 28.175841584103182
+      "duration_seconds": 29.066856499994174
     },
     {
       "node_count": 100000,
@@ -9386,7 +9386,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 27.671656791935675
+      "duration_seconds": 29.756542125018314
     },
     {
       "node_count": 100000,
@@ -9518,7 +9518,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 28.022743749897927
+      "duration_seconds": 30.072440500021912
     },
     {
       "node_count": 100000,
@@ -9650,7 +9650,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 28.39804420794826
+      "duration_seconds": 28.859705042093992
     },
     {
       "node_count": 100000,
@@ -9782,7 +9782,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 27.329684041906148
+      "duration_seconds": 28.4942579169292
     },
     {
       "node_count": 100000,
@@ -9914,7 +9914,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 28.110803583054803
+      "duration_seconds": 28.510605291929096
     },
     {
       "node_count": 100000,
@@ -10046,7 +10046,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 28.37997495906893
+      "duration_seconds": 29.65267091698479
     },
     {
       "node_count": 100000,
@@ -10178,7 +10178,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 28.04003279202152
+      "duration_seconds": 29.923627457930706
     },
     {
       "node_count": 100000,
@@ -10310,7 +10310,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 30.402393167023547
+      "duration_seconds": 30.961127792019397
     },
     {
       "node_count": 100000,
@@ -10442,7 +10442,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 30.652944874949753
+      "duration_seconds": 30.483479458955117
     },
     {
       "node_count": 100000,
@@ -10574,7 +10574,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 29.58477483293973
+      "duration_seconds": 31.12582429102622
     },
     {
       "node_count": 100000,
@@ -10706,7 +10706,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 28.82114291691687
+      "duration_seconds": 31.163228374905884
     },
     {
       "node_count": 100000,
@@ -10838,7 +10838,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 30.410992249962874
+      "duration_seconds": 31.7007182079833
     },
     {
       "node_count": 100000,
@@ -10970,7 +10970,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 30.365427917102352
+      "duration_seconds": 31.68313508410938
     },
     {
       "node_count": 100000,
@@ -11102,7 +11102,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 30.210975499940105
+      "duration_seconds": 31.93400804209523
     },
     {
       "node_count": 100000,
@@ -11234,7 +11234,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 29.975679583032615
+      "duration_seconds": 31.83104529196862
     },
     {
       "node_count": 100000,
@@ -11366,7 +11366,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 29.812706582946703
+      "duration_seconds": 31.57359637506306
     },
     {
       "node_count": 100000,
@@ -11498,7 +11498,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 30.47360166697763
+      "duration_seconds": 30.66953149996698
     },
     {
       "node_count": 1000000,
@@ -11630,7 +11630,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 405.4907137079863
+      "duration_seconds": 443.06735608296003
     },
     {
       "node_count": 1000000,
@@ -11762,7 +11762,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 400.44662562501617
+      "duration_seconds": 437.1550227920525
     },
     {
       "node_count": 1000000,
@@ -11894,7 +11894,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 404.2505873750197
+      "duration_seconds": 448.75188774999697
     },
     {
       "node_count": 1000000,
@@ -12026,7 +12026,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 394.66068500000983
+      "duration_seconds": 457.5190651670564
     },
     {
       "node_count": 1000000,
@@ -12158,7 +12158,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 415.2591371659655
+      "duration_seconds": 451.385497167008
     },
     {
       "node_count": 1000000,
@@ -12290,7 +12290,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 412.02483424998354
+      "duration_seconds": 454.0595705829328
     },
     {
       "node_count": 1000000,
@@ -12422,7 +12422,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 407.0032600830309
+      "duration_seconds": 447.5525651660282
     },
     {
       "node_count": 1000000,
@@ -12554,7 +12554,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 395.0342657089932
+      "duration_seconds": 435.0345682919724
     },
     {
       "node_count": 1000000,
@@ -12686,7 +12686,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 409.09632329200394
+      "duration_seconds": 441.61766179208644
     },
     {
       "node_count": 1000000,
@@ -12818,7 +12818,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 410.44496925000567
+      "duration_seconds": 441.2327302499907
     },
     {
       "node_count": 1000000,
@@ -12950,7 +12950,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 418.79397320910357
+      "duration_seconds": 456.282313624979
     },
     {
       "node_count": 1000000,
@@ -13082,7 +13082,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 416.4855704170186
+      "duration_seconds": 461.31882475002203
     },
     {
       "node_count": 1000000,
@@ -13214,7 +13214,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 420.2633872909937
+      "duration_seconds": 450.4359618340386
     },
     {
       "node_count": 1000000,
@@ -13346,7 +13346,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 424.87428212503437
+      "duration_seconds": 450.9364433750743
     },
     {
       "node_count": 1000000,
@@ -13478,7 +13478,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 425.3458249170799
+      "duration_seconds": 456.68596083298326
     },
     {
       "node_count": 1000000,
@@ -13610,7 +13610,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 422.2252894999692
+      "duration_seconds": 453.0349598330213
     },
     {
       "node_count": 1000000,
@@ -13742,7 +13742,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 411.0216130410554
+      "duration_seconds": 448.4997999171028
     },
     {
       "node_count": 1000000,
@@ -13874,7 +13874,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 418.86718087503687
+      "duration_seconds": 452.64113400003407
     },
     {
       "node_count": 1000000,
@@ -14006,7 +14006,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 415.7360983330291
+      "duration_seconds": 451.6812224580208
     },
     {
       "node_count": 1000000,
@@ -14138,7 +14138,7 @@
           "quorum_fraction": 0.5
         }
       },
-      "duration_seconds": 413.43492745806
+      "duration_seconds": 446.5934899999993
     }
   ],
   "label": "full"

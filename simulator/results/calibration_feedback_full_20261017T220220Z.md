@@ -2,14 +2,14 @@
 
 | Field | Value |
 |---|---|
-| Started (UTC) | 2026-10-17T21:35:46.505041+00:00 |
-| Finished (UTC) | 2026-10-17T21:37:42.193723+00:00 |
+| Started (UTC) | 2026-10-17T22:02:20.574697+00:00 |
+| Finished (UTC) | 2026-10-17T22:04:19.385210+00:00 |
 | Machine | Mac14,9, Apple M2 Pro |
 | CPU cores | 10 (6 performance, 4 efficiency) |
 | Memory | 32 GiB |
 | Operating system | macOS 26.7.1 (build 25G241), arm64 |
 | Python | CPython 3.13.2; standard library only |
-| Git commit | `b6a4fca845093eaf193fb5bc966f44c4660d2aa2` (working tree dirty: True) |
+| Git commit | `f9d4ba1152281dc5d583dfc1ca6f56acbff3a54e` (working tree dirty: True) |
 | SHA-256 `calibrate_feedback.py` | `6d2ca5d374b35c8fa39ba76719b874b1efc00ffa552cce2e8f04b286441c7b23` |
 | SHA-256 `dpc_simulator.py` | `a0967c8fd20968eb7dfd2b1c3a739c2302f484e6f7aec801f600320e5d17ea64` |
 | SHA-256 `provenance.py` | `94071e252347139bab3c5f113d52a38f65feaeaa0c03738ec8d81090c9139cb2` |

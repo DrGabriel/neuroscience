@@ -1,7 +1,7 @@
 {
   "label": "full",
-  "started_utc": "2026-10-17T21:53:24.879941+00:00",
-  "finished_utc": "2026-10-17T21:55:09.537705+00:00",
+  "started_utc": "2026-10-17T22:21:21.843414+00:00",
+  "finished_utc": "2026-10-17T22:23:09.323318+00:00",
   "provenance": {
     "hardware": {
       "hw.model": "Mac14,9",
@@ -27,14 +27,14 @@
       }
     },
     "source": {
-      "git_commit": "b6a4fca845093eaf193fb5bc966f44c4660d2aa2",
+      "git_commit": "f9d4ba1152281dc5d583dfc1ca6f56acbff3a54e",
       "git_working_tree_dirty": true,
       "sha256": {
         "calibrate_phase_feedback.py": "3ed1cf4a2013eadd1c3658487185f8b2f480ac69a80f898e836a600605bd8d27",
-        "calibration.py": "ebc2c6c367cbcd4b12f5451789f8bbb23687322df61e33d57bc4a3e327ce1cdf",
-        "connectomes.py": "095192522299f505244a622347535a533fa066f5090d3983994a6863893d534d",
+        "calibration.py": "f2004f8beadb94de151a8d176cce884e3cd927678d2e855024b01a11932662db",
+        "connectomes.py": "28a0fc40a77bfeca508a0a1abc288a89ffbbc9d74a02e6771fc0e893b87d5e9e",
         "dpc_simulator.py": "a0967c8fd20968eb7dfd2b1c3a739c2302f484e6f7aec801f600320e5d17ea64",
-        "phase_dynamics.py": "bbc949a00af759a71ee7cbf1ec4b682238f89428d4a3ec87a6c9375afabec463",
+        "phase_dynamics.py": "b12417d2578f071d33e00cfad9b586435c621aaae9d3210a29f32a987497b529",
         "plant_tissue.py": "a50afa829fd68ec4d78524ff7e34fb7b9f7a6615b9108eb0f6906054e81a7041",
         "provenance.py": "94071e252347139bab3c5f113d52a38f65feaeaa0c03738ec8d81090c9139cb2",
         "reporting.py": "c65f99684bc737a223916dbf97f6e891874b78e0e7561914851f3aeecef37593"
