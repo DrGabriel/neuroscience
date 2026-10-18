@@ -190,7 +190,7 @@ Source: `simulator/results/{report_name("species")}`.
 
 ### C.4 Numerical convergence of the phase model
 
-The human-connectome conditions are repeated with twice the simulated time and with half the integration step. Source: `simulator/results/{report_name("convergence")}`.
+The GABAergic-like and sensory-stimulus conditions are repeated with twice the simulated time at each concentration and with half the integration step, on the human connectome and on two *Drosophila* seeds, whose reference runs settle for only 200 steps. A result that does not move under either change does not depend on the numerical settings, and a hysteresis that survives twice the settling time is not an artefact of changing the concentration too fast. Source: `simulator/results/{report_name("convergence")}`.
 
 {latest_report("convergence")}
 
