@@ -1,6 +1,6 @@
 """Builds Appendices B to D of the paper from the latest full reports and the model source.
 
-The paper ends with the two appendices. Running this script replaces everything from the
+The paper ends with Appendices B to D. Running this script replaces everything from the
 Appendix B heading to the end of the paper, so it can be rerun after every new set of results.
 Listings are copied byte for byte; tests/test_dpc_simulator.py checks that they match the source.
 
@@ -35,6 +35,17 @@ def latest_report(kind: str, label: str = "full") -> str:
 
 def report_name(kind: str, label: str = "full") -> str:
     return latest_report_path(kind, label).name
+
+
+NOT_YET_RUN = "Results: not yet run."
+
+
+def report_section(kind: str, label: str = "full") -> str:
+    """The latest report with its source line, or a notice when the study has not been run."""
+    try:
+        return f"Source: `simulator/results/{report_name(kind, label)}`.\n\n{latest_report(kind, label)}"
+    except FileNotFoundError:
+        return NOT_YET_RUN
 
 
 def listing(name: str) -> str:
@@ -78,21 +89,15 @@ The hypothesis and its models changed while this paper was written. Each change 
 | Topic | Initial assumption | What the simulations showed | What the literature added | Revision | New test |
 |---|---|---|---|---|---|
 | Model after internal review (17 October 2026) | Independent timing errors added; baseline jitter 1 ms; timing error redrawn at every integration step | Redrawn jitter averages to a uniform weakening of coupling, indistinguishable from transmission failure | In vivo cortical spike-timing precision is about 3 ms (Buracas et al., 1998) | Errors combined in quadrature; baseline jitter 3 ms; jitter that persists for a correlation time; feedback recalibrated; rewired null model and Wilson intervals added | All studies rerun; the first reports are kept in `archive/pre_revision_2026-10-17/` |
-| Paradoxical excitation | Congestion: as connections fail, traffic concentrates on the surviving routes (Section 5.1) | Hub activity rose by at least 10% before collapse in at most 1 of 10 seeds in every setting (tests W1 to W4), in an exploratory and a confirmatory run | Neurons do not queue or resend signals; interneuron disinhibition is the developed account (McCarthy et al., 2008) | Congestion is not supported and rests on prediction 4 alone. A synchrony surge before collapse (X1, post hoc) was partly reproduced on fresh seeds; fluctuations rising tenfold before collapse (P1b, post hoc) replaced the pre-specified P1, which failed | P1c, the replication of P1b on fresh seeds (Appendix C.7) |
-| Ketamine | The senses are cut off from an internal agreement that survives (K1) | Internal agreement held but the stimulus still spread (K1 held in at most 2 of 20 seeds) | NMDA receptors carry recurrent more than feedforward signals in macaque V1 (Self et al., 2012); ketamine inhibits frontal-parietal feedback connectivity while feedforward connectivity is preserved (U. Lee et al., 2013) | Timing faults concentrated on feedback connections, so that loops cannot close | K2a to K2c, fixed before the run (Appendix C.7); result pending |
+| Paradoxical excitation | Congestion: as connections fail, traffic concentrates on the surviving routes (Section 5.1) | Hub activity rose by at least 10% before collapse in at most 1 of 10 seeds in every setting (tests W1 to W4), in an exploratory and a confirmatory run | Neurons do not queue or resend signals; interneuron antisynchrony is the developed account (McCarthy et al., 2008) | Congestion is not supported and rests on prediction 4 alone. It is replaced by survivor lock-in with critical fluctuations (Section 5.1): fluctuations rising tenfold on the conscious side of the threshold (P1b, post hoc) replaced the pre-specified P1, which failed, and a synchrony surge before collapse (X1, post hoc) was partly reproduced on fresh seeds | P1c, the replication of P1b on fresh seeds (Appendix C.7): passed in 18 of 20 *C. elegans*, 6 of 6 *Drosophila* and 20 of 20 human seeds |
+| Ketamine | The senses are cut off from an internal agreement that survives (K1) | Internal agreement held but the stimulus still spread (K1 held in at most 2 of 20 seeds) | NMDA receptors carry recurrent more than feedforward signals in macaque V1 (Self et al., 2012); ketamine inhibits frontal-parietal feedback connectivity while feedforward connectivity is preserved (U. Lee et al., 2013) | Timing faults concentrated on feedback connections, so that loops cannot close | K2a to K2c, fixed before the run (Appendix C.7); next row |
+| Ketamine, feedback faults | Timing faults on feedback connections alone abolish quorum while the stimulus still spreads (K2a, K2b), at a lower concentration than on as many random connections (K2c) | Quorum was never lost, with faults on feedback or on random connections (0 of 20 *C. elegans* and 0 of 6 *Drosophila* seeds); feedback faults lowered coherence more (exploratory) | Nothing new; the measured loss of frontal-parietal feedback connectivity under ketamine (U. Lee et al., 2013) still stands | Kept only as a contributing factor: in the model, ketamine's timing faults abolish quorum when they act across the network (P2b), and feedback placement deepens the loss of agreement without causing it | None in the model; the stronger form is not re-tested under another name |
 | Ketamine, local islands | Spontaneous local coherence outlasts global coherence (S1, S2) | Failed in every seed | Not pursued further; the idea is not re-tested under another name | Dropped | None |
 | Sleep down-states | Down-states make individual connections fail | Supported a wakeable sleep state at the rat share (E1) but not at the human upper estimate in large networks (E2) | A down-state silences a whole local population (Vyazovskiy et al., 2009); slow waves are often regional (Nir et al., 2011) | Down-states silence whole populations; the connection-level version is kept as an alternative | O3, O4 and O5, the measured extent of a human slow wave (Appendix B) |
 | Astrocytes and sleep | Removing the astrocytic share of down-states restores quorum in sleep (A1) | Re-specified when the down-state model changed, before its multi-seed run; then failed in every seed at every network size | Astrocytic effects on anaesthesia differ in sign between regions (Section 5.4) | The astrocytic route to down-states is not supported by the model | None |
 | Microglia | Drug depletion of microglia hastens emergence, as reported with PLX5622 | Reproduced by construction (consistency check G1) | PLX5622 also speeds the clearance of anaesthetics, and genetic depletion did not hasten emergence (Cao et al., 2026) | The firmer evidence is the genetic P2Y12 result (Cao et al., 2023); G1 is reported as a consistency check, not support | Prediction 12, with the 2026 result noted |
 | Graceful degradation (P8) | A slower reference protects more against timing faults than against transmission failure | The slower rate raised the loss concentration (F1) but its distinctive prediction failed in every seed (F3) | Frontal alpha is attributed mainly to thalamic mechanisms (Ching et al., 2010; Vijayan et al., 2013) | P8 is kept as a proposal whose specific mechanism the model does not support | Prediction 9, in recorded data |
 """
-
-
-def preregistered_results() -> str:
-    try:
-        return f"Source: `simulator/results/{report_name('preregistered')}`.\n\n{latest_report('preregistered')}"
-    except FileNotFoundError:
-        return "Results: not yet run."
 
 
 def parameter_table() -> str:
@@ -125,33 +130,23 @@ The percolation model implements Section 4 exactly as written. The studies below
 
 ### B.3 Calibration of the reference feedback
 
-Source: `simulator/results/{report_name("calibration_feedback")}`.
-
-{latest_report("calibration_feedback")}
+{report_section("calibration_feedback")}
 
 ### B.4 Validation across network sizes
 
-Network sizes run from 302 nodes, the number of *C. elegans* neurons (White et al., 1986), and 1,000, the finest common cortical parcellation (Schaefer et al., 2018), to 1,000,000. Claims C1-C7 are properties the paper attributes to the model; observations O1-O4 and extension tests E1-E3 are reported without entering the verdict. Each check is labelled either a test, which the model could fail, or a consistency check, which follows from the model's equations and confirms only that the code implements them. Every count of seeds is given with its Wilson 95% confidence interval (Wilson, 1927); a check is said to hold only when it holds in every seed. Source: `simulator/results/{report_name("validation")}`.
-
-{latest_report("validation")}
+Network sizes run from 302 nodes, the number of *C. elegans* neurons (White et al., 1986), and 1,000, the finest common cortical parcellation (Schaefer et al., 2018), to 1,000,000. Claims C1-C7 are properties the paper attributes to the model; observations O1-O5 and extension tests E1-E3 are reported without entering the verdict. Each check is labelled either a test, which the model could fail, or a consistency check, which follows from the model's equations and confirms only that the code implements them. Every count of seeds is given with its Wilson 95% confidence interval (Wilson, 1927); a check is said to hold only when it holds in every seed. {report_section("validation")}
 
 ### B.5 Quorum thresholds of empirical connectomes
 
-Source: `simulator/results/{report_name("percolation")}`.
-
-{latest_report("percolation")}
+{report_section("percolation")}
 
 ### B.6 Sensitivity to free parameters
 
-Each free parameter is varied with the others held at their reference values. Source: `simulator/results/{report_name("sensitivity")}`.
-
-{latest_report("sensitivity")}
+Each free parameter is varied with the others held at their reference values. {report_section("sensitivity")}
 
 ### B.7 Glial regulation (postulate P9)
 
-The glial extensions of Section 4.6 run on the same networks and seeds. The checks were fixed before the multi-seed run; a single exploratory seed at N = 1,000 was run beforehand to confirm that the code executes, and its results were seen before the checks were written, so the checks are not blind to the direction of the effects. Source: `simulator/results/{report_name("glia")}`.
-
-{latest_report("glia")}
+The glial extensions of Section 4.6 run on the same networks and seeds. The checks were fixed before the multi-seed run; a single exploratory seed at N = 1,000 was run beforehand to confirm that the code executes, and its results were seen before the checks were written, so the checks are not blind to the direction of the effects. {report_section("glia")}
 
 ### B.8 Listing: `simulator/dpc_simulator.py`
 
@@ -168,7 +163,7 @@ The glial extensions of Section 4.6 run on the same networks and seeds. The chec
 
 
 def studies_appendix() -> str:
-    return f"""## Appendix C: Cross-species, congestion and plant-tissue studies
+    return f"""## Appendix C: Phase-model, congestion and plant-tissue studies
 
 ### C.1 Methods
 
@@ -178,33 +173,23 @@ The phase-oscillator model (`simulator/phase_dynamics.py`), a Kuramoto-Sakaguchi
 
 ### C.2 Oscillator feedback calibration
 
-The attempt to calibrate the oscillator model's feedback to the measured inertia ratio is reported in full. Source: `simulator/results/{report_name("calibration_phase_feedback")}`.
-
-{latest_report("calibration_phase_feedback")}
+The attempt to calibrate the oscillator model's feedback to the measured inertia ratio is reported in full. {report_section("calibration_phase_feedback")}
 
 ### C.3 Cross-species study
 
-Source: `simulator/results/{report_name("species")}`.
-
-{latest_report("species")}
+{report_section("species")}
 
 ### C.4 Numerical convergence of the phase model
 
-The GABAergic-like and sensory-stimulus conditions are repeated with twice the simulated time at each concentration and with half the integration step, on the human connectome and on two *Drosophila* seeds, whose reference runs settle for only 200 steps. A result that does not move under either change does not depend on the numerical settings, and a hysteresis that survives twice the settling time is not an artefact of changing the concentration too fast. Source: `simulator/results/{report_name("convergence")}`.
-
-{latest_report("convergence")}
+The GABAergic-like and sensory-stimulus conditions are repeated with twice the simulated time at each concentration and with half the integration step, on the human connectome and on two *Drosophila* seeds, whose reference runs settle for only 200 steps. A result that does not move under either change does not depend on the numerical settings, and a hysteresis that survives twice the settling time is not an artefact of changing the concentration too fast. {report_section("convergence")}
 
 ### C.5 Congestion and graceful degradation (exploratory run)
 
-Source: `simulator/results/{report_name("congestion")}`.
-
-{latest_report("congestion")}
+{report_section("congestion")}
 
 ### C.6 Synchrony surge (confirmatory run on fresh seeds)
 
-Source: `simulator/results/{report_name("congestion", "confirmatory")}`.
-
-{latest_report("congestion", "confirmatory")}
+{report_section("congestion", "confirmatory")}
 
 ### C.7 Pre-specified tests on fresh seeds: K2 and P1c
 
@@ -212,7 +197,7 @@ Source: `simulator/results/{report_name("congestion", "confirmatory")}`.
 
 {RUN_NOTES}
 
-{preregistered_results()}
+{report_section("preregistered")}
 
 ### C.8 Figures
 
@@ -232,7 +217,7 @@ Source: `simulator/results/{report_name("congestion", "confirmatory")}`.
 
 ```sh
 cd simulator
-python3 -m venv ../.venv && ../.venv/bin/pip install -r requirements.txt
+python3.13 -m venv ../.venv && ../.venv/bin/pip install -r requirements.txt
 ../.venv/bin/python -m unittest discover -s tests -t .
 python3 calibrate_feedback.py && python3 validation_study.py && python3 glial_study.py
 ../.venv/bin/python percolation_thresholds.py
@@ -244,6 +229,7 @@ python3 calibrate_feedback.py && python3 validation_study.py && python3 glial_st
 ../.venv/bin/python preregistered_study.py
 ../.venv/bin/python figures.py
 python3 paper_appendices.py
+../.venv/bin/python explainer_export.py && python3 results_catalogue.py
 ```
 
 Every report records the machine, operating system, Python and package versions, Git commit and the SHA-256 hash of every simulator module that ran. The source files that produced the results above have these hashes:

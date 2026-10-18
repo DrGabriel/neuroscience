@@ -85,12 +85,12 @@ NMDA_ANTAGONIST_AGENT = dpc.NMDA_ANTAGONIST_LIKE_AGENT
 # Assumed: gamma band 30-90 Hz (Fries, 2015); 40 Hz lies within it, and coherent 40 Hz activity
 # is found in waking and dreaming but much reduced in deep sleep (Llinás & Ribary, 1993).
 OSCILLATION_FREQUENCY_HZ = 40.0
-# Free: calibration against the human propofol inertia ratio (1.11) was attempted with
-# calibrate_phase_feedback.py on the human connectome and failed. For λ from 0 to 0.6 the mean
-# ratio stayed within run-to-run noise (0.96-1.04), and at 0.75 some runs never recovered.
-# The mid-range value is used, and inertia is tested in the percolation model instead.
+# Free: calibration against the reference inertia ratio was attempted with calibrate_phase_feedback.py
+# on the human connectome and failed. For λ from 0 to 0.6 the mean ratio stayed within run-to-run
+# noise (0.96-1.04), below the target, and at 0.75 some runs never recovered. The mid-range value
+# is used, and inertia is tested in the percolation model instead.
 PHASE_REFERENCE_FEEDBACK = 0.45
-INERTIA_TARGET_RATIO = 1.11
+INERTIA_TARGET_RATIO = dpc.REFERENCE_INERTIA_RATIO
 # Free: in units of the natural-frequency spread, coupling well above the synchronisation
 # threshold so that the awake network is coherent; noise small relative to coupling.
 SYNAPTIC_COUPLING = 4.0
@@ -115,8 +115,8 @@ POPULATION_DYNAMICS = dynamics.PopulationDynamics(
 # (Purdon et al., 2013); its centre is the rate the reference falls back to under P8.
 ALPHA_FALLBACK_FREQUENCY_HZ = 10.0
 
-# Measured: median axonal conduction velocity of human cortico-cortical connections, 3.9 m/s
-# (Lemaréchal et al., 2022), giving delays of about 10 ms over the connectome's tract lengths.
+# Measured: median axonal conduction velocity of human cortico-cortical connections, 3.9 m/s, with a
+# median delay of about 10 ms (Lemaréchal et al., 2022, in patients with epilepsy over 15 years old).
 CORTICOCORTICAL_CONDUCTION_VELOCITY_M_PER_S = 3.9
 
 # ---------------------------------------------------------------------------
@@ -183,12 +183,12 @@ PLANT_TISSUE = plant_tissue.TissueDesign(
 
 def parameter_table() -> tuple[ParameterRecord, ...]:
     return (
-        ParameterRecord("Baseline timing jitter (ms)", dpc.REFERENCE_BASELINE_JITTER_MS, "measured", "cortical spike-timing precision in vivo, Buracas et al. (1998); swept 1-10"),
-        ParameterRecord("Integration window W (ms)", dpc.REFERENCE_INTEGRATION_WINDOW_MS, "measured range", "1-10 ms, Gabernet et al. (2005); Pouille and Scanziani (2001); swept 1-10"),
+        ParameterRecord("Baseline timing jitter (ms)", dpc.REFERENCE_BASELINE_JITTER_MS, "measured", "precision of rate modulation in macaque MT in vivo, Buracas et al. (1998); swept 1-10"),
+        ParameterRecord("Integration window W (ms)", dpc.REFERENCE_INTEGRATION_WINDOW_MS, "measured range", "1-10 ms in rodent barrel cortex, Gabernet et al. (2005); under 2 ms in hippocampus, Pouille and Scanziani (2001); swept 1-10"),
         ParameterRecord("Oscillation frequency (Hz)", OSCILLATION_FREQUENCY_HZ, "assumed", "within the gamma band, Fries (2015); Llinás and Ribary (1993)"),
         ParameterRecord("Jitter correlation time τ", JITTER_CORRELATION_TIME, "free", "sensitivity analysis"),
-        ParameterRecord("Percolation feedback λ (ms)", dpc.REFERENCE_FEEDBACK_JITTER_MS, "calibrated", "ratio 1.11, Iwakiri et al. (2005)"),
-        ParameterRecord("Oscillator feedback λ", PHASE_REFERENCE_FEEDBACK, "free", "calibration to ratio 1.11 failed: inertia within noise"),
+        ParameterRecord("Percolation feedback λ (ms)", dpc.REFERENCE_FEEDBACK_JITTER_MS, "calibrated", f"ratio {dpc.REFERENCE_INERTIA_RATIO}, Friedman et al. (2010), isoflurane"),
+        ParameterRecord("Oscillator feedback λ", PHASE_REFERENCE_FEEDBACK, "free", f"calibration to ratio {dpc.REFERENCE_INERTIA_RATIO} failed: inertia within noise"),
         ParameterRecord("Conduction velocity (m/s)", CORTICOCORTICAL_CONDUCTION_VELOCITY_M_PER_S, "measured", "Lemaréchal et al. (2022)"),
         ParameterRecord("Arousal level", dpc.REFERENCE_AROUSAL_LEVEL, "free", "inertia ratios reproduced at every level tested"),
         ParameterRecord("Fallback reference rate, P8 (Hz)", ALPHA_FALLBACK_FREQUENCY_HZ, "measured", "frontal alpha 8-12 Hz, Purdon et al. (2013)"),

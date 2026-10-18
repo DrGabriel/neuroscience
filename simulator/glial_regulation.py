@@ -35,8 +35,9 @@ STRONGEST_MICROGLIAL_GAIN = max(MICROGLIAL_GAIN_SERIES)
 # Share of sleep down-states lost when astrocytic signalling is silenced.
 ASTROCYTIC_DOWN_STATE_SHARE = 0.5
 
-# Measured definition: a slow wave is global when it is detected at more than half of the
-# recording locations (Nir et al., 2011), so a global down-state silences half the populations.
+# Operational definition: a slow wave is global when it is detected at more than half of the
+# recording locations (Nir et al., 2011). Half the populations is therefore the least a global
+# down-state silences, and is used as its share.
 GLOBAL_DOWN_STATE_SHARE = 0.5
 GLOBAL_SLEEP = dpc.BrainState(dpc.SLEEP_AROUSAL_LEVEL, GLOBAL_DOWN_STATE_SHARE)
 

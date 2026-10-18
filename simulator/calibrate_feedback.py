@@ -42,13 +42,14 @@ class InertiaTarget:
     source: str
 
 
+REFERENCE_TARGET = InertiaTarget(dpc.REFERENCE_INERTIA_RATIO, "Friedman et al. (2010), isoflurane, mice")
 PUBLISHED_TARGETS = (
     InertiaTarget(1.07, "Warnaby et al. (2017), propofol, humans"),
-    InertiaTarget(1.08, "Friedman et al. (2010), isoflurane, mice"),
+    REFERENCE_TARGET,
     InertiaTarget(1.11, "Iwakiri et al. (2005), propofol, humans"),
     InertiaTarget(1.63, "Sepúlveda et al. (2018), propofol, humans"),
+    InertiaTarget(2.85, "Friedman et al. (2010), halothane, mice"),
 )
-REFERENCE_TARGET = PUBLISHED_TARGETS[2]
 
 CALIBRATION_SCENARIO = replace(
     dpc.REFERENCE_SCENARIO,

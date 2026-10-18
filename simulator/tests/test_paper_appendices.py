@@ -43,5 +43,14 @@ class AssemblyTests(unittest.TestCase):
         self.assertLess(paper.index(appendices.PT_APPENDIX_NOTE), paper.index("## Appendix B"))
 
 
+class ReportSectionTests(unittest.TestCase):
+    def test_a_study_without_a_report_is_marked_not_yet_run_instead_of_stopping_generation_regression(self) -> None:
+        self.assertEqual(appendices.report_section("study_that_was_never_run"), appendices.NOT_YET_RUN)
+
+    def test_an_existing_report_is_given_with_its_source_file(self) -> None:
+        section = appendices.report_section("validation")
+        self.assertTrue(section.startswith(f"Source: `simulator/results/{appendices.report_name('validation')}`."))
+
+
 if __name__ == "__main__":
     unittest.main()

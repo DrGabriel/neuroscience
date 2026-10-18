@@ -21,6 +21,8 @@ const RENDER_TIMEOUT_MS = 60000;
 const PAGE = Object.freeze({ format: "A4", margin: { top: "20mm", bottom: "20mm", left: "18mm", right: "18mm" } });
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const FONTS = path.resolve(HERE, "../../explainer/assets/fonts");
+// Diagram labels are set in the body face; they must not inherit the monospace face of <pre>.
+const DIAGRAM_FONT = '"Source Serif 4", serif';
 
 function parseArguments(argv) {
   const [source, target, ...rest] = argv;
@@ -90,13 +92,16 @@ function htmlPage({ markdown, draft, lang }) {
   a { color: #1a4f8b; text-decoration: none; word-break: break-word; }
   code, pre { font-family: "IBM Plex Mono", monospace; font-size: 9pt; }
   pre:not(.mermaid) { background: #f6f6f6; padding: 6pt; font-size: 8pt; white-space: pre-wrap; }
-  pre.mermaid { text-align: center; background: none; break-inside: avoid; }
+  pre.mermaid { font-family: ${DIAGRAM_FONT}; font-size: 10.5pt; white-space: normal; text-align: center; background: none; break-inside: avoid; }
   hr { border: 0; border-top: 1px solid #ddd; margin: 14pt 0; }
   .draft { border: 1px solid #b42318; color: #b42318; padding: 6pt 8pt; font-weight: 600; }
 </style></head><body>${banner}${renderBody(markdown)}
 <script type="module">
   import mermaid from "${MERMAID_URL}";
-  mermaid.initialize({ startOnLoad: false, theme: "neutral", themeVariables: { fontFamily: "Source Serif 4" }, flowchart: { htmlLabels: true } });
+  // Mermaid sizes each box from the font at the moment it runs, so the embedded font must be loaded first.
+  await document.fonts.load(${JSON.stringify(`16px ${DIAGRAM_FONT}`)});
+  await document.fonts.ready;
+  mermaid.initialize({ startOnLoad: false, theme: "neutral", themeVariables: { fontFamily: ${JSON.stringify(DIAGRAM_FONT)} }, flowchart: { htmlLabels: true } });
   await mermaid.run({ querySelector: "pre.mermaid" });
   window.__rendered = true;
 </script></body></html>`;

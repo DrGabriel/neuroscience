@@ -24,14 +24,14 @@ The feedback loop in the diagram makes the transition bistable. As a result, the
 
 - **Paper:** [`white_paper_anesthesia_consensus.md`](white_paper_anesthesia_consensus.md) ([PDF](white_paper_anesthesia_consensus.pdf); Brazilian Portuguese translation: [`.pt-BR.md`](white_paper_anesthesia_consensus.pt-BR.md), [PDF](white_paper_anesthesia_consensus.pt-BR.pdf))
 - **Falsifiable predictions:** Section 7 of the paper
-- **Simulations and results:** Appendices B and C of the paper and the [`simulator/`](simulator/) directory
+- **Simulations and results:** Appendices B and C of the paper, with the model revision history in Appendix D, and the [`simulator/`](simulator/) directory
 
 ## Repository layout
 
 | Path | Contents |
 |---|---|
-| [`white_paper_anesthesia_consensus.md`](white_paper_anesthesia_consensus.md) | Hypothesis and theory paper, with results and code listings in Appendices B and C |
-| [`white_paper_anesthesia_consensus.pt-BR.md`](white_paper_anesthesia_consensus.pt-BR.md), [`.pdf`](white_paper_anesthesia_consensus.pt-BR.pdf) | Brazilian Portuguese translation of the paper, for review; the English text is authoritative. References and Appendices B and C are not translated |
+| [`white_paper_anesthesia_consensus.md`](white_paper_anesthesia_consensus.md) | Hypothesis and theory paper, with results and code listings in Appendices B and C and the model revision history in Appendix D |
+| [`white_paper_anesthesia_consensus.pt-BR.md`](white_paper_anesthesia_consensus.pt-BR.md), [`.pdf`](white_paper_anesthesia_consensus.pt-BR.pdf) | Brazilian Portuguese translation of the paper, for review; the English text is authoritative. References and Appendices B to D are not translated |
 | [`figures/`](figures/) | Figures of the paper, generated from the result files |
 | [`explainer/`](explainer/) | Interactive explainer: open `explainer/index.html` in a browser to watch the percolation model break quorum on the *C. elegans* connectome. Each figure says whether it is a live model, a schematic, data or a reported result; parameters and results are exported from the simulator by `simulator/explainer_export.py`, and every study report, current and superseded, can be opened in its results archive (`simulator/results_catalogue.py`). Tests: `node --test explainer/tests/explainer.test.js` |
 | [`simulator/`](simulator/) | Models, studies and tests (below) |
@@ -50,6 +50,7 @@ The feedback loop in the diagram makes the transition bistable. As a result, the
 | [`excitatory_inhibitory.py`](simulator/excitatory_inhibitory.py) | Wilson-Cowan excitatory-inhibitory model, used to test the congestion account |
 | [`plant_tissue.py`](simulator/plant_tissue.py) | FitzHugh-Nagumo excitable tissue, the cellular control |
 | [`connectomes.py`](simulator/connectomes.py) | Loaders for the *C. elegans*, *Drosophila* and human connectomes, with integrity checks |
+| [`reporting.py`](simulator/reporting.py), [`provenance.py`](simulator/provenance.py) | Shared report writing, progress and parallel runs; machine, software and source-hash records for every report |
 | [`calibration.py`](simulator/calibration.py) | Every parameter of the oscillator study, labelled measured, calibrated or free, with its source |
 
 ### Studies
@@ -66,8 +67,9 @@ The feedback loop in the diagram makes the transition bistable. As a result, the
 | [`species_study.py`](simulator/species_study.py) | Tests the pillars on the three connectomes and on plant tissue |
 | [`convergence_study.py`](simulator/convergence_study.py) | Checks that the oscillator results do not depend on the integration time or step |
 | [`preregistered_study.py`](simulator/preregistered_study.py) | Runs the tests fixed in advance in Appendix C.7 (K2, feedback faults; P1c, replication of P1b) on fresh seeds |
+| [`explainer_export.py`](simulator/explainer_export.py) | Exports the parameters, predictions and test outcomes the explainer shows, from the latest reports |
 | [`results_catalogue.py`](simulator/results_catalogue.py) | Lists every report, current and archived, for the explainer's results archive; reports are never changed or removed |
-| [`figures.py`](simulator/figures.py), [`paper_appendices.py`](simulator/paper_appendices.py) | Build the figures and Appendices B and C from the latest reports |
+| [`figures.py`](simulator/figures.py), [`paper_appendices.py`](simulator/paper_appendices.py) | Build the figures and Appendices B to D from the latest reports |
 
 ## Reproducing the results
 
@@ -119,14 +121,14 @@ The simulations show that the formal model is internally consistent and produces
 
 ## Authors
 
-- Gabriel Santos de Oliveira, software engineer and independent researcher. ORCID: [0009-0003-9528-9731](https://orcid.org/0009-0003-9528-9731). Lattes CV: [lattes.cnpq.br/2102695116731989](https://lattes.cnpq.br/2102695116731989). BSc in Computer Science, Universidade Federal Rural do Rio de Janeiro (UFRRJ), Brazil, 2015–2021.
+- Gabriel Santos de Oliveira, staff software engineer and independent researcher. ORCID: [0009-0003-9528-9731](https://orcid.org/0009-0003-9528-9731). Lattes CV: [lattes.cnpq.br/2102695116731989](https://lattes.cnpq.br/2102695116731989). BSc in Computer Science, Universidade Federal Rural do Rio de Janeiro (UFRRJ), Brazil, 2015–2021.
 - Callina Gertrudes Ferreira, undergraduate student of psychology, Universidade Veiga de Almeida (UVA), Brazil, since February 2025. ORCID: [0009-0002-8512-213X](https://orcid.org/0009-0002-8512-213X). Lattes CV: [lattes.cnpq.br/2112739936897542](https://lattes.cnpq.br/2112739936897542).
 
 ## Citing this work
 
 Use the **Cite this repository** button on GitHub or the metadata in [`CITATION.cff`](CITATION.cff). For example:
 
-> Santos de Oliveira, G., & Gertrudes Ferreira, C. (2026). *The Distributed Perceptual Consensus hypothesis of general anaesthesia* (Version 1.0.0) [Preprint and software].
+> Santos de Oliveira, G., & Gertrudes Ferreira, C. (2026). *The Distributed Perceptual Consensus Hypothesis of General Anaesthesia* (Version 1.0.0) [Preprint and software].
 
 ## Contributing
 

@@ -1,6 +1,7 @@
 """Phase-oscillator model of the DPC hypothesis on empirical connectomes.
 
-Each node is a neural population, represented by the phase of its oscillation. Phases
+Each node is represented by the phase of its oscillation: a neural population in the human
+connectome, a single neuron in the C. elegans and Drosophila connectomes. Phases
 follow the Kuramoto-Sakaguchi model (Kuramoto, 1984; Sakaguchi & Kuramoto, 1986), the
 standard reduced description of large-scale brain synchrony (Cabral et al., 2011;
 Breakspear, 2017), integrated with the Euler-Maruyama scheme:
@@ -8,12 +9,12 @@ Breakspear, 2017), integrated with the Euler-Maruyama scheme:
     dθ_i = [ω_i + synaptic_i + reference_i + sensory_i] dt + sqrt(2 D dt) ξ_i
 
     synaptic_i  = (K / s_i) Σ_j w_ji m_ji sin(θ_j − θ_i − α_ji)
-                  m_ji: 1 if connection j→i transmits, 0 if it has failed   (failure p(c), P4a)
+                  m_ji: 1 if connection j→i transmits, 0 if it has failed   (failure p(c), P4(a))
                   α_ji: phase error = fixed conduction lag (if delays are modelled) plus timing
                         jitter, Gaussian with SD 2π f σ(c); by default it persists for a
                         correlation time τ (Ornstein-Uhlenbeck), so it acts as a timing
                         error during each exchange rather than averaging out within it;
-                        it can instead be redrawn at every step or fixed per connection (P4b)
+                        it can instead be redrawn at every step or fixed per connection (P4(b))
     reference_i = λ [R + A(c)(1 − R)] sin(ψ − θ_i)
                                           shared phase reference whose strength grows with global
                                           coherence R (P5), partly sustained by arousal A (P7),
@@ -81,7 +82,8 @@ class JitterScaling(Enum):
     # (the ketamine pathway hypothesis); baseline jitter still acts everywhere.
     SENSORY_PATHWAYS = "sensory pathways"
     # The agent's added jitter acts only on feedback connections, which run towards the sensory
-    # populations, so loops cannot close (test K2); baseline jitter still acts everywhere.
+    # populations, to test whether loops then fail to close (test K2, which failed); baseline
+    # jitter still acts everywhere.
     FEEDBACK_CONNECTIONS = "feedback connections"
     # Control for K2: as many connections as are feedback, drawn at random for each seed.
     MATCHED_RANDOM_CONNECTIONS = "random connections, as many as feedback"

@@ -47,11 +47,12 @@ REFERENCE_NODE_COUNT = 2_000
 REFERENCE_MEAN_DEGREE = 8.0
 REFERENCE_EDGES_PER_NEW_NODE = 4  # preferential attachment; gives mean degree 8
 
-# Measured range: cortical integration windows for coincident synaptic input span 1-10 ms
-# (Gabernet et al., 2005; under 2 ms in hippocampus, Pouille & Scanziani, 2001); 3 ms lies
-# within it, and the sensitivity analysis covers 1-10 ms.
+# Measured range: the window for integrating thalamic input in rodent barrel cortex spans 1-10 ms
+# (Gabernet et al., 2005), and it is under 2 ms in hippocampal pyramidal cells (Pouille & Scanziani,
+# 2001); 3 ms lies within that range, and the sensitivity analysis covers 1-10 ms.
 REFERENCE_INTEGRATION_WINDOW_MS = 3.0
-# Measured: spike timing in awake macaque cortex is precise to about 3 ms (Buracas et al., 1998);
+# Measured: in area MT of alert macaques, responses to time-varying stimuli are rate-modulated with
+# a precision of about 3 ms (Buracas et al., 1998);
 # single neurons in vitro reach under 1 ms (Mainen & Sejnowski, 1995). No trial-to-trial timing
 # variability between cortical areas has been measured, so the sensitivity analysis covers 1-10 ms.
 REFERENCE_BASELINE_JITTER_MS = 3.0
@@ -59,10 +60,12 @@ REFERENCE_BASELINE_JITTER_MS = 3.0
 # inertia ratios are reproduced at every level tested (calibrate_feedback.py), so they do not
 # determine it; the midpoint of the tested range is used and results are reported across it.
 REFERENCE_AROUSAL_LEVEL = 0.5
-# Calibrated: λ giving a loss-to-recovery concentration ratio of 1.11, the value measured for
-# propofol in humans (Iwakiri et al., 2005), at each arousal level tested (calibrate_feedback.py;
+# Measured: loss-to-recovery concentration ratio for isoflurane in mice (Friedman et al., 2010), the
+# reference target; the other published ratios give the sensitivity range (calibrate_feedback.py).
+REFERENCE_INERTIA_RATIO = 1.08
+# Calibrated: λ reproducing REFERENCE_INERTIA_RATIO at each arousal level tested (calibrate_feedback.py;
 # test_dpc_simulator checks that the stored values still reproduce the ratio).
-CALIBRATED_FEEDBACK_MS_BY_AROUSAL = {0.0: 6.06, 0.3: 7.93, 0.5: 10.06, 0.7: 14.13}
+CALIBRATED_FEEDBACK_MS_BY_AROUSAL = {0.0: 5.64, 0.3: 7.18, 0.5: 8.85, 0.7: 12.08}
 REFERENCE_FEEDBACK_JITTER_MS = CALIBRATED_FEEDBACK_MS_BY_AROUSAL[REFERENCE_AROUSAL_LEVEL]
 # Free.
 REFERENCE_QUORUM_FRACTION = 0.5
@@ -73,9 +76,9 @@ REFERENCE_CONCENTRATION_STEP = 0.01
 
 REFERENCE_LESION_FRACTION = 0.05
 # No feedback, then the values calibrated at the reference arousal level to each published
-# inertia ratio (calibrate_feedback.py): 1.07 (Warnaby et al., 2017), 1.11 (Iwakiri et al., 2005)
-# and 1.63 (Sepulveda et al., 2018).
-REFERENCE_FEEDBACK_SERIES_MS = (0.0, 8.49, 10.06, 16.52)
+# inertia ratio (calibrate_feedback.py): 1.07 (Warnaby et al., 2017), 1.08 (Friedman et al., 2010,
+# isoflurane), 1.11 (Iwakiri et al., 2005) and 1.63 (Sepulveda et al., 2018).
+REFERENCE_FEEDBACK_SERIES_MS = (0.0, 8.49, 8.85, 10.06, 16.52)
 # Free: share of arousal drive left after orexinergic neurons are lost (Kelz et al., 2008);
 # other arousal systems remain, so the share is partial rather than zero.
 OREXIN_ABLATION_REMAINING_SHARE = 0.5
@@ -252,8 +255,8 @@ class AnaestheticAgent:
     """Circuit-level effect of an anaesthetic class (postulate P4), with a Hill dose-response.
 
     arousal_suppression is the share of the agent's effect that also acts on wake-promoting
-    arousal circuits (1: fully, as volatile agents inhibit orexinergic neurons and activate
-    sleep-promoting VLPO neurons; Kelz et al., 2008; Moore et al., 2012).
+    arousal circuits (1: fully; isoflurane and sevoflurane reduce c-Fos in orexinergic neurons,
+    Kelz et al., 2008, and isoflurane depolarises sleep-promoting VLPO neurons, Moore et al., 2012).
     """
 
     name: str
@@ -345,7 +348,7 @@ class CoherenceModel:
         self._state = state
 
     def arousal(self, concentration: float) -> float:
-        """Arousal drive, suppressed by the agent as anaesthetics inhibit orexinergic neurons (Kelz et al., 2008)."""
+        """Arousal drive, suppressed by the agent, as anaesthetics suppress orexinergic neurons (Kelz et al., 2008)."""
         return sustained_arousal(self._state.arousal_level, self._agent, concentration)
 
     def arousal_at(self, concentration: float, coherent_fraction: float) -> float:

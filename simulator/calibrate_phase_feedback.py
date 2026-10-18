@@ -4,7 +4,7 @@ The oscillator counterpart of calibrate_feedback.py, run on the human connectome
 candidate λ the mean loss-to-recovery concentration ratio across seeds is printed, so the
 value matching the published target can be read off and its neighbourhood inspected.
 
-Target: 1.11, propofol in humans (Iwakiri et al., 2005).
+Target: the reference inertia ratio, 1.08 for isoflurane in mice (Friedman et al., 2010).
 Usage: ../.venv/bin/python calibrate_phase_feedback.py [λ ...]
 """
 

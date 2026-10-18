@@ -3,10 +3,11 @@
 Writes ../explainer/data/explainer-data.js with:
 - the percolation model's parameters, agents, sleep, glial and plant settings, read from the
   simulator's own modules so the browser model cannot drift from the Python one;
-- the C. elegans connectome (OpenWorm c302, MIT licence) and an open human connectome (CC BY 4.0),
-  whose notices are reproduced in the file;
+- the C. elegans connectome (OpenWorm c302, MIT licence), an open human connectome and a per-neuropil
+  summary of the FlyWire Drosophila connectome (both CC BY 4.0), whose notices are reproduced in the file;
 - results read from the latest reports: thresholds for every organism, the validation statistics,
-  the calibration targets, the predictions of the paper and every pre-specified test outcome.
+  the calibration targets the model reproduces, the predictions of the paper and the test outcomes
+  of every study listed in OUTCOME_REPORTS.
 
 Nothing in the explainer is typed in by hand: re-run this after any study and the page follows.
 
@@ -87,6 +88,7 @@ OUTCOME_REPORTS: tuple[tuple[str, str, bool], ...] = (
     ("congestion", "full", True),
     ("congestion", "confirmatory", True),
     ("species", "full", False),
+    ("preregistered", "full", False),
 )
 # The predictions table of Section 7, read from each language version of the paper.
 PREDICTION_SOURCES: tuple[tuple[str, str, str], ...] = (
@@ -250,8 +252,31 @@ def model_record() -> dict[str, object]:
         "feedbackJitterMs": scenario.timing.feedback_jitter_ms,
         "arousalLevel": scenario.state.arousal_level,
         "quorumFraction": scenario.quorum_fraction,
-        "agents": {"OMISSION": agent_record(dpc.GABAERGIC_LIKE_AGENT), "TIMING": agent_record(dpc.NMDA_ANTAGONIST_LIKE_AGENT)},
+        "agents": {kind: agent_record(agent) for kind, agent in AGENT_BY_FAULT_KIND.items()},
     }
+
+
+# Inputs at which the browser model is checked against CoherenceModel: (fault kind, concentration,
+# giant-component share), covering the awake network, the transition and a fragmented network.
+MODEL_CHECK_POINTS: tuple[tuple[str, float, float], ...] = (
+    ("OMISSION", 0.0, 1.0), ("OMISSION", 0.8, 1.0), ("OMISSION", 1.0, 0.3), ("OMISSION", 1.6, 0.0),
+    ("TIMING", 0.8, 1.0), ("TIMING", 1.0, 0.3), ("TIMING", 1.6, 0.0),
+)
+AGENT_BY_FAULT_KIND = {"OMISSION": dpc.GABAERGIC_LIKE_AGENT, "TIMING": dpc.NMDA_ANTAGONIST_LIKE_AGENT}
+
+
+def model_checks_record() -> list[dict[str, object]]:
+    """The Python model's effective jitter and coherence probability, which the explainer tests reproduce."""
+    scenario = dpc.REFERENCE_SCENARIO
+    checks = []
+    for kind, concentration, giant in MODEL_CHECK_POINTS:
+        model = dpc.CoherenceModel(scenario.timing, AGENT_BY_FAULT_KIND[kind], scenario.state)
+        checks.append({
+            "kind": kind, "concentration": concentration, "giant": giant,
+            "jitterMs": model.effective_jitter_ms(concentration, giant),
+            "coherence": model.coherence_probability(concentration, giant),
+        })
+    return checks
 
 
 def sleep_record() -> dict[str, float]:
@@ -359,9 +384,9 @@ def predictions_record() -> dict[str, list[dict[str, str]]]:
 
 
 def inertia_record() -> dict[str, object]:
-    """Measured loss-to-recovery ratios and the λ each calibrates to at the reference arousal level."""
+    """Measured loss-to-recovery ratios the model reproduces, and the λ each calibrates to at the reference arousal level."""
     report, document = latest_document("calibration_feedback", "full", required=True)
-    rows = [row for row in document["calibrations"] if row["calibration"]["arousal_level"] == dpc.REFERENCE_AROUSAL_LEVEL]
+    rows = [row for row in document["calibrations"] if row["calibration"]["arousal_level"] == dpc.REFERENCE_AROUSAL_LEVEL and row["reproduced"]]
     return {
         "report": report,
         "targets": [{"ratio": row["target"]["ratio"], "source": row["target"]["source"], "feedbackMs": row["calibration"]["feedback_ms"]} for row in rows],
@@ -390,6 +415,7 @@ def main() -> int:
     connectome = connectomes.LOADERS[ORGANISM](cal.CONNECTOME_SEED)
     payload = {
         "model": model_record(),
+        "modelChecks": model_checks_record(),
         "sleep": sleep_record(),
         "glia": glia_record(),
         "plant": plant_record(),

@@ -14,6 +14,7 @@
     "congestion:full": "studyCongestionFull",
     "congestion:confirmatory": "studyCongestionConfirmatory",
     "species:full": "studySpecies",
+    "preregistered:full": "studyPreregistered",
   });
   const verdictLabel = (verdict) => t(VERDICT_MESSAGE[verdict]);
 

@@ -121,6 +121,26 @@ globalThis.DPC_RESULTS_CATALOGUE = Object.freeze([
   "script": "data/results/current/percolation_full_20261018T124443Z.js"
  },
  {
+  "identifier": "current/preregistered_full_20261018T174910Z",
+  "kind": "preregistered",
+  "label": "full",
+  "report_set": "current",
+  "set_note": "",
+  "started_utc": "2026-10-18T17:49:10.413562+00:00",
+  "machine": "Mac14,9 · Apple M2 Pro",
+  "git_commit": "7ba034e3e40e82e11e30a6833d3c32e56c0192d1",
+  "working_tree_dirty": false,
+  "checks": {
+   "checks": 9,
+   "holding_in_every_run": 2,
+   "holding_in_none": 6
+  },
+  "has_curves": true,
+  "json_link": "../simulator/results/preregistered_full_20261018T174910Z.json",
+  "markdown_link": "../simulator/results/preregistered_full_20261018T174910Z.md",
+  "script": "data/results/current/preregistered_full_20261018T174910Z.js"
+ },
+ {
   "identifier": "current/sensitivity_full_20261018T124731Z",
   "kind": "sensitivity",
   "label": "full",

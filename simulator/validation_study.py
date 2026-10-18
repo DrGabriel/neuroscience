@@ -45,8 +45,8 @@ QUICK_SEEDS_PER_SIZE = 3
 
 
 # Measured spatial extent of human slow waves (Nir et al., 2011, depth electrodes): on average a slow wave
-# involves 27.1% of monitored regions (25.0% late in the night, which equals HUMAN_SLEEP_DOWN_STATE_FRACTION_UPPER,
-# so O4 already covers it). Used as the share of populations silent together during one slow wave.
+# involves 27.1% of monitored regions (25.0% late in the night). That late-night share is a spatial extent, not the share of time
+# behind HUMAN_SLEEP_DOWN_STATE_FRACTION_UPPER, but the two coincide at 0.25, so O4 already tests it. Used as the share of populations silent together during one slow wave.
 HUMAN_SLOW_WAVE_EXTENT = 0.271
 POPULATION_SLEEP_SHARES = (
     ("sleep, populations", dpc.SLEEP_DOWN_STATE_FRACTION),

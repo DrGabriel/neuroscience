@@ -25,18 +25,12 @@ const factory = new ModelFactory(data);
 const models = Object.fromEntries(Object.values(FaultKind).map((kind) => [kind, factory.create(kind)]));
 const TOLERANCE = 1e-6;
 
-// Values printed by simulator/dpc_simulator.py (CoherenceModel on REFERENCE_SCENARIO) for the same inputs.
-const PYTHON_REFERENCE = [
-  { kind: FaultKind.OMISSION, concentration: 0.0, giant: 1.0, jitterMs: 3.0, coherence: 0.3829249225480261 },
-  { kind: FaultKind.OMISSION, concentration: 0.8, giant: 1.0, jitterMs: 3.0140398288567702, coherence: 0.27603057205178577 },
-  { kind: FaultKind.OMISSION, concentration: 1.0, giant: 0.3, jitterMs: 6.094607637083785, coherence: 0.10206527357689776 },
-  { kind: FaultKind.OMISSION, concentration: 1.6, giant: 0.0, jitterMs: 9.899581966060444, coherence: 0.021168721268477086 },
-  { kind: FaultKind.TIMING, concentration: 0.8, giant: 1.0, jitterMs: 12.004071971456955, coherence: 0.09366368062030071 },
-  { kind: FaultKind.TIMING, concentration: 1.0, giant: 0.3, jitterMs: 20.90201526767216, coherence: 0.051488830648008334 },
-  { kind: FaultKind.TIMING, concentration: 1.6, giant: 0.0, jitterMs: 36.07841608723747, coherence: 0.027408783331749086 },
-];
+// The Python model's values at the same inputs, written by simulator/explainer_export.py (CoherenceModel on
+// REFERENCE_SCENARIO), so the check follows any recalibration of the Python model.
+const PYTHON_REFERENCE = data.modelChecks;
 
 test("browser model reproduces the Python model's effective jitter and coherence probability", () => {
+  assert.ok(PYTHON_REFERENCE.length > 0, "explainer-data.js carries no model checks; re-run simulator/explainer_export.py");
   for (const reference of PYTHON_REFERENCE) {
     const model = models[reference.kind];
     assert.ok(Math.abs(model.effectiveJitterMs(reference.concentration, reference.giant) - reference.jitterMs) < TOLERANCE, JSON.stringify(reference));

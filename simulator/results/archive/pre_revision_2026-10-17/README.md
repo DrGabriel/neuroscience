@@ -2,7 +2,7 @@
 
 These reports come from the first complete run of every study, made with the model as it stood
 before the internal review of 17-18 October 2026. They are kept so that the model revision
-described in the paper (Appendix D, "Model revision") can be checked against the original numbers.
+described in the paper (Appendix D, "Model revision history", row "Model after internal review") can be checked against the original numbers.
 
 They are superseded by the reports in `simulator/results/`. The main changes made after this run:
 
