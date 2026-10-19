@@ -75,6 +75,22 @@ class CatalogueTests(unittest.TestCase):
             self.assertIn("DPC_RESULTS_CATALOGUE", (explainer / "catalogue.js").read_text())
             self.assertEqual({path: path.read_bytes() for path in (current, old)}, before)
 
+    def test_a_wrapper_left_by_a_report_moved_to_the_archive_is_removed_regression(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            results, explainer = Path(directory) / "results", Path(directory) / "explainer"
+            results.mkdir()
+            (results / "species_full_20260101T000000Z.json").write_text(json.dumps({"started_utc": "2026-01-01T00:00:00+00:00"}))
+            stale = explainer / "current" / "species_full_20251231T000000Z.js"
+            stale.parent.mkdir(parents=True)
+            stale.write_text("/* left behind when its report was archived */")
+            with mock.patch.object(catalogue.reporting, "RESULTS_DIRECTORY", results), \
+                    mock.patch.object(catalogue, "ARCHIVE", results / "archive"), \
+                    mock.patch.object(catalogue, "EXPLAINER_DATA", explainer), \
+                    mock.patch.object(catalogue, "CATALOGUE_FILE", explainer / "catalogue.js"):
+                catalogue.write_catalogue()
+            self.assertFalse(stale.exists())
+            self.assertTrue((explainer / "current" / "species_full_20260101T000000Z.js").exists())
+
 
 if __name__ == "__main__":
     unittest.main()

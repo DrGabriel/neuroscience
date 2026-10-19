@@ -337,7 +337,7 @@ $$
 \dot\theta_i = \omega_i + \frac{K}{s_i}\sum_j w_{ji}\,m_{ji}\,\sin\bigl(\theta_j - \theta_i - \alpha_{ji}\bigr) + \lambda_{\text{osc}}\bigl[R + A(c)(1 - R)\bigr]\sin(\psi - \theta_i) + \xi_i,
 $$
 
-where $\omega_i$ is its natural frequency, $K$ the coupling, $s_i$ its total input strength, $w_{ji}$ the weight of the connection from $j$, $m_{ji}$ equal to 0 if that connection has failed and 1 otherwise, $\alpha_{ji}$ its phase error (conduction lag plus timing jitter), $R$ and $\psi$ the magnitude and phase of the network's mean rhythm, $\lambda_{\text{osc}}$ the dimensionless strength of the reference in this model (distinct from $\lambda$ of the percolation model, which is in milliseconds) and $\xi_i$ noise; in the stimulus conditions, the sensory populations also receive a periodic drive. In the human connectome each node is a neural population, and its phase is the phase of that population's collective rhythm, the quantity reflected in local field potentials and EEG, not the state of any single neuron. In the *C. elegans* and *Drosophila* connectomes each node is a single neuron, whose phase stands for the timing of its activity; for them the model tests the wiring, not the cellular dynamics (Section 9, item 17). Reducing an oscillating neural system to a phase is standard for weakly coupled oscillators near a periodic regime (Kuramoto, 1984; Brown et al., 2004), and phase-oscillator networks on connectomes are an established phenomenological description of large-scale brain synchrony (Cabral et al., 2011; Breakspear, 2017). The model is therefore phenomenological: it represents timing and coupling between populations and deliberately leaves out spikes, synaptic kinetics, the generation of the rhythm itself (Section 9, item 18) and neuromodulation. Its results concern the network conditions for agreement, not the cellular mechanisms of any agent. Time in the model is dimensionless, its scale set by the coupling $K$. Timing errors and conduction delays, which are given in milliseconds, enter only as phase errors, $2\pi f \sigma$ at the reference frequency $f$, so timing affects the results only through its ratio to the cycle length. The concentration is raised and lowered in steps, and at each step the network is integrated for a fixed time before it is measured. If that time were too short for the network to settle, the lag alone could produce an apparent hysteresis; the convergence study doubles the simulated time at every step and halves the integration step to check this, on the human connectome and on two *Drosophila* seeds (Appendix C.4). To keep each *Drosophila* run to about 25 minutes, those runs settle for 200 integration steps at each concentration rather than 400, and the concentration moves in steps of 0.1 times the EC50 rather than 0.05. Their loss concentrations are therefore resolved only to 0.1 and often coincide across seeds, so a standard deviation of zero across *Drosophila* seeds reflects the grid, not identical dynamics.
+where $\omega_i$ is its natural frequency, $K$ the coupling, $s_i$ its total input strength, $w_{ji}$ the weight of the connection from $j$, $m_{ji}$ equal to 0 if that connection has failed and 1 otherwise, $\alpha_{ji}$ its phase error (conduction lag plus timing jitter), $R$ and $\psi$ the magnitude and phase of the network's mean rhythm, $\lambda_{\text{osc}}$ the dimensionless strength of the reference in this model (distinct from $\lambda$ of the percolation model, which is in milliseconds) and $\xi_i$ noise; in the stimulus conditions, the sensory populations also receive a periodic drive. In the human connectome each node is a neural population, and its phase is the phase of that population's collective rhythm, the quantity reflected in local field potentials and EEG, not the state of any single neuron. In the *C. elegans* and *Drosophila* connectomes each node is a single neuron, whose phase stands for the timing of its activity; for them the model tests the wiring, not the cellular dynamics (Section 9, item 17). Reducing an oscillating neural system to a phase is standard for weakly coupled oscillators near a periodic regime (Kuramoto, 1984; Brown et al., 2004), and phase-oscillator networks on connectomes are an established phenomenological description of large-scale brain synchrony (Cabral et al., 2011; Breakspear, 2017). The model is therefore phenomenological: it represents timing and coupling between populations and deliberately leaves out spikes, synaptic kinetics, the generation of the rhythm itself (Section 9, item 18) and neuromodulation. Its results concern the network conditions for agreement, not the cellular mechanisms of any agent. Time in the model is dimensionless, its scale set by the coupling $K$. Timing errors and conduction delays, which are given in milliseconds, enter only as phase errors, $2\pi f \sigma$ at the reference frequency $f$, so timing affects the results only through its ratio to the cycle length. The concentration is raised and lowered in steps, and at each step the network is integrated for a fixed time before it is measured. If that time were too short for the network to settle, the lag alone could produce an apparent hysteresis; the convergence study doubles the simulated time at every step and halves the integration step to check this, on the human connectome and on two *Drosophila* seeds (Appendix C.4). By the rule stated in Appendix C.4 before the study produced any result, the loss concentrations converged on both connectomes and the small hysteresis is not an artefact of the settling time, but the broadcast ratios did not converge: with twice the simulated time they were lower both awake and after quorum was lost. Their fall relative to the awake value grew rather than shrank, from 0.22 to 0.13 of the awake value on the human connectome and from 0.52 to 0.28 on *Drosophila*, so the reference settings understate the collapse of broadcast, and absolute broadcast ratios depend on the integration time. To keep each *Drosophila* run to about 25 minutes, those runs settle for 200 integration steps at each concentration rather than 400, and the concentration moves in steps of 0.1 times the EC50 rather than 0.05. Their loss concentrations are therefore resolved only to 0.1 and often coincide across seeds, so a standard deviation of zero across *Drosophila* seeds reflects the grid, not identical dynamics.
 
 In the phase-oscillator implementation (Appendix C), a timing error of $\sigma$ milliseconds becomes a phase error with standard deviation $2\pi f \sigma$, where $f$ is the frequency of the reference rhythm. Under P8 the reference slows as the agent takes effect,
 
@@ -345,7 +345,7 @@ $$
 f(c) = f_{\text{awake}} - \bigl(f_{\text{awake}} - f_{\text{fallback}}\bigr)\,h(c),
 $$
 
-from $f_{\text{awake}} = 40$ Hz, within the gamma band of 30 to 90 Hz (Fries, 2015), towards $f_{\text{fallback}} = 10$ Hz, the centre of the 8 to 12 Hz frontal alpha seen at propofol-induced loss of consciousness (Purdon et al., 2013). Constant conduction delays are converted to phase at the same rate. Because the effective coupling of a connection with Gaussian timing error of phase standard deviation $s$ is reduced by the factor $e^{-s^2/2}$, a slower reference preserves coupling for the same error in milliseconds. The same fallback rate is used for every agent, although ketamine does not produce frontal alpha (Akeju et al., 2016); this is a simplification. In the cross-species study the slower rate raised the loss concentration of the GABAergic-like agent in every seed on all three connectomes (test F1), but its distinctive prediction, that it protects more against timing faults than against transmission failure, failed in every seed (test F3: 0 of 20, 0 of 2 and 0 of 20). P8 is kept as a proposal whose specific mechanism the model does not support (Appendix D).
+from $f_{\text{awake}} = 40$ Hz, within the gamma band of 30 to 90 Hz (Fries, 2015), towards $f_{\text{fallback}} = 10$ Hz, the centre of the 8 to 12 Hz frontal alpha seen at propofol-induced loss of consciousness (Purdon et al., 2013). Constant conduction delays are converted to phase at the same rate. Because the effective coupling of a connection with Gaussian timing error of phase standard deviation $s$ is reduced by the factor $e^{-s^2/2}$, a slower reference preserves coupling for the same error in milliseconds. The same fallback rate is used for every agent, although ketamine does not produce frontal alpha (Akeju et al., 2016); this is a simplification. In the cross-species study the slower rate raised the loss concentration of the GABAergic-like agent in every seed on all three connectomes (test F1), but its distinctive prediction, that it protects more against timing faults than against transmission failure, failed in every seed (test F3: 0 of 20, 0 of 6 and 0 of 20). P8 is kept as a proposal whose specific mechanism the model does not support (Appendix D).
 
 ### 4.6 Glial regulation (P9)
 
@@ -417,7 +417,7 @@ stateDiagram-v2
 
 *Figure B. States distinguished by the hypothesis. Recovery from anaesthesia occurs at a lower concentration than loss (neural inertia); sleep, unlike deep anaesthesia, retains a conscious state that a strong stimulus can restore.*
 
-Natural sleep also abolishes consciousness, without any drug, and is neurophysiologically distinct from anaesthesia (Akeju and Brown, 2017). Under P7, non-rapid-eye-movement (NREM) sleep combines withdrawal of the arousal drive with slow-oscillation down-states. A down-state is a period in which a whole local population falls silent together (Vyazovskiy et al., 2009), and slow waves are often regional, the widespread ones being typical of early NREM sleep (Nir et al., 2011). The model therefore treats a down-state as silencing whole populations and asks what share of populations must be silent at the same moment for the sleeping network to lose quorum (Appendix B). In the model that share is about 12% (0.117 in the largest networks). The measured share of time spent in down-states gives a scale for comparison: about 0.10 in rat NREM sleep (silent periods of at least 50 ms, averaging 85.8 ms, between active periods averaging 815.5 ms; Vyazovskiy et al., 2009; shorter silences are not counted, so this underestimates the share), and an upper estimate of about 0.25 for human NREM sleep (down-states of about 400 ms, the duration Cash et al., 2009, report for both K-complexes and slow-oscillation down-states, at 37.3 slow waves per minute at each recording site, Nir et al., 2011). In human sleep, a slow wave involves on average 27.1% of the monitored regions, and 85% of slow waves reach fewer than half of the recording sites (Nir et al., 2011). A slow wave detected at more than half of the recording sites is classed as global (Nir et al., 2011), so a global down-state silences a larger share than either average. The rat share therefore does not abolish quorum in the model (test O3 holds in at most 1 of 20 seeds at any network size), whereas the human upper estimate does in every seed (test O4); the sleep result rests on that upper estimate. Appendix B also reports an alternative account in which down-states make individual connections fail. It is consistent with the observation that during NREM sleep the response to transcranial magnetic stimulation is rapidly extinguished and does not propagate beyond the stimulated site, whereas in wakefulness it spreads to connected areas several centimetres away (Massimini et al., 2005).
+Natural sleep also abolishes consciousness, without any drug, and is neurophysiologically distinct from anaesthesia (Akeju and Brown, 2017). Under P7, non-rapid-eye-movement (NREM) sleep combines withdrawal of the arousal drive with slow-oscillation down-states. A down-state is a period in which a whole local population falls silent together (Vyazovskiy et al., 2009), and slow waves are often regional, the widespread ones being typical of early NREM sleep (Nir et al., 2011). The model therefore treats a down-state as silencing whole populations and asks what share of populations must be silent at the same moment for the sleeping network to lose quorum (Appendix B). In the model that share is about 15% (0.152 in the largest networks). The measured share of time spent in down-states gives a scale for comparison: about 0.10 in rat NREM sleep (silent periods of at least 50 ms, averaging 85.8 ms, between active periods averaging 815.5 ms; Vyazovskiy et al., 2009; shorter silences are not counted, so this underestimates the share), and an upper estimate of about 0.25 for human NREM sleep (down-states of about 400 ms, the duration Cash et al., 2009, report for both K-complexes and slow-oscillation down-states, at 37.3 slow waves per minute at each recording site, Nir et al., 2011). In human sleep, a slow wave involves on average 27.1% of the monitored regions, and 85% of slow waves reach fewer than half of the recording sites (Nir et al., 2011). A slow wave detected at more than half of the recording sites is classed as global (Nir et al., 2011), so a global down-state silences a larger share than either average. The rat share therefore does not abolish quorum in the model (test O3 holds in no seed at any network size), whereas the human upper estimate does in every seed (test O4); the sleep result rests on that upper estimate. Appendix B also reports an alternative account in which down-states make individual connections fail. It is consistent with the observation that during NREM sleep the response to transcranial magnetic stimulation is rapidly extinguished and does not propagate beyond the stimulated site, whereas in wakefulness it spreads to connected areas several centimetres away (Massimini et al., 2005).
 
 Why sleep should pause the integration process is a further hypothesis of the authors [H]. Global agreement is proposed to be the most costly process the brain runs, so that pausing it frees resources for maintenance that does not need broadcast [A: the most demanding service is stopped so that maintenance jobs can run without competing for resources]. In a small study, cerebral glucose use fell by about 44% in slow-wave sleep and returned to waking levels in REM sleep (Maquet et al., 1990), the stage in which vivid dreaming is most often reported; and the synaptic homeostasis hypothesis proposes that the brain disconnects from the environment during sleep so that spontaneous activity can renormalise synaptic strength and restore cellular homeostasis (Tononi and Cirelli, 2014). Memory consolidation during slow-wave sleep coordinates hippocampus and neocortex (Diekelmann and Born, 2010). On this view, waking from sleep resumes a process whose machinery stayed intact [A: resuming from sleep mode rather than booting], whereas recovery from anaesthesia usually waits for the agent to clear, although arousal pathways can drive emergence during continuous anaesthetic (Section 5.4), and shows neural inertia [A: a forced shutdown followed by a boot sequence]. Resumption is not instantaneous: after an abrupt awakening, especially from slow-wave sleep, performance stays impaired for a time that, without prior sleep deprivation, rarely exceeds 30 minutes (sleep inertia; Tassi and Muzet, 2000). The view predicts that, at matched depth of slow-wave activity, responsiveness returns faster and with less hysteresis on arousal from sleep than on emergence from anaesthesia (Section 7, prediction 14).
 
@@ -459,7 +459,7 @@ The same account applies to ketamine. After ketamine anaesthesia, volunteers rep
 
 **Objection.** *Caenorhabditis elegans* (302 neurons; White et al., 1986) and *Drosophila* are anaesthetised by the same agents, despite having no cortex or thalamus.
 
-**Response.** The molecular and synaptic effects of anaesthetics are evolutionarily conserved: presynaptic syntaxin 1A in flies (Zalucki et al., 2015) and mitochondrial complex I in nematodes (Kayser et al., 1999) are examples. Conservation at the molecular level is expected under P4. At the systems level, the observed effect in both species is a loss of coordination rather than of activity: correlations between *C. elegans* head neurons collapse while each neuron remains active (Awal et al., 2020), and isoflurane fragments the integrated structure of fly brain activity (Leung et al., 2021). Appendix C tests the model on the connectomes of both species, with 20 seeds for *C. elegans* and, because each run takes about 25 minutes, only 2 for *Drosophila* in the cross-species study and 6 in the pre-specified tests (Appendix C.7), so the *Drosophila* results are indicative. The percolation argument applies to any network of coupled units, but the threshold depends on topology, and the behavioural endpoints differ (immobility in nematodes is not evidence of unconsciousness). DPC therefore makes a **restricted** claim: in any nervous system whose coordinated behaviour depends on timing-coherent communication across units, anaesthetics should abolish that coordination at a percolation-like threshold. We do not claim that the human thalamocortical architecture is scale-invariant, and we draw no conclusion about consciousness in invertebrates.
+**Response.** The molecular and synaptic effects of anaesthetics are evolutionarily conserved: presynaptic syntaxin 1A in flies (Zalucki et al., 2015) and mitochondrial complex I in nematodes (Kayser et al., 1999) are examples. Conservation at the molecular level is expected under P4. At the systems level, the observed effect in both species is a loss of coordination rather than of activity: correlations between *C. elegans* head neurons collapse while each neuron remains active (Awal et al., 2020), and isoflurane fragments the integrated structure of fly brain activity (Leung et al., 2021). Appendix C tests the model on the connectomes of both species, with 20 seeds for *C. elegans* and, because each run takes about 25 minutes, 6 for *Drosophila* in both the cross-species study and the pre-specified tests (Appendix C.7), so the *Drosophila* confidence intervals are wider. The percolation argument applies to any network of coupled units, but the threshold depends on topology, and the behavioural endpoints differ (immobility in nematodes is not evidence of unconsciousness). DPC therefore makes a **restricted** claim: in any nervous system whose coordinated behaviour depends on timing-coherent communication across units, anaesthetics should abolish that coordination at a percolation-like threshold. We do not claim that the human thalamocortical architecture is scale-invariant, and we draw no conclusion about consciousness in invertebrates.
 
 ### 6.6 Immobility
 
@@ -490,7 +490,7 @@ The same account applies to ketamine. After ketamine anaesthesia, volunteers rep
 | 3 | Inter-areal lag *variability*, not mean lag, predicts LOR across agents, for GABAergic agents through the reference feedback of P5, which adds timing error as the giant component shrinks | Distribution of lag across trials for frontal-parietal connections | Mean amplitude or local power predicts LOR as well as or better than lag variability across propofol, sevoflurane and ketamine |
 | 4 | Induction-phase excitation scales with sensory and recurrent load | Compare beta and gamma surges at induction with and without sensory deprivation, matched for concentration | No difference in surge magnitude between high- and low-load conditions. The model's version of this account already failed (Section 5.1), and sensory deprivation may also change arousal, which must be controlled |
 | 5 | Neural inertia ($c_{\text{off}}$ − $c_{\text{on}}$) correlates with the strength of thalamocortical reference coupling ($\lambda$) | Thalamocortical phase-locking in animal models, with optogenetic or pharmacological modulation of thalamic drive | Manipulating thalamocortical coupling changes LOR or emergence thresholds without changing hysteresis. In the percolation model $\lambda$ is calibrated, not measured, and the oscillator model shows no robust hysteresis (Section 4.3) |
-| 6 | Targeted disruption of hub connections lowers the concentration required for LOR more than random disruption of the same number of connections | Animal models with focal inactivation of hub versus non-hub regions | Equal threshold shifts for hub and non-hub disruption. Many network accounts make the same prediction, so it does not single out DPC; in the model it holds in every run only in networks of 100,000 nodes or more (Appendix B, test C5) |
+| 6 | Targeted disruption of hub connections lowers the concentration required for LOR more than random disruption of the same number of connections | Animal models with focal inactivation of hub versus non-hub regions | Equal threshold shifts for hub and non-hub disruption. Many network accounts make the same prediction, so it does not single out DPC; in the model it holds in every run at every network size tested (Appendix B, test C5) |
 | 7 | Ketamine reduces coherence with external stimuli more than coherence among internally generated cortical activity | Stimulus-locked versus spontaneous inter-areal phase-locking under ketamine | Equal or greater loss of spontaneous internal coherence, while PCI remains high. The model's version of this proposal failed (test K1, Section 5.6); the prediction is kept as an empirical test |
 | 8 | Trial-to-trial variability in the latency of responses *between* areas rises at concentrations just below loss of responsiveness, before mean latency changes appreciably, while single-neuron timing stays precise (P4b) | Intracranial recordings of responses propagating between areas at stepped effect-site concentrations, in volunteers or patients | Inter-areal latency variability unchanged until responsiveness is lost, or rising only after mean latency. Evoked-response variability in rat auditory cortex is known to depend on anaesthetic depth, being highest at medium depth (Kisley and Gerstein, 1999), but it has not been measured between areas relative to loss of responsiveness |
 | 9 | At the onset of propofol frontal alpha, phase locking between distant regions is better preserved in the alpha band than in broadband activity, and alpha onset follows a rise in timing variability (P8) | High-density EEG or intracranial recordings during slow induction | No preservation of alpha-band long-range phase locking relative to broadband, or alpha onset unrelated to timing variability. The model's version of P8's distinctive prediction failed (test F3, Section 4.5); the prediction is kept as an empirical test |
@@ -536,14 +536,14 @@ where $p_1$ is the fraction of significant (value 1) elements. PCI is high in co
 5. **Ketamine.** DPC's account of disconnected consciousness under ketamine is provisional: its first version failed in the model (test K1), the revised version failed its pre-specified test (K2) and is kept only as a contributing factor, and neither explains why complexity is preserved under ketamine (Section 6.2).
 6. **Criticality.** Claims that cortical networks operate near criticality, first made from neuronal avalanches in rat cortical slices and cultures (Beggs and Plenz, 2003), remain an open question; an fMRI analysis of propofol-induced unconsciousness reported a departure from critical dynamics (Tagliazucchi et al., 2016), and cortical recordings (electrocorticography and magnetoencephalography) in humans and macaques reported near-critical slow cortical dynamics during consciousness (Toker et al., 2022). DPC does not require self-organised criticality; it requires only a percolation-like threshold in the coherent subgraph.
 7. **Experience.** DPC addresses the conditions for integrated, reportable content, not why such integration is accompanied by experience.
-8. **Arousal is modelled only as a share of the reference.** Without an arousal term, the reference simulator can remain unconscious even at zero concentration after strong reference feedback or loss of hub nodes, which patients do not. P7 adds an arousal drive that sustains part of the reference and is suppressed by the agent. With it, most runs recover, but not all: some stay trapped unconscious at zero concentration (test O1: 4 of 20 seeds at 302 nodes and 2 of 20 at 1,000, none in larger networks), and more do after a hub lesion (test O2: 1 to 10 of 20 seeds, depending on network size; Appendix B). The arousal level itself is a free parameter, because the measured inertia ratios from 1.07 to 1.63 are reproduced at every level tested (the halothane ratio of 2.85 at none, limitation 2), and the arousal systems are represented by a single number rather than by their own dynamics (Kelz et al., 2008).
-9. **Neural inertia depends on the model class.** The percolation model reproduces the measured loss-to-recovery ratio when $\lambda$ is calibrated, but in the phase-oscillator model on the human connectome the reference feedback produced either no hysteresis distinguishable from run-to-run variation or, when stronger, a trapped unconscious state (Appendix C). Hysteresis is therefore not a robust consequence of P5 across model classes, and other mechanisms, including adaptive feedback (Kim et al., 2018) and noise-driven switching between metastable states (Proekt and Hudson, 2018), remain candidates.
+8. **Arousal is modelled only as a share of the reference.** Without an arousal term, the reference simulator can remain unconscious even at zero concentration after strong reference feedback or loss of hub nodes, which patients do not. P7 adds an arousal drive that sustains part of the reference and is suppressed by the agent. With it, most runs recover, but not all: some stay trapped unconscious at zero concentration (test O1: 4 of 20 seeds at 302 nodes and 2 of 20 at 1,000, none in larger networks), and more do after a hub lesion (test O2: 4 of 20 seeds at 302 and at 1,000 nodes, none in larger networks; Appendix B). The arousal level itself is a free parameter, because the measured inertia ratios from 1.07 to 1.63 are reproduced at every level tested (the halothane ratio of 2.85 at none, limitation 2), and the arousal systems are represented by a single number rather than by their own dynamics (Kelz et al., 2008).
+9. **Neural inertia depends on the model class.** The percolation model reproduces the measured loss-to-recovery ratio when $\lambda$ is calibrated, but in the phase-oscillator model on the human connectome the reference feedback produced no hysteresis distinguishable from run-to-run variation at any strength tried (Appendix C.2). Hysteresis is therefore not a robust consequence of P5 across model classes, and other mechanisms, including adaptive feedback (Kim et al., 2018) and noise-driven switching between metastable states (Proekt and Hudson, 2018), remain candidates.
 10. **Local processing is narrower than local module integrity.** In the simulations, spontaneous coherence within anatomical modules generally fell together with global coherence; it did not persist inside every module. What persisted was stimulus-driven entrainment of the stimulated sensory area while propagation to the rest of the network failed. Section 6.4 is stated in that narrower form, which is also what intracranial recordings show (Krom et al., 2020).
 11. **Paradoxical excitation.** The congestion account failed in the model (tests W1 to W4). In the oscillator model, fluctuations of global coherence peak at or after the loss of quorum rather than clearly before it, so the pre-specified test P1 failed; they do rise at least tenfold on the conscious side of the threshold, a post hoc finding (P1b) that replicated on fresh seeds (P1c). The revised account of Section 5.1, survivor lock-in with critical fluctuations, therefore rests on a replicated but generic threshold behaviour and on a synchrony surge reproduced only at one coupling, and interneuron antisynchrony (McCarthy et al., 2008) remains the more developed explanation.
 12. **Natural sleep.** The model represents NREM sleep only by withdrawal of arousal and by down-states that silence either whole populations or single connections. The two accounts give different results (Appendix B), and which dominates in the brain is not known. The shares of time spent in down-states come from rat recordings and from a human estimate that combines two studies; the share of populations silent at any one moment, which the population account needs, has not been measured directly. REM sleep is not modelled, and the account of sleep as a pause that frees resources for maintenance (Section 5.6) is a hypothesis that the simulations do not test.
 13. **Constraining each agent independently.** If the failure probability $p(c)$ and the jitter $\sigma_0(c)$ of each agent could be chosen freely, DPC could fit any outcome. The hypothesis is falsifiable only if these are measured independently for each agent, for example as synaptic failure rates and spike-timing variability in slice or in vivo recordings at known concentrations, before network-level predictions are compared with data.
 14. **Fixed delays and jitter.** The model treats constant conduction delays as absorbed into the phase relations of ongoing oscillations, so that only the variability of timing matters. This assumption is plausible for stable oscillatory regimes but has not been tested here.
-15. **One fly, one sex, few seeds.** The *Drosophila* results rest on a single adult female brain (Dorkenwald et al., 2024) and, because each run takes about 25 minutes, on 2 seeds per condition in the cross-species study and 6 in the pre-specified tests, on a coarser concentration grid (Section 4.5), so their confidence intervals are wide. A complete connectome of the male central nervous system, including the ventral nerve cord, has since been published (Berg et al., 2026); repeating the cross-species study on it, once its terms of use are confirmed, would test whether the results generalise across individuals and sexes.
+15. **One fly, one sex, few seeds.** The *Drosophila* results rest on a single adult female brain (Dorkenwald et al., 2024) and, because each run takes about 25 minutes, on 6 seeds per condition in both the cross-species study and the pre-specified tests, on a coarser concentration grid (Section 4.5), so their confidence intervals are wide. The shorter settling of the *Drosophila* runs also weakens the collapse of broadcast: at the reference settings the broadcast after quorum was lost stayed near half its awake value, the threshold of test P3, which held in 2 of 6 *Drosophila* seeds, whereas with twice the simulated time it fell to about a quarter in both seeds checked (Section 4.5). A complete connectome of the male central nervous system, including the ventral nerve cord, has since been published (Berg et al., 2026); repeating the cross-species study on it, once its terms of use are confirmed, would test whether the results generalise across individuals and sexes.
 16. **Glial regulation is represented only by parameters.** The glial loops of P9 have their own dynamics, but the model holds each fixed during a sweep, and their strengths ($\gamma$, $g$, $s_a$) are free parameters; $\lambda$ was not recalibrated with the microglial loop. The evidence comes from mice. Astrocytic effects on anaesthesia differ in sign between regions (Lin et al., 2023; Liu et al., 2023; Zhao et al., 2024); several earlier astrocyte studies used a mouse line whose transgene is also expressed in neurons (Fujita et al., 2014); and astrocytic calcium signalling did not modulate hippocampal plasticity in one study (Agulhon et al., 2010). The microglial depletion findings (Cao et al., 2023; He et al., 2023) used the drug PLX5622, which also speeds the clearance of anaesthetics, and genetic depletion did not reproduce the faster emergence (Cao et al., 2026); the remaining support is genetic loss of the P2Y12 receptor (Cao et al., 2023), and no study has measured neural inertia with microglia manipulated. The ageing evidence is only suggestive: the propofol concentration at which half of volunteers lose consciousness falls with age, from 2.35 µg/ml at 25 years to 1.25 µg/ml at 75 (Schnider et al., 1999), but loss of neurons and receptor changes are equally possible causes.
 17. **Mammalian timing in every species.** Both models use the same mammalian timing values for all three connectomes: a 40 Hz reference, a 3 ms integration window and 3 ms baseline jitter. Invertebrate nervous systems do not share this timescale. An identified *C. elegans* sensory neuron recorded in situ lacks classical Na⁺ action potentials, and the other neurons recorded share its membrane properties (Goodman et al., 1998), although one class of sensory neuron, AWA, fires all-or-none calcium action potentials (Liu et al., 2018). The cross-species results therefore test the network part of the hypothesis, whether each wiring diagram has a sharp quorum threshold and where it lies, which depends only on topology and on timing error relative to the window. They do not show that worms or flies integrate on a millisecond timescale. Accordingly, the critical jitter in Appendix B should be read as a multiple of the integration window (for *C. elegans*, about six windows), not as a value in milliseconds. A direct test in *C. elegans* would use whole-brain calcium imaging under slowly stepped isoflurane, building the functional network from correlated activity over seconds and measuring whether its giant component collapses at a threshold and recovers at a lower concentration; Awal et al. (2020) showed that the correlations collapse, but not whether they do so at a threshold or with inertia.
 18. **The models do not generate the rhythms they assume.** Neither model produces alpha, the slow oscillation or burst suppression from its own dynamics: the percolation model has no rhythm, and the phase model imposes a single reference frequency. The phase model's global order parameter measures the coherence of the reference rhythm and of content together, so it cannot show the dissociation between a hypersynchronous rhythm and fragmented content described in Section 6.8. Separating the two requires measuring stimulus-locked coherence apart from ongoing coherence in the model, as prediction 1 requires in data.
@@ -1117,22 +1117,22 @@ The percolation model implements Section 4 exactly as written. The studies below
 
 ### B.3 Calibration of the reference feedback
 
-Source: `simulator/results/calibration_feedback_full_20261018T205648Z.md`.
+Source: `simulator/results/calibration_feedback_full_20261018T210709Z.md`.
 
 #### Run metadata
 
 | Field | Value |
 |---|---|
-| Started (UTC) | 2026-10-18T20:56:48.778932+00:00 |
-| Finished (UTC) | 2026-10-18T20:58:55.351957+00:00 |
+| Started (UTC) | 2026-10-18T21:07:09.189545+00:00 |
+| Finished (UTC) | 2026-10-18T21:09:13.015266+00:00 |
 | Machine | Mac14,9, Apple M2 Pro |
 | CPU cores | 10 (6 performance, 4 efficiency) |
 | Memory | 32 GiB |
 | Operating system | macOS 26.7.1 (build 25G241), arm64 |
 | Python | CPython 3.15.0; standard library only |
-| Git commit | `4bf724b5cf808aeaff38d791f9391dc8967a5375` (working tree dirty: False) |
-| SHA-256 `calibrate_feedback.py` | `741457cf62f7255f5aecd0913ef46483e634617c92286a446c8b5122cd25f767` |
-| SHA-256 `dpc_simulator.py` | `692013943404bb9271683d374bba0a08b511a67ad7dc59b27d051dee987a0a07` |
+| Git commit | `0677161701738895512e2b047b40f3857406a5d5` (working tree dirty: False) |
+| SHA-256 `calibrate_feedback.py` | `fcdf7a99af69780b32150dbd9c12868165ce3d578fa27a6fc4ad6817ff56536f` |
+| SHA-256 `dpc_simulator.py` | `07f3b3f1828859c628f596f543d65e33c45403483d5696bd355d8f48fd856fdf` |
 | SHA-256 `provenance.py` | `94071e252347139bab3c5f113d52a38f65feaeaa0c03738ec8d81090c9139cb2` |
 | SHA-256 `reporting.py` | `de80a53d63e90383ed325db5098aea06b71b3f846d8368ddeb12347ce3c4470b` |
 
@@ -1163,25 +1163,25 @@ Source: `simulator/results/calibration_feedback_full_20261018T205648Z.md`.
 
 ### B.4 Validation across network sizes
 
-Network sizes run from 302 nodes, the number of *C. elegans* neurons (White et al., 1986), and 1,000, the finest common cortical parcellation (Schaefer et al., 2018), to 1,000,000. Claims C1-C7 are properties the paper attributes to the model; observations O1-O5 and extension tests E1-E3 are reported without entering the verdict. Each check is labelled either a test, which the model could fail, or a consistency check, which follows from the model's equations and confirms only that the code implements them. Every count of seeds is given with its Wilson 95% confidence interval (Wilson, 1927); a check is said to hold only when it holds in every seed. Source: `simulator/results/validation_full_20261018T123515Z.md`.
+Network sizes run from 302 nodes, the number of *C. elegans* neurons (White et al., 1986), and 1,000, the finest common cortical parcellation (Schaefer et al., 2018), to 1,000,000. Claims C1-C7 are properties the paper attributes to the model; observations O1-O5 and extension tests E1-E3 are reported without entering the verdict. Each check is labelled either a test, which the model could fail, or a consistency check, which follows from the model's equations and confirms only that the code implements them. Every count of seeds is given with its Wilson 95% confidence interval (Wilson, 1927); a check is said to hold only when it holds in every seed. Source: `simulator/results/validation_full_20261018T210913Z.md`.
 
 #### Run metadata
 
 | Field | Value |
 |---|---|
-| Started (UTC) | 2026-10-18T12:35:15+00:00 |
-| Finished (UTC) | 2026-10-18T12:44:33+00:00 |
+| Started (UTC) | 2026-10-18T21:09:13+00:00 |
+| Finished (UTC) | 2026-10-18T21:18:07+00:00 |
 | Machine | Mac14,9, Apple M2 Pro |
 | CPU cores | 10 (6 performance, 4 efficiency) |
 | Memory | 32 GiB |
 | Operating system | macOS 26.7.1 (build 25G241), arm64 |
-| Python | CPython 3.13.2; standard library only |
-| Git commit | `5c7512c46abc11bc56b1dfc5fe78c529892aab97` (working tree dirty: True) |
-| SHA-256 `dpc_simulator.py` | `9080470f6134967e13b6f6bee7b295c1f04cbac75f545a5bbd89d7e5aca8da25` |
+| Python | CPython 3.15.0; standard library only |
+| Git commit | `0677161701738895512e2b047b40f3857406a5d5` (working tree dirty: True) |
+| SHA-256 `dpc_simulator.py` | `07f3b3f1828859c628f596f543d65e33c45403483d5696bd355d8f48fd856fdf` |
 | SHA-256 `provenance.py` | `94071e252347139bab3c5f113d52a38f65feaeaa0c03738ec8d81090c9139cb2` |
 | SHA-256 `reporting.py` | `de80a53d63e90383ed325db5098aea06b71b3f846d8368ddeb12347ce3c4470b` |
-| SHA-256 `validation_study.py` | `4976de996a1f416704fa61e91ce6bbfb5ffbae97a705764f3d0ced01503a1159` |
-| Wall time | 558.1 s |
+| SHA-256 `validation_study.py` | `e0cd77946cfd8269d64fb91d2fdfe1465b6654ca3b72743903a00af9421492b3` |
+| Wall time | 534.7 s |
 | Worker processes | 10 |
 | Seeds per size | 20 (base seed 20261017) |
 
@@ -1189,11 +1189,11 @@ Network sizes run from 302 nodes, the number of *C. elegans* neurons (White et a
 
 | ID | Statement | Kind | N = 302 | N = 1,000 | N = 10,000 | N = 100,000 | N = 1,000,000 |
 |---|---|---|---|---|---|---|---|
-| C1 | Crash-like and noise-like agents both abolish quorum (Section 6.2) | test | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) |
+| C1 | Omission-fault and timing-fault agents both abolish quorum (Section 6.2) | test | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) |
 | C2 | Without reference feedback (lambda = 0) there is no hysteresis (Section 4.3) | consistency check | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) |
-| C3 | Hysteresis (neural inertia) grows with lambda; no recovery counts as unbounded (prediction 5) | consistency check | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) |
+| C3 | Hysteresis (neural inertia) grows with lambda; no recovery counts as unbounded (prediction 5) | consistency check | 20/20 (84–100%) | 20/20 (84–100%) | 19/20 (76–99%) | 19/20 (76–99%) | 13/20 (43–82%) |
 | C4 | Reference feedback sharpens the loss-of-consciousness transition (prediction 1) | test | 19/20 (76–99%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) |
-| C5 | Hub lesions lower the loss concentration more than random lesions (prediction 6) | test | 16/20 (58–92%) | 17/20 (64–95%) | 9/20 (26–66%) | 20/20 (84–100%) | 20/20 (84–100%) |
+| C5 | Hub lesions lower the loss concentration more than random lesions (prediction 6) | test | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) |
 | C6 | Reduced arousal delays emergence more than it shifts induction (Kelz et al., 2008) | test | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) |
 | C7 | Without the agent's action on arousal circuits, quorum is still lost but at a higher concentration (Moore et al., 2012; Eikermann et al., 2011) | consistency check | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) |
 
@@ -1202,60 +1202,61 @@ Network sizes run from 302 nodes, the number of *C. elegans* neurons (White et a
 | ID | Statement | Kind | N = 302 | N = 1,000 | N = 10,000 | N = 100,000 | N = 1,000,000 |
 |---|---|---|---|---|---|---|---|
 | O1 | Trapped unconscious at zero concentration, lambda = 16.52 ms at the reference arousal level | test | 4/20 (8–42%) | 2/20 (3–30%) | 0/20 (0–16%) | 0/20 (0–16%) | 0/20 (0–16%) |
-| O2 | Trapped unconscious at zero concentration after hub lesion, lambda = 10.06 ms | test | 5/20 (11–47%) | 10/20 (30–70%) | 7/20 (18–57%) | 5/20 (11–47%) | 1/20 (1–24%) |
-| O3 | Sleep with population-level down-states at the rat share (0.095) loses quorum | test | 1/20 (1–24%) | 0/20 (0–16%) | 0/20 (0–16%) | 0/20 (0–16%) | 0/20 (0–16%) |
+| O2 | Trapped unconscious at zero concentration after hub lesion, lambda = 8.85 ms | test | 4/20 (8–42%) | 4/20 (8–42%) | 0/20 (0–16%) | 0/20 (0–16%) | 0/20 (0–16%) |
+| O3 | Sleep with population-level down-states at the rat share (0.095) loses quorum | test | 0/20 (0–16%) | 0/20 (0–16%) | 0/20 (0–16%) | 0/20 (0–16%) | 0/20 (0–16%) |
 | O4 | Sleep with population-level down-states at the human share (0.25) loses quorum | test | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) |
+| O5 | Sleep with one typical human slow wave silencing its measured share of regions (0.271) loses quorum (Nir et al., 2011) | test | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) |
 
 #### Extension tests (seeds in which the pre-specified test passes; not part of the verdict)
 
 | ID | Statement | Kind | N = 302 | N = 1,000 | N = 10,000 | N = 100,000 | N = 1,000,000 |
 |---|---|---|---|---|---|---|---|
-| E1 | Sleep (no arousal, connection-level down-states, share 0.095, rat) has a wakeable stable unconscious state | test | 18/20 (70–97%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) |
-| E2 | Deeper sleep (connection-level down-states, share 0.25, human upper estimate) has a wakeable stable unconscious state | test | 12/20 (39–78%) | 8/20 (22–61%) | 1/20 (1–24%) | 0/20 (0–16%) | 0/20 (0–16%) |
+| E1 | Sleep (no arousal, connection-level down-states, share 0.095, rat) has a wakeable stable unconscious state | test | 15/20 (53–89%) | 15/20 (53–89%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) |
+| E2 | Deeper sleep (connection-level down-states, share 0.25, human upper estimate) has a wakeable stable unconscious state | test | 18/20 (70–97%) | 17/20 (64–95%) | 18/20 (70–97%) | 20/20 (84–100%) | 20/20 (84–100%) |
 | E3 | Deep anaesthesia has only an unconscious state, so no perturbation restores quorum | test | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) |
 
 #### Thresholds (mean ± SD across seeds, relative concentration units)
 
 | Quantity | N = 302 | N = 1,000 | N = 10,000 | N = 100,000 | N = 1,000,000 |
 |---|---|---|---|---|---|
-| c_off, GABAergic-like | 0.882 ± 0.037 | 0.868 ± 0.019 | 0.856 ± 0.008 | 0.859 ± 0.003 | 0.860 ± 0.002 |
-| c_on, GABAergic-like | 0.776 ± 0.055 | 0.779 ± 0.039 | 0.775 ± 0.015 | 0.774 ± 0.008 | 0.777 ± 0.005 |
-| Hysteresis, GABAergic-like | 0.106 ± 0.041 | 0.089 ± 0.047 | 0.081 ± 0.015 | 0.084 ± 0.008 | 0.083 ± 0.005 |
-| Transition width, GABAergic-like | 0.265 ± 0.107 | 0.220 ± 0.029 | 0.213 ± 0.013 | 0.218 ± 0.004 | 0.219 ± 0.002 |
-| Transmission failure p at c_off, GABAergic-like | 0.359 ± 0.037 | 0.344 ± 0.019 | 0.332 ± 0.008 | 0.335 ± 0.003 | 0.335 ± 0.002 |
-| Effective jitter (ms) at c_off, GABAergic-like | 3.912 ± 0.352 | 3.930 ± 0.207 | 3.805 ± 0.206 | 3.862 ± 0.113 | 3.906 ± 0.085 |
-| Coherence probability π at c_off, GABAergic-like | 0.193 ± 0.023 | 0.196 ± 0.012 | 0.205 ± 0.011 | 0.201 ± 0.006 | 0.199 ± 0.005 |
-| Share of populations silent at once for sleep to lose quorum | 0.136 ± 0.022 | 0.126 ± 0.013 | 0.121 ± 0.006 | 0.116 ± 0.002 | 0.117 ± 0.000 |
-| c_off, NMDA-antagonist-like | 0.621 ± 0.022 | 0.619 ± 0.010 | 0.617 ± 0.006 | 0.620 ± 0.000 | 0.620 ± 0.000 |
-| c_off, hub graph intact | 0.881 ± 0.041 | 0.885 ± 0.021 | 0.870 ± 0.008 | 0.870 ± 0.002 | 0.870 ± 0.000 |
-| c_off, random lesion | 0.860 ± 0.038 | 0.831 ± 0.022 | 0.824 ± 0.010 | 0.821 ± 0.003 | 0.820 ± 0.000 |
-| c_off, hub lesion | 0.530 ± 0.129 (16/20) | 0.448 ± 0.069 (17/20) | 0.326 ± 0.031 (9/20) | 0.254 ± 0.053 | 0.253 ± 0.014 |
-| c_on, hub lesion | 0.466 ± 0.147 (11/20) | 0.359 ± 0.059 (7/20) | 0.210 ± 0.042 (2/20) | 0.245 ± 0.050 (15/20) | 0.251 ± 0.015 (19/20) |
-| Seconds per seed | 0.035 ± 0.008 | 0.072 ± 0.010 | 0.885 ± 0.045 | 15.550 ± 0.428 | 256.309 ± 11.798 |
+| c_off, GABAergic-like | 0.909 ± 0.035 | 0.895 ± 0.019 | 0.886 ± 0.008 | 0.887 ± 0.005 | 0.881 ± 0.004 |
+| c_on, GABAergic-like | 0.823 ± 0.052 | 0.826 ± 0.035 | 0.824 ± 0.012 | 0.825 ± 0.008 | 0.827 ± 0.005 |
+| Hysteresis, GABAergic-like | 0.085 ± 0.037 | 0.069 ± 0.041 | 0.061 ± 0.013 | 0.061 ± 0.010 | 0.054 ± 0.005 |
+| Transition width, GABAergic-like | 0.291 ± 0.102 | 0.246 ± 0.031 | 0.240 ± 0.014 | 0.241 ± 0.005 | 0.232 ± 0.004 |
+| Transmission failure p at c_off, GABAergic-like | 0.385 ± 0.035 | 0.371 ± 0.019 | 0.362 ± 0.008 | 0.363 ± 0.005 | 0.358 ± 0.004 |
+| Effective jitter (ms) at c_off, GABAergic-like | 3.880 ± 0.231 | 3.853 ± 0.177 | 3.871 ± 0.167 | 3.864 ± 0.172 | 3.707 ± 0.148 |
+| Coherence probability π at c_off, GABAergic-like | 0.186 ± 0.015 | 0.191 ± 0.011 | 0.193 ± 0.009 | 0.193 ± 0.009 | 0.202 ± 0.008 |
+| Share of populations silent at once for sleep to lose quorum | 0.168 ± 0.032 | 0.171 ± 0.013 | 0.155 ± 0.005 | 0.152 ± 0.003 | 0.152 ± 0.000 |
+| c_off, NMDA-antagonist-like | 0.626 ± 0.020 | 0.624 ± 0.009 | 0.622 ± 0.004 | 0.621 ± 0.002 | 0.620 ± 0.000 |
+| c_off, hub graph intact | 0.913 ± 0.043 | 0.918 ± 0.018 | 0.904 ± 0.008 | 0.903 ± 0.004 | 0.900 ± 0.000 |
+| c_off, random lesion | 0.890 ± 0.038 | 0.865 ± 0.019 | 0.858 ± 0.010 | 0.855 ± 0.005 | 0.860 ± 0.002 |
+| c_off, hub lesion | 0.545 ± 0.136 | 0.512 ± 0.073 | 0.442 ± 0.029 | 0.451 ± 0.010 | 0.447 ± 0.004 |
+| c_on, hub lesion | 0.521 ± 0.115 (16/20) | 0.459 ± 0.056 (16/20) | 0.429 ± 0.027 | 0.450 ± 0.011 | 0.447 ± 0.005 |
+| Seconds per seed | 0.035 ± 0.005 | 0.068 ± 0.007 | 0.886 ± 0.046 | 15.836 ± 1.009 | 236.500 ± 21.949 |
 
 **Verdict:** At least one claim failed; see the claims table.
 
 ### B.5 Quorum thresholds of empirical connectomes
 
-Source: `simulator/results/percolation_full_20261018T124443Z.md`.
+Source: `simulator/results/percolation_full_20261018T211816Z.md`.
 
 #### Run metadata
 
 | Field | Value |
 |---|---|
-| Started (UTC) | 2026-10-18T12:44:43.128980+00:00 |
-| Finished (UTC) | 2026-10-18T12:45:34.508459+00:00 |
+| Started (UTC) | 2026-10-18T21:18:16.041723+00:00 |
+| Finished (UTC) | 2026-10-18T21:19:14.355584+00:00 |
 | Machine | Mac14,9, Apple M2 Pro |
 | CPU cores | 10 (6 performance, 4 efficiency) |
 | Memory | 32 GiB |
 | Operating system | macOS 26.7.1 (build 25G241), arm64 |
 | Python | CPython 3.13.2; numpy 2.5.4, scipy 1.18.1, pyarrow 26.0.0 |
-| Git commit | `5c7512c46abc11bc56b1dfc5fe78c529892aab97` (working tree dirty: True) |
-| SHA-256 `calibration.py` | `93ceca8c940b181fe6b9818b3dd4a328e29014f910bf2c28da362ead6532dd59` |
-| SHA-256 `connectomes.py` | `8f007604165a6b4ed5bfcbb11bccfcfc2cedfd8875fc5d1aab33101343fa0f02` |
-| SHA-256 `dpc_simulator.py` | `9080470f6134967e13b6f6bee7b295c1f04cbac75f545a5bbd89d7e5aca8da25` |
+| Git commit | `0677161701738895512e2b047b40f3857406a5d5` (working tree dirty: True) |
+| SHA-256 `calibration.py` | `7ea6348cdb8c88f692e6f61bec42de8d733a2d52b2d1cabfa09facd7323b1c6c` |
+| SHA-256 `connectomes.py` | `b6c0dfb53639d036ca42b1f9710afa944d5c29bb620ec7e584185ab363e35127` |
+| SHA-256 `dpc_simulator.py` | `07f3b3f1828859c628f596f543d65e33c45403483d5696bd355d8f48fd856fdf` |
 | SHA-256 `percolation_thresholds.py` | `2b652685905ee4214f3cb1f93e46f8c008980d6750d6dcfe3a5bbefc512e2c46` |
-| SHA-256 `phase_dynamics.py` | `ded050bac6545f6a63d67347508fc922ffc152b4a58bb353cb37ea4e315b9d98` |
+| SHA-256 `phase_dynamics.py` | `6cb05f21585c509cc34549e486ef8c1c8fc137091c042b2d704720fecc745f54` |
 | SHA-256 `plant_tissue.py` | `a50afa829fd68ec4d78524ff7e34fb7b9f7a6615b9108eb0f6906054e81a7041` |
 | SHA-256 `provenance.py` | `94071e252347139bab3c5f113d52a38f65feaeaa0c03738ec8d81090c9139cb2` |
 | SHA-256 `reporting.py` | `de80a53d63e90383ed325db5098aea06b71b3f846d8368ddeb12347ce3c4470b` |
@@ -1278,57 +1279,61 @@ Source: `simulator/results/percolation_full_20261018T124443Z.md`.
 
 ### B.6 Sensitivity to free parameters
 
-Each free parameter is varied with the others held at their reference values. Source: `simulator/results/sensitivity_full_20261018T124731Z.md`.
+Each free parameter is varied with the others held at their reference values. Source: `simulator/results/sensitivity_full_20261018T212118Z.md`.
 
 #### Run metadata
 
 | Field | Value |
 |---|---|
-| Started (UTC) | 2026-10-18T12:47:31.148062+00:00 |
-| Finished (UTC) | 2026-10-18T13:16:36.269186+00:00 |
+| Started (UTC) | 2026-10-18T21:21:18.636721+00:00 |
+| Finished (UTC) | 2026-10-18T21:52:36.118443+00:00 |
 | Machine | Mac14,9, Apple M2 Pro |
 | CPU cores | 10 (6 performance, 4 efficiency) |
 | Memory | 32 GiB |
 | Operating system | macOS 26.7.1 (build 25G241), arm64 |
 | Python | CPython 3.13.2; numpy 2.5.4, scipy 1.18.1 |
-| Git commit | `5c7512c46abc11bc56b1dfc5fe78c529892aab97` (working tree dirty: True) |
-| SHA-256 `calibration.py` | `93ceca8c940b181fe6b9818b3dd4a328e29014f910bf2c28da362ead6532dd59` |
-| SHA-256 `connectomes.py` | `8f007604165a6b4ed5bfcbb11bccfcfc2cedfd8875fc5d1aab33101343fa0f02` |
-| SHA-256 `dpc_simulator.py` | `9080470f6134967e13b6f6bee7b295c1f04cbac75f545a5bbd89d7e5aca8da25` |
-| SHA-256 `phase_dynamics.py` | `ded050bac6545f6a63d67347508fc922ffc152b4a58bb353cb37ea4e315b9d98` |
+| Git commit | `0677161701738895512e2b047b40f3857406a5d5` (working tree dirty: True) |
+| SHA-256 `calibration.py` | `7ea6348cdb8c88f692e6f61bec42de8d733a2d52b2d1cabfa09facd7323b1c6c` |
+| SHA-256 `connectomes.py` | `b6c0dfb53639d036ca42b1f9710afa944d5c29bb620ec7e584185ab363e35127` |
+| SHA-256 `dpc_simulator.py` | `07f3b3f1828859c628f596f543d65e33c45403483d5696bd355d8f48fd856fdf` |
+| SHA-256 `phase_dynamics.py` | `6cb05f21585c509cc34549e486ef8c1c8fc137091c042b2d704720fecc745f54` |
 | SHA-256 `plant_tissue.py` | `a50afa829fd68ec4d78524ff7e34fb7b9f7a6615b9108eb0f6906054e81a7041` |
 | SHA-256 `provenance.py` | `94071e252347139bab3c5f113d52a38f65feaeaa0c03738ec8d81090c9139cb2` |
 | SHA-256 `reporting.py` | `de80a53d63e90383ed325db5098aea06b71b3f846d8368ddeb12347ce3c4470b` |
-| SHA-256 `sensitivity_study.py` | `8a42970b0864b421dc48d8777ca154c0c4b37cb68da90959ae9cae10fd07759b` |
-| SHA-256 `species_study.py` | `d8ad3c435ad7b628b88410d47364ec7fc28375817b00e03a42f879360936b4cf` |
-| SHA-256 `validation_study.py` | `4976de996a1f416704fa61e91ce6bbfb5ffbae97a705764f3d0ced01503a1159` |
+| SHA-256 `sensitivity_study.py` | `b2b548e25d2b6b28215c161611003844674865c971db093cb483b41af96945fd` |
+| SHA-256 `species_study.py` | `f68310bd49f5e36700c57cca19b82a7e097186d38481ae0843edfc75f2503f8e` |
+| SHA-256 `validation_study.py` | `e0cd77946cfd8269d64fb91d2fdfe1465b6654ca3b72743903a00af9421492b3` |
 
 #### Percolation model: claims holding across seeds (N = 10,000)
 
 | Variation | C1 | C2 | C3 | C4 | C5 | C6 | C7 |
 |---|---|---|---|---|---|---|---|
-| Quorum fraction = 0.3 | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) |
-| Quorum fraction = 0.5 (reference) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 4/10 (17–69%) | 10/10 (72–100%) | 10/10 (72–100%) |
+| Quorum fraction = 0.3 | 10/10 (72–100%) | 10/10 (72–100%) | 9/10 (60–98%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) |
+| Quorum fraction = 0.5 (reference) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) |
 | Quorum fraction = 0.7 | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 0/10 (0–28%) | 10/10 (72–100%) | 10/10 (72–100%) |
 | Arousal level (λ recalibrated) = 0 | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 0/10 (0–28%) | n/a | n/a |
-| Arousal level (λ recalibrated) = 0.3 | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 0/10 (0–28%) | 10/10 (72–100%) | 10/10 (72–100%) |
-| Arousal level (λ recalibrated) = 0.5 (reference) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 4/10 (17–69%) | 10/10 (72–100%) | 10/10 (72–100%) |
-| Arousal level (λ recalibrated) = 0.7 | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 5/10 (24–76%) | 10/10 (72–100%) |
-| Hill coefficient = 2 | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 4/10 (17–69%) | 10/10 (72–100%) | 10/10 (72–100%) |
-| Hill coefficient = 4 (reference) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 4/10 (17–69%) | 10/10 (72–100%) | 10/10 (72–100%) |
-| Hill coefficient = 8 | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 4/10 (17–69%) | 10/10 (72–100%) | 10/10 (72–100%) |
+| Arousal level (λ recalibrated) = 0.3 | 10/10 (72–100%) | 10/10 (72–100%) | 9/10 (60–98%) | 10/10 (72–100%) | 4/10 (17–69%) | 10/10 (72–100%) | 10/10 (72–100%) |
+| Arousal level (λ recalibrated) = 0.5 (reference) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) |
+| Arousal level (λ recalibrated) = 0.7 | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) |
+| Feedback λ (ms), one per reproduced inertia ratio = 8.49 | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) |
+| Feedback λ (ms), one per reproduced inertia ratio = 8.85 (reference) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) |
+| Feedback λ (ms), one per reproduced inertia ratio = 10.06 | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 4/10 (17–69%) | 10/10 (72–100%) | 10/10 (72–100%) |
+| Feedback λ (ms), one per reproduced inertia ratio = 16.52 | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 0/10 (0–28%) | 0/10 (0–28%) | 10/10 (72–100%) |
+| Hill coefficient = 2 | 10/10 (72–100%) | 10/10 (72–100%) | 8/10 (49–94%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) |
+| Hill coefficient = 4 (reference) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) |
+| Hill coefficient = 8 | 10/10 (72–100%) | 10/10 (72–100%) | 9/10 (60–98%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) |
 | Mean degree = 4 | 0/10 (0–28%) | 10/10 (72–100%) | 0/10 (0–28%) | 0/10 (0–28%) | 0/10 (0–28%) | 0/10 (0–28%) | 0/10 (0–28%) |
-| Mean degree = 8 (reference) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 4/10 (17–69%) | 10/10 (72–100%) | 10/10 (72–100%) |
+| Mean degree = 8 (reference) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) |
 | Mean degree = 16 | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) |
 | Integration window W (ms) = 1 | 0/10 (0–28%) | 0/10 (0–28%) | 0/10 (0–28%) | 0/10 (0–28%) | 0/10 (0–28%) | 0/10 (0–28%) | 0/10 (0–28%) |
-| Integration window W (ms) = 3 (reference) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 4/10 (17–69%) | 10/10 (72–100%) | 10/10 (72–100%) |
+| Integration window W (ms) = 3 (reference) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) |
 | Integration window W (ms) = 10 | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) |
 | Baseline jitter (ms) = 1 | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) |
-| Baseline jitter (ms) = 3 (reference) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 4/10 (17–69%) | 10/10 (72–100%) | 10/10 (72–100%) |
+| Baseline jitter (ms) = 3 (reference) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) |
 | Baseline jitter (ms) = 10 | 0/10 (0–28%) | 0/10 (0–28%) | 0/10 (0–28%) | 0/10 (0–28%) | 0/10 (0–28%) | 0/10 (0–28%) | 0/10 (0–28%) |
-| Maximal transmission failure, GABAergic-like = 0.6 | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 0/10 (0–28%) | 4/10 (17–69%) | 10/10 (72–100%) | 10/10 (72–100%) |
-| Maximal transmission failure, GABAergic-like = 0.8 | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 4/10 (17–69%) | 10/10 (72–100%) | 10/10 (72–100%) |
-| Maximal transmission failure, GABAergic-like = 0.95 (reference) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 4/10 (17–69%) | 10/10 (72–100%) | 10/10 (72–100%) |
+| Maximal transmission failure, GABAergic-like = 0.6 | 10/10 (72–100%) | 10/10 (72–100%) | 8/10 (49–94%) | 0/10 (0–28%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) |
+| Maximal transmission failure, GABAergic-like = 0.8 | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) |
+| Maximal transmission failure, GABAergic-like = 0.95 (reference) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) |
 
 #### Phase-oscillator model, human connectome: pillars holding across seeds
 
@@ -1352,27 +1357,27 @@ Each free parameter is varied with the others held at their reference values. So
 
 ### B.7 Glial regulation (postulate P9)
 
-The glial extensions of Section 4.6 run on the same networks and seeds. The checks were fixed before the multi-seed run; a single exploratory seed at N = 1,000 was run beforehand to confirm that the code executes, and its results were seen before the checks were written, so the checks are not blind to the direction of the effects. Source: `simulator/results/glia_full_20261018T124435Z.md`.
+The glial extensions of Section 4.6 run on the same networks and seeds. The checks were fixed before the multi-seed run; a single exploratory seed at N = 1,000 was run beforehand to confirm that the code executes, and its results were seen before the checks were written, so the checks are not blind to the direction of the effects. Source: `simulator/results/glia_full_20261018T211808Z.md`.
 
 #### Run metadata
 
 | Field | Value |
 |---|---|
-| Started (UTC) | 2026-10-18T12:44:35+00:00 |
-| Finished (UTC) | 2026-10-18T12:44:41+00:00 |
+| Started (UTC) | 2026-10-18T21:18:08+00:00 |
+| Finished (UTC) | 2026-10-18T21:18:15+00:00 |
 | Machine | Mac14,9, Apple M2 Pro |
 | CPU cores | 10 (6 performance, 4 efficiency) |
 | Memory | 32 GiB |
 | Operating system | macOS 26.7.1 (build 25G241), arm64 |
-| Python | CPython 3.13.2; standard library only |
-| Git commit | `5c7512c46abc11bc56b1dfc5fe78c529892aab97` (working tree dirty: True) |
-| SHA-256 `dpc_simulator.py` | `9080470f6134967e13b6f6bee7b295c1f04cbac75f545a5bbd89d7e5aca8da25` |
-| SHA-256 `glial_regulation.py` | `1532013d1d0b73e9370f0a92de0184e102a380df4df1cbe1a0056ea79970383e` |
-| SHA-256 `glial_study.py` | `4b64d0eb83a836e82cf2bf7984a2b1569fbe0c12a1165f4f5e1ae0560bc30ead` |
+| Python | CPython 3.15.0; standard library only |
+| Git commit | `0677161701738895512e2b047b40f3857406a5d5` (working tree dirty: True) |
+| SHA-256 `dpc_simulator.py` | `07f3b3f1828859c628f596f543d65e33c45403483d5696bd355d8f48fd856fdf` |
+| SHA-256 `glial_regulation.py` | `1f026a6ceb6d92f47d84f291a156bce5d2fb4e134366a57b77c990c90c1d9f2c` |
+| SHA-256 `glial_study.py` | `88aec7c8cb884154737ba13390fe763b854e738b0ff8bed859f6f23c43813eb8` |
 | SHA-256 `provenance.py` | `94071e252347139bab3c5f113d52a38f65feaeaa0c03738ec8d81090c9139cb2` |
 | SHA-256 `reporting.py` | `de80a53d63e90383ed325db5098aea06b71b3f846d8368ddeb12347ce3c4470b` |
-| SHA-256 `validation_study.py` | `4976de996a1f416704fa61e91ce6bbfb5ffbae97a705764f3d0ced01503a1159` |
-| Wall time | 6.8 s |
+| SHA-256 `validation_study.py` | `e0cd77946cfd8269d64fb91d2fdfe1465b6654ca3b72743903a00af9421492b3` |
+| Wall time | 7.5 s |
 | Worker processes | 10 |
 | Seeds per size | 20 (base seed 20261017) |
 
@@ -1381,8 +1386,8 @@ The glial extensions of Section 4.6 run on the same networks and seeds. The chec
 | ID | Statement | Kind | N = 302 | N = 1,000 | N = 10,000 | N = 100,000 |
 |---|---|---|---|---|---|---|
 | M1 | Damaged myelin lowers the loss concentration (integrity 1.0 > 0.75 > 0.5) | consistency check | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) |
-| G1 | Microglial depletion hastens emergence (Cao et al., 2023; He et al., 2023) | consistency check | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) |
-| G2 | Microglial depletion does not hasten induction (Cao et al., 2023; He et al., 2023) | consistency check | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) |
+| G1 | Removing the microglial loop hastens emergence (direction of Cao et al., 2023, P2Y12 loss) | consistency check | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) |
+| G2 | Removing the microglial loop does not hasten induction | consistency check | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) |
 | G3 | Neural inertia grows with the strength of the microglial loop | consistency check | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) |
 | A1 | Re-specified after the down-state model changed: with global down-states (0.5 of populations), sleep loses quorum, and silencing astrocytes' share (0.5) of them restores it | test | 0/20 (0–16%) | 0/20 (0–16%) | 0/20 (0–16%) | 0/20 (0–16%) |
 
@@ -1390,16 +1395,16 @@ The glial extensions of Section 4.6 run on the same networks and seeds. The chec
 
 | Quantity | N = 302 | N = 1,000 | N = 10,000 | N = 100,000 |
 |---|---|---|---|---|
-| c_off, myelin integrity 1.0 | 0.882 ± 0.037 | 0.868 ± 0.019 | 0.856 ± 0.008 | 0.859 ± 0.003 |
-| c_off, myelin integrity 0.75 | 0.810 ± 0.043 | 0.798 ± 0.021 | 0.789 ± 0.010 | 0.790 ± 0.002 |
-| c_off, myelin integrity 0.5 | 0.728 ± 0.053 | 0.721 ± 0.027 | 0.715 ± 0.012 | 0.718 ± 0.004 |
-| c_off, microglial gain 0.0 | 0.882 ± 0.037 | 0.868 ± 0.019 | 0.856 ± 0.008 | 0.859 ± 0.003 |
-| c_on, microglial gain 0.0 | 0.776 ± 0.055 | 0.779 ± 0.039 | 0.775 ± 0.015 | 0.774 ± 0.008 |
-| c_off, microglial gain 0.25 | 0.873 ± 0.038 | 0.858 ± 0.020 | 0.847 ± 0.009 | 0.848 ± 0.004 |
-| c_on, microglial gain 0.25 | 0.724 ± 0.068 | 0.726 ± 0.054 | 0.712 ± 0.021 | 0.710 ± 0.013 |
-| c_off, microglial gain 0.5 | 0.865 ± 0.037 | 0.848 ± 0.020 | 0.838 ± 0.010 | 0.839 ± 0.004 |
-| c_on, microglial gain 0.5 | 0.648 ± 0.097 | 0.643 ± 0.090 | 0.621 ± 0.030 | 0.617 ± 0.019 |
-| Seconds per seed | 0.011 ± 0.004 | 0.021 ± 0.005 | 0.186 ± 0.030 | 2.880 ± 0.150 |
+| c_off, myelin integrity 1.0 | 0.909 ± 0.035 | 0.895 ± 0.019 | 0.886 ± 0.008 | 0.887 ± 0.005 |
+| c_off, myelin integrity 0.75 | 0.834 ± 0.041 | 0.827 ± 0.022 | 0.818 ± 0.009 | 0.821 ± 0.002 |
+| c_off, myelin integrity 0.5 | 0.751 ± 0.054 | 0.745 ± 0.025 | 0.739 ± 0.012 | 0.743 ± 0.005 |
+| c_off, microglial gain 0.0 | 0.909 ± 0.035 | 0.895 ± 0.019 | 0.886 ± 0.008 | 0.887 ± 0.005 |
+| c_on, microglial gain 0.0 | 0.823 ± 0.052 | 0.826 ± 0.035 | 0.824 ± 0.012 | 0.825 ± 0.008 |
+| c_off, microglial gain 0.25 | 0.901 ± 0.038 | 0.886 ± 0.020 | 0.875 ± 0.008 | 0.875 ± 0.005 |
+| c_on, microglial gain 0.25 | 0.782 ± 0.061 | 0.785 ± 0.045 | 0.775 ± 0.018 | 0.773 ± 0.011 |
+| c_off, microglial gain 0.5 | 0.891 ± 0.037 | 0.878 ± 0.019 | 0.865 ± 0.008 | 0.866 ± 0.005 |
+| c_on, microglial gain 0.5 | 0.732 ± 0.074 | 0.731 ± 0.063 | 0.714 ± 0.023 | 0.709 ± 0.014 |
+| Seconds per seed | 0.012 ± 0.004 | 0.018 ± 0.005 | 0.203 ± 0.036 | 3.209 ± 0.087 |
 
 **Verdict:** At least one pre-specified test failed; see the table.
 
@@ -2840,51 +2845,51 @@ The phase-oscillator model (`simulator/phase_dynamics.py`), a Kuramoto-Sakaguchi
 
 | Parameter | Value | Basis | Source |
 |---|---|---|---|
-| Baseline timing jitter (ms) | `3.0` | measured | cortical spike-timing precision in vivo, Buracas et al. (1998); swept 1-10 |
-| Integration window W (ms) | `3.0` | measured range | 1-10 ms, Gabernet et al. (2005); Pouille and Scanziani (2001); swept 1-10 |
+| Baseline timing jitter (ms) | `3.0` | measured | precision of rate modulation in macaque MT in vivo, Buracas et al. (1998); swept 1-10 |
+| Integration window W (ms) | `3.0` | measured range | 1-10 ms in rodent barrel cortex, Gabernet et al. (2005); under 2 ms in hippocampus, Pouille and Scanziani (2001); swept 1-10 |
 | Oscillation frequency (Hz) | `40.0` | assumed | within the gamma band, Fries (2015); Llinás and Ribary (1993) |
 | Jitter correlation time τ | `1.0` | free | sensitivity analysis |
-| Percolation feedback λ (ms) | `10.06` | calibrated | ratio 1.11, Iwakiri et al. (2005) |
-| Oscillator feedback λ | `0.45` | free | calibration to ratio 1.11 failed: inertia within noise |
+| Percolation feedback λ (ms) | `8.85` | calibrated | ratio 1.08, Friedman et al. (2010), isoflurane |
+| Oscillator feedback λ | `0.45` | free | calibration to ratio 1.08 failed: inertia within noise |
 | Conduction velocity (m/s) | `3.9` | measured | Lemaréchal et al. (2022) |
-| Arousal level | `0.5` | free | inertia ratios reproduced at every level tested |
+| Arousal level | `0.5` | free | inertia ratios 1.07-1.63 reproduced at every level tested |
 | Fallback reference rate, P8 (Hz) | `10.0` | measured | frontal alpha 8-12 Hz, Purdon et al. (2013) |
 | Synaptic coupling K | `4.0` | free | sensitivity analysis |
 | Natural-frequency spread | `0.5` | free | sensitivity analysis |
 | Noise intensity D | `0.05` | free | sensitivity analysis |
 | Quorum fraction | `0.5` | free | sensitivity analysis |
-| GABAergic-like agent | `{'name': 'GABAergic-like (crash faults)', 'max_transmission_failure': 0.95, 'max_added_jitter_ms': 1.0, 'half_effect_concentration': 1.0, 'hill_coefficient': 4.0, 'arousal_suppression': 1.0}` | free | maximal failure swept 0.6-0.95; failure at loss of quorum compared with 62% inhibition of release, Baumgart et al. (2015) |
-| NMDA-antagonist-like agent | `{'name': 'NMDA-antagonist-like (noise faults)', 'max_transmission_failure': 0.2, 'max_added_jitter_ms': 40.0, 'half_effect_concentration': 1.0, 'hill_coefficient': 4.0, 'arousal_suppression': 1.0}` | free | maximal effects not measurable at this scale |
+| GABAergic-like agent | `{'name': 'GABAergic-like (omission faults)', 'max_transmission_failure': 0.95, 'max_added_jitter_ms': 1.0, 'half_effect_concentration': 1.0, 'hill_coefficient': 4.0, 'arousal_suppression': 1.0}` | free | maximal failure swept 0.6-0.95; failure at loss of quorum compared with 62% inhibition of glutamate release by 0.7 mM isoflurane (about 2 MAC) in cultured rat hippocampal neurons, Baumgart et al. (2015) |
+| NMDA-antagonist-like agent | `{'name': 'NMDA-antagonist-like (timing faults)', 'max_transmission_failure': 0.2, 'max_added_jitter_ms': 40.0, 'half_effect_concentration': 1.0, 'hill_coefficient': 4.0, 'arousal_suppression': 1.0}` | free | maximal effects not measurable at this scale |
 | Sensory stimulus | `{'strength': 1.0, 'angular_frequency': 0.3}` | free | see comment in calibration.py |
 | FitzHugh-Nagumo a, b, ε | `[0.7, 0.8, 0.08]` | standard model values | FitzHugh (1961) |
 | Plant junction conductance | `[0.5, 1.0, 2.0, 4.0]` | free | reported across the range |
 
 ### C.2 Oscillator feedback calibration
 
-The attempt to calibrate the oscillator model's feedback to the measured inertia ratio is reported in full. Source: `simulator/results/calibration_phase_feedback_full_20261018T124535Z.md`.
+The attempt to calibrate the oscillator model's feedback to the measured inertia ratio is reported in full. Source: `simulator/results/calibration_phase_feedback_full_20261018T211914Z.md`.
 
 #### Run metadata
 
 | Field | Value |
 |---|---|
-| Started (UTC) | 2026-10-18T12:45:35.855706+00:00 |
-| Finished (UTC) | 2026-10-18T12:47:29.838084+00:00 |
+| Started (UTC) | 2026-10-18T21:19:14.870447+00:00 |
+| Finished (UTC) | 2026-10-18T21:21:18.174810+00:00 |
 | Machine | Mac14,9, Apple M2 Pro |
 | CPU cores | 10 (6 performance, 4 efficiency) |
 | Memory | 32 GiB |
 | Operating system | macOS 26.7.1 (build 25G241), arm64 |
 | Python | CPython 3.13.2; numpy 2.5.4, scipy 1.18.1 |
-| Git commit | `5c7512c46abc11bc56b1dfc5fe78c529892aab97` (working tree dirty: True) |
-| SHA-256 `calibrate_phase_feedback.py` | `cd60f8bbb7643420914cebd46f6be7b0944f79863e8f368e3f30039b4d7aa564` |
-| SHA-256 `calibration.py` | `93ceca8c940b181fe6b9818b3dd4a328e29014f910bf2c28da362ead6532dd59` |
-| SHA-256 `connectomes.py` | `8f007604165a6b4ed5bfcbb11bccfcfc2cedfd8875fc5d1aab33101343fa0f02` |
-| SHA-256 `dpc_simulator.py` | `9080470f6134967e13b6f6bee7b295c1f04cbac75f545a5bbd89d7e5aca8da25` |
-| SHA-256 `phase_dynamics.py` | `ded050bac6545f6a63d67347508fc922ffc152b4a58bb353cb37ea4e315b9d98` |
+| Git commit | `0677161701738895512e2b047b40f3857406a5d5` (working tree dirty: True) |
+| SHA-256 `calibrate_phase_feedback.py` | `427cbedc68b9bf39030d5ceb1e483ae863a6e65b87343acac1c29bbb5c05250f` |
+| SHA-256 `calibration.py` | `7ea6348cdb8c88f692e6f61bec42de8d733a2d52b2d1cabfa09facd7323b1c6c` |
+| SHA-256 `connectomes.py` | `b6c0dfb53639d036ca42b1f9710afa944d5c29bb620ec7e584185ab363e35127` |
+| SHA-256 `dpc_simulator.py` | `07f3b3f1828859c628f596f543d65e33c45403483d5696bd355d8f48fd856fdf` |
+| SHA-256 `phase_dynamics.py` | `6cb05f21585c509cc34549e486ef8c1c8fc137091c042b2d704720fecc745f54` |
 | SHA-256 `plant_tissue.py` | `a50afa829fd68ec4d78524ff7e34fb7b9f7a6615b9108eb0f6906054e81a7041` |
 | SHA-256 `provenance.py` | `94071e252347139bab3c5f113d52a38f65feaeaa0c03738ec8d81090c9139cb2` |
 | SHA-256 `reporting.py` | `de80a53d63e90383ed325db5098aea06b71b3f846d8368ddeb12347ce3c4470b` |
 
-#### Oscillator feedback λ against the inertia ratio (human connectome, target 1.11)
+#### Oscillator feedback λ against the inertia ratio (human connectome, target 1.08)
 
 | λ | Mean ratio | Ratio per seed |
 |---|---|---|
@@ -2896,28 +2901,28 @@ The attempt to calibrate the oscillator model's feedback to the measured inertia
 
 ### C.3 Cross-species study
 
-Source: `simulator/results/species_full_20261018T135451Z.md`.
+Source: `simulator/results/species_full_20261019T025707Z.md`.
 
 #### Run metadata
 
 | Field | Value |
 |---|---|
-| Started (UTC) | 2026-10-18T13:54:51.290567+00:00 |
-| Finished (UTC) | 2026-10-18T16:45:28.585535+00:00 |
+| Started (UTC) | 2026-10-19T02:57:07.612055+00:00 |
+| Finished (UTC) | 2026-10-19T08:52:20.156741+00:00 |
 | Machine | Mac14,9, Apple M2 Pro |
 | CPU cores | 10 (6 performance, 4 efficiency) |
 | Memory | 32 GiB |
 | Operating system | macOS 26.7.1 (build 25G241), arm64 |
 | Python | CPython 3.13.2; numpy 2.5.4, scipy 1.18.1, pyarrow 26.0.0, matplotlib 3.11.2 |
-| Git commit | `5c7512c46abc11bc56b1dfc5fe78c529892aab97` (working tree dirty: True) |
-| SHA-256 `calibration.py` | `93ceca8c940b181fe6b9818b3dd4a328e29014f910bf2c28da362ead6532dd59` |
-| SHA-256 `connectomes.py` | `8f007604165a6b4ed5bfcbb11bccfcfc2cedfd8875fc5d1aab33101343fa0f02` |
-| SHA-256 `dpc_simulator.py` | `9080470f6134967e13b6f6bee7b295c1f04cbac75f545a5bbd89d7e5aca8da25` |
-| SHA-256 `phase_dynamics.py` | `ded050bac6545f6a63d67347508fc922ffc152b4a58bb353cb37ea4e315b9d98` |
+| Git commit | `6d8b0370bbc02702955f7037e6bd8002a6b57754` (working tree dirty: True) |
+| SHA-256 `calibration.py` | `a9a661a19536d65c64a2306fab2aa2f8055dd5532ad1835d4701230de6ee20a9` |
+| SHA-256 `connectomes.py` | `b6c0dfb53639d036ca42b1f9710afa944d5c29bb620ec7e584185ab363e35127` |
+| SHA-256 `dpc_simulator.py` | `07f3b3f1828859c628f596f543d65e33c45403483d5696bd355d8f48fd856fdf` |
+| SHA-256 `phase_dynamics.py` | `6cb05f21585c509cc34549e486ef8c1c8fc137091c042b2d704720fecc745f54` |
 | SHA-256 `plant_tissue.py` | `a50afa829fd68ec4d78524ff7e34fb7b9f7a6615b9108eb0f6906054e81a7041` |
 | SHA-256 `provenance.py` | `94071e252347139bab3c5f113d52a38f65feaeaa0c03738ec8d81090c9139cb2` |
 | SHA-256 `reporting.py` | `de80a53d63e90383ed325db5098aea06b71b3f846d8368ddeb12347ce3c4470b` |
-| SHA-256 `species_study.py` | `d8ad3c435ad7b628b88410d47364ec7fc28375817b00e03a42f879360936b4cf` |
+| SHA-256 `species_study.py` | `f68310bd49f5e36700c57cca19b82a7e097186d38481ae0843edfc75f2503f8e` |
 | Dataset `celegans_openworm` | MIT (OpenWorm c302); SHA-256 `142693f17556148d7f962835b18ac6dd5af18b7467eef61815ebc1dd5474c0ca` |
 | Dataset `drosophila_flywire783` | CC BY 4.0 (FlyWire, Zenodo record 10676866); SHA-256 `24f960ae3e7d4f8cd30db3b62e99fb5179cc3d1e76d8c155bfb441e9737d3faf` |
 | Dataset `human_tvb998` | GPL-3.0 (The Virtual Brain data); used, not redistributed; SHA-256 `31c65d4b6bf1760d06e0c4ab95c71c8dd499e48814e47bf2284e62a2b9301afd` |
@@ -2926,37 +2931,37 @@ Source: `simulator/results/species_full_20261018T135451Z.md`.
 
 | ID | Statement | Kind | C. elegans | Drosophila | Human |
 |---|---|---|---|---|---|
-| P1 | Coherence fluctuations surge at the collapse (paradoxical excitation as critical fluctuation) | test | 7/20 (18–57%) | 1/2 (9–91%) | 2/20 (3–30%) |
-| P2a | GABAergic-like agent abolishes quorum | test | 20/20 (84–100%) | 2/2 (34–100%) | 20/20 (84–100%) |
-| P2b | NMDA-antagonist-like agent abolishes quorum | test | 20/20 (84–100%) | 2/2 (34–100%) | 20/20 (84–100%) |
-| P3 | Stimulated sensory area keeps processing while broadcast collapses | test | 16/20 (58–92%) | 1/2 (9–91%) | 20/20 (84–100%) |
+| P1 | Coherence fluctuations surge at the collapse (paradoxical excitation as critical fluctuation) | test | 7/20 (18–57%) | 3/6 (19–81%) | 2/20 (3–30%) |
+| P2a | GABAergic-like agent abolishes quorum | test | 20/20 (84–100%) | 6/6 (61–100%) | 20/20 (84–100%) |
+| P2b | NMDA-antagonist-like agent abolishes quorum | test | 20/20 (84–100%) | 6/6 (61–100%) | 20/20 (84–100%) |
+| P3 | Stimulated sensory area keeps processing while broadcast collapses | test | 16/20 (58–92%) | 2/6 (10–70%) | 20/20 (84–100%) |
 
 #### Extension tests (pre-specified; not part of the verdict)
 
 | ID | Statement | Kind | C. elegans | Drosophila | Human |
 |---|---|---|---|---|---|
 | D1 | With measured conduction delays, the GABAergic-like agent still abolishes quorum | test | not run | not run | 20/20 (84–100%) |
-| SG1 | With GABA connections signed inhibitory, the GABAergic-like agent still abolishes quorum | test | not run | 2/2 (34–100%) | not run |
-| SG2 | With GABA and glutamate connections signed inhibitory, the GABAergic-like agent still abolishes quorum | test | not run | 2/2 (34–100%) | not run |
-| K1 | Ketamine pathway hypothesis: quorum persists while the stimulus stops propagating | test | 2/20 (3–30%) | 0/2 (0–66%) | 0/20 (0–16%) |
-| F1 | Adaptive reference rate (P8) raises the loss concentration, GABAergic-like agent, paired by seed | test | 20/20 (84–100%) | 2/2 (34–100%) | 20/20 (84–100%) |
-| F2 | Adaptive reference rate (P8) raises the loss concentration, NMDA-antagonist-like agent, paired by seed | test | 2/20 (3–30%) | 0/2 (0–66%) | 20/20 (84–100%) |
-| F3 | The adaptive rate protects more against the jitter-type than the failure-type agent, paired by seed | test | 0/20 (0–16%) | 0/2 (0–66%) | 0/20 (0–16%) |
+| SG1 | With GABA connections signed inhibitory, the GABAergic-like agent still abolishes quorum | test | not run | 6/6 (61–100%) | not run |
+| SG2 | With GABA and glutamate connections signed inhibitory, the GABAergic-like agent still abolishes quorum | test | not run | 6/6 (61–100%) | not run |
+| K1 | Ketamine pathway hypothesis: quorum persists while the stimulus stops propagating | test | 2/20 (3–30%) | 0/6 (0–39%) | 0/20 (0–16%) |
+| F1 | Adaptive reference rate (P8) raises the loss concentration, GABAergic-like agent, paired by seed | test | 20/20 (84–100%) | 6/6 (61–100%) | 20/20 (84–100%) |
+| F2 | Adaptive reference rate (P8) raises the loss concentration, NMDA-antagonist-like agent, paired by seed | test | 2/20 (3–30%) | 3/6 (19–81%) | 20/20 (84–100%) |
+| F3 | The adaptive rate protects more against the jitter-type than the failure-type agent, paired by seed | test | 0/20 (0–16%) | 0/6 (0–39%) | 0/20 (0–16%) |
 
 #### Secondary analyses (not part of the verdict)
 
 | ID | Statement | Kind | C. elegans | Drosophila | Human |
 |---|---|---|---|---|---|
-| P1b | Post hoc: fluctuations rise at least tenfold on the conscious side of the threshold | test | 17/20 (64–95%) | 2/2 (34–100%) | 20/20 (84–100%) |
-| P3b | Post hoc: sensory area retains at least 80% of its entrainment while broadcast collapses | test | 16/20 (58–92%) | 1/2 (9–91%) | 20/20 (84–100%) |
-| H0 | No hysteresis without reference feedback | test | 9/20 (26–66%) | 0/2 (0–66%) | 6/20 (15–52%) |
+| P1b | Post hoc: fluctuations rise at least tenfold on the conscious side of the threshold | test | 17/20 (64–95%) | 6/6 (61–100%) | 20/20 (84–100%) |
+| P3b | Post hoc: sensory area retains at least 80% of its entrainment while broadcast collapses | test | 16/20 (58–92%) | 3/6 (19–81%) | 20/20 (84–100%) |
+| H0 | No hysteresis without reference feedback | test | 9/20 (26–66%) | 0/6 (0–39%) | 6/20 (15–52%) |
 | N1 | Null model: on a rewired connectome with the same degrees, the GABAergic-like agent abolishes quorum | test | 20/20 (84–100%) | not run | 20/20 (84–100%) |
 | N2 | Null model: on a rewired connectome, the stimulated area keeps processing while broadcast collapses | test | 19/20 (76–99%) | not run | 20/20 (84–100%) |
-| H1 | Hysteresis is never negative with reference feedback | test | 13/20 (43–82%) | 2/2 (34–100%) | 18/20 (70–97%) |
-| S1 | Spontaneous local coherence outlasts global coherence (uniform jitter) | test | 0/20 (0–16%) | 0/2 (0–66%) | 0/20 (0–16%) |
+| H1 | Hysteresis is never negative with reference feedback | test | 13/20 (43–82%) | 6/6 (61–100%) | 18/20 (70–97%) |
+| S1 | Spontaneous local coherence outlasts global coherence (uniform jitter) | test | 0/20 (0–16%) | 0/6 (0–39%) | 0/20 (0–16%) |
 | S2 | Spontaneous local coherence outlasts global coherence (conduction-length jitter) | test | not run | not run | 0/20 (0–16%) |
-| S3 | Hysteresis is strictly positive with reference feedback | test | 6/20 (15–52%) | 0/2 (0–66%) | 3/20 (5–36%) |
-| S4 | NMDA-antagonist-like agent abolishes quorum with fixed timing offsets instead of fluctuating jitter | test | 20/20 (84–100%) | 2/2 (34–100%) | 20/20 (84–100%) |
+| S3 | Hysteresis is strictly positive with reference feedback | test | 6/20 (15–52%) | 0/6 (0–39%) | 3/20 (5–36%) |
+| S4 | NMDA-antagonist-like agent abolishes quorum with fixed timing offsets instead of fluctuating jitter | test | 20/20 (84–100%) | 6/6 (61–100%) | 20/20 (84–100%) |
 
 #### Measurements (mean ± SD across seeds; concentrations relative to EC50)
 
@@ -2966,14 +2971,14 @@ Source: `simulator/results/species_full_20261018T135451Z.md`.
 | c_off, adaptive reference rate (P8) | GABAergic-like, adaptive reference rate | 1.562 ± 0.076 | 1.500 ± 0.000 | 1.730 ± 0.050 |
 | c_on | GABAergic-like | 1.353 ± 0.053 | 1.300 ± 0.000 | 1.473 ± 0.030 |
 | Hysteresis | GABAergic-like | -0.003 ± 0.041 | 0.000 ± 0.000 | 0.003 ± 0.026 |
-| Susceptibility surge (peak / awake) | GABAergic-like | 152.116 ± 132.334 | 168.141 ± 32.455 | 726.467 ± 492.859 |
-| c_off | NMDA-antagonist-like | 0.598 ± 0.011 | 0.600 ± 0.000 | 0.600 ± 0.000 |
-| Broadcast ratio, awake | GABAergic-like, sensory stimulus | 0.454 ± 0.147 | 0.194 ± 0.002 | 0.609 ± 0.065 |
-| Broadcast ratio, first unconscious | GABAergic-like, sensory stimulus | 0.133 ± 0.063 | 0.101 ± 0.040 | 0.132 ± 0.014 |
-| Sensory entrainment, awake | GABAergic-like, sensory stimulus | 0.468 ± 0.043 | 0.818 ± 0.002 | 0.348 ± 0.028 |
-| Sensory entrainment, first unconscious | GABAergic-like, sensory stimulus | 0.759 ± 0.059 | 0.817 ± 0.003 | 0.748 ± 0.097 |
-| Local minus global coherence above chance | NMDA-antagonist-like | -0.058 ± 0.006 | -0.008 ± 0.000 | -0.085 ± 0.004 |
-| Seconds per run | GABAergic-like | 18.774 ± 0.247 | 1494.022 ± 1.014 | 63.582 ± 1.347 |
+| Susceptibility surge (peak / awake) | GABAergic-like | 152.116 ± 132.334 | 249.031 ± 130.738 | 726.467 ± 492.859 |
+| c_off | NMDA-antagonist-like | 0.598 ± 0.011 | 0.550 ± 0.055 | 0.600 ± 0.000 |
+| Broadcast ratio, awake | GABAergic-like, sensory stimulus | 0.454 ± 0.147 | 0.193 ± 0.006 | 0.609 ± 0.065 |
+| Broadcast ratio, first unconscious | GABAergic-like, sensory stimulus | 0.133 ± 0.063 | 0.083 ± 0.042 | 0.132 ± 0.014 |
+| Sensory entrainment, awake | GABAergic-like, sensory stimulus | 0.468 ± 0.043 | 0.815 ± 0.004 | 0.348 ± 0.028 |
+| Sensory entrainment, first unconscious | GABAergic-like, sensory stimulus | 0.759 ± 0.059 | 0.820 ± 0.007 | 0.748 ± 0.097 |
+| Local minus global coherence above chance | NMDA-antagonist-like | -0.058 ± 0.006 | -0.007 ± 0.001 | -0.085 ± 0.004 |
+| Seconds per run | GABAergic-like | 17.662 ± 0.162 | 1431.980 ± 1.804 | 54.315 ± 0.279 |
 
 #### Plant tissue (cellular control)
 
@@ -2992,30 +2997,68 @@ Source: `simulator/results/species_full_20261018T135451Z.md`.
 
 ### C.4 Numerical convergence of the phase model
 
-The GABAergic-like and sensory-stimulus conditions are repeated with twice the simulated time at each concentration and with half the integration step, on the human connectome and on two *Drosophila* seeds, whose reference runs settle for only 200 steps. A result that does not move under either change does not depend on the numerical settings, and a hysteresis that survives twice the settling time is not an artefact of changing the concentration too fast. Results: not yet run.
-
-### C.5 Congestion and graceful degradation (exploratory run)
-
-Source: `simulator/results/congestion_full_20261018T131637Z.md`.
+The GABAergic-like and sensory-stimulus conditions are repeated with twice the simulated time at each concentration and with half the integration step, on the human connectome (5 seeds) and on two *Drosophila* seeds, whose reference runs settle for only 200 steps. A result that does not move under either change does not depend on the numerical settings, and a hysteresis that survives twice the settling time is not an artefact of changing the concentration too fast. The reading rule below was written on 19 October 2026 at 00:56 UTC, after the study had been launched but before it produced any result: a loss concentration has converged when its mean across seeds changes by less than one step of the concentration grid (0.05 times the EC50 for the human connectome, 0.1 for *Drosophila*) under both changes; a broadcast ratio has converged when its mean changes by less than its standard deviation across seeds in the reference runs; and a hysteresis is an artefact of the settling time if it shrinks by more than half with twice the simulated time. A result that fails this rule is reported with a caveat in the main text. Source: `simulator/results/convergence_full_20261019T011301Z.md`.
 
 #### Run metadata
 
 | Field | Value |
 |---|---|
-| Started (UTC) | 2026-10-18T13:16:37.658784+00:00 |
-| Finished (UTC) | 2026-10-18T13:35:39.067784+00:00 |
+| Started (UTC) | 2026-10-19T01:13:01.996261+00:00 |
+| Finished (UTC) | 2026-10-19T02:56:17.977028+00:00 |
+| Machine | Mac14,9, Apple M2 Pro |
+| CPU cores | 10 (6 performance, 4 efficiency) |
+| Memory | 32 GiB |
+| Operating system | macOS 26.7.1 (build 25G241), arm64 |
+| Python | CPython 3.13.2; numpy 2.5.4, scipy 1.18.1, pyarrow 26.0.0 |
+| Git commit | `6d8b0370bbc02702955f7037e6bd8002a6b57754` (working tree dirty: False) |
+| SHA-256 `calibration.py` | `7ea6348cdb8c88f692e6f61bec42de8d733a2d52b2d1cabfa09facd7323b1c6c` |
+| SHA-256 `connectomes.py` | `b6c0dfb53639d036ca42b1f9710afa944d5c29bb620ec7e584185ab363e35127` |
+| SHA-256 `convergence_study.py` | `b667648748e61d97043cc376238f7e5ff1b5bcd3afcfd78ef004979931c28d44` |
+| SHA-256 `dpc_simulator.py` | `07f3b3f1828859c628f596f543d65e33c45403483d5696bd355d8f48fd856fdf` |
+| SHA-256 `phase_dynamics.py` | `6cb05f21585c509cc34549e486ef8c1c8fc137091c042b2d704720fecc745f54` |
+| SHA-256 `plant_tissue.py` | `a50afa829fd68ec4d78524ff7e34fb7b9f7a6615b9108eb0f6906054e81a7041` |
+| SHA-256 `provenance.py` | `94071e252347139bab3c5f113d52a38f65feaeaa0c03738ec8d81090c9139cb2` |
+| SHA-256 `reporting.py` | `de80a53d63e90383ed325db5098aea06b71b3f846d8368ddeb12347ce3c4470b` |
+| SHA-256 `species_study.py` | `f68310bd49f5e36700c57cca19b82a7e097186d38481ae0843edfc75f2503f8e` |
+
+#### Phase model on the Human connectome: reference settings against longer and finer integration
+
+| Quantity (mean ± SD across seeds) | reference | twice the simulated time | half the time step |
+|---|---|---|---|
+| c_off | 1.470 ± 0.027 | 1.480 ± 0.045 | 1.480 ± 0.045 |
+| Broadcast ratio, awake | 0.592 ± 0.057 | 0.331 ± 0.104 | 0.600 ± 0.045 |
+| Broadcast ratio, first unconscious | 0.130 ± 0.019 | 0.041 ± 0.010 | 0.127 ± 0.029 |
+
+#### Phase model on the Drosophila connectome: reference settings against longer and finer integration
+
+| Quantity (mean ± SD across seeds) | reference | twice the simulated time | half the time step |
+|---|---|---|---|
+| c_off | 1.300 ± 0.000 | 1.300 ± 0.000 | 1.300 ± 0.000 |
+| Broadcast ratio, awake | 0.194 ± 0.002 | 0.184 ± 0.001 | 0.191 ± 0.002 |
+| Broadcast ratio, first unconscious | 0.101 ± 0.040 | 0.052 ± 0.027 | 0.105 ± 0.048 |
+
+### C.5 Congestion and graceful degradation (exploratory run)
+
+Source: `simulator/results/congestion_full_20261018T215236Z.md`.
+
+#### Run metadata
+
+| Field | Value |
+|---|---|
+| Started (UTC) | 2026-10-18T21:52:36.593736+00:00 |
+| Finished (UTC) | 2026-10-18T22:11:19.504666+00:00 |
 | Machine | Mac14,9, Apple M2 Pro |
 | CPU cores | 10 (6 performance, 4 efficiency) |
 | Memory | 32 GiB |
 | Operating system | macOS 26.7.1 (build 25G241), arm64 |
 | Python | CPython 3.13.2; numpy 2.5.4, scipy 1.18.1 |
-| Git commit | `5c7512c46abc11bc56b1dfc5fe78c529892aab97` (working tree dirty: True) |
-| SHA-256 `calibration.py` | `93ceca8c940b181fe6b9818b3dd4a328e29014f910bf2c28da362ead6532dd59` |
+| Git commit | `0677161701738895512e2b047b40f3857406a5d5` (working tree dirty: True) |
+| SHA-256 `calibration.py` | `7ea6348cdb8c88f692e6f61bec42de8d733a2d52b2d1cabfa09facd7323b1c6c` |
 | SHA-256 `congestion_study.py` | `2a5ce75670eaa049838768925d1df2e9bf4591e7e7938731373f7f1d16c3f73a` |
-| SHA-256 `connectomes.py` | `8f007604165a6b4ed5bfcbb11bccfcfc2cedfd8875fc5d1aab33101343fa0f02` |
-| SHA-256 `dpc_simulator.py` | `9080470f6134967e13b6f6bee7b295c1f04cbac75f545a5bbd89d7e5aca8da25` |
+| SHA-256 `connectomes.py` | `b6c0dfb53639d036ca42b1f9710afa944d5c29bb620ec7e584185ab363e35127` |
+| SHA-256 `dpc_simulator.py` | `07f3b3f1828859c628f596f543d65e33c45403483d5696bd355d8f48fd856fdf` |
 | SHA-256 `excitatory_inhibitory.py` | `9dd9c862a90dd444e51e660ee716e42b363428ecf4aac2ba583d0effaed843bc` |
-| SHA-256 `phase_dynamics.py` | `ded050bac6545f6a63d67347508fc922ffc152b4a58bb353cb37ea4e315b9d98` |
+| SHA-256 `phase_dynamics.py` | `6cb05f21585c509cc34549e486ef8c1c8fc137091c042b2d704720fecc745f54` |
 | SHA-256 `plant_tissue.py` | `a50afa829fd68ec4d78524ff7e34fb7b9f7a6615b9108eb0f6906054e81a7041` |
 | SHA-256 `provenance.py` | `94071e252347139bab3c5f113d52a38f65feaeaa0c03738ec8d81090c9139cb2` |
 | SHA-256 `reporting.py` | `de80a53d63e90383ed325db5098aea06b71b3f846d8368ddeb12347ce3c4470b` |
@@ -3059,26 +3102,26 @@ Source: `simulator/results/congestion_full_20261018T131637Z.md`.
 
 ### C.6 Synchrony surge (confirmatory run on fresh seeds)
 
-Source: `simulator/results/congestion_confirmatory_20261018T133541Z.md`.
+Source: `simulator/results/congestion_confirmatory_20261018T221119Z.md`.
 
 #### Run metadata
 
 | Field | Value |
 |---|---|
-| Started (UTC) | 2026-10-18T13:35:41.462747+00:00 |
-| Finished (UTC) | 2026-10-18T13:54:49.745621+00:00 |
+| Started (UTC) | 2026-10-18T22:11:19.971565+00:00 |
+| Finished (UTC) | 2026-10-18T22:30:09.950308+00:00 |
 | Machine | Mac14,9, Apple M2 Pro |
 | CPU cores | 10 (6 performance, 4 efficiency) |
 | Memory | 32 GiB |
 | Operating system | macOS 26.7.1 (build 25G241), arm64 |
 | Python | CPython 3.13.2; numpy 2.5.4, scipy 1.18.1 |
-| Git commit | `5c7512c46abc11bc56b1dfc5fe78c529892aab97` (working tree dirty: True) |
-| SHA-256 `calibration.py` | `93ceca8c940b181fe6b9818b3dd4a328e29014f910bf2c28da362ead6532dd59` |
+| Git commit | `0677161701738895512e2b047b40f3857406a5d5` (working tree dirty: True) |
+| SHA-256 `calibration.py` | `7ea6348cdb8c88f692e6f61bec42de8d733a2d52b2d1cabfa09facd7323b1c6c` |
 | SHA-256 `congestion_study.py` | `2a5ce75670eaa049838768925d1df2e9bf4591e7e7938731373f7f1d16c3f73a` |
-| SHA-256 `connectomes.py` | `8f007604165a6b4ed5bfcbb11bccfcfc2cedfd8875fc5d1aab33101343fa0f02` |
-| SHA-256 `dpc_simulator.py` | `9080470f6134967e13b6f6bee7b295c1f04cbac75f545a5bbd89d7e5aca8da25` |
+| SHA-256 `connectomes.py` | `b6c0dfb53639d036ca42b1f9710afa944d5c29bb620ec7e584185ab363e35127` |
+| SHA-256 `dpc_simulator.py` | `07f3b3f1828859c628f596f543d65e33c45403483d5696bd355d8f48fd856fdf` |
 | SHA-256 `excitatory_inhibitory.py` | `9dd9c862a90dd444e51e660ee716e42b363428ecf4aac2ba583d0effaed843bc` |
-| SHA-256 `phase_dynamics.py` | `ded050bac6545f6a63d67347508fc922ffc152b4a58bb353cb37ea4e315b9d98` |
+| SHA-256 `phase_dynamics.py` | `6cb05f21585c509cc34549e486ef8c1c8fc137091c042b2d704720fecc745f54` |
 | SHA-256 `plant_tissue.py` | `a50afa829fd68ec4d78524ff7e34fb7b9f7a6615b9108eb0f6906054e81a7041` |
 | SHA-256 `provenance.py` | `94071e252347139bab3c5f113d52a38f65feaeaa0c03738ec8d81090c9139cb2` |
 | SHA-256 `reporting.py` | `de80a53d63e90383ed325db5098aea06b71b3f846d8368ddeb12347ce3c4470b` |
@@ -3223,13 +3266,13 @@ python3 paper_appendices.py
 ../.venv/bin/python explainer_export.py && python3 results_catalogue.py
 ```
 
-Every report records the machine, operating system, Python and package versions, Git commit and the SHA-256 hash of every simulator module that ran. The source files that produced the results above have these hashes:
+Every report records the machine, operating system, Python and package versions, Git commit and the SHA-256 hash of every simulator module that ran. The current reports were made overnight on 18 to 19 October 2026 from commit `0677161`, except the convergence and cross-species reports, made from commit `6d8b037`, which differs from `0677161` only in files that no study uses, and the pre-specified study (Appendix C.7), run once from commit `7ba034e`. Several reports mark the working tree as modified, because the explainer and the paper text were edited while the studies ran; for every report, the hash of each simulator module it used equals that module in the commit it records. The one exception is the cross-species report: it was run with the number of *Drosophila* seeds raised from 2 to 6 in `calibration.py` before that change was committed, and its hash of `calibration.py` equals the version committed afterwards. An earlier run of the same study with 2 *Drosophila* seeds is kept in `simulator/results/archive/superseded_2026-10-18/`; every *C. elegans*, human and plant run, and the first two *Drosophila* seeds in every condition, are identical in the two reports. The source files that produced the results above have these hashes:
 
 | File | SHA-256 |
 |---|---|
 | `simulator/calibrate_feedback.py` | `fcdf7a99af69780b32150dbd9c12868165ce3d578fa27a6fc4ad6817ff56536f` |
 | `simulator/calibrate_phase_feedback.py` | `427cbedc68b9bf39030d5ceb1e483ae863a6e65b87343acac1c29bbb5c05250f` |
-| `simulator/calibration.py` | `7ea6348cdb8c88f692e6f61bec42de8d733a2d52b2d1cabfa09facd7323b1c6c` |
+| `simulator/calibration.py` | `a4ad98553fd95aab35930c8c49240224bac0ff22fcb448d1b96f9a726e9f8c39` |
 | `simulator/congestion_study.py` | `2a5ce75670eaa049838768925d1df2e9bf4591e7e7938731373f7f1d16c3f73a` |
 | `simulator/connectomes.py` | `b6c0dfb53639d036ca42b1f9710afa944d5c29bb620ec7e584185ab363e35127` |
 | `simulator/convergence_study.py` | `b667648748e61d97043cc376238f7e5ff1b5bcd3afcfd78ef004979931c28d44` |
@@ -3239,14 +3282,14 @@ Every report records the machine, operating system, Python and package versions,
 | `simulator/figures.py` | `15aad57577c0702e9c5f0616e4689dafcf42323c6b59221a1bdd8e104aacf717` |
 | `simulator/glial_regulation.py` | `1f026a6ceb6d92f47d84f291a156bce5d2fb4e134366a57b77c990c90c1d9f2c` |
 | `simulator/glial_study.py` | `88aec7c8cb884154737ba13390fe763b854e738b0ff8bed859f6f23c43813eb8` |
-| `simulator/paper_appendices.py` | `dd92e73c103f09543ba6be229a71632a592f302ef6b5ffaf2e7c24b4f092096b` |
+| `simulator/paper_appendices.py` | `cf2a29848c051cee5d2cc290c1df1d6b77b36a135e9e2714408ef2df072b9fb6` |
 | `simulator/percolation_thresholds.py` | `2b652685905ee4214f3cb1f93e46f8c008980d6750d6dcfe3a5bbefc512e2c46` |
 | `simulator/phase_dynamics.py` | `6cb05f21585c509cc34549e486ef8c1c8fc137091c042b2d704720fecc745f54` |
 | `simulator/plant_tissue.py` | `a50afa829fd68ec4d78524ff7e34fb7b9f7a6615b9108eb0f6906054e81a7041` |
 | `simulator/preregistered_study.py` | `0b9ae66a076209e97a7f05209edbfae489966c355c4dfe71d2e1011e4e67e8a4` |
 | `simulator/provenance.py` | `94071e252347139bab3c5f113d52a38f65feaeaa0c03738ec8d81090c9139cb2` |
 | `simulator/reporting.py` | `de80a53d63e90383ed325db5098aea06b71b3f846d8368ddeb12347ce3c4470b` |
-| `simulator/results_catalogue.py` | `f3e82cd33873cc407bea9c6dc9158ea8286ee0d3c9983e6bcc51ac4281635305` |
+| `simulator/results_catalogue.py` | `f3379cb6f8d7097858eff12b94cdd76e9ecd6a91925b5841727d6ff3e48523bb` |
 | `simulator/sensitivity_study.py` | `b2b548e25d2b6b28215c161611003844674865c971db093cb483b41af96945fd` |
 | `simulator/species_study.py` | `f68310bd49f5e36700c57cca19b82a7e097186d38481ae0843edfc75f2503f8e` |
 | `simulator/validation_study.py` | `e0cd77946cfd8269d64fb91d2fdfe1465b6654ca3b72743903a00af9421492b3` |
@@ -3264,7 +3307,7 @@ The hypothesis and its models changed while this paper was written. Each change 
 | Ketamine | The senses are cut off from an internal agreement that survives (K1) | Internal agreement held but the stimulus still spread (K1 held in at most 2 of 20 seeds) | NMDA receptors carry recurrent more than feedforward signals in macaque V1 (Self et al., 2012); ketamine inhibits frontal-parietal feedback connectivity while feedforward connectivity is preserved (U. Lee et al., 2013) | Timing faults concentrated on feedback connections, so that loops cannot close | K2a to K2c, fixed before the run (Appendix C.7); next row |
 | Ketamine, feedback faults | Timing faults on feedback connections alone abolish quorum while the stimulus still spreads (K2a, K2b), at a lower concentration than on as many random connections (K2c) | Quorum was never lost, with faults on feedback or on random connections (0 of 20 *C. elegans* and 0 of 6 *Drosophila* seeds); feedback faults lowered coherence more (exploratory) | Nothing new; the measured loss of frontal-parietal feedback connectivity under ketamine (U. Lee et al., 2013) still stands | Kept only as a contributing factor: in the model, ketamine's timing faults abolish quorum when they act across the network (P2b), and feedback placement deepens the loss of agreement without causing it | None in the model; the stronger form is not re-tested under another name |
 | Ketamine, local islands | Spontaneous local coherence outlasts global coherence (S1, S2) | Failed in every seed | Not pursued further; the idea is not re-tested under another name | Dropped | None |
-| Sleep down-states | Down-states make individual connections fail | Supported a wakeable sleep state at the rat share (E1) but not at the human upper estimate in large networks (E2) | A down-state silences a whole local population (Vyazovskiy et al., 2009); slow waves are often regional (Nir et al., 2011) | Down-states silence whole populations; the connection-level version is kept as an alternative | O3, O4 and O5, the measured extent of a human slow wave (Appendix B) |
+| Sleep down-states | Down-states make individual connections fail | Supported a wakeable sleep state at the rat share (E1, every seed from 10,000 nodes) and at the human upper estimate (E2, every seed from 100,000 nodes) | A down-state silences a whole local population (Vyazovskiy et al., 2009); slow waves are often regional (Nir et al., 2011) | Down-states silence whole populations; the connection-level version is kept as an alternative | O3, O4 and O5, the measured extent of a human slow wave (Appendix B) |
 | Astrocytes and sleep | Removing the astrocytic share of down-states restores quorum in sleep (A1) | Re-specified when the down-state model changed, before its multi-seed run; then failed in every seed at every network size | Astrocytic effects on anaesthesia differ in sign between regions (Section 5.4) | The astrocytic route to down-states is not supported by the model | None |
 | Microglia | Drug depletion of microglia hastens emergence, as reported with PLX5622 | Reproduced by construction (consistency check G1) | PLX5622 also speeds the clearance of anaesthetics, and genetic depletion did not hasten emergence (Cao et al., 2026) | The firmer evidence is the genetic P2Y12 result (Cao et al., 2023); G1 is reported as a consistency check, not support | Prediction 12, with the 2026 result noted |
 | Graceful degradation (P8) | A slower reference protects more against timing faults than against transmission failure | The slower rate raised the loss concentration (F1) but its distinctive prediction failed in every seed (F3) | Frontal alpha is attributed mainly to thalamic mechanisms (Ching et al., 2010; Vijayan et al., 2013) | P8 is kept as a proposal whose specific mechanism the model does not support | Prediction 9, in recorded data |
