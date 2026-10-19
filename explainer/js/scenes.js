@@ -3,7 +3,7 @@
   "use strict";
 
   const {
-    FaultKind, IntegrationCycles, CycleConditions, NetworkView, IslandsView, MatrixView, CycleBar, RingProjector,
+    FaultKind, IntegrationCycles, CycleConditions, transitionPoints, NetworkView, IslandsView, MatrixView, CycleBar, RingProjector,
     QuorumPainter, RangeControl, ChoiceGroup, SweepRunner, SweepPlan, TraceView, DoseCurveView, DrugCloud, required, fixed, percent, t, make, renderLegend,
   } = root.DPC;
 
@@ -280,30 +280,38 @@
     }
   }
 
+  // Where a sweep stands: not started, under way, or over. Readings show each transition the moment it is found.
+  const SweepState = Object.freeze({ IDLE: "IDLE", RUNNING: "RUNNING", DONE: "DONE" });
+
   // A dose sweep with its trace and readings, for any scene that supplies a model.
   class SweepPanel {
-    constructor(scene, { model, controls = [] }) {
+    // cycles: pass a pane's own cycles so that the pane shows the network at each dose as the sweep reaches it.
+    constructor(scene, { model, controls = [], cycles = null }) {
       Object.assign(this, { scene, model, controls });
       this.runner = new SweepRunner(scene.element("[data-sweep]"), SWEEP_PLAN);
       this.trace = new TraceView(scene.element("[data-trace]"), { maxConcentration: SWEEP_PLAN.maxConcentration, quorumFraction: scene.context.models.reference.quorumFraction });
-      this.cycles = new IntegrationCycles(scene.context.network, scene.context.seed);
-      this.points = [];
-      this.result = null;
+      this.cycles = cycles ?? new IntegrationCycles(scene.context.network, scene.context.seed);
+      this.clear();
       this.runner.button.addEventListener("click", () => this.run());
     }
 
     async run() {
+      this.clear();
+      this.state = SweepState.RUNNING;
       const result = await this.runner.run({
         cycles: this.cycles,
         model: this.model,
         controls: this.controls,
         onStep: (points, concentration) => {
           this.points = points.slice();
+          this.result = { points: this.points, ...transitionPoints(this.points, (share) => this.model().holdsQuorum(share)) };
           this.trace.draw(this.points, { concentration, share: this.cycles.outcome.giantShare });
+          this.scene.showReadings();
         },
       });
       if (!result) return;
       this.result = result;
+      this.state = SweepState.DONE;
       this.scene.showReadings();
       this.scene.context.announce(this.scene);
     }
@@ -315,20 +323,40 @@
     clear() {
       this.points = [];
       this.result = null;
+      this.state = SweepState.IDLE;
     }
 
     legend() {
       return this.trace.legend();
     }
 
+    // A transition's reading: its concentration once found; before that, what the sweep can still show.
+    _reading(value, { pending, missing, decimals = DECIMALS.concentration }) {
+      if (value !== null) return fixed(value, decimals);
+      if (this.state === SweepState.IDLE) return t("runTheSweep");
+      return t(this.state === SweepState.DONE ? missing : pending);
+    }
+
     readings() {
-      if (!this.result) return { lost: t("runTheSweep"), regained: t("runTheSweep") };
-      return { lost: fixed(this.result.lostAt, DECIMALS.concentration), regained: fixed(this.result.regainedAt, DECIMALS.concentration) };
+      const { lostAt = null, regainedAt = null } = this.result ?? {};
+      return {
+        lost: this._reading(lostAt, { pending: "notYet", missing: "quorumNeverLost" }),
+        regained: this._reading(regainedAt, { pending: "notYet", missing: lostAt === null ? "quorumNeverLost" : "quorumNeverRegained" }),
+      };
+    }
+
+    // The loss-to-recovery ratio once both transitions are known, read the same way as the transitions.
+    ratioReading() {
+      const { lostAt = null, regainedAt = null } = this.result ?? {};
+      const ratio = lostAt !== null && regainedAt !== null ? lostAt / regainedAt : null;
+      return this._reading(ratio, { pending: "notYet", missing: "ratioUndefined", decimals: DECIMALS.ratio });
     }
 
     summary() {
-      if (!this.result) return t("sweepNotRun");
-      return t("sweepSummary", { lost: fixed(this.result.lostAt, DECIMALS.concentration), regained: fixed(this.result.regainedAt, DECIMALS.concentration) });
+      if (this.state !== SweepState.DONE) return t("sweepNotRun");
+      const { lostAt = null, regainedAt = null } = this.result;
+      if (lostAt === null) return t("sweepNoLoss");
+      return t(regainedAt === null ? "sweepNoReturn" : "sweepSummary", this.readings());
     }
   }
 

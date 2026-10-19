@@ -264,7 +264,22 @@
     <p data-i18n="ketamine.p3"></p>
     <aside class="note" data-i18n="ketamine.aside1"></aside>
     <figure id="fig-feedback" class="channel" data-scene="FeedbackScene" data-channel="Wiring" data-i18n-data-channel="fig-feedback.channel">
-      <canvas class="network" data-network role="img" data-i18n-aria-label="fig-feedback.arialabel1"></canvas>
+      <div class="stage">
+        <canvas class="network" data-network role="img" data-i18n-aria-label="fig-feedback.arialabel1"></canvas>
+        <div class="panel">
+          <div class="control"><span data-i18n="fig-feedback.span1"></span>
+            <div class="choice" role="group" data-i18n-aria-label="fig-feedback.span1">
+              <button type="button" data-choice="placement" data-value="FEEDBACK" aria-pressed="true" data-i18n="fig-feedback.button1"></button>
+              <button type="button" data-choice="placement" data-value="MATCHED_RANDOM" aria-pressed="false" data-i18n="fig-feedback.button2"></button>
+              <button type="button" data-choice="placement" data-value="EVERYWHERE" aria-pressed="false" data-i18n="fig-feedback.button3"></button>
+            </div>
+          </div>
+          <label class="control"><span data-i18n="fig-faults.label1"></span> <span class="value" data-control-value="dose"></span>
+            <input type="range" min="0" max="2.5" step="0.01" value="0" data-control="dose"></label>
+          <div class="dose-instrument"><span class="dose-curve-label" data-message="doseCurveLabel"></span><canvas class="dose-curve" data-dose-curve aria-hidden="true"></canvas><span class="dose-effect" data-reading="doseEffect"></span></div>
+          <dl class="readings"><dt data-i18n="fig-faults.dt3"></dt><dd data-reading="giant"></dd><dt data-i18n="fig-feedback.dt1"></dt><dd data-reading="exposed"></dd></dl>
+        </div>
+      </div>
       <figcaption data-i18n="fig-feedback.figcaption1"></figcaption>
     </figure>
   </section>

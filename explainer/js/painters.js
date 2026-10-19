@@ -10,8 +10,6 @@
     CUT_OFF: Object.freeze({ token: Token.STRAY, radius: 2.9 }),
     SILENCED: Object.freeze({ token: Token.SILENCED, radius: 2.9, hollow: true }),
     SENSORY: Object.freeze({ token: Token.INK, radius: 3.4 }),
-    // A cell in a wiring diagram, where nothing is simulated: no state, so no state colour.
-    WIRED: Object.freeze({ token: Token.MUTED, radius: 2.6 }),
     REACHED: Object.freeze({ token: Token.REACH, radius: 3.4 }),
   });
 
@@ -72,7 +70,7 @@
     }
   }
 
-  // How far a stimulus at the sensory cells reaches: black senses, blue reached, grey not reached.
+  // How far a stimulus at the sensory cells reaches: senses in the text colour, blue reached, grey not reached.
   class BroadcastPainter extends Painter {
     constructor(outcome, network) {
       super(outcome, network);
@@ -98,35 +96,26 @@
         { group: LegendGroup.CELLS, swatch: Swatch.DOT, token: Token.REACH, message: "legendReached" },
         { group: LegendGroup.CELLS, swatch: Swatch.DOT, token: Token.STRAY, message: "legendNotReached" },
         { group: LegendGroup.CONNECTIONS, swatch: Swatch.LINE, token: Token.REACH, message: "legendLinkCarries" },
-        PULSE_LEGEND[0],
-        PULSE_LEGEND[1],
+        { group: LegendGroup.CONNECTIONS, swatch: Swatch.LINE, token: Token.STRAY, message: "legendLinkNotReached" },
+        ...PULSE_LEGEND,
       ]);
     }
   }
 
-  // Wiring only: directed connections that run back towards the senses in purple, forward ones in blue.
-  class FeedbackPainter extends Painter {
-    constructor(outcome, network) {
+  // Test K2 live: the agreeing group as in QuorumPainter, over a purple layer marking the connections that receive the
+  // agent's timing error. exposedMask() returns the current mask, or null when every connection receives it.
+  class FaultPlacementPainter extends QuorumPainter {
+    constructor(outcome, network, exposedMask) {
       super(outcome, network);
-      this.connectionLayers = [
-        { token: Token.REACH, width: LINE.thin, directed: true, includes: (k) => !network.isFeedback(k) },
-        { token: Token.FEEDBACK, width: LINE.thin, directed: true, includes: (k) => network.isFeedback(k) },
-      ];
-    }
-
-    cellStyle(node) {
-      return this.network.isSensory[node] ? CellStyle.SENSORY : CellStyle.WIRED;
+      const exposed = (k) => exposedMask()?.[k] === 1;
+      this.connectionLayers = [{ token: Token.FEEDBACK, width: LINE.thin, includes: exposed }, ...this.connectionLayers];
     }
 
     legend() {
-      return labelled([
-        { group: LegendGroup.CELLS, swatch: Swatch.DOT, token: Token.INK, message: "legendSensory" },
-        { group: LegendGroup.CELLS, swatch: Swatch.DOT, token: Token.MUTED, message: "legendOtherCell" },
-        { group: LegendGroup.CONNECTIONS, swatch: Swatch.LINE, token: Token.FEEDBACK, message: "legendFeedback" },
-        { group: LegendGroup.CONNECTIONS, swatch: Swatch.LINE, token: Token.REACH, message: "legendForward" },
-      ]);
+      const entries = super.legend();
+      return [...entries, ...labelled([{ group: LegendGroup.CONNECTIONS, swatch: Swatch.LINE, token: Token.FEEDBACK, message: "legendLinkExposed" }])];
     }
   }
 
-  root.DPC = Object.assign(root.DPC || {}, { QuorumPainter, BroadcastPainter, FeedbackPainter });
+  root.DPC = Object.assign(root.DPC || {}, { QuorumPainter, BroadcastPainter, FaultPlacementPainter });
 })(globalThis);

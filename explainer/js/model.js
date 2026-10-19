@@ -100,6 +100,11 @@
       return Math.hypot(this.baselineJitterMs(), this.agent.addedJitterMs(concentration), this.referenceErrorMs(concentration, giantShare));
     }
 
+    // The error on a connection that the agent's own timing error does not reach (test K2 and its control).
+    unexposedJitterMs(concentration, giantShare) {
+      return Math.hypot(this.baselineJitterMs(), this.referenceErrorMs(concentration, giantShare));
+    }
+
     halfWindowMs() {
       return this.settings.integrationWindowMs / 2;
     }

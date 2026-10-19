@@ -18,7 +18,7 @@ for (const file of ["data/explainer-data.js", "js/core.js", "js/model.js", "js/n
 
 const {
   PlantTissue, FaultKind, erf, ModelFactory, Network, IntegrationCycles, CycleOutcome, ConnectionOutcome, CycleConditions,
-  SweepPlan, SweepDirection, transitionPoints, OutcomeIndex, Verdict, DrugCloud, mirroredLayout,
+  SweepPlan, SweepDirection, transitionPoints, OutcomeIndex, Verdict, DrugCloud, mirroredLayout, FaultPlacement, agentJitterMasks,
 } = globalThis.DPC;
 const data = globalThis.DPC_EXPLAINER_DATA;
 const factory = new ModelFactory(data);
@@ -94,6 +94,14 @@ test("transition points read the sweep's crossings of the quorum", () => {
     { direction: SweepDirection.EMERGENCE, concentration: 0, share: 0.9 },
   ];
   assert.deepEqual(transitionPoints(points, (share) => share >= 0.5), { lostAt: 1, regainedAt: 0 });
+});
+
+test("the loss of quorum is read as soon as it happens, before the dose falls again_regression", () => {
+  const risingOnly = [
+    { direction: SweepDirection.INDUCTION, concentration: 0, share: 0.9 },
+    { direction: SweepDirection.INDUCTION, concentration: 1, share: 0.2 },
+  ];
+  assert.deepEqual(transitionPoints(risingOnly, (share) => share >= 0.5), { lostAt: 1, regainedAt: null });
 });
 
 test("outcome index groups runs and gives a verdict", () => {
@@ -250,4 +258,22 @@ test("fly data: connections are (source, target, synapses) triples between neuro
   }
   assert.deepEqual(fly.sensoryNeuropils.map((index) => fly.neuropils[index]).sort(), ["AL_L", "AL_R"]);
   assert.equal(fly.neuronCounts.reduce((sum, n) => sum + n, 0), fly.neuronCount);
+});
+
+test("K2 placements: feedback mask marks every pair with a feedback direction, and the control marks as many at random", () => {
+  const network = new Network(data.network);
+  const masks = agentJitterMasks(network, 1);
+  const total = (mask) => mask.reduce((sum, value) => sum + value, 0);
+  assert.equal(total(masks[FaultPlacement.FEEDBACK]), network.feedbackCount());
+  assert.equal(total(masks[FaultPlacement.MATCHED_RANDOM]), total(masks[FaultPlacement.FEEDBACK]));
+  assert.notDeepEqual(masks[FaultPlacement.MATCHED_RANDOM], masks[FaultPlacement.FEEDBACK]);
+  assert.equal(masks[FaultPlacement.EVERYWHERE], null);
+});
+
+test("a connection the agent's timing error does not reach keeps only baseline and reference error", () => {
+  const model = models[FaultKind.TIMING];
+  const concentration = 2;
+  const giant = 0.6;
+  assert.ok(model.unexposedJitterMs(concentration, giant) < model.effectiveJitterMs(concentration, giant));
+  assert.equal(model.unexposedJitterMs(concentration, giant), Math.hypot(model.baselineJitterMs(), model.referenceErrorMs(concentration, giant)));
 });

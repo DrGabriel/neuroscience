@@ -310,6 +310,9 @@ canvas.dose-curve { height: 64px; }
 .swatch.triangle, .swatch.triangle-open { width: 0.8rem; height: 0.7rem; clip-path: polygon(50% 0, 100% 100%, 0 100%); background: var(--swatch); position: relative; }
 .swatch.triangle-open::after { content: ""; position: absolute; inset: 3px 2.5px 1.5px; clip-path: inherit; background: var(--paper); }
 .swatch.dotted { width: 1.4rem; border-top: 2px dotted var(--swatch); }
+.swatch.dash-dot, .swatch.dash-dot-dot { width: 1.6rem; height: 2px; }
+.swatch.dash-dot { background: repeating-linear-gradient(90deg, var(--swatch) 0 9px, transparent 9px 12px, var(--swatch) 12px 14px, transparent 14px 17px); }
+.swatch.dash-dot-dot { background: repeating-linear-gradient(90deg, var(--swatch) 0 9px, transparent 9px 12px, var(--swatch) 12px 14px, transparent 14px 17px, var(--swatch) 17px 19px, transparent 19px 22px); }
 /* Anaesthetic molecules: bound is filled with an ink edge, free is hollow with an edge in the drug's colour. */
 .swatch.hexagon, .swatch.hexagon-open { width: 0.85rem; height: 0.75rem; clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%); position: relative; }
 .swatch.hexagon { background: var(--drug-edge); }

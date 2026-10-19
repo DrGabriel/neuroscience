@@ -129,6 +129,16 @@
       return from !== UNREACHED && to !== UNREACHED && to < from;
     }
 
+    // Per undirected connection, 1 when either of its directions is a feedback connection.
+    feedbackConnectionMask() {
+      const key = (a, b) => (a < b ? a * this.nodeCount + b : b * this.nodeCount + a);
+      const feedback = new Set();
+      for (let k = 0; k < this.directed.count; k++) {
+        if (this.isFeedback(k)) feedback.add(key(this.directed.sources[k], this.directed.targets[k]));
+      }
+      return Uint8Array.from({ length: this.connectionCount }, (_, k) => (feedback.has(key(this.sources[k], this.targets[k])) ? 1 : 0));
+    }
+
     feedbackCount() {
       let count = 0;
       for (let k = 0; k < this.directed.count; k++) count += this.isFeedback(k) ? 1 : 0;

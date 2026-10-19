@@ -171,7 +171,7 @@
 
   // Legend swatch shapes; each draws in the colour of its token.
   const Swatch = Object.freeze({
-    DOT: "dot", RING: "ring", LINE: "line", DASHED: "dashed", DOTTED: "dotted", DIAMOND: "diamond", CROSS: "cross", BAND: "band",
+    DOT: "dot", RING: "ring", LINE: "line", DASHED: "dashed", DOTTED: "dotted", DASH_DOT: "dash-dot", DASH_DOT_DOT: "dash-dot-dot", DIAMOND: "diamond", CROSS: "cross", BAND: "band",
     SQUARE: "square", SQUARE_OPEN: "square-open", TRIANGLE: "triangle", TRIANGLE_OPEN: "triangle-open", TICK: "tick", HEXAGON: "hexagon", HEXAGON_OPEN: "hexagon-open", ARROW_FORWARD: "arrow-forward", ARROW_BACK: "arrow-back",
   });
   // What kind of thing a legend entry describes; the key shows one labelled row per group, in this order.

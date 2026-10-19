@@ -3,7 +3,7 @@
 (function (root) {
   "use strict";
 
-  const { Token, Swatch, LegendGroup, labelled, palette, Surface, scale, polyline, make, t, count, organismName, drawShareAxes, DASH } = root.DPC;
+  const { Token, Swatch, LegendGroup, labelled, palette, Surface, scale, polyline, make, t, count, organismName, drawShareAxes } = root.DPC;
 
   const SIDE = Object.freeze({ LEFT: "_L", RIGHT: "_R" });
   const UNASSIGNED = "UNASGD";
@@ -144,16 +144,22 @@
   }
 
   // Mean global coherence relative to awake (each run divided by its own awake value, as in the paper's Figure 3),
-  // against concentration, for each organism; told apart by line style and a label at the line's end, never by colour.
+  // against concentration, for each organism; told apart by line pattern and a label at the line's end, never by colour.
+  // Dashed and dotted already mean "dose falling" and "quorum line" on this page, so the organisms use other patterns.
+  const LINE_PATTERN = Object.freeze({
+    SOLID: Object.freeze([]),
+    DASH_DOT: Object.freeze([9, 3, 2, 3]),
+    DASH_DOT_DOT: Object.freeze([9, 3, 2, 3, 2, 3]),
+  });
   const CURVE_STYLE = Object.freeze({
-    celegans: Object.freeze({ dash: [], swatch: Swatch.LINE }),
-    drosophila: Object.freeze({ dash: DASH.emergence, swatch: Swatch.DASHED }),
-    human: Object.freeze({ dash: DASH.threshold, swatch: Swatch.DOTTED }),
+    celegans: Object.freeze({ dash: LINE_PATTERN.SOLID, swatch: Swatch.LINE }),
+    drosophila: Object.freeze({ dash: LINE_PATTERN.DASH_DOT, swatch: Swatch.DASH_DOT }),
+    human: Object.freeze({ dash: LINE_PATTERN.DASH_DOT_DOT, swatch: Swatch.DASH_DOT_DOT }),
   });
 
   class SpeciesCurvesView {
     static MARGIN = Object.freeze({ left: 44, right: 96, top: 12, bottom: 30 });
-    static LABEL_GAP_PX = 14;
+    static LABEL_GAP_PX = 18;
     static LABEL_OFFSET_PX = 6;
 
     constructor(canvas, speciesCurves) {
@@ -188,20 +194,25 @@
         const end = series[series.length - 1];
         return { text: organismName(curve.organism), x: px(end.x) + SpeciesCurvesView.LABEL_OFFSET_PX, y: py(end.y) };
       });
-      this._labelEnds(context, ends);
+      this._labelEnds(context, ends, height - margin.bottom - SpeciesCurvesView.LABEL_GAP_PX / 2);
     }
 
-    // Labels at the line ends, pushed apart vertically so that they never overlap.
-    _labelEnds(context, ends) {
+    // Labels at the line ends, pushed apart vertically so that they never overlap, and lifted together if the
+    // lowest would fall below lowestY, into the axis labels.
+    _labelEnds(context, ends, lowestY) {
       context.textAlign = "left";
       context.textBaseline = "middle";
       ends.sort((a, b) => a.y - b.y);
       ends.forEach((end, k) => {
         if (k > 0) end.y = Math.max(end.y, ends[k - 1].y + SpeciesCurvesView.LABEL_GAP_PX);
-        context.fillText(end.text, end.x, end.y);
       });
+      const lift = Math.max(0, ends[ends.length - 1].y - lowestY);
+      for (const end of ends) context.fillText(end.text, end.x, end.y - lift);
     }
   }
 
-  root.DPC = Object.assign(root.DPC || {}, { FlyMapView, SpeciesCurvesView, mirroredLayout, DRAWN_OUTPUT_SHARE });
+  // The named neuropils, leaving out the group of neurons that FlyWire assigns to none.
+  const namedNeuropils = (neuropils) => neuropils.filter((name) => name !== UNASSIGNED);
+
+  root.DPC = Object.assign(root.DPC || {}, { FlyMapView, SpeciesCurvesView, mirroredLayout, namedNeuropils, DRAWN_OUTPUT_SHARE });
 })(globalThis);

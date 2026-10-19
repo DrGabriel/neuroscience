@@ -4,7 +4,7 @@
 
   const {
     ModelFactory, Network, Figures, Playback, Picker, palette, make, t, count, clamp, translator, registry, remember,
-    OutcomeIndex, renderLedger, renderInlineOutcomes, renderPlantClaims, renderPredictions, renderStatistics, ResultsArchive,
+    OutcomeIndex, namedNeuropils, renderLedger, renderInlineOutcomes, renderPlantClaims, renderPredictions, renderStatistics, ResultsArchive,
   } = root.DPC;
   const data = root.DPC_EXPLAINER_DATA;
   const SEED = 2026;
@@ -86,7 +86,7 @@
       directedCount: count(network.directed.count),
       flyNeurons: count(data.fly.neuronCount),
       flyConnections: count(data.fly.connectionCount),
-      flyNeuropils: count(data.fly.neuropils.length),
+      flyNeuropils: count(namedNeuropils(data.fly.neuropils).length),
     });
   }
 

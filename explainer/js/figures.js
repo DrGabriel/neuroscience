@@ -3,8 +3,9 @@
   "use strict";
 
   const {
-    FaultKind, Network, OrbitProjector, Turn, QuorumPainter, BroadcastPainter, FeedbackPainter, PlantTissue, PlantView,
-    ArrivalView, PhaseDialView, RasterView, StripView, ThresholdView, FlyMapView, SpeciesCurvesView, RandomSource, RangeControl, ChoiceGroup,
+    FaultKind, Network, OrbitProjector, Turn, QuorumPainter, BroadcastPainter, FaultPlacementPainter, PlantTissue, PlantView,
+    CycleConditions, FaultPlacement, agentJitterMasks,
+    ArrivalView, PhaseDialView, RasterView, StripView, ThresholdView, FlyMapView, SpeciesCurvesView, namedNeuropils, RandomSource, RangeControl, ChoiceGroup,
     Scene, NetworkPane, NetworkScene, DosedScene, DoseInstrument, DrugLayer, SweepPanel, NetworkViewKind, alternativeViews, conditionsWith,
     DECIMALS, withinWindow, wrapPhase, phaseOf, percent, fixed, formatConcentration, make, t, count,
   } = root.DPC;
@@ -239,11 +240,16 @@
       const reference = context.models.reference.feedbackJitterMs;
       this.feedback.value = String(context.data.inertia.targets.reduce((best, target) => (Math.abs(target.feedbackMs - reference) < Math.abs(best - reference) ? target.feedbackMs : best), 0));
       this.feedback.selectedOptions[0].defaultSelected = true;
-      this.sweep = new SweepPanel(this, { model: () => this.model(), controls: [this.feedback] });
+      this.sweep = new SweepPanel(this, { model: () => this.model(), controls: [this.feedback], cycles: this.pane.cycles });
     }
 
     model() {
       return this.context.models.create(FaultKind.OMISSION, { feedbackJitterMs: Number(this.feedback.value) });
+    }
+
+    // While a sweep runs, it advances the pane's cycles itself, so the network shows the dose being swept.
+    tick() {
+      if (!this.sweep.runner.running) super.tick();
     }
 
     render() {
@@ -260,8 +266,7 @@
     }
 
     readings() {
-      const { lostAt, regainedAt } = this.sweep.result ?? {};
-      return { ...this.sweep.readings(), ratio: lostAt && regainedAt ? fixed(lostAt / regainedAt, DECIMALS.ratio) : t("runTheSweep") };
+      return { ...this.sweep.readings(), ratio: this.sweep.ratioReading() };
     }
 
     describe() {
@@ -284,23 +289,46 @@
     }
   }
 
-  // Ketamine and K2: which directed connections run back towards the senses (wiring only, no simulation).
-  class FeedbackScene extends Scene {
+  const PLACEMENT_MESSAGE = Object.freeze({ FEEDBACK: "placementFeedback", MATCHED_RANDOM: "placementRandom", EVERYWHERE: "placementEverywhere" });
+
+  // Ketamine and K2, live: the ketamine-like agent's timing error on feedback connections only, on as many random
+  // connections (the control), or on every connection, while baseline error and transmission failure act everywhere.
+  class FeedbackScene extends DosedScene {
     constructor(scope, context) {
-      super(scope, context);
-      this.view = new NetworkPane({ canvas: this.element("[data-network]"), network: context.network, seed: context.seed, painterFor: (outcome) => new FeedbackPainter(outcome, context.network) });
+      const exposure = { mask: null };
+      super(scope, context, { painterFor: (outcome) => new FaultPlacementPainter(outcome, context.network, () => exposure.mask) });
+      this.fault = { value: FaultKind.TIMING };
+      this.exposure = exposure;
+      this.masks = agentJitterMasks(context.network, context.seed);
+      this.conditionsFor = Object.freeze(Object.fromEntries(Object.entries(this.masks).map(([placement, mask]) => [placement, new CycleConditions({ agentJitterMask: mask })])));
+      this.placement = this.track(new ChoiceGroup(scope, "placement", { owner: this.owner, values: FaultPlacement, onChange: () => this.place() }));
+      this.place();
     }
 
-    render() {
-      this.view.draw(1);
+    place() {
+      this.exposure.mask = this.masks[this.placement.value];
+      this.step();
     }
 
-    legend() {
-      return this.view.painter.legend();
+    conditions() {
+      return this.conditionsFor[this.placement.value];
+    }
+
+    exposedCount() {
+      const mask = this.exposure.mask;
+      return mask ? mask.reduce((sum, value) => sum + value, 0) : this.context.network.connectionCount;
+    }
+
+    readings() {
+      const exposed = this.exposedCount();
+      return {
+        giant: percent(this.pane.outcome.giantShare),
+        exposed: t("countAndShare", { count: count(exposed), share: percent(exposed / this.context.network.connectionCount) }),
+      };
     }
 
     describe() {
-      return t("describeFeedback", { feedback: this.context.facts.feedbackCount, directed: this.context.facts.directedCount });
+      return t("describeFeedback", { dose: formatConcentration(this.dose.value), placement: t(PLACEMENT_MESSAGE[this.placement.value]), giant: percent(this.pane.outcome.giantShare) });
     }
   }
 
@@ -486,7 +514,7 @@
     }
 
     describe() {
-      return t("describeFlyMap", { neuropils: count(this.context.data.fly.neuropils.length) });
+      return t("describeFlyMap", { neuropils: count(namedNeuropils(this.context.data.fly.neuropils).length) });
     }
   }
 

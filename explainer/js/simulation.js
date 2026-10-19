@@ -28,12 +28,40 @@
     }
   }
 
-  // What a cycle runs under, beyond the model and the dose: the share of populations in a down-state.
+  // What a cycle runs under, beyond the model and the dose: the share of populations in a down-state, and which
+  // connections the agent's timing error reaches (a mask over connections; null means every connection).
   class CycleConditions {
-    constructor({ silencedShare = 0 } = {}) {
+    constructor({ silencedShare = 0, agentJitterMask = null } = {}) {
       this.silencedShare = silencedShare;
+      this.agentJitterMask = agentJitterMask;
       Object.freeze(this);
     }
+  }
+
+  // Where the agent's timing error acts: test K2, its matched-random control, and the whole network.
+  const FaultPlacement = Object.freeze({ FEEDBACK: "FEEDBACK", MATCHED_RANDOM: "MATCHED_RANDOM", EVERYWHERE: "EVERYWHERE" });
+
+  // As many connections as the mask marks, drawn at random with a partial Fisher-Yates shuffle.
+  function matchedRandomMask(mask, seed) {
+    const random = new RandomSource(seed);
+    const order = Int32Array.from({ length: mask.length }, (_, k) => k);
+    const chosen = new Uint8Array(mask.length);
+    const count = mask.reduce((sum, value) => sum + value, 0);
+    for (let k = 0; k < count; k++) {
+      const pick = k + Math.floor(random.uniform() * (mask.length - k));
+      [order[k], order[pick]] = [order[pick], order[k]];
+      chosen[order[k]] = 1;
+    }
+    return chosen;
+  }
+
+  function agentJitterMasks(network, seed) {
+    const feedback = network.feedbackConnectionMask();
+    return Object.freeze({
+      [FaultPlacement.FEEDBACK]: feedback,
+      [FaultPlacement.MATCHED_RANDOM]: matchedRandomMask(feedback, seed),
+      [FaultPlacement.EVERYWHERE]: null,
+    });
   }
   const AWAKE = new CycleConditions();
 
@@ -80,6 +108,8 @@
       outcome.wasInGiant.set(outcome.inGiant);
       outcome.failureProbability = model.agent.transmissionFailure(concentration);
       outcome.jitterMs = model.effectiveJitterMs(concentration, previousGiant);
+      this._mask = conditions.agentJitterMask;
+      this._unexposedJitterMs = this._mask ? model.unexposedJitterMs(concentration, previousGiant) : outcome.jitterMs;
       outcome.halfWindowMs = model.halfWindowMs();
       outcome.expectedCoherence = model.coherenceProbability(concentration, previousGiant);
       outcome.referenceStrength = model.referenceStrength(concentration, previousGiant);
@@ -103,7 +133,8 @@
       if (outcome.silenced[network.sources[k]] || outcome.silenced[network.targets[k]]) result = ConnectionOutcome.SILENCED;
       else if (this.random.uniform() < outcome.failureProbability) result = ConnectionOutcome.FAILED;
       else {
-        outcome.errorsMs[k] = this.random.standardNormal() * outcome.jitterMs;
+        const jitterMs = this._mask && !this._mask[k] ? this._unexposedJitterMs : outcome.jitterMs;
+        outcome.errorsMs[k] = this.random.standardNormal() * jitterMs;
         result = Math.abs(outcome.errorsMs[k]) <= outcome.halfWindowMs ? ConnectionOutcome.ON_TIME : ConnectionOutcome.LATE;
       }
       outcome.connections[k] = result;
@@ -136,5 +167,5 @@
     return { lostAt: crossing(SweepDirection.INDUCTION, true), regainedAt: crossing(SweepDirection.EMERGENCE, false) };
   }
 
-  root.DPC = Object.assign(root.DPC || {}, { ConnectionOutcome, SweepDirection, RandomSource, CycleConditions, CycleOutcome, IntegrationCycles, SweepPlan, transitionPoints });
+  root.DPC = Object.assign(root.DPC || {}, { ConnectionOutcome, SweepDirection, RandomSource, CycleConditions, FaultPlacement, agentJitterMasks, CycleOutcome, IntegrationCycles, SweepPlan, transitionPoints });
 })(globalThis);
