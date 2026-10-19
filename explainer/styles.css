@@ -351,6 +351,7 @@ canvas.brain:active { cursor: grabbing; }
 .outcome[data-verdict="all"]::before, .ledger tr.verdict-all th::before { content: "✓"; }
 .outcome[data-verdict="some"]::before, .ledger tr.verdict-some th::before { content: "◐"; }
 .outcome[data-verdict="none"]::before, .ledger tr.verdict-none th::before { content: "✕"; }
+.outcome[data-verdict="not-applicable"]::before, .ledger tr.verdict-not-applicable th::before { content: "–"; }
 .outcome[data-verdict="pending"] { border-style: dashed; color: var(--muted); }
 
 /* Ledger of every test */

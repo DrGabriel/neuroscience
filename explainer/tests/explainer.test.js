@@ -132,6 +132,12 @@ test("outcome index groups runs and gives a verdict", () => {
   assert.equal(index.find("validation:C9"), null);
 });
 
+test("a test that applied to no run is not reported as held in no run (regression)", () => {
+  const base = { report: "congestion_full_x.json", study: "congestion", label: "full", identifier: "G2", statement: "s", kind: "test" };
+  const index = new OutcomeIndex([{ ...base, group: "none, C=1", holding: 0, applicable: 0 }]);
+  assert.equal(index.find("congestion:G2").verdict, Verdict.NOT_APPLICABLE);
+});
+
 test("exported connectome matches the percolation report's worm network", () => {
   const network = new Network(data.network);
   const worm = data.thresholds.organisms.find((row) => row.organism === network.name);

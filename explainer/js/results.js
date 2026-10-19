@@ -4,8 +4,13 @@
 
   const { make, percent, fixed, t, count, translator, DEFAULT_LOCALE } = root.DPC;
 
-  const Verdict = Object.freeze({ ALL: "all", SOME: "some", NONE: "none", PENDING: "pending" });
-  const VERDICT_MESSAGE = Object.freeze({ [Verdict.ALL]: "verdictAll", [Verdict.SOME]: "verdictSome", [Verdict.NONE]: "verdictNone" });
+  const Verdict = Object.freeze({ ALL: "all", SOME: "some", NONE: "none", NOT_APPLICABLE: "not-applicable", PENDING: "pending" });
+  const VERDICT_MESSAGE = Object.freeze({
+    [Verdict.ALL]: "verdictAll",
+    [Verdict.SOME]: "verdictSome",
+    [Verdict.NONE]: "verdictNone",
+    [Verdict.NOT_APPLICABLE]: "verdictNotApplicable",
+  });
   const KIND_MESSAGE = Object.freeze({ test: "kindTest", "consistency check": "kindConsistency" });
   const DEFAULT_LABEL = "full";
   const STUDY_MESSAGE = Object.freeze({
@@ -19,7 +24,8 @@
   const verdictLabel = (verdict) => t(VERDICT_MESSAGE[verdict]);
 
   function verdictOf(holding, applicable) {
-    if (applicable > 0 && holding === applicable) return Verdict.ALL;
+    if (applicable === 0) return Verdict.NOT_APPLICABLE;
+    if (holding === applicable) return Verdict.ALL;
     return holding === 0 ? Verdict.NONE : Verdict.SOME;
   }
 
