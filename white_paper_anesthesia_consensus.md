@@ -28,7 +28,7 @@ More than 170 years after the first public demonstration of ether anaesthesia, n
 
 ### 1.2 What this paper claims, and what it does not
 
-This is a **hypothesis**, not a theorem. It has no formal proof and its value lies in whether its predictions survive experimental test. To avoid ambiguity we classify every claim as one of three types:
+This is a **hypothesis**, not a theorem. It has no formal proof and its value lies in whether its predictions survive experimental test. It concerns the conditions under which integrated, reportable content is present, not what that content is or why it is accompanied by experience (Section 9, item 7). To avoid ambiguity we classify every claim as one of three types:
 
 - **[E] Established:** supported by replicated experimental evidence, with citation.
 - **[H] Hypothesis:** a novel or contested claim of this paper, stated so that it can be falsified.
@@ -170,7 +170,7 @@ The terms used in this paper come from engineered systems that solve the same pr
 
 ### 3.3 Postulates [H]
 
-**The central claim in plain language.** Integrated, reportable experience requires *positive timing slack*: signals passing between the populations of a nervous system must arrive within the window in which they can be combined, judged against a shared rhythm. Anaesthetics, whatever their molecular target, erode that slack by making transmission fail or arrival times vary. When slack turns negative on enough connections, the populations can no longer reach agreement, and experience is lost. The claim concerns timing margins, not a particular frequency: each nervous system uses its own rhythms, matched to its own conduction delays. Across mammals that differ several-thousand-fold in brain volume, the hierarchy of brain rhythms is largely preserved, which Buzsáki, Logothetis and Singer (2013) suggest may be achieved by larger-diameter, faster-conducting long-range axons in larger brains. If so, timing margins would be preserved across brain sizes [H], which is the condition this hypothesis requires.
+**The central claim in plain language.** Integrated, reportable experience requires *positive timing slack*: signals passing between the populations of a nervous system must arrive within the window in which they can be combined, judged against a shared rhythm. Anaesthetics, whatever their molecular target, erode that slack by making transmission fail or arrival times vary. When slack turns negative on enough connections, the populations can no longer reach agreement, and experience is lost. Agreement involves no vote and no voter: no population holds a copy of a value or counts the others. Populations agree when connections whose signals arrive in time link them into one group, locked to the shared rhythm. The claim concerns timing margins, not a particular frequency: each nervous system uses its own rhythms, matched to its own conduction delays. Across mammals that differ several-thousand-fold in brain volume, the hierarchy of brain rhythms is largely preserved, which Buzsáki, Logothetis and Singer (2013) suggest may be achieved by larger-diameter, faster-conducting long-range axons in larger brains. If so, timing margins would be preserved across brain sizes [H], which is the condition this hypothesis requires.
 
 The postulates state the claim precisely. Figure A summarises the causal chain they describe.
 
