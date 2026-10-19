@@ -58,86 +58,7 @@ Other causes of unconsciousness, including fainting (syncope), epileptic seizure
 
 ### 1.4 Terminology
 
-Every term below is used in this sense throughout. Words borrowed from computing (for example bus, clock, round-robin, quorum, service, circuit breaker) appear only in passages marked [A] as analogies; each is mapped to one of these defined terms in Appendix A and is never used to state a claim. Two exceptions are names given to parts of the hypothesis and defined here: *quorum* (P3) and *graceful degradation* (P8).
-
-| Term | Definition in this paper |
-|---|---|
-| Neural population | A group of neurons treated as one unit: a brain region in the human connectome, a single neuron in the *C. elegans* and *Drosophila* connectomes. It is a node of the network. The *C. elegans* network (448 nodes, our count from the OpenWorm edge list) also contains the muscles and other cells onto which its 302 neurons synapse, because it is the complete hermaphrodite wiring diagram (Cook et al., 2019). |
-| Functional connection | A directed pathway by which one population influences another: a synapse or set of synapses between neurons, or a white-matter fibre bundle between regions. It is an edge of the network. A fibre bundle is not a single synapse: synaptic failure weakens a bundle rather than removing it (Section 9). |
-| Transmission failure | A signal sent along a connection that does not produce its effect at the target, for example because transmitter is not released. Its probability is $p$. |
-| Timing jitter | The trial-to-trial variability of a signal's arrival time, measured as a standard deviation $\sigma$ in milliseconds. A constant delay is not jitter. |
-| Phase reference | A rhythm shared across populations against which arrival times are judged; P5 attributes it to the thalamocortical system. |
-| Integration window | The interval $W$ around the phase reference within which an arriving signal can contribute to the current integration cycle. |
-| Integration cycle | One repetition of the process by which populations converge on a shared state (P1), paced by the reference rhythm. |
-| Occupied connection | The standard percolation term for a connection that is kept in the network. Here a connection is occupied when it transmits and its signal arrives within the integration window, which the paper also describes as *timing-coherent*. The probability of this is the occupation probability $\pi$. This timing sense of "coherent" is distinct from *spectral coherence*, the similarity of two EEG signals at a given frequency, which the paper always names in full. |
-| Timing slack | The room left in the integration window after timing error: positive when signals arrive within the window, negative when they fall outside it. Loss of consciousness is proposed to occur when slack becomes negative on too many connections. |
-| Giant component | The largest set of populations linked to one another by timing-coherent connections (the standard percolation term, here applied to the network of timing-coherent connections). Its share of all populations is $S$. |
-| Quorum | The minimum share $q^*$ of populations that the giant component must contain for integrated, reportable content to arise (P3). |
-| Effect-site concentration | The concentration of an agent at its site of action; in the models it is expressed relative to the agent's half-effect value (EC50), so 1 means half of the maximal circuit effect. |
-| Loss and recovery of responsiveness | The behavioural endpoints of induction and emergence; in the models, loss and recovery of quorum, at concentrations $c_{\text{off}}$ and $c_{\text{on}}$. |
-| Neural inertia | Recovery at a lower concentration than loss, $c_{\text{on}} < c_{\text{off}}$, not explained by drug distribution in the body. |
-| Arousal drive | Activity of wake-promoting brain systems, such as orexinergic and brainstem nuclei, that sustains the phase reference independently of cortical coherence (P7). |
-| Down-state | A period of near-silence across a cortical population during the slow oscillation of NREM sleep. |
-| Broadcast | Propagation of activity from the populations that receive an input to the rest of the network. |
-| Entrainment | Phase locking of a population to an external rhythm, such as a periodic stimulus. |
-| Glia | Non-neuronal cells of the nervous system. Three types appear here: oligodendrocytes, which form myelin; astrocytes, which regulate the environment of synapses; and microglia, the resident immune cells of the brain. |
-| Cascade control | The control-engineering term for slower outer loops that adjust the conditions under which a faster inner loop runs, each on its own timescale (P9). |
-| Hub | A node with many more connections than the average node. |
-| Order parameter | A single number that summarises the collective state of a system and changes sharply at a transition; here, $S$. |
-| Hysteresis | Dependence of a state on the direction of change: here, quorum is lost at a higher concentration than the one at which it returns. |
-| Bistability | The existence of two stable states under the same conditions; which one the system occupies depends on where it started. |
-| Critical slowing down | As a system approaches a transition, it recovers more slowly from small disturbances, which shows as rising variance and autocorrelation of its fluctuations. |
-| Phase locking | A constant difference between the phases of two rhythms over time; the phase lag is that difference. |
-| Brain rhythms | Oscillations named by frequency: slow oscillation (below 1 Hz), delta (1 to 4 Hz), alpha (8 to 12 Hz), beta (13 to 30 Hz) and gamma (30 to 90 Hz). |
-| Burst suppression | An EEG pattern of deep anaesthesia in which bursts of activity alternate with periods of near silence. |
-| Sleep stages | Non-rapid-eye-movement (NREM) sleep, divided into stages N1 to N3 of increasing depth, with N3 dominated by slow waves; and rapid-eye-movement (REM) sleep, in which vivid dreams are most often reported. |
-| K-complex | A large, isolated slow wave of NREM sleep, shown to be an isolated cortical down-state (Cash et al., 2009). |
-| Arousal threshold; microarousal | The weakest stimulus that wakes a sleeper; a microarousal is a brief awakening lasting seconds. |
-| Calibrated and free parameters | A calibrated parameter is fitted to one published measurement and then held fixed; a free parameter has no measured value and is varied across a range in the sensitivity analysis. |
-| Test and consistency check | A test is a prediction that the model could fail; a consistency check follows from the model's equations and only confirms that the code implements them. |
-| Seed; confidence interval | A seed is the starting value of the random-number generator, so different seeds give independent realisations of a network; each count of seeds is reported with its 95% confidence interval, the range likely to contain the true share. |
-| Null model | A randomised copy of the data that keeps some of its properties, here each node's number of connections, used to test whether a result depends on the actual wiring. |
-| Strongly connected component | In a network whose connections have a direction, a set of nodes each of which can reach every other along the directed connections. |
-
-| Symbol | Meaning | Unit |
-|---|---|---|
-| $c$ | Effect-site concentration relative to EC50 | dimensionless |
-| $p(c)$ | Transmission failure probability | dimensionless |
-| $\sigma_0(c)$, $\sigma_{\text{eff}}$ | Agent-induced and effective timing jitter | ms |
-| $W$ | Integration window | ms |
-| $\pi$, $\pi_c$, $\pi_q$ | Occupation probability; its onset and quorum thresholds | dimensionless |
-| $S$ | Share of populations in the giant component | dimensionless |
-| $q^*$ | Quorum fraction | dimensionless |
-| $\lambda$ | Strength of reference feedback | ms (percolation model), dimensionless (oscillator model) |
-| $\sigma_b$ | Baseline timing jitter, independent of the agent | ms |
-| $h(c)$ | Fractional effect of the agent, a Hill function of concentration | dimensionless |
-| $a$ | Share of the agent's effect that acts on arousal circuits | dimensionless |
-| $A_0$, $A(c)$ | Awake and concentration-dependent arousal share of the reference | dimensionless |
-| $d$ | Share of integration cycles in down-states | dimensionless |
-| $f$ | Frequency of the reference rhythm | Hz |
-| $\mu$ | Myelin integrity (1 intact) | dimensionless |
-| $\gamma$ | Increase in baseline jitter when myelin is entirely lost | dimensionless |
-| $g$ | Strength of the microglial loop (0 after microglial depletion) | dimensionless |
-| $s_a$ | Share of down-states that depends on astrocytic signalling | dimensionless |
-| $\langle k \rangle$, $\langle k^2 \rangle$ | Mean degree and mean squared degree of the network | connections |
-
-| Abbreviation | Meaning |
-|---|---|
-| DPC | Distributed Perceptual Consensus |
-| EEG, MEG, ECoG | Electro-, magneto- and electrocortico-graphy: recordings of brain activity from the scalp, by its magnetic field, and from the cortical surface |
-| fMRI | Functional magnetic resonance imaging |
-| TMS | Transcranial magnetic stimulation |
-| PCI | Perturbational complexity index (Section 8.1) |
-| LOR, LORR | Loss of responsiveness; loss of righting reflex (Section 1.3) |
-| MAC | Minimum alveolar concentration, the inhaled concentration that prevents movement to a painful stimulus in half of subjects |
-| GABA-A, NMDA | Receptors for the inhibitory transmitter GABA and for glutamate, the main excitatory transmitter |
-| AMPA | A receptor for glutamate that carries most fast excitatory transmission |
-| HCN; TREK-1, TASK | Hyperpolarisation-activated cyclic-nucleotide-gated channels, which carry a pacemaker current; two-pore-domain potassium channels |
-| NREM, REM | Non-rapid-eye-movement and rapid-eye-movement sleep |
-| MT; V1 | Middle temporal visual area; primary visual cortex |
-| c-Fos | A protein expressed by recently active neurons, used as a marker of activity |
-| P2Y12 | A receptor on microglia for the nucleotide ADP |
-| VLPO; TRN | Ventrolateral preoptic nucleus, a sleep-promoting nucleus of the hypothalamus; thalamic reticular nucleus |
+Every term is used in one defined sense, given with the symbols and abbreviations in Appendix A (A.1 to A.3). The argument rests on five of them: *timing-coherent* (occupied) connections, the *integration window*, the *giant component*, *quorum* and *neural inertia*. Words borrowed from computing (for example bus, clock, quorum, circuit breaker) appear only in passages marked [A] as analogies; Appendix A.4 maps each to a defined term, and none is used to state a claim. Two exceptions are names given to parts of the hypothesis: *quorum* (P3) and *graceful degradation* (P8).
 
 ---
 
@@ -245,7 +166,7 @@ The terms used in this paper come from engineered systems that solve the same pr
 
 **The physical medium differs.** Computers signal electronically, as electromagnetic waves in conductors. Neurons signal electrochemically: an action potential is an ionic current regenerated along the axon, and in human cortico-cortical pathways the median axonal conduction velocity is about 3.9 m/s, with a median axonal delay of about 10 ms (Lemaréchal et al., 2022). What transfers from engineering to neuroscience is therefore not the physics but the ratio of delay to cycle time. At 40 Hz a gamma cycle lasts 25 ms, so a typical cortico-cortical delay is about 40% of a cycle. In that regime DPC proposes that timing is a first-order constraint on communication [H], as it is on a CAN bus whose propagation delay approaches its bit time. A constant delay can be absorbed by a matching phase offset (Fries, 2015); the proposal concerns its variability.
 
-**Signals arrive at many speeds.** The brain receives its inputs with widely different delays, set by biology rather than by the physics of the stimulus. Responses in human primary auditory cortex peak about 15 ms after a sound (Celesia, 1976), whereas the earliest visual response recorded over occipital cortex begins at about 56 ms (Foxe and Simpson, 2002), even though light travels far faster than sound. Olfaction is the only sense whose primary pathway reaches its cortex without a thalamic relay, although a thalamic route through the mediodorsal nucleus also exists (Kay and Sherman, 2007). Peripheral nerve fibres span about two orders of magnitude in conduction velocity, from unmyelinated fibres at about 0.5 to 2 m/s to large myelinated fibres at about 80 to 120 m/s (values tabulated by Yap et al., 2020, from a standard textbook) [A: links of different speeds, like 3G, 4G and 5G connections]. The brain compensates: once people have spent several minutes exposed to sounds and images offset by an unchanging delay, the point at which they judge the two to coincide moves towards that delay (Fujisaki et al., 2004). Its rhythms are also nested, the phase of slower rhythms modulating the amplitude of faster ones, delta modulating theta and theta modulating gamma (Lakatos et al., 2005; Canolty and Knight, 2010) [A: several clock domains, with communication between them]. DPC proposes [H] that these compensations work only while timing slack remains positive; prediction 8 (Section 7) states what would falsify it.
+**Signals arrive at many speeds.** The brain receives its inputs with widely different delays, set by biology rather than by the physics of the stimulus. Responses in human primary auditory cortex peak about 15 ms after a sound (Celesia, 1976), whereas the earliest visual response recorded over occipital cortex begins at about 56 ms (Foxe and Simpson, 2002), even though light travels far faster than sound. Peripheral nerve fibres span about two orders of magnitude in conduction velocity, from unmyelinated fibres at about 0.5 to 2 m/s to large myelinated fibres at about 80 to 120 m/s (values tabulated by Yap et al., 2020, from a standard textbook) [A: links of different speeds, like 3G, 4G and 5G connections]. The brain compensates: once people have spent several minutes exposed to sounds and images offset by an unchanging delay, the point at which they judge the two to coincide moves towards that delay (Fujisaki et al., 2004). Its rhythms are also nested, the phase of slower rhythms modulating the amplitude of faster ones, delta modulating theta and theta modulating gamma (Lakatos et al., 2005; Canolty and Knight, 2010) [A: several clock domains, with communication between them]. DPC proposes [H] that these compensations work only while timing slack remains positive; prediction 8 (Section 7) states what would falsify it.
 
 ### 3.3 Postulates [H]
 
@@ -269,7 +190,7 @@ flowchart TB
 *Figure A. Causal chain of the DPC hypothesis. Dashed arrows are feedback and modulating influences.*
 
 
-- **P1 (Integration cycles).** Conscious content is generated in repeated integration cycles, during which distributed populations converge on a shared state. This builds on the older proposal that perception proceeds in discrete epochs rather than continuously, with cortical and thalamocortical oscillations as a possible neuronal basis (VanRullen and Koch, 2003). Later evidence points to several perceptual rhythms, depending on modality, task and region, rather than one unitary sampling rhythm (VanRullen, 2016); DPC's single phase reference (P5) is therefore a simplification, discussed in Section 9. The cycles are recurrent loops rather than a single pass: a feedforward sweep of activity is probably insufficient for awareness, whereas recurrent processing between areas allows features to be grouped so that a stimulus can enter consciousness (Lamme and Roelfsema, 2000; Lamme, 2006). Reciprocal signalling between areas, termed re-entry, is proposed to couple the functioning of cortex and thalamus (Edelman and Gally, 2013); large-scale integration is proposed to rely on dynamic links that synchronisation establishes across several frequency bands (Varela et al., 2001); thalamocortical loops are proposed to bind activity by temporal coincidence (Llinás et al., 1998); and in predictive-coding accounts, each exchange compares feedback predictions with feedforward signals carrying the residual error (Rao and Ballard, 1999). Several studies report that anaesthesia disrupts this recurrent component more than the feedforward one, though not uniformly: under propofol, directed feedback connectivity from frontal to parietal cortex weakens as consciousness is lost and recovers when the participants again respond to spoken commands, while earlier animal data had indicated that feedforward processing may continue (Lee et al., 2009); in rats, halothane and isoflurane reduced both feedforward and feedback information transfer at 50 Hz, the feedback transfer from frontal to posterior regions most, while increasing both at 30 Hz (Imas et al., 2005); and anaesthesia decouples the apical dendrites of layer 5 pyramidal neurons, the presumed target of feedback input, from their somata in mice (Suzuki and Larkum, 2020). In the terms of the analogy [A], each cycle is a loop that checks what arrived, and when, against what was expected. DPC proposes [H] that a cycle that loses quorum partway is abandoned rather than half-completed [A: a saga rolled back when one of its steps fails].
+- **P1 (Integration cycles).** Conscious content is generated in repeated integration cycles, during which distributed populations converge on a shared state. The cycles adopt two earlier proposals (Section 2.3): that perception proceeds in discrete epochs (VanRullen and Koch, 2003), and that awareness needs recurrent processing between areas rather than a single feedforward sweep (Lamme and Roelfsema, 2000; Lamme, 2006). Related accounts tie such loops to re-entry between cortex and thalamus (Edelman and Gally, 2013), to dynamic links established by synchronisation across frequency bands (Varela et al., 2001), to thalamocortical binding by temporal coincidence (Llinás et al., 1998) and to the comparison of feedback predictions with feedforward errors (Rao and Ballard, 1999). The evidence points to several perceptual rhythms rather than one (VanRullen, 2016), so DPC's single phase reference (P5) is a simplification (Section 9). Several studies report that anaesthesia disrupts this recurrent component more than the feedforward one, though not uniformly: under propofol, directed feedback connectivity from frontal to parietal cortex weakens as consciousness is lost and recovers when the participants again respond to spoken commands, while earlier animal data had indicated that feedforward processing may continue (Lee et al., 2009); in rats, halothane and isoflurane reduced both feedforward and feedback information transfer at 50 Hz, the feedback transfer from frontal to posterior regions most, while increasing both at 30 Hz (Imas et al., 2005); and anaesthesia decouples the apical dendrites of layer 5 pyramidal neurons, the presumed target of feedback input, from their somata in mice (Suzuki and Larkum, 2020). In the terms of the analogy [A], each cycle is a loop that checks what arrived, and when, against what was expected. DPC proposes [H] that a cycle that loses quorum partway is abandoned rather than half-completed [A: a saga rolled back when one of its steps fails].
 - **P2 (Bounded-delay condition).** A population contributes to a cycle only if its signals arrive within an integration window $W$ relative to a shared phase reference. Signals outside the window are not integrated. This is the condition proposed by communication through coherence, in which oscillating neuronal groups interact effectively only when their windows for receiving and sending signals coincide in time (Fries, 2005, 2015). The behavioural temporal binding window for multisensory events, of the order of 100 ms or more (Wallace and Stevenson, 2014), is a psychophysical counterpart of $W$. The neural window is expected to be narrower and frequency-dependent.
 - **P3 (Quorum).** A cycle produces globally integrated, reportable content only if the timing-coherent populations form a connected component that includes at least a critical fraction $q^*$ of the network.
 - **P4 (Two failure modes).** Anaesthetics reduce the fraction of functional connections that are timing-coherent by (a) increasing the probability that transmission fails (omission faults, signals that never arrive: for example enhanced GABA-A-mediated inhibition and reduced glutamate release; Baumgart et al., 2015) or (b) increasing the trial-to-trial variability of signal timing (timing faults, signals that arrive outside their window: proposed here for NMDA antagonism by ketamine [H]). The hypothesis is that the molecular route affects the network only through these two quantities [H]. Counting enhanced inhibition as an omission fault is a modelling simplification: an inhibitory signal does arrive, but the excitatory transmission the connection would otherwise carry does not; networks with signed, inhibitory connections are tested separately (Appendix C, tests SG1 and SG2). The assignment of ketamine to timing faults is an assumption of the model, not a finding. We found no study showing that ketamine increases timing variability between areas, and it cannot rest on NMDA antagonism alone: xenon, also an NMDA antagonist (Section 2.1), lowers cortical complexity as propofol does, whereas ketamine leaves it wakefulness-like (Sarasso et al., 2015). A circuit effect of NMDA receptor inhibition that is established is different: in awake rats it mainly reduced the activity of putative inhibitory interneurons and, with a delay, increased the firing of most pyramidal neurons, which suggests disinhibition (Homayoun and Moghaddam, 2007).
@@ -277,8 +198,8 @@ flowchart TB
 - **P5 (Reference feedback).** The shared phase reference is proposed to be generated by the coherent thalamocortical core itself [A: a gateway or orchestrator that keeps services in step, but is itself made of those services]. A smaller giant component therefore produces a weaker reference and greater effective timing error for all remaining connections.
 - **P6 (Default dynamics).** When quorum is lost, cortex does not become silent. It falls into its intrinsic, locally generated dynamics (for example the slow oscillation, Steriade et al., 1993a), whose form is agent-specific.
 - **P7 (Arousal and brain state).** Wake-promoting arousal systems sustain part of the shared reference independently of cortical coherence. Anaesthetics suppress these systems: isoflurane and sevoflurane lower the number of orexinergic neurons that express c-Fos, which suggests that these agents inhibit them (Kelz et al., 2008), and isoflurane depolarises sleep-promoting neurons (Moore et al., 2012), which, in the model, accelerates the loss of quorum without being required for it (Appendix B, consistency check C7). In natural sleep the arousal drive is withdrawn, and during slow-oscillation down-states whole local populations of cortical neurons fall silent (Vyazovskiy et al., 2009).
-- **P8 (Graceful degradation).** As timing slack shrinks, the system degrades in two linked ways before agreement fails. First, the reference rhythm slows, which widens the time available within each cycle: a timing error of σ milliseconds costs a phase error of 2π f σ, so a fourfold slower rhythm turns the same timing error into a fourfold smaller phase error, at the cost of four times fewer integration cycles per second [A: link-speed fallback, as a mobile connection drops from 5G to 4G to 3G]. Second, continuous asynchronous activity gives way to synchronised bursts, which are easier to align but carry less [A: streaming replaced by batched polling]. The sequence seen during propofol induction, from beta oscillations in sedation to frontal alpha with slow oscillations at loss of consciousness (Purdon et al., 2013, 2015), and the burst suppression of deeper anaesthesia, in which suppression periods lengthen as the dose increases (Brown et al., 2010; Purdon et al., 2015) [A: exponential backoff], are proposed to be successive stages of this degradation; burst suppression has also been modelled as a consequence of reduced cerebral metabolism (Ching et al., 2012), an account this reading does not replace. The dominant interpretation of frontal alpha differs: Purdon et al. (2015) propose that the highly organised alpha oscillations most likely prevent normal communication between the thalamus and cortex, and thalamocortical models attribute them to thalamic mechanisms (Ching et al., 2010; Vijayan et al., 2013). The two readings are compatible in part, since a slower, narrower channel restricts throughput while improving timing reliability; they differ in what they predict (Section 7, prediction 9). In the oscillator model, the slower rhythm raised the loss concentration of the GABAergic-like agent in every seed of every organism (test F1), but its distinctive prediction failed: it did not protect more against timing faults than against transmission failure in any seed (test F3; Appendix C.3). The model therefore does not support the specific mechanism of P8.
-- **P9 (Glial cascade control; an extension, on which P1 to P8 do not depend).** The integration cycle, which runs in milliseconds, is regulated by slower glial loops that maintain the conditions for timing coherence, each on its own timescale [A: outer control loops that tune an inner loop]. Myelin sets conduction timing: the geometry of myelinated axons is tuned to set action-potential timing in auditory brainstem circuits (Ford et al., 2015), and in mouse motor cortex a subtle myelin deficit spreads out thalamocortical arrival times (Kato et al., 2020); blocking the formation of new oligodendrocytes in adult mice also prevents the learning-driven coupling of hippocampal and cortical rhythms (Steadman et al., 2020). That oligodendrocytes adjust conduction delays over time so that signals from distant regions arrive together is proposed by models of adaptive myelination (Pajevic et al., 2014, 2023; Noori et al., 2020). Astrocytes regulate cortical state over seconds to hours: their activity precedes and can trigger the slow oscillation (Poskanzer and Yuste, 2016), astrocytic calcium tracks the need for sleep (Ingiosi et al., 2020), and blocking astrocytic vesicle release reduces gamma oscillations (Lee et al., 2014). Microglia take part in a loop with noradrenaline: low noradrenergic tone, as under anaesthesia, increases microglial surveillance (Liu et al., 2019; Stowell et al., 2019), and microglial signalling lowers noradrenaline further (Ma et al., 2024). P9 proposes that anaesthetics disrupt these loops as well as the integration cycle, and that the microglial loop is one biological source of the reference feedback of P5, holding the unconscious state stable once it is reached. Regulation of fast neural activity by slower processes is an established principle (Turrigiano, 2008); what P9 adds is that the glial loops act on timing coherence. P1 to P8 do not depend on P9.
+- **P8 (Graceful degradation).** As timing slack shrinks, the system degrades in two linked ways before agreement fails. First, the reference rhythm slows, which widens the time available within each cycle: a timing error of σ milliseconds costs a phase error of 2π f σ, so a fourfold slower rhythm turns the same timing error into a fourfold smaller phase error, at the cost of four times fewer integration cycles per second [A: link-speed fallback, as a mobile connection drops from 5G to 4G to 3G]. Second, continuous asynchronous activity gives way to synchronised bursts, which are easier to align but carry less [A: streaming replaced by batched polling]. The sequence seen during propofol induction, from beta oscillations in sedation to frontal alpha with slow oscillations at loss of consciousness (Purdon et al., 2013, 2015), and the burst suppression of deeper anaesthesia, in which suppression periods lengthen as the dose increases (Brown et al., 2010; Purdon et al., 2015) [A: exponential backoff], are proposed to be successive stages of this degradation; burst suppression has also been modelled as a consequence of reduced cerebral metabolism (Ching et al., 2012), an account this reading does not replace. The dominant interpretation of frontal alpha differs: Purdon et al. (2015) propose that the highly organised alpha oscillations most likely prevent normal communication between the thalamus and cortex, and thalamocortical models attribute them to thalamic mechanisms (Ching et al., 2010; Vijayan et al., 2013). The two readings are compatible in part, since a slower, narrower channel restricts throughput while improving timing reliability; they differ in what they predict (Section 7, prediction 9). The oscillator model does not support this specific mechanism: a slower rhythm did not protect more against timing faults than against transmission failure (tests F1 and F3, Section 4.8).
+- **P9 (Glial cascade control; an extension, on which P1 to P8 do not depend).** The integration cycle, which runs in milliseconds, is regulated by slower glial loops that maintain the conditions for timing coherence, each on its own timescale [A: outer control loops that tune an inner loop]. Myelin sets conduction timing (Section 2.2), and in mouse motor cortex a subtle myelin deficit spreads out thalamocortical arrival times (Kato et al., 2020); blocking the formation of new oligodendrocytes in adult mice also prevents the learning-driven coupling of hippocampal and cortical rhythms (Steadman et al., 2020). That oligodendrocytes adjust conduction delays over time so that signals from distant regions arrive together is proposed by models of adaptive myelination (Pajevic et al., 2014, 2023; Noori et al., 2020). Astrocytes regulate cortical state over seconds to hours: their activity precedes and can trigger the slow oscillation (Poskanzer and Yuste, 2016), astrocytic calcium tracks the need for sleep (Ingiosi et al., 2020), and blocking astrocytic vesicle release reduces gamma oscillations (Lee et al., 2014). Microglia take part in a loop with noradrenaline: low noradrenergic tone, as under anaesthesia, increases microglial surveillance (Liu et al., 2019; Stowell et al., 2019), and microglial signalling lowers noradrenaline further (Ma et al., 2024). P9 proposes that anaesthetics disrupt these loops as well as the integration cycle, and that the microglial loop is one biological source of the reference feedback of P5, holding the unconscious state stable once it is reached. Regulation of fast neural activity by slower processes is an established principle (Turrigiano, 2008); what P9 adds is that the glial loops act on timing coherence. P1 to P8 do not depend on P9.
 
 ---
 
@@ -598,9 +519,96 @@ The DPC hypothesis proposes that anaesthetic-induced unconsciousness occurs when
 
 ---
 
-## Appendix A. Glossary of analogies
+## Appendix A. Terms, symbols, abbreviations and analogies
 
-Each computing term is used only as an analogy [A]. The middle column explains what the term means in computing; the right-hand column gives the defined term (Section 1.4) that carries the scientific claim.
+### A.1 Terms
+
+| Term | Definition in this paper |
+|---|---|
+| Neural population | A group of neurons treated as one unit: a brain region in the human connectome, a single neuron in the *C. elegans* and *Drosophila* connectomes. It is a node of the network. The *C. elegans* network contains neurons only: 300 of the 302 in the complete hermaphrodite wiring diagram (Cook et al., 2019), because two (CANL and CANR) have no synapses in the OpenWorm edge list; muscles and other cells are left out. |
+| Functional connection | A directed pathway by which one population influences another: a synapse or set of synapses between neurons, or a white-matter fibre bundle between regions. It is an edge of the network. A fibre bundle is not a single synapse: synaptic failure weakens a bundle rather than removing it (Section 9). |
+| Transmission failure | A signal sent along a connection that does not produce its effect at the target, for example because transmitter is not released. Its probability is $p$. |
+| Timing jitter | The trial-to-trial variability of a signal's arrival time, measured as a standard deviation $\sigma$ in milliseconds. A constant delay is not jitter. |
+| Phase reference | A rhythm shared across populations against which arrival times are judged; P5 attributes it to the thalamocortical system. |
+| Integration window | The interval $W$ around the phase reference within which an arriving signal can contribute to the current integration cycle. |
+| Integration cycle | One repetition of the process by which populations converge on a shared state (P1), paced by the reference rhythm. |
+| Occupied connection | The standard percolation term for a connection that is kept in the network. Here a connection is occupied when it transmits and its signal arrives within the integration window, which the paper also describes as *timing-coherent*. The probability of this is the occupation probability $\pi$. This timing sense of "coherent" is distinct from *spectral coherence*, the similarity of two EEG signals at a given frequency, which the paper always names in full. |
+| Timing slack | The room left in the integration window after timing error: positive when signals arrive within the window, negative when they fall outside it. Loss of consciousness is proposed to occur when slack becomes negative on too many connections. |
+| Giant component | The largest set of populations linked to one another by timing-coherent connections (the standard percolation term, here applied to the network of timing-coherent connections). Its share of all populations is $S$. |
+| Quorum | The minimum share $q^*$ of populations that the giant component must contain for integrated, reportable content to arise (P3). |
+| Effect-site concentration | The concentration of an agent at its site of action; in the models it is expressed relative to the agent's half-effect value (EC50), so 1 means half of the maximal circuit effect. |
+| Loss and recovery of responsiveness | The behavioural endpoints of induction and emergence; in the models, loss and recovery of quorum, at concentrations $c_{\text{off}}$ and $c_{\text{on}}$. |
+| Neural inertia | Recovery at a lower concentration than loss, $c_{\text{on}} < c_{\text{off}}$, not explained by drug distribution in the body. |
+| Arousal drive | Activity of wake-promoting brain systems, such as orexinergic and brainstem nuclei, that sustains the phase reference independently of cortical coherence (P7). |
+| Down-state | A period of near-silence across a cortical population during the slow oscillation of NREM sleep. |
+| Broadcast | Propagation of activity from the populations that receive an input to the rest of the network. |
+| Entrainment | Phase locking of a population to an external rhythm, such as a periodic stimulus. |
+| Glia | Non-neuronal cells of the nervous system. Three types appear here: oligodendrocytes, which form myelin; astrocytes, which regulate the environment of synapses; and microglia, the resident immune cells of the brain. |
+| Cascade control | The control-engineering term for slower outer loops that adjust the conditions under which a faster inner loop runs, each on its own timescale (P9). |
+| Hub | A node with many more connections than the average node. |
+| Order parameter | A single number that summarises the collective state of a system and changes sharply at a transition; here, $S$. |
+| Hysteresis | Dependence of a state on the direction of change: here, quorum is lost at a higher concentration than the one at which it returns. |
+| Bistability | The existence of two stable states under the same conditions; which one the system occupies depends on where it started. |
+| Critical slowing down | As a system approaches a transition, it recovers more slowly from small disturbances, which shows as rising variance and autocorrelation of its fluctuations. |
+| Phase locking | A constant difference between the phases of two rhythms over time; the phase lag is that difference. |
+| Brain rhythms | Oscillations named by frequency: slow oscillation (below 1 Hz), delta (1 to 4 Hz), alpha (8 to 12 Hz), beta (13 to 30 Hz) and gamma (30 to 90 Hz). |
+| Burst suppression | An EEG pattern of deep anaesthesia in which bursts of activity alternate with periods of near silence. |
+| Sleep stages | Non-rapid-eye-movement (NREM) sleep, divided into stages N1 to N3 of increasing depth, with N3 dominated by slow waves; and rapid-eye-movement (REM) sleep, in which vivid dreams are most often reported. |
+| K-complex | A large, isolated slow wave of NREM sleep, shown to be an isolated cortical down-state (Cash et al., 2009). |
+| Arousal threshold; microarousal | The weakest stimulus that wakes a sleeper; a microarousal is a brief awakening lasting seconds. |
+| Calibrated and free parameters | A calibrated parameter is fitted to one published measurement and then held fixed; a free parameter has no measured value and is varied across a range in the sensitivity analysis. |
+| Test and consistency check | A test is a prediction that the model could fail; a consistency check follows from the model's equations and only confirms that the code implements them. |
+| Seed; confidence interval | A seed is the starting value of the random-number generator, so different seeds give independent realisations of a network; each count of seeds is reported with its 95% confidence interval, the range likely to contain the true share. |
+| Null model | A randomised copy of the data that keeps some of its properties, here each node's number of connections, used to test whether a result depends on the actual wiring. |
+| Strongly connected component | In a network whose connections have a direction, a set of nodes each of which can reach every other along the directed connections. |
+
+### A.2 Symbols
+
+| Symbol | Meaning | Unit |
+|---|---|---|
+| $c$ | Effect-site concentration relative to EC50 | dimensionless |
+| $p(c)$ | Transmission failure probability | dimensionless |
+| $\sigma_0(c)$, $\sigma_{\text{eff}}$ | Agent-induced and effective timing jitter | ms |
+| $W$ | Integration window | ms |
+| $\pi$, $\pi_c$, $\pi_q$ | Occupation probability; its onset and quorum thresholds | dimensionless |
+| $S$ | Share of populations in the giant component | dimensionless |
+| $q^*$ | Quorum fraction | dimensionless |
+| $\lambda$ | Strength of reference feedback | ms (percolation model), dimensionless (oscillator model) |
+| $\sigma_b$ | Baseline timing jitter, independent of the agent | ms |
+| $h(c)$ | Fractional effect of the agent, a Hill function of concentration | dimensionless |
+| $a$ | Share of the agent's effect that acts on arousal circuits | dimensionless |
+| $A_0$, $A(c)$ | Awake and concentration-dependent arousal share of the reference | dimensionless |
+| $d$ | Share of integration cycles in down-states | dimensionless |
+| $f$ | Frequency of the reference rhythm | Hz |
+| $\mu$ | Myelin integrity (1 intact) | dimensionless |
+| $\gamma$ | Increase in baseline jitter when myelin is entirely lost | dimensionless |
+| $g$ | Strength of the microglial loop (0 after microglial depletion) | dimensionless |
+| $s_a$ | Share of down-states that depends on astrocytic signalling | dimensionless |
+| $\langle k \rangle$, $\langle k^2 \rangle$ | Mean degree and mean squared degree of the network | connections |
+
+### A.3 Abbreviations
+
+| Abbreviation | Meaning |
+|---|---|
+| DPC | Distributed Perceptual Consensus |
+| EEG, MEG, ECoG | Electro-, magneto- and electrocortico-graphy: recordings of brain activity from the scalp, by its magnetic field, and from the cortical surface |
+| fMRI | Functional magnetic resonance imaging |
+| TMS | Transcranial magnetic stimulation |
+| PCI | Perturbational complexity index (Section 8.1) |
+| LOR, LORR | Loss of responsiveness; loss of righting reflex (Section 1.3) |
+| MAC | Minimum alveolar concentration, the inhaled concentration that prevents movement to a painful stimulus in half of subjects |
+| GABA-A, NMDA | Receptors for the inhibitory transmitter GABA and for glutamate, the main excitatory transmitter |
+| AMPA | A receptor for glutamate that carries most fast excitatory transmission |
+| HCN; TREK-1, TASK | Hyperpolarisation-activated cyclic-nucleotide-gated channels, which carry a pacemaker current; two-pore-domain potassium channels |
+| NREM, REM | Non-rapid-eye-movement and rapid-eye-movement sleep |
+| MT; V1 | Middle temporal visual area; primary visual cortex |
+| c-Fos | A protein expressed by recently active neurons, used as a marker of activity |
+| P2Y12 | A receptor on microglia for the nucleotide ADP |
+| VLPO; TRN | Ventrolateral preoptic nucleus, a sleep-promoting nucleus of the hypothalamus; thalamic reticular nucleus |
+
+### A.4 Analogies
+
+Each computing term is used only as an analogy [A]. The middle column explains what the term means in computing; the right-hand column gives the defined term (Appendix A.1) that carries the scientific claim.
 
 | Computing term (analogy) | What it means in computing | Defined term used for the claim |
 |---|---|---|
@@ -616,7 +624,7 @@ Each computing term is used only as an analogy [A]. The middle column explains w
 | Heartbeat | A periodic message a service sends to show that it is still running, carrying no data | The shared rhythm when it carries no content (Section 6.8) |
 | Clock skew | A constant difference between the times that two components read from their clocks | Constant timing offset of a connection (fixed delay) |
 | Latency variance | Variation from message to message in how long a message takes to arrive | Timing jitter $\sigma$ |
-| Timing slack | In chip design, the margin by which a signal arrives before the moment it must be sampled | Room left in the integration window after timing error (Section 1.4) |
+| Timing slack | In chip design, the margin by which a signal arrives before the moment it must be sampled | Room left in the integration window after timing error (Appendix A.1) |
 | Several clock domains; clock-domain crossing | Parts of a circuit driven by different clocks, and the passing of signals between them, which needs special synchronisation | Populations whose rhythms differ, and communication between them |
 | Consensus round; round-robin of time slots | One repetition of a protocol in which processes exchange values to agree; round-robin gives each participant a turn in a fixed cycle of time slots | Integration cycle (P1) |
 | Quorum | The minimum number of participants whose agreement is needed for a decision to count | Minimum share $q^*$ of populations in the giant component (P3) |
@@ -864,8 +872,6 @@ Katlowitz, K. A., Cole, E. R., Mickiewicz, E. A., et al. (2026). Plasticity and 
 Kato, D., Wake, H., Lee, P. R., et al. (2020). Motor learning requires myelination to reduce asynchrony and spontaneity in neural activity. *Glia*, 68(1), 193–210. https://doi.org/10.1002/glia.23713
 
 Kato, R., Yamanaka, M., Yokota, E., et al. (2016). Spike Timing Rigidity Is Maintained in Bursting Neurons under Pentobarbital-Induced Anesthetic Conditions. *Frontiers in Neural Circuits*, 10, 86. https://doi.org/10.3389/fncir.2016.00086
-
-Kay, L. M., & Sherman, S. M. (2007). An argument for an olfactory thalamus. *Trends in Neurosciences*, 30(2), 47–53. https://doi.org/10.1016/j.tins.2006.11.007
 
 Kayser, E. B., Morgan, P. G., & Sedensky, M. M. (1999). GAS-1: a mitochondrial protein controls sensitivity to volatile anesthetics in the nematode *Caenorhabditis elegans*. *Anesthesiology*, 90(2), 545–554. https://doi.org/10.1097/00000542-199902000-00031
 
