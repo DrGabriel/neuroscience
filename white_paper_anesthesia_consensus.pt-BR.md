@@ -36,6 +36,21 @@ Esta é uma **hipótese**, não um teorema. Ela não tem demonstração formal, 
 - **[H] Hipótese:** uma afirmação nova ou controversa deste artigo, formulada de modo a poder ser falseada.
 - **[A] Analogia:** um conceito da computação usado como metáfora explicativa. As analogias motivam hipóteses, mas não são, elas próprias, afirmações sobre a biologia.
 
+**Os postulados.** A hipótese é formulada nos postulados P1 a P9, todos do tipo [H], definidos na Seção 3.3 e citados pelo número ao longo do texto. Em uma linha cada:
+
+| Postulado | Em uma linha |
+|---|---|
+| P1 Ciclos de integração | O conteúdo consciente é gerado em ciclos repetidos nos quais populações distribuídas convergem para um estado compartilhado |
+| P2 Condição de atraso limitado | Uma população só contribui para um ciclo se seus sinais chegarem dentro de uma janela de integração em torno de um ritmo compartilhado |
+| P3 Quórum | O conteúdo integrado e relatável exige que as populações temporalmente coerentes formem um único grupo conectado com pelo menos uma fração $q^*$ da rede |
+| P4 Dois modos de falha | Os anestésicos reduzem as conexões temporalmente coerentes ao fazer a transmissão falhar, ao tornar variável a temporização dos sinais, ou ambos |
+| P4b Temporização na rede | O que a anestesia degrada é a temporização dos sinais entre áreas em relação ao ritmo compartilhado, e não a precisão de neurônios isolados |
+| P5 Retroalimentação da referência | O ritmo compartilhado é gerado pelo próprio núcleo talamocortical coerente, de modo que um grupo concordante menor o enfraquece |
+| P6 Dinâmica padrão | Quando o quórum se perde, o córtex passa à sua própria dinâmica local, específica de cada agente |
+| P7 Alerta e estado cerebral | Os sistemas de alerta que promovem a vigília sustentam parte do ritmo compartilhado independentemente da coerência cortical |
+| P8 Degradação gradual | À medida que a folga temporal diminui, o ritmo compartilhado desacelera e a atividade passa a ocorrer em rajadas antes que a concordância falhe |
+| P9 Controle glial em cascata | Alças gliais mais lentas mantêm as condições para a coerência temporal; uma extensão da qual P1 a P8 não dependem |
+
 **O que é novo e o que é aproveitado.** Vários ingredientes da CPD não são novos: a comunicação por coerência (Fries, 2005, 2015), o processamento recorrente (Lamme & Roelfsema, 2000; Lamme, 2006), a desconexão funcional como via final comum da anestesia (Hudetz & Mashour, 2016), os modelos de percolação da anestesia e da percepção consciente (Zhou et al., 2015; Arese Lucini et al., 2019) e a histerese produzida por retroalimentação (Kim et al., 2018); a Seção 2.3 dá o crédito a cada um. As contribuições deste artigo são:
 
 1. A variabilidade temporal entre áreas como uma segunda via, independente, para a perda de conexões utilizáveis, ao lado da falha de transmissão, combinada com ela em uma única probabilidade por conexão. Colocar todos os agentes em um único parâmetro de transmissão não é novo (Zhou et al., 2015). No modelo de percolação, as duas vias são intercambiáveis no nível da rede, de modo que só podem ser distinguidas medindo cada uma separadamente (Seção 9, item 13).
