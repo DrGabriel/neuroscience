@@ -30,6 +30,7 @@ import connectomes
 import dpc_simulator as dpc
 import glial_regulation as glia
 import percolation_thresholds
+import public_labels
 import plant_tissue
 import provenance
 import reporting
@@ -90,10 +91,10 @@ OUTCOME_REPORTS: tuple[tuple[str, str, bool], ...] = (
     ("species", "full", False),
     ("prespecified", "full", False),
 )
-# The predictions table of Section 7, read from each language version of the paper.
+# The predictions table of Section 8, read from each language version of the paper.
 PREDICTION_SOURCES: tuple[tuple[str, str, str], ...] = (
-    ("en-GB", "white_paper_anesthesia_consensus.md", "## 7. Falsifiable predictions"),
-    ("pt-BR", "white_paper_anesthesia_consensus.pt-BR.md", "## 7. Previsões falseáveis"),
+    ("en-GB", "white_paper_anesthesia_consensus.md", "## 8. Falsifiable predictions"),
+    ("pt-BR", "white_paper_anesthesia_consensus.pt-BR.md", "## 8. Previsões falseáveis"),
 )
 PREDICTION_COLUMNS = ("number", "prediction", "test", "falsifiedIf")
 # LaTeX the predictions use, rendered as plain text for the page.
@@ -375,7 +376,7 @@ def predictions_from(paper: str, heading: str) -> list[dict[str, str]]:
 
 
 def predictions_record() -> dict[str, list[dict[str, str]]]:
-    """The falsifiable predictions of Section 7, per language, read from the paper itself."""
+    """The falsifiable predictions of Section 8, per language, read from the paper itself."""
     predictions = {locale: predictions_from(paper, heading) for locale, paper, heading in PREDICTION_SOURCES}
     counts = {locale: len(rows) for locale, rows in predictions.items()}
     if len(set(counts.values())) != 1:
@@ -426,6 +427,7 @@ def main() -> int:
         "thresholds": thresholds_record(),
         "validation": validation_record(),
         "outcomes": outcomes_record(),
+        "publicLabels": public_labels.REPORT_TO_PUBLIC,
         "inertia": inertia_record(),
         "predictions": predictions_record(),
         "plantClaims": plant_claims_record(),

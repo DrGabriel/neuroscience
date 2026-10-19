@@ -29,9 +29,11 @@
     return holding === 0 ? Verdict.NONE : Verdict.SOME;
   }
 
-  // Outcomes keyed by study, run label and identifier, each with its groups (sizes, organisms or settings).
+  // Outcomes keyed by study, run label and identifier, each with its groups (sizes, organisms or settings). Reports keep
+  // their identifiers; publicLabels maps those that reuse a postulate's name to the label the paper shows (test P3 -> T3).
   class OutcomeIndex {
-    constructor(outcomes) {
+    constructor(outcomes, publicLabels = {}) {
+      this.publicLabels = publicLabels;
       this.entries = new Map();
       for (const outcome of outcomes) {
         const key = OutcomeIndex.key(outcome.study, outcome.label, outcome.identifier);
@@ -42,6 +44,10 @@
         entry.applicable += outcome.applicable;
       }
       for (const entry of this.entries.values()) entry.verdict = verdictOf(entry.holding, entry.applicable);
+    }
+
+    label(identifier) {
+      return this.publicLabels[identifier] ?? identifier;
     }
 
     static key(study, label, identifier) {
@@ -92,7 +98,7 @@
     for (const [key, { report, entries }] of index.byStudy()) {
       const rows = entries.map((entry) =>
         make("tr", { className: `verdict-${entry.verdict}` }, [
-          make("th", { scope: "row", textContent: entry.identifier }),
+          make("th", { scope: "row", textContent: index.label(entry.identifier) }),
           make("td", {}, [make("span", { textContent: entry.statement }), make("span", { className: "check-kind", textContent: ` ${t("checkKind", { kind: t(KIND_MESSAGE[entry.kind]), verdict: verdictLabel(entry.verdict) })}` })]),
           make("td", { className: "groups" }, entry.groups.map(groupCell)),
         ]),
@@ -111,7 +117,7 @@
   function renderInlineOutcomes(scope, index) {
     for (const node of scope.querySelectorAll("[data-outcome]")) {
       const entry = index.find(node.dataset.outcome);
-      const identifier = node.dataset.outcome.split(":").pop();
+      const identifier = index.label(node.dataset.outcome.split(":").pop());
       if (!entry) {
         markPending(node, t("outcomePending", { identifier }));
         continue;

@@ -73,5 +73,22 @@ class ProvenanceVerdictTests(unittest.TestCase):
         self.assertEqual(self.verdict(files, ["next"]), "differs from every later commit: `model.py`")
 
 
+
+class PublicLabelTests(unittest.TestCase):
+    def test_tests_that_reuse_postulate_names_get_a_label_that_is_not_a_postulate_Regression(self) -> None:
+        for identifier, label in appendices.public_labels.REPORT_TO_PUBLIC.items():
+            self.assertRegex(identifier, r"^P\d")
+            self.assertNotRegex(label, r"^P\d")
+
+    def test_only_the_identifier_cell_of_a_table_row_is_relabelled(self) -> None:
+        report = "| P3 | Stimulated area keeps processing (P3) | 17/20 |\n| K1 | Ketamine | 12/20 |\nPostulate P3 in prose."
+        relabelled = appendices.public_labels.relabel_table_rows(report)
+        self.assertEqual(relabelled, "| T3 | Stimulated area keeps processing (P3) | 17/20 |\n| K1 | Ketamine | 12/20 |\nPostulate P3 in prose.")
+
+    def test_report_sections_show_public_labels(self) -> None:
+        with mock.patch.object(appendices, "report_name", return_value="species_full_x.md"), mock.patch.object(appendices, "latest_report", return_value="| P1b | rise | 18/20 |"):
+            self.assertIn("| T1b | rise | 18/20 |", appendices.report_section("species"))
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -23,7 +23,7 @@ flowchart LR
 The feedback loop in the diagram can make the transition bistable, so that consciousness returns at a lower concentration than the one at which it was lost. This hysteresis is measured experimentally and is known as neural inertia. The percolation model reproduces the measured hysteresis once its feedback is calibrated, up to a ceiling below the largest measured ratio; the phase-oscillator model does not show it.
 
 - **Paper:** [`white_paper_anesthesia_consensus.md`](white_paper_anesthesia_consensus.md) ([PDF](white_paper_anesthesia_consensus.pdf); Brazilian Portuguese translation: [`.pt-BR.md`](white_paper_anesthesia_consensus.pt-BR.md), [PDF](white_paper_anesthesia_consensus.pt-BR.pdf))
-- **Falsifiable predictions:** Section 7 of the paper
+- **Falsifiable predictions:** Section 8 of the paper
 - **Simulations and results:** Appendices B and C of the paper, with the model revision history in Appendix D, and the [`simulator/`](simulator/) directory
 
 ## Repository layout
@@ -117,7 +117,7 @@ The test suite checks the models against known analytical results (the percolati
 
 ## Scope and limitations
 
-The simulations show that the formal model is internally consistent and produces the behaviour the paper attributes to it. They cannot show that the brain works this way. That question can only be settled by the experiments proposed in Section 7 of the paper. Some parameters are taken from published physiology, one (the strength of reference feedback) is calibrated to published measurements of neural inertia, and the rest are free; the sensitivity analysis reports how the results depend on them. No experiment on humans or animals was performed for this work. The paper lists its limitations in Section 9.
+The simulations show that the formal model is internally consistent and produces the behaviour the paper attributes to it. They cannot show that the brain works this way. That question can only be settled by the experiments proposed in Section 8 of the paper. Some parameters are taken from published physiology, one (the strength of reference feedback) is calibrated to published measurements of neural inertia, and the rest are free; the sensitivity analysis reports how the results depend on them. No experiment on humans or animals was performed for this work. The paper lists its limitations in Section 10.
 
 ## Authors
 

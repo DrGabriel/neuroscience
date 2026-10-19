@@ -132,6 +132,14 @@ test("outcome index groups runs and gives a verdict", () => {
   assert.equal(index.find("validation:C9"), null);
 });
 
+test("a test that reuses a postulate's name is shown by its public label (regression)", () => {
+  const base = { report: "species_full_x.json", study: "species", label: "full", identifier: "P3", statement: "s", kind: "test" };
+  const index = new OutcomeIndex([{ ...base, group: "C. elegans", holding: 17, applicable: 20 }], { P3: "T3" });
+  assert.equal(index.find("species:P3").holding, 17);
+  assert.equal(index.label("P3"), "T3");
+  assert.equal(index.label("K1"), "K1");
+});
+
 test("a test that applied to no run is not reported as held in no run (regression)", () => {
   const base = { report: "congestion_full_x.json", study: "congestion", label: "full", identifier: "G2", statement: "s", kind: "test" };
   const index = new OutcomeIndex([{ ...base, group: "none, C=1", holding: 0, applicable: 0 }]);

@@ -218,7 +218,7 @@
     }
   }
 
-  const outcomes = new OutcomeIndex(data.outcomes);
+  const outcomes = new OutcomeIndex(data.outcomes, data.publicLabels);
   renderLedger(document.querySelector("[data-ledger]"), outcomes);
   renderInlineOutcomes(document, outcomes);
   renderPlantClaims(document, data.plantClaims);
