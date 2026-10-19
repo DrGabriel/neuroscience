@@ -74,6 +74,8 @@ class OrganismThreshold:
     quorum_threshold_directed_sd: float
     critical_failure_directed: float
     critical_jitter_ms_directed: float
+    quorum_threshold_measured_by_seed: tuple[float, ...]
+    quorum_threshold_directed_by_seed: tuple[float, ...]
 
 
 def undirected_graph(connectome: connectomes.Connectome) -> dpc.Graph:
@@ -180,6 +182,8 @@ def threshold_for(organism: str, seeds: int) -> OrganismThreshold:
         quorum_threshold_directed_sd=statistics.stdev(directed) if len(directed) > 1 else 0.0,
         critical_failure_directed=critical_failure(directed_mean),
         critical_jitter_ms_directed=critical_jitter_ms(directed_mean),
+        quorum_threshold_measured_by_seed=tuple(measured),
+        quorum_threshold_directed_by_seed=tuple(directed),
     )
 
 
@@ -242,7 +246,7 @@ def main(arguments: Sequence[str]) -> int:
         "started_utc": started.isoformat(),
         "finished_utc": datetime.now(timezone.utc).isoformat(),
         "provenance": provenance.collect(provenance.loaded_sources(), REPORTED_PACKAGES),
-        "seeds": seeds,
+        "seeds": [cal.BASE_SEED + index for index in range(seeds)],
         "thresholds": [asdict(t) for t in thresholds],
     }
     reporting.publish("percolation", document, to_markdown(document))

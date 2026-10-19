@@ -152,6 +152,15 @@ class PercolationFormulaTests(unittest.TestCase):
         occupation = math.erf(dpc.REFERENCE_INTEGRATION_WINDOW_MS / (2 * math.sqrt(2) * jitter))
         self.assertAlmostEqual(occupation, threshold, places=6)
 
+    def test_report_keeps_every_seed_threshold_Regression(self) -> None:
+        seeds = 3
+        with unittest.mock.patch.dict(connectomes.LOADERS, {"celegans": lambda _seed: tiny_connectome()}):
+            result = thresholds.threshold_for("celegans", seeds)
+        self.assertEqual(len(result.quorum_threshold_measured_by_seed), seeds)
+        self.assertEqual(len(result.quorum_threshold_directed_by_seed), seeds)
+        self.assertAlmostEqual(result.quorum_threshold_measured_mean, float(np.mean(result.quorum_threshold_measured_by_seed)))
+        self.assertAlmostEqual(result.quorum_threshold_directed_mean, float(np.mean(result.quorum_threshold_directed_by_seed)))
+
 
 def tiny_connectome(node_count: int = 12) -> connectomes.Connectome:
     sources, targets = np.nonzero(~np.eye(node_count, dtype=bool))

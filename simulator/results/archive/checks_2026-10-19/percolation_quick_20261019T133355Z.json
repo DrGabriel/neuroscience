@@ -1,0 +1,133 @@
+{
+  "label": "quick",
+  "started_utc": "2026-10-19T13:33:55.479523+00:00",
+  "finished_utc": "2026-10-19T13:34:22.127968+00:00",
+  "provenance": {
+    "hardware": {
+      "hw.model": "Mac14,9",
+      "machdep.cpu.brand_string": "Apple M2 Pro",
+      "hw.memsize": "34359738368",
+      "hw.ncpu": "10",
+      "hw.perflevel0.physicalcpu": "6",
+      "hw.perflevel1.physicalcpu": "4"
+    },
+    "memory_gibibytes": 32.0,
+    "operating_system": {
+      "product_version": "26.7.1",
+      "build_version": "25G241",
+      "platform": "macOS-26.7.1-arm64-arm-64bit-Mach-O",
+      "machine": "arm64"
+    },
+    "python": {
+      "implementation": "CPython",
+      "version": "3.13.2",
+      "packages": {
+        "numpy": "2.5.4",
+        "scipy": "1.18.1",
+        "pyarrow": "26.0.0"
+      }
+    },
+    "source": {
+      "git_commit": "55e746eafb941a6212eee51d9a1eb5cd5e07e44a",
+      "git_working_tree_dirty": true,
+      "sha256": {
+        "calibration.py": "f0760a3875a9007af2640417c43eb9c99b6a2898e63ac5ce1a5b6c915a502f8d",
+        "connectomes.py": "b13446025b96ad86be7f4121b4c2b227dc58a4f38dc1c4db866c8b3bff86f3d1",
+        "dpc_simulator.py": "07f3b3f1828859c628f596f543d65e33c45403483d5696bd355d8f48fd856fdf",
+        "percolation_thresholds.py": "68e2a92cf39b833e3f277c3039404d0a04c51c36d22ce28bf36e63b3633a7bd7",
+        "phase_dynamics.py": "7470f3f061d933b64e51bb060752914bbcfa166b3653d1dc89beeb4fc032241a",
+        "plant_tissue.py": "1b04ef76f1fa0860e6a7daca5ea54dab72234bd9e11855efa616f248ad91c935",
+        "provenance.py": "f320d7cc34706f1a0a92ea109c270872557e999139b9832304eef1fc5032b122",
+        "reporting.py": "de80a53d63e90383ed325db5098aea06b71b3f846d8368ddeb12347ce3c4470b"
+      },
+      "captured": "at launch"
+    }
+  },
+  "seeds": [
+    20261017,
+    20261018
+  ],
+  "thresholds": [
+    {
+      "organism": "C. elegans",
+      "node_count": 300,
+      "undirected_edge_count": 3465,
+      "mean_degree": 23.1,
+      "mean_square_degree": 730.6533333333333,
+      "onset_threshold_formula": 0.03264771560212187,
+      "quorum_threshold_formula": 0.056796874983220336,
+      "quorum_threshold_measured_mean": 0.057300000000000004,
+      "quorum_threshold_measured_sd": 0.004384062043356593,
+      "critical_failure_formula": 0.8516762121272038,
+      "critical_failure_measured": 0.850362312228937,
+      "critical_jitter_ms_formula": 21.05424178935948,
+      "critical_jitter_ms_measured": 20.86905965707704,
+      "quorum_threshold_directed_mean": 0.11336517333984375,
+      "quorum_threshold_directed_sd": 0.0049308441009865145,
+      "critical_failure_directed": 0.7039493470795817,
+      "critical_jitter_ms_directed": 10.52161794633442,
+      "quorum_threshold_measured_by_seed": [
+        0.0604,
+        0.054200000000000005
+      ],
+      "quorum_threshold_directed_by_seed": [
+        0.116851806640625,
+        0.1098785400390625
+      ]
+    },
+    {
+      "organism": "Drosophila",
+      "node_count": 138639,
+      "undirected_edge_count": 2511789,
+      "mean_degree": 36.234955531993165,
+      "mean_square_degree": 6918.3734591276625,
+      "onset_threshold_formula": 0.00526507211574741,
+      "quorum_threshold_formula": 0.04149845262796953,
+      "quorum_threshold_measured_mean": 0.0438,
+      "quorum_threshold_measured_sd": 0.0,
+      "critical_failure_formula": 0.8916277051077426,
+      "critical_failure_measured": 0.8856172648451561,
+      "critical_jitter_ms_formula": 28.82726722977641,
+      "critical_jitter_ms_measured": 27.311082346551043,
+      "quorum_threshold_directed_mean": 0.1505889892578125,
+      "quorum_threshold_directed_sd": 0.0005179004745018658,
+      "critical_failure_directed": 0.6067401717919634,
+      "critical_jitter_ms_directed": 7.900142701745255,
+      "quorum_threshold_measured_by_seed": [
+        0.0438,
+        0.0438
+      ],
+      "quorum_threshold_directed_by_seed": [
+        0.1509552001953125,
+        0.1502227783203125
+      ]
+    },
+    {
+      "organism": "Human",
+      "node_count": 998,
+      "undirected_edge_count": 17865,
+      "mean_degree": 35.80160320641283,
+      "mean_square_degree": 1536.2945891783568,
+      "onset_threshold_formula": 0.02385989374233719,
+      "quorum_threshold_formula": 0.036811005408128705,
+      "quorum_threshold_measured_mean": 0.0383,
+      "quorum_threshold_measured_sd": 0.0035355339059327407,
+      "critical_failure_formula": 0.9038688702652622,
+      "critical_failure_measured": 0.8999803936888009,
+      "critical_jitter_ms_formula": 32.501206806800745,
+      "critical_jitter_ms_measured": 31.236737033940553,
+      "quorum_threshold_directed_mean": 0.04854583740234375,
+      "quorum_threshold_directed_sd": 0.0014997534574116532,
+      "critical_failure_directed": 0.8732236150122739,
+      "critical_jitter_ms_directed": 24.638320865180336,
+      "quorum_threshold_measured_by_seed": [
+        0.0358,
+        0.0408
+      ],
+      "quorum_threshold_directed_by_seed": [
+        0.0474853515625,
+        0.0496063232421875
+      ]
+    }
+  ]
+}
