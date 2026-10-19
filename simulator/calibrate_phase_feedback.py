@@ -38,6 +38,7 @@ def inertia_ratio(feedback_and_seed: tuple[float, int]) -> tuple[float, float | 
 
 
 def main(arguments: Sequence[str]) -> None:
+    provenance.record_launch()
     started = datetime.now(timezone.utc).isoformat()
     candidates = tuple(float(value) for value in arguments) or DEFAULT_CANDIDATES
     jobs = [(feedback, seed) for feedback in candidates for seed in CALIBRATION_SEEDS]

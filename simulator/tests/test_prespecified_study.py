@@ -1,4 +1,4 @@
-"""Tests for the pre-registered study's checks (K2a-c, P1c), pass rule and report.
+"""Tests for the pre-specified study's checks (K2a-c, P1c), pass rule and report.
 
 Run from the simulator directory: ../.venv/bin/python -m unittest discover -s tests -t .
 """
@@ -9,7 +9,7 @@ import unittest
 from dataclasses import replace
 
 import calibration as cal
-import preregistered_study as prereg
+import prespecified_study as prereg
 import reporting
 import species_study as species
 

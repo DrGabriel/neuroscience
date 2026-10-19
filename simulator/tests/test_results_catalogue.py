@@ -42,7 +42,7 @@ class ReportNameTests(unittest.TestCase):
         self.assertEqual((name.kind, name.label), ("calibration_phase_feedback", "full"))
 
     def test_any_run_label_is_accepted(self) -> None:
-        self.assertEqual(catalogue.ReportName.of(Path("preregistered_full_20261018T150000Z.json")).kind, "preregistered")
+        self.assertEqual(catalogue.ReportName.of(Path("prespecified_full_20261018T150000Z.json")).kind, "prespecified")
 
     def test_a_file_that_is_not_a_report_is_refused(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

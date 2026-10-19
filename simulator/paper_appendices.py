@@ -10,7 +10,9 @@ Standard library only.
 
 from __future__ import annotations
 
+import hashlib
 import json
+import subprocess
 from pathlib import Path
 
 import provenance
@@ -53,16 +55,49 @@ def listing(name: str) -> str:
     return f"<!-- begin {name} -->\n```python\n{source}```\n<!-- end {name} -->"
 
 
+def committed_sha256(commit: str, name: str) -> str | None:
+    """The SHA-256 of a simulator file as it is in a commit, or None if the commit lacks it."""
+    shown = subprocess.run(["git", "-C", str(provenance.SIMULATOR_DIRECTORY), "show", f"{commit}:./{name}"], capture_output=True)
+    return hashlib.sha256(shown.stdout).hexdigest() if shown.returncode == 0 else None
+
+
+def mismatched_files(commit: str, hashes: dict[str, str]) -> list[str]:
+    return sorted(name for name, digest in hashes.items() if committed_sha256(commit, name) != digest)
+
+
+def later_matching_commit(commit: str, hashes: dict[str, str]) -> str | None:
+    """The first later commit whose files equal every recorded hash: where code run from a working copy was committed."""
+    listed = subprocess.run(["git", "-C", str(provenance.SIMULATOR_DIRECTORY), "rev-list", "--reverse", f"{commit}..HEAD"], capture_output=True, text=True)
+    return next((later for later in listed.stdout.split() if not mismatched_files(later, hashes)), None)
+
+
+def provenance_verdict(commit: str, hashes: dict[str, str]) -> str:
+    mismatches = mismatched_files(commit, hashes)
+    if not mismatches:
+        return "every file matches"
+    later = later_matching_commit(commit, hashes)
+    if later:
+        return f"run from uncommitted changes to {len(mismatches)} file(s), committed unchanged in `{later[:7]}`"
+    return "differs from every later commit: " + ", ".join(f"`{name}`" for name in mismatches)
+
+
+def provenance_row(report: Path) -> list[str]:
+    """One report: its commit, when its sources were recorded, and how the recorded hashes compare with Git."""
+    source = json.loads(report.read_text())["provenance"]["source"]
+    commit = source["git_commit"]
+    verdict = provenance_verdict(commit, source["sha256"])
+    return [f"`{report.stem}`", f"`{commit[:7]}`", source.get("captured", "at the end of the run"), str(len(source["sha256"])), verdict]
+
+
 def source_hash_rows() -> list[str]:
-    rows = [
-        [f"`simulator/{path.name}`", f"`{provenance.file_sha256(path)}`"]
-        for path in sorted(provenance.SIMULATOR_DIRECTORY.glob("*.py"))
-    ]
-    return reporting.markdown_table(["File", "SHA-256"], rows)
+    """Checked each time the appendices are built: the recorded source hashes of every current report against Git."""
+    reports = sorted(reporting.RESULTS_DIRECTORY.glob("*.json"))
+    header = ["Report", "Commit", "Sources recorded", "Simulator files", "Hashes against the commit"]
+    return reporting.markdown_table(header, [provenance_row(report) for report in reports])
 
 
-# Fixed before preregistered_study.py was first run; the wording must not change after it.
-PRESPECIFIED_TESTS = """The tests below, their conditions and their pass rule were written into this paper before the study that evaluates them was run (`simulator/preregistered_study.py`). Before that, the code was checked with one shortened run (one *C. elegans* seed, with a quarter of the integration time); it is not part of the results. The study uses seeds that no earlier run used (from the base seed plus 2000): 20 for *C. elegans*, 6 for *Drosophila* and 20 for the human connectome. A test passes for an organism when it holds in at least 80% of that organism's seeds.
+# Fixed before prespecified_study.py was first run; the wording must not change after it.
+PRESPECIFIED_TESTS = """The tests below, their conditions and their pass rule were written into this paper before the study that evaluates them was run (`simulator/prespecified_study.py`). Before that, the code was checked with one shortened run (one *C. elegans* seed, with a quarter of the integration time); it is not part of the results. The study uses seeds that no earlier run used (from the base seed plus 2000): 20 for *C. elegans*, 6 for *Drosophila* and 20 for the human connectome. A test passes for an organism when it holds in at least 80% of that organism's seeds.
 
 **Feedback connections.** A connection is classed as feedback when its target lies fewer steps from the sensory populations than its source, counting steps along directed connections from the nearest sensory population (breadth-first search). Connections from populations that no sensory population reaches are not classed. By this rule 21% of *C. elegans* connections and 27% of *Drosophila* connections are feedback. The human connectome is not used for K2: diffusion imaging gives no direction, so every connection appears in both directions and the classification would be arbitrary.
 
@@ -77,7 +112,7 @@ What we expect, stated before the run: the phase model has no rule that agreemen
 **P1c (replication of P1b).** P1b, found post hoc in Appendix C.3, states that under the GABAergic-like agent the susceptibility at the last conscious concentration is at least ten times its awake value. P1c applies exactly this criterion to the fresh seeds on all three connectomes. A rise of fluctuations near a threshold is expected of threshold models in general, so P1c tests whether the model behaviour repeats, not whether DPC is right."""
 
 
-RUN_NOTES = """A first launch of the study was stopped after its *C. elegans* runs, before any of its results were read, so that agent names and comments in the simulator could be brought into line with the paper's terms (omission and timing faults; giant component). No equation or parameter changed. The study was then run again from the start on the same seeds; the report below is from that run. Worker processes of the stopped launch kept running for about an hour, sharing the processor with the first *Drosophila* runs of the new launch; this lengthened their reported run times but cannot change their results, which depend only on the code and the seed. While the run was in progress, an automated reviewer read the interim *C. elegans* results; nothing was changed after that, since the tests and pass rule were already fixed."""
+RUN_NOTES = """A first launch of the study was stopped after its *C. elegans* runs, before any of its results were read, so that agent names and comments in the simulator could be brought into line with the paper's terms (omission and timing faults; giant component). No equation or parameter changed. The study was then run again from the start on the same seeds; the report below is from that run. Worker processes of the stopped launch kept running for about an hour, sharing the processor with the first *Drosophila* runs of the new launch; this lengthened their reported run times but cannot change their results, which depend only on the code and the seed. While the run was in progress, an automated reviewer read the interim *C. elegans* results; nothing was changed after that, since the tests and pass rule were already fixed. The order of these events cannot be checked from the repository alone: the tests were written into the paper in the working copy before the run started (17:49 UTC on 18 October 2026), but the first commit that contains them was made at 18:25 UTC, after the run had started, so the reader has the authors' account of the order. The tests were not registered in any public registry. A hostile review on 19 October 2026 then found errors in the phase-oscillator code (timing errors added rather than combined in quadrature, and entrainment measured over 1.43 instead of a whole number of stimulus cycles; Appendix D). The study was therefore run again with the corrected code and the same seeds, tests and pass rule; the report below is from that run, and the first report is kept in `simulator/results/archive/`."""
 
 
 # The model-revision history (Appendix D). Each entry records what was assumed, what the simulations showed, what
@@ -89,15 +124,17 @@ The hypothesis and its models changed while this paper was written. Each change 
 | Topic | Initial assumption | What the simulations showed | What the literature added | Revision | New test |
 |---|---|---|---|---|---|
 | Model after internal review (17 October 2026) | Independent timing errors added; baseline jitter 1 ms; timing error redrawn at every integration step | Redrawn jitter averages to a uniform weakening of coupling, indistinguishable from transmission failure | In vivo cortical spike-timing precision is about 3 ms (Buracas et al., 1998) | Errors combined in quadrature; baseline jitter 3 ms; jitter that persists for a correlation time; feedback recalibrated; rewired null model and Wilson intervals added | All studies rerun; the first reports are kept in `archive/pre_revision_2026-10-17/` |
+| Calibration target (18 October 2026) | λ calibrated to the human propofol ratio 1.11 (Iwakiri et al., 2005) | With λ calibrated to 1.11, the hub-lesion check C5 held in 9 of 20 seeds at 10,000 nodes; with λ calibrated to 1.08, in every seed at every size | Iwakiri et al. describe the two concentrations as similar; Friedman et al. (2010) show, in mice, a hysteresis not fully explained by pharmacokinetics | Reference ratio changed to 1.08 (isoflurane in mice), after the results at 1.11 had been seen; the other measured ratios are kept as a sensitivity range (Section 9, items 2 and 29) | λ for each reproduced ratio in the sensitivity analysis; the halothane ratio of 2.85 cannot be reproduced |
 | Paradoxical excitation | Congestion: as connections fail, traffic concentrates on the surviving routes (Section 5.1) | Hub activity rose by at least 10% before collapse in at most 1 of 10 seeds in every setting (tests W1 to W4), in an exploratory and a confirmatory run | Neurons do not queue or resend signals; interneuron antisynchrony is the developed account (McCarthy et al., 2008) | Congestion is not supported and rests on prediction 4 alone. It is replaced by survivor lock-in with critical fluctuations (Section 5.1): fluctuations rising tenfold on the conscious side of the threshold (P1b, post hoc) replaced the pre-specified P1, which failed, and a synchrony surge before collapse (X1, post hoc) was partly reproduced on fresh seeds | P1c, the replication of P1b on fresh seeds (Appendix C.7): passed in 18 of 20 *C. elegans*, 6 of 6 *Drosophila* and 20 of 20 human seeds |
 | Neural inertia (P5) | The shared reference, produced by the agreeing group, makes the network bistable, so consciousness returns at a lower concentration than the one at which it is lost | Percolation model: inertia appears with reference feedback and reproduces the measured ratios 1.07 to 1.63 once λ is calibrated, but cannot reach halothane's 2.85 before some networks stop recovering. Phase model: no inertia at any feedback strength (S3 in at most 6 of 20 seeds); the network flickers near the threshold instead (P1b, P1c) | Noise-driven switching between metastable states (Proekt and Hudson, 2018) and adaptive feedback (Kim et al., 2018) also explain inertia | P5 kept as workable only with an all-or-nothing integration window (P2), part of its fit being a calibration. Lead noticed after the results: inertia and trapping as two sides of one feedback, with arousal setting how much inertia is safe (Section 5.4) | Prediction 5, in data; the arousal lead is untested |
 | Ketamine | The senses are cut off from an internal agreement that survives (K1) | Internal agreement held but the stimulus still spread (K1 held in at most 2 of 20 seeds) | NMDA receptors carry recurrent more than feedforward signals in macaque V1 (Self et al., 2012); ketamine inhibits frontal-parietal feedback connectivity while feedforward connectivity is preserved (U. Lee et al., 2013) | Timing faults concentrated on feedback connections, so that loops cannot close | K2a to K2c, fixed before the run (Appendix C.7); next row |
 | Ketamine, feedback faults | Timing faults on feedback connections alone abolish quorum while the stimulus still spreads (K2a, K2b), at a lower concentration than on as many random connections (K2c) | Quorum was never lost, with faults on feedback or on random connections (0 of 20 *C. elegans* and 0 of 6 *Drosophila* seeds); feedback faults lowered coherence more (exploratory) | Nothing new; the measured loss of frontal-parietal feedback connectivity under ketamine (U. Lee et al., 2013) still stands | Kept only as a contributing factor: in the model, ketamine's timing faults abolish quorum when they act across the network (P2b), and feedback placement deepens the loss of agreement without causing it | None in the model; the stronger form is not re-tested under another name |
 | Ketamine, local islands | Spontaneous local coherence outlasts global coherence (S1, S2) | Failed in every seed | Not pursued further; the idea is not re-tested under another name | Dropped | None |
 | Sleep down-states | Down-states make individual connections fail | Supported a wakeable sleep state at the rat share (E1, every seed from 10,000 nodes) and at the human upper estimate (E2, every seed from 100,000 nodes) | A down-state silences a whole local population (Vyazovskiy et al., 2009); slow waves are often regional (Nir et al., 2011) | Down-states silence whole populations; the connection-level version is kept as an alternative | O3, O4 and O5, the measured extent of a human slow wave (Appendix B) |
-| Astrocytes and sleep | Removing the astrocytic share of down-states restores quorum in sleep (A1) | Re-specified when the down-state model changed, before its multi-seed run; then failed in every seed at every network size | Astrocytic effects on anaesthesia differ in sign between regions (Section 5.4) | The astrocytic route to down-states is not supported by the model | None |
+| Astrocytes and sleep | Removing the astrocytic share of down-states restores quorum in sleep (A1) | Re-specified when the down-state model changed, before its multi-seed run; then failed in every seed at every network size | Astrocytic effects on anaesthesia differ in sign between regions (Section 2.2) | The astrocytic route to down-states is not supported by the model | None |
 | Microglia | Drug depletion of microglia hastens emergence, as reported with PLX5622 | Reproduced by construction (consistency check G1) | PLX5622 also speeds the clearance of anaesthetics, and genetic depletion did not hasten emergence (Cao et al., 2026) | The firmer evidence is the genetic P2Y12 result (Cao et al., 2023); G1 is reported as a consistency check, not support | Prediction 12, with the 2026 result noted |
 | Graceful degradation (P8) | A slower reference protects more against timing faults than against transmission failure | The slower rate raised the loss concentration (F1) but its distinctive prediction failed in every seed (F3) | Frontal alpha is attributed mainly to thalamic mechanisms (Ching et al., 2010; Vijayan et al., 2013) | P8 is kept as a proposal whose specific mechanism the model does not support | Prediction 9, in recorded data |
+| Phase-oscillator code (hostile review, 19 October 2026) | The phase model implements Section 4 as written | An AI review of the code found that timing errors were added instead of combined in quadrature, that entrainment was measured over 1.43 stimulus cycles, so that a population not following the stimulus left a residue, that a floating-point comparison counted equal hysteresis widths as shrinking, and that each report recorded its source files at the end of the run rather than at its start | Not applicable | Code corrected, each defect with a regression test; entrainment measured over two whole stimulus cycles; sources recorded at launch; every phase-model study and the pre-specified tests rerun with the same seeds | All phase-model results reported here come from the corrected code; the first reports are archived in `simulator/results/archive/` |
 """
 
 
@@ -126,8 +163,10 @@ The percolation model implements Section 4 exactly as written. The studies below
 | Self-consistent state | Fixed-point iteration of $S = F(\\pi(c, S))$ from the previous state, so that induction and emergence follow their own branches | Section 4.3 |
 | Dose-response | Hill equation | Hill (1910) |
 | Quorum threshold formula | Generating functions of the degree distribution | Callaway et al. (2000) |
-| Statistics | Mean, sample standard deviation and normal-approximation 95% confidence half-width across independent seeds | |
-| Software | CPython, standard library only | |
+| Statistics | Mean and sample standard deviation across seeds; the number of seeds in which a check holds, with its Wilson 95% interval | Wilson (1927) |
+| Software | CPython; the percolation model and its validation, calibration and glial studies use the standard library only; the quorum thresholds, sensitivity analysis, oscillator, congestion and plant studies also use NumPy, SciPy and PyArrow, at the versions recorded in each report | |
+
+The code, its tests and the figures were written with Claude Opus 5.5 (Anthropic) through Claude Code under the authors' direction, as stated in the Declarations.
 
 ### B.3 Calibration of the reference feedback
 
@@ -182,7 +221,7 @@ The attempt to calibrate the oscillator model's feedback to the measured inertia
 
 ### C.4 Numerical convergence of the phase model
 
-The GABAergic-like and sensory-stimulus conditions are repeated with twice the simulated time at each concentration and with half the integration step, on the human connectome (5 seeds) and on two *Drosophila* seeds, whose reference runs settle for only 200 steps. A result that does not move under either change does not depend on the numerical settings, and a hysteresis that survives twice the settling time is not an artefact of changing the concentration too fast. The reading rule below was written on 19 October 2026 at 00:56 UTC, after the study had been launched but before it produced any result: a loss concentration has converged when its mean across seeds changes by less than one step of the concentration grid (0.05 times the EC50 for the human connectome, 0.1 for *Drosophila*) under both changes; a broadcast ratio has converged when its mean changes by less than its standard deviation across seeds in the reference runs; and a hysteresis is an artefact of the settling time if it shrinks by more than half with twice the simulated time. A result that fails this rule is reported with a caveat in the main text. {report_section("convergence")}
+The GABAergic-like and sensory-stimulus conditions are repeated with twice the simulated time at each concentration and with half the integration step, on the human connectome (5 seeds) and on two *Drosophila* seeds, whose reference runs settle for only 200 steps. A result that does not move under either change does not depend on the numerical settings, and a hysteresis that survives twice the settling time is not an artefact of changing the concentration too fast. The reading rule below was written at 00:56 UTC on 19 October 2026, before the convergence study started (01:13 UTC), and committed at 01:19 UTC; after the code corrections recorded in Appendix D, the study was run again under the same rule: a loss concentration has converged when its mean across seeds changes by less than one step of the concentration grid (0.05 times the EC50 for the human connectome, 0.1 for *Drosophila*) under both changes; a broadcast ratio has converged when its mean changes by less than its standard deviation across seeds in the reference runs; and a hysteresis is an artefact of the settling time if it shrinks by more than half with twice the simulated time. A result that fails this rule is reported with a caveat in the main text. {report_section("convergence")}
 
 ### C.5 Congestion and graceful degradation (exploratory run)
 
@@ -198,7 +237,7 @@ The GABAergic-like and sensory-stimulus conditions are repeated with twice the s
 
 {RUN_NOTES}
 
-{report_section("preregistered")}
+{report_section("prespecified")}
 
 ### C.8 Figures
 
@@ -227,13 +266,13 @@ python3 calibrate_feedback.py && python3 validation_study.py && python3 glial_st
 ../.venv/bin/python congestion_study.py && ../.venv/bin/python congestion_study.py --confirm
 ../.venv/bin/python species_study.py
 ../.venv/bin/python convergence_study.py
-../.venv/bin/python preregistered_study.py
+../.venv/bin/python prespecified_study.py
 ../.venv/bin/python figures.py
 python3 paper_appendices.py
 ../.venv/bin/python explainer_export.py && python3 results_catalogue.py
 ```
 
-Every report records the machine, operating system, Python and package versions, Git commit and the SHA-256 hash of every simulator module that ran. The current reports were made overnight on 18 to 19 October 2026 from commit `0677161`, except the convergence and cross-species reports, made from commit `6d8b037`, which differs from `0677161` only in files that no study uses, and the pre-specified study (Appendix C.7), run once from commit `7ba034e`. Several reports mark the working tree as modified, because the explainer and the paper text were edited while the studies ran; for every report, the hash of each simulator module it used equals that module in the commit it records. The one exception is the cross-species report: it was run with the number of *Drosophila* seeds raised from 2 to 6 in `calibration.py` before that change was committed, and its hash of `calibration.py` equals the version committed afterwards. An earlier run of the same study with 2 *Drosophila* seeds is kept in `simulator/results/archive/superseded_2026-10-18/`; every *C. elegans*, human and plant run, and the first two *Drosophila* seeds in every condition, are identical in the two reports. The source files that produced the results above have these hashes:
+Every report records the machine, operating system, Python and package versions, Git commit and the SHA-256 hash of every simulator module that ran. Since the code corrections of 19 October 2026 (Appendix D), each study records its sources when it starts, so that the record describes the code that ran; earlier reports recorded them when the run ended. The table below is generated from the reports and the repository each time the appendices are built: for every report cited in Appendices B and C it compares the hash of each simulator file the report recorded with that file in the commit the report names, and, where they differ, finds the later commit in which that code was committed unchanged. Earlier runs, including a cross-species run with 2 *Drosophila* seeds whose *C. elegans*, human and plant runs, and first two *Drosophila* seeds, are identical to those of its successor, are kept in `simulator/results/archive/`.
 
 {chr(10).join(source_hash_rows())}
 """

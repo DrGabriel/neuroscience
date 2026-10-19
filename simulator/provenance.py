@@ -60,10 +60,31 @@ def installed_version(distribution: str) -> str:
         return "not installed"
 
 
+# The source record taken when a study starts (record_launch), so that a report describes the code that ran,
+# even if files change on disk while it runs.
+_LAUNCH: dict[str, object] = {}
+
+
+def source_record(source_files: Sequence[Path], captured: str) -> dict[str, object]:
+    repository = source_files[0].parent if source_files else Path.cwd()
+    return {
+        "git_commit": command_output(["git", "-C", str(repository), "rev-parse", "HEAD"]),
+        "git_working_tree_dirty": bool(command_output(["git", "-C", str(repository), "status", "--porcelain", "--", "*.py"])),
+        "sha256": {path.name: file_sha256(path) for path in source_files},
+        "captured": captured,
+    }
+
+
+def record_launch() -> None:
+    """Call at the start of a study, after its imports, to fix the source record of its report."""
+    _LAUNCH.clear()
+    _LAUNCH.update(source_record(loaded_sources(), "at launch"))
+
+
 def collect(source_files: Sequence[Path], packages: Sequence[str] = ()) -> dict[str, object]:
     hardware = {key: command_output(["sysctl", "-n", key]) for key in SYSCTL_KEYS}
     memory_bytes = hardware["hw.memsize"]
-    repository = source_files[0].parent if source_files else Path.cwd()
+    launched = dict(_LAUNCH) if {path.name for path in source_files} <= set(_LAUNCH.get("sha256", {})) else None
     return {
         "hardware": hardware,
         "memory_gibibytes": int(memory_bytes) / BYTES_PER_GIBIBYTE if memory_bytes.isdigit() else memory_bytes,
@@ -78,11 +99,7 @@ def collect(source_files: Sequence[Path], packages: Sequence[str] = ()) -> dict[
             "version": sys.version.split()[0],
             "packages": {package: installed_version(package) for package in packages} or "standard library only",
         },
-        "source": {
-            "git_commit": command_output(["git", "-C", str(repository), "rev-parse", "HEAD"]),
-            "git_working_tree_dirty": bool(command_output(["git", "-C", str(repository), "status", "--porcelain", "--", "."])),
-            "sha256": {path.name: file_sha256(path) for path in source_files},
-        },
+        "source": launched or source_record(source_files, "at the end of the run"),
     }
 
 

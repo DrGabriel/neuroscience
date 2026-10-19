@@ -191,6 +191,7 @@ def oscillator_outcomes(results: Sequence[tuple[Variation, str, species_study.Ru
 
 
 def main(arguments: Sequence[str]) -> int:
+    provenance.record_launch()
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--quick", action="store_true")
     quick = parser.parse_args(arguments).quick

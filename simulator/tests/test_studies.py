@@ -9,6 +9,7 @@ from __future__ import annotations
 import math
 import random
 import unittest
+import unittest.mock
 from dataclasses import replace
 
 import numpy as np
@@ -249,3 +250,15 @@ class FlyWireTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class HysteresisToleranceTests(unittest.TestCase):
+    def test_equal_widths_that_differ_by_rounding_still_count_as_not_shrinking_regression(self) -> None:
+        import validation_study
+
+        widths = iter([0.0, 0.05000000000000004, 0.04999999999999993, 0.06])
+        series = tuple((float(k), object()) for k in range(4))
+        measurement = unittest.mock.Mock(feedback_series=series)
+        with unittest.mock.patch.object(validation_study, "inertia_width", lambda _: next(widths)):
+            self.assertTrue(validation_study.hysteresis_grows_with_feedback(measurement))
+

@@ -93,6 +93,7 @@ QUANTITIES: tuple[tuple[str, str, str], ...] = (
     ("c_off", ConditionName.GABAERGIC, "loss_concentration"),
     ("Broadcast ratio, awake", ConditionName.SENSORY_STIMULUS, "awake_broadcast_ratio"),
     ("Broadcast ratio, first unconscious", ConditionName.SENSORY_STIMULUS, "unconscious_broadcast_ratio"),
+    ("Hysteresis (c_off - c_on)", ConditionName.GABAERGIC, "hysteresis_width"),
 )
 
 
@@ -112,6 +113,7 @@ def tables(runs: Sequence[ConvergenceRun], organisms: Sequence[str]) -> list[str
 
 
 def main(arguments: Sequence[str]) -> int:
+    provenance.record_launch()
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--quick", action="store_true")
     quick = parser.parse_args(arguments).quick

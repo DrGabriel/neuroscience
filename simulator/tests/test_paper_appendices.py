@@ -52,5 +52,26 @@ class ReportSectionTests(unittest.TestCase):
         self.assertTrue(section.startswith(f"Source: `simulator/results/{appendices.report_name('validation')}`."))
 
 
+class ProvenanceVerdictTests(unittest.TestCase):
+    HASHES = {"model.py": "a", "study.py": "b"}
+
+    def verdict(self, files_by_commit: dict[str, dict[str, str]], later: list[str]) -> str:
+        committed = lambda commit, name: files_by_commit.get(commit, {}).get(name)
+        listing = mock.Mock(stdout=" ".join(later))
+        with mock.patch.object(appendices, "committed_sha256", committed), mock.patch.object(appendices.subprocess, "run", return_value=listing):
+            return appendices.provenance_verdict("recorded", self.HASHES)
+
+    def test_a_report_whose_files_equal_its_commit_matches(self) -> None:
+        self.assertEqual(self.verdict({"recorded": dict(self.HASHES)}, []), "every file matches")
+
+    def test_code_run_from_a_working_copy_is_traced_to_the_commit_that_holds_it(self) -> None:
+        files = {"recorded": {"model.py": "old", "study.py": "b"}, "next": dict(self.HASHES)}
+        self.assertIn("committed unchanged in `next`", self.verdict(files, ["next"]))
+
+    def test_code_found_in_no_commit_is_named_file_by_file_regression(self) -> None:
+        files = {"recorded": {"model.py": "old", "study.py": "b"}, "next": {"model.py": "other", "study.py": "b"}}
+        self.assertEqual(self.verdict(files, ["next"]), "differs from every later commit: `model.py`")
+
+
 if __name__ == "__main__":
     unittest.main()

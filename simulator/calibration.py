@@ -15,6 +15,7 @@ constants beside the code that uses them, each labelled with the same categories
 
 from __future__ import annotations
 
+import math
 from dataclasses import asdict, dataclass
 
 import dpc_simulator as dpc
@@ -128,7 +129,15 @@ QUORUM_FRACTION = dpc.REFERENCE_QUORUM_FRACTION
 CONCENTRATION_GRID = dpc.ConcentrationGrid(maximum=3.0, step=0.05)
 # Numerical: Euler-Maruyama step well below the fastest coupling time scale (1 / K); the
 # relaxation and measurement windows span many cycles of the slowest population.
-FULL_INTEGRATION = dynamics.IntegrationSettings(time_step=0.05, relaxation_steps=400, measurement_steps=600)
+# Entrainment to the stimulus is measured over a whole number of its cycles, so that a population that does not
+# follow the stimulus averages to zero instead of leaving a residue that depends on the window (the first
+# measurement window, 600 steps, covered 1.43 cycles). Two cycles are used; more would multiply the cost of
+# every Drosophila run.
+STIMULUS_ANGULAR_FREQUENCY = 0.3
+MEASURED_STIMULUS_CYCLES = 2
+FULL_TIME_STEP = 0.05
+FULL_MEASUREMENT_STEPS = round(MEASURED_STIMULUS_CYCLES * 2 * math.pi / STIMULUS_ANGULAR_FREQUENCY / FULL_TIME_STEP)
+FULL_INTEGRATION = dynamics.IntegrationSettings(time_step=FULL_TIME_STEP, relaxation_steps=400, measurement_steps=FULL_MEASUREMENT_STEPS)
 QUICK_INTEGRATION = dynamics.IntegrationSettings(time_step=0.05, relaxation_steps=100, measurement_steps=100)
 
 def base_sweep_design(integration: dynamics.IntegrationSettings, seed: int = BASE_SEED) -> dynamics.SweepDesign:
@@ -145,7 +154,7 @@ def base_sweep_design(integration: dynamics.IntegrationSettings, seed: int = BAS
 
 # Free: strong enough to entrain the stimulated populations, weak enough that the awake
 # network still propagates the stimulus (at twice this strength it does not).
-SENSORY_STIMULUS = dynamics.SensoryStimulus(strength=1.0, angular_frequency=0.3)
+SENSORY_STIMULUS = dynamics.SensoryStimulus(strength=1.0, angular_frequency=STIMULUS_ANGULAR_FREQUENCY)
 
 # ---------------------------------------------------------------------------
 # Pillar thresholds (definitions, stated before the results are seen)

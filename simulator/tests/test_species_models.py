@@ -220,6 +220,34 @@ class DriveTests(unittest.TestCase):
             dynamics.jitter_weights(all_to_all(RING_SIZE), dynamics.JitterScaling.CONDUCTION_LENGTH, seed=1)
 
 
+class ReviewFixTests(unittest.TestCase):
+    """Defects found by the hostile review of 19 October 2026."""
+
+    def test_baseline_and_agent_timing_errors_add_in_quadrature_regression(self) -> None:
+        connectome = all_to_all(RING_SIZE)
+        timing = design(agent=cal.NMDA_ANTAGONIST_AGENT)
+        concentration = 1.0
+        connectivity = dynamics.ConnectionImpairment(connectome, timing, np.random.default_rng(1)).at(concentration)
+        baseline = timing.dynamics.baseline_jitter_ms
+        added = cal.NMDA_ANTAGONIST_AGENT.added_jitter_ms(concentration)
+        frequency = dynamics.reference_frequency_hz(timing.dynamics, cal.NMDA_ANTAGONIST_AGENT, concentration)
+        expected = dynamics.milliseconds_to_radians(np.hypot(baseline, added), frequency)
+        self.assertTrue(np.allclose(connectivity.jitter_sd, expected))
+
+    def test_a_population_not_following_the_stimulus_averages_to_zero_over_whole_cycles_regression(self) -> None:
+        def entrainment(steps: int) -> float:
+            is_sensory = np.zeros(RING_SIZE, dtype=bool)
+            is_sensory[0] = True
+            recorder = dynamics.ObservableRecorder(all_to_all(RING_SIZE), is_sensory, cal.SENSORY_STIMULUS)
+            phases = np.zeros(RING_SIZE)
+            for step in range(steps):
+                recorder.record(phases, 1.0 + 0j, step * cal.FULL_TIME_STEP)
+            return recorder.measurement(0.0).broadcast_entrainment
+        first_window_steps = 600
+        self.assertGreater(entrainment(first_window_steps), 0.2)
+        self.assertLess(entrainment(cal.FULL_MEASUREMENT_STEPS), 0.01)
+
+
 class SignedConnectionTests(unittest.TestCase):
     def test_inhibitory_connections_get_negative_weight(self) -> None:
         connectome = all_to_all(4)

@@ -138,7 +138,7 @@
     return chunks;
   }
 
-  // ---- Curves of every seed (cross-species and pre-registered studies) -----------------------------------------
+  // ---- Curves of every seed (cross-species and pre-specified studies) -----------------------------------------
 
   const mean = (rows) => rows[0].map((_, k) => rows.reduce((sum, row) => sum + row[k], 0) / rows.length);
   const CURVE_LINE = Object.freeze({ seed: 1, mean: 2.2 });

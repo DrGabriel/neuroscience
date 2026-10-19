@@ -225,9 +225,10 @@ class ConnectionImpairment:
     def at(self, concentration: float) -> ImpairedConnectivity:
         """Timing errors are converted to phase at the reference rate in force at this concentration."""
         transmits = self._failure_draws >= self._agent.transmission_failure(concentration)
-        jitter_ms = (
-            self._dynamics.baseline_jitter_ms * self._baseline_weights
-            + self._agent.added_jitter_ms(concentration) * self._agent_weights
+        # Independent errors: their standard deviations add in quadrature (Section 4.3).
+        jitter_ms = np.hypot(
+            self._dynamics.baseline_jitter_ms * self._baseline_weights,
+            self._agent.added_jitter_ms(concentration) * self._agent_weights,
         )
         frequency_hz = reference_frequency_hz(self._dynamics, self._agent, concentration)
         jitter_sd = milliseconds_to_radians(jitter_ms, frequency_hz)

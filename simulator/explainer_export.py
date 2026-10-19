@@ -88,7 +88,7 @@ OUTCOME_REPORTS: tuple[tuple[str, str, bool], ...] = (
     ("congestion", "full", True),
     ("congestion", "confirmatory", True),
     ("species", "full", False),
-    ("preregistered", "full", False),
+    ("prespecified", "full", False),
 )
 # The predictions table of Section 7, read from each language version of the paper.
 PREDICTION_SOURCES: tuple[tuple[str, str, str], ...] = (

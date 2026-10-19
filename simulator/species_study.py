@@ -620,6 +620,7 @@ def parse_design(arguments: Sequence[str]) -> StudyDesign:
 
 
 def main(arguments: Sequence[str]) -> int:
+    provenance.record_launch()
     report = assemble_report(run_study(parse_design(arguments)))
     reporting.publish("species", report, to_markdown(report))
     return 0 if all_pillars_hold(report) else 1

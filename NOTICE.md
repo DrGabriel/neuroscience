@@ -47,4 +47,4 @@ Product and company names mentioned in this repository, including those of aircr
 
 ## Quotation policy
 
-The paper paraphrases published work and cites it. It contains no verbatim text, figures or tables reproduced from other publications. All figures and diagrams in this repository were created for it.
+The paper paraphrases published work and cites it. It contains no unattributed verbatim text and no figures or tables reproduced from other publications; standard formulations, such as the ICMJE authorship wording and the names of methods, are used as they are. All figures and diagrams in this repository were created for it.

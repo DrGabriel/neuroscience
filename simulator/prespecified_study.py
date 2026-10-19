@@ -1,12 +1,12 @@
-"""Pre-registered tests on fresh seeds: K2 (ketamine's timing faults on feedback connections) and P1c.
+"""Pre-specified tests on fresh seeds: K2 (ketamine's timing faults on feedback connections) and P1c.
 
 The tests, their conditions, the seeds and the pass rule were written into the paper (Appendix C.7)
 before this study was first run. Seeds start at BASE_SEED + SEED_OFFSET, which no earlier run used.
 A test passes for an organism when it holds in at least PASS_SHARE of that organism's seeds.
 
 Usage:
-    ../.venv/bin/python preregistered_study.py            # full study
-    ../.venv/bin/python preregistered_study.py --quick    # short smoke run, one seed each
+    ../.venv/bin/python prespecified_study.py            # full study
+    ../.venv/bin/python prespecified_study.py --quick    # short smoke run, one seed each
 
 Exit status is non-zero if any test fails for any organism. A failing test is a scientific
 result, not a software error: the report is written either way.
@@ -153,7 +153,7 @@ def run_study(design: StudyDesign) -> list[species.RunSummary]:
     tasks = tasks_for(design)
     runs: list[species.RunSummary] = []
     for organism, spec in cal.ORGANISMS.items():
-        live = reporting.ParallelRun(f"preregistered: {spec.display_name}", spec.worker_processes, partial(outcomes_markdown, organisms=[organism]))
+        live = reporting.ParallelRun(f"prespecified: {spec.display_name}", spec.worker_processes, partial(outcomes_markdown, organisms=[organism]))
         runs.extend(reporting.run_in_parallel(species.run_task, [t for t in tasks if t.organism == organism], live))
     return runs
 
@@ -220,7 +220,7 @@ def to_markdown(report: dict[str, object]) -> str:
     shares = [[cal.ORGANISMS[o].display_name, f"{100 * share:.1f}%"] for o, share in report["feedback_shares"].items()]
     return "\n".join([
         *reporting.run_metadata_section(report, provenance.markdown_rows(report["provenance"])),
-        f"### Pre-registered tests (seeds in which the test holds; passes at {100 * PASS_SHARE:.0f}% or more)",
+        f"### Pre-specified tests (seeds in which the test holds; passes at {100 * PASS_SHARE:.0f}% or more)",
         "",
         *outcome_table(outcomes, organisms),
         "",
@@ -244,10 +244,11 @@ def parse_design(arguments: Sequence[str]) -> StudyDesign:
 
 
 def main(arguments: Sequence[str]) -> int:
+    provenance.record_launch()
     design = parse_design(arguments)
     started = datetime.now(timezone.utc).isoformat()
     report = assemble_report(design, started, run_study(design))
-    reporting.publish("preregistered", report, to_markdown(report))
+    reporting.publish("prespecified", report, to_markdown(report))
     return 0 if all(test["passes"] for test in report["tests"]) else 1
 
 

@@ -191,11 +191,16 @@ def is_trapped_unconscious(summary: ThresholdSummary) -> bool:
     return summary.loss_concentration is not None and summary.recovery_concentration is None
 
 
+# Widths are differences of grid concentrations, so equal widths can differ by floating-point rounding.
+WIDTH_TOLERANCE = 1e-9
+
+
 def hysteresis_grows_with_feedback(measurement: SeedMeasurement) -> bool:
     widths = [inertia_width(summary) for _, summary in measurement.feedback_series]
     if any(width is None for width in widths):
         return False
-    return all(earlier <= later for earlier, later in zip(widths, widths[1:])) and widths[-1] > widths[0]
+    never_shrinks = all(earlier <= later + WIDTH_TOLERANCE for earlier, later in zip(widths, widths[1:]))
+    return never_shrinks and widths[-1] > widths[0] + WIDTH_TOLERANCE
 
 
 def feedback_sharpens_transition(measurement: SeedMeasurement) -> bool:
@@ -500,6 +505,7 @@ def parse_design(arguments: Sequence[str]) -> StudyDesign:
 
 
 def main(arguments: Sequence[str]) -> int:
+    provenance.record_launch()
     design = parse_design(arguments)
     worker_count = os.cpu_count() or 1
     report = run_study(design, worker_count)
