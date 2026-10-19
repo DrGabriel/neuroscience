@@ -168,5 +168,9 @@
     return node;
   }
 
-  root.DPC = Object.assign(root.DPC || {}, { Verdict, OutcomeIndex, renderLedger, renderInlineOutcomes, renderPlantClaims, renderPredictions, renderStatistics });
+  // Reports keep the study name they were written under; a renamed study points at its current message.
+  const STUDY_ALIASES = Object.freeze({ preregistered: "prespecified" });
+  const studyMessage = (kind) => `study_${STUDY_ALIASES[kind] ?? kind}`;
+
+  root.DPC = Object.assign(root.DPC || {}, { studyMessage, Verdict, OutcomeIndex, renderLedger, renderInlineOutcomes, renderPlantClaims, renderPredictions, renderStatistics });
 })(globalThis);

@@ -4,7 +4,7 @@
 (function (root) {
   "use strict";
 
-  const { Token, Swatch, LegendGroup, labelled, legendEntry, palette, Surface, scale, polyline, make, t, organismName, Picker, drawShareAxes, DASH } = root.DPC;
+  const { Token, Swatch, LegendGroup, labelled, legendEntry, palette, Surface, scale, polyline, make, t, organismName, Picker, drawShareAxes, DASH, studyMessage } = root.DPC;
   const CURRENT_SET = "current";
   const JSON_CHUNK = 100;
   // Reports can be tens of megabytes once parsed, so only the most recently opened few are kept.
@@ -291,7 +291,7 @@
     }
   }
 
-  const studyName = (entry) => t(`study_${entry.kind}`);
+  const studyName = (entry) => t(studyMessage(entry.kind));
   // ISO time to the minute: "2026-10-18 13:54 UTC".
   const startedText = (entry) => `${entry.started_utc.slice(0, "YYYY-MM-DDTHH:MM".length).replace("T", " ")} UTC`;
   const describeEntry = (entry) => `${studyName(entry)} · ${t(`run_${entry.label}`)} · ${startedText(entry)}`;

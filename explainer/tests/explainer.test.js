@@ -93,7 +93,20 @@ test("transition points read the sweep's crossings of the quorum", () => {
     { direction: SweepDirection.EMERGENCE, concentration: 0.5, share: 0.3 },
     { direction: SweepDirection.EMERGENCE, concentration: 0, share: 0.9 },
   ];
-  assert.deepEqual(transitionPoints(points, (share) => share >= 0.5), { lostAt: 1, regainedAt: 0 });
+  // The thresholds as the Python model defines them: the last dose with quorum, and the first dose back.
+  assert.deepEqual(transitionPoints(points, (share) => share >= 0.5), { lostAt: 0, regainedAt: 0 });
+});
+
+test("a sweep that starts without quorum, or never regains it, has no threshold to report_regression", () => {
+  const holds = (share) => share >= 0.5;
+  const neverHeld = [{ direction: SweepDirection.INDUCTION, concentration: 0, share: 0.2 }];
+  assert.deepEqual(transitionPoints(neverHeld, holds), { lostAt: null, regainedAt: null });
+  const trapped = [
+    { direction: SweepDirection.INDUCTION, concentration: 0, share: 0.9 },
+    { direction: SweepDirection.INDUCTION, concentration: 1, share: 0.2 },
+    { direction: SweepDirection.EMERGENCE, concentration: 0, share: 0.2 },
+  ];
+  assert.deepEqual(transitionPoints(trapped, holds), { lostAt: 0, regainedAt: null });
 });
 
 test("the loss of quorum is read as soon as it happens, before the dose falls again_regression", () => {
@@ -101,7 +114,7 @@ test("the loss of quorum is read as soon as it happens, before the dose falls ag
     { direction: SweepDirection.INDUCTION, concentration: 0, share: 0.9 },
     { direction: SweepDirection.INDUCTION, concentration: 1, share: 0.2 },
   ];
-  assert.deepEqual(transitionPoints(risingOnly, (share) => share >= 0.5), { lostAt: 1, regainedAt: null });
+  assert.deepEqual(transitionPoints(risingOnly, (share) => share >= 0.5), { lostAt: 0, regainedAt: null });
 });
 
 test("outcome index groups runs and gives a verdict", () => {
@@ -277,3 +290,13 @@ test("a connection the agent's timing error does not reach keeps only baseline a
   assert.ok(model.unexposedJitterMs(concentration, giant) < model.effectiveJitterMs(concentration, giant));
   assert.equal(model.unexposedJitterMs(concentration, giant), Math.hypot(model.baselineJitterMs(), model.referenceErrorMs(concentration, giant)));
 });
+
+test("every report in the results archive has a study name in every language_regression", () => {
+  require(path.join(root, "data", "results", "catalogue.js"));
+  const kinds = new Set(globalThis.DPC_RESULTS_CATALOGUE.map((entry) => entry.kind));
+  const { studyMessage, registry } = globalThis.DPC;
+  for (const [code, locale] of registry) {
+    for (const kind of kinds) assert.ok(studyMessage(kind) in locale.messages, `${code}: ${kind}`);
+  }
+});
+
