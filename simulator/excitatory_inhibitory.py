@@ -14,12 +14,12 @@ Each brain region is a Wilson-Cowan pair of excitatory (E) and inhibitory (I) po
 
     τe dE_k/dt = −E_k + S(c_ee E_k + c_ie,k I_k + P_k + ξ + C Σ_j W_jk m_jk E_j(t − τ_jk))
     τi dI_k/dt = −I_k + S(c_ei E_k + ξ)
-    τisp dc_ie,k/dt = I_k (E_k − ρ)
+    τisp dc_ie,k/dt = −I_k (E_k − ρ)      (c_ie is negative: activity above ρ strengthens inhibition)
     S(x) = 1 / (1 + exp(−(x − μ) / σ))
 
 m_jk is 1 if the long-range connection transmits and 0 if the agent has failed it. Delays
 τ_jk are tract lengths divided by the measured conduction velocity. Global synchrony is the
-Golomb-Rinzel index χ² = var(mean E) / mean(var E_k) (Golomb & Rinzel, 1993).
+Golomb-Rinzel index χ, the square root of var(mean E) / mean(var E_k) (Golomb & Rinzel, 1993).
 Dependencies: numpy.
 """
 
@@ -233,9 +233,15 @@ class InductionRecord:
 
     @property
     def collapse_concentration(self) -> float | None:
-        """First concentration at which global synchrony falls below the collapse fraction of its awake value."""
+        """First concentration from which global synchrony stays below the collapse fraction of its awake value at
+        every later step: the network has broken apart, rather than dipped in one noisy measurement window."""
         threshold = self.collapse_fraction * self.awake.synchrony
-        return next((m.concentration for m in self.measurements if m.synchrony < threshold), None)
+        collapse = None
+        for measurement in reversed(self.measurements[1:]):
+            if measurement.synchrony >= threshold:
+                break
+            collapse = measurement.concentration
+        return collapse
 
     @property
     def before_collapse(self) -> tuple[CongestionMeasurement, ...]:

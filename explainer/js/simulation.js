@@ -42,8 +42,11 @@
   const FaultPlacement = Object.freeze({ FEEDBACK: "FEEDBACK", MATCHED_RANDOM: "MATCHED_RANDOM", EVERYWHERE: "EVERYWHERE" });
 
   // As many connections as the mask marks, drawn at random with a partial Fisher-Yates shuffle.
+  // Its own random stream, as in the Python control (MATCHED_RANDOM_STREAM), so that it does not echo the cycles' draws.
+  const MATCHED_RANDOM_STREAM = 0x9e3779b9;
+
   function matchedRandomMask(mask, seed) {
-    const random = new RandomSource(seed);
+    const random = new RandomSource(seed ^ MATCHED_RANDOM_STREAM);
     const order = Int32Array.from({ length: mask.length }, (_, k) => k);
     const chosen = new Uint8Array(mask.length);
     const count = mask.reduce((sum, value) => sum + value, 0);
@@ -151,20 +154,19 @@
     *steps() {
       const count = Math.round(this.maxConcentration / this.step);
       for (let k = 0; k <= count; k++) yield { direction: SweepDirection.INDUCTION, concentration: k * this.step };
-      for (let k = 0; k <= count; k++) yield { direction: SweepDirection.EMERGENCE, concentration: this.maxConcentration - k * this.step };
+      for (let k = 0; k <= count; k++) yield { direction: SweepDirection.EMERGENCE, concentration: (count - k) * this.step };
     }
   }
 
-  // Where quorum was lost on the way up and regained on the way down, from averaged sweep points.
+  // The thresholds as simulator/dpc_simulator.py defines them, so that a system without bistability shows no gap:
+  // c_off is the last dose with quorum before it is first lost on the way up (null if never lost, or never held);
+  // c_on is the first dose on the way down at which quorum has returned, counted once it has been lost.
   function transitionPoints(points, holdsQuorum) {
-    const crossing = (direction, fromHeld) => {
-      const series = points.filter((point) => point.direction === direction);
-      for (let k = 1; k < series.length; k++) {
-        if (holdsQuorum(series[k - 1].share) === fromHeld && holdsQuorum(series[k].share) !== fromHeld) return series[k].concentration;
-      }
-      return null;
-    };
-    return { lostAt: crossing(SweepDirection.INDUCTION, true), regainedAt: crossing(SweepDirection.EMERGENCE, false) };
+    const induction = points.filter((point) => point.direction === SweepDirection.INDUCTION);
+    const firstLost = induction.findIndex((point) => !holdsQuorum(point.share));
+    const lostAt = firstLost > 0 ? induction[firstLost - 1].concentration : null;
+    const back = lostAt === null ? undefined : points.find((point) => point.direction === SweepDirection.EMERGENCE && holdsQuorum(point.share));
+    return { lostAt, regainedAt: back?.concentration ?? null };
   }
 
   root.DPC = Object.assign(root.DPC || {}, { ConnectionOutcome, SweepDirection, RandomSource, CycleConditions, FaultPlacement, agentJitterMasks, CycleOutcome, IntegrationCycles, SweepPlan, transitionPoints });

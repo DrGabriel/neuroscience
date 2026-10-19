@@ -74,19 +74,19 @@ class Connectome:
         return int(self.sources.size)
 
     def rewired(self, seed: int) -> Connectome:
-        """Null model: targets shuffled across connections, keeping every node's in- and out-degree.
+        """Null model: degree-preserving double-edge swaps (Maslov and Sneppen, 2002).
 
-        Self-connections created by the shuffle are dropped, so a few degrees fall by one.
-        Tract lengths and connection signs no longer belong to the shuffled connections and are removed.
+        Every node keeps its numbers of inputs and outputs exactly, reciprocal connections stay reciprocal,
+        and no swap creates a self-connection or a duplicate. Tract lengths and connection signs no longer
+        belong to the swapped connections and are removed.
         """
-        targets = np.random.default_rng(seed).permutation(self.targets)
-        kept = targets != self.sources
+        sources, targets, weights = swapped_connections(self.sources, self.targets, self.weights, np.random.default_rng(seed))
         return replace(
             self,
             name=f"{self.name}, rewired",
-            sources=self.sources[kept],
-            targets=targets[kept],
-            weights=self.weights[kept],
+            sources=sources,
+            targets=targets,
+            weights=weights,
             lengths_mm=None,
             signs={},
         )
@@ -202,6 +202,76 @@ def fetch(source: DatasetSource) -> Path:
 # ---------------------------------------------------------------------------
 
 
+# Standard practice for degree-preserving rewiring: about ten attempted swaps per connection.
+SWAPS_PER_CONNECTION = 10
+
+
+class EdgeSwapper:
+    """Double-edge swaps on a set of connections, refusing self-connections and duplicates.
+
+    One-way connections swap targets (a→b, c→d become a→d, c→b), which keeps every in- and out-degree.
+    Reciprocal pairs swap as undirected units (a–b, c–d become a–d, c–b), so they stay reciprocal.
+    """
+
+    def __init__(self, existing: set[tuple[int, int]], rng: np.random.Generator) -> None:
+        self.existing = existing
+        self.rng = rng
+
+    def _free(self, a: int, b: int, both_ways: bool) -> bool:
+        return a != b and (a, b) not in self.existing and not (both_ways and (b, a) in self.existing)
+
+    def _replace(self, old: tuple[tuple[int, int], ...], new: tuple[tuple[int, int], ...]) -> None:
+        self.existing.difference_update(old)
+        self.existing.update(new)
+
+    def one_way(self, sources: np.ndarray, targets: np.ndarray) -> None:
+        for _ in range(SWAPS_PER_CONNECTION * len(sources)):
+            i, j = self.rng.integers(len(sources), size=2)
+            a, b, c, d = int(sources[i]), int(targets[i]), int(sources[j]), int(targets[j])
+            if i != j and self._free(a, d, False) and self._free(c, b, False):
+                self._replace(((a, b), (c, d)), ((a, d), (c, b)))
+                targets[i], targets[j] = d, b
+
+    def reciprocal(self, first: np.ndarray, second: np.ndarray) -> None:
+        for _ in range(SWAPS_PER_CONNECTION * len(first)):
+            i, j = self.rng.integers(len(first), size=2)
+            a, b, c, d = int(first[i]), int(second[i]), int(first[j]), int(second[j])
+            if i == j or not (self._free(a, d, True) and self._free(c, b, True)):
+                continue
+            self._replace(((a, b), (b, a), (c, d), (d, c)), ((a, d), (d, a), (c, b), (b, c)))
+            second[i], second[j] = d, b
+
+
+def swapped_connections(sources: np.ndarray, targets: np.ndarray, weights: np.ndarray, rng: np.random.Generator) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Connections after degree-preserving swaps. A pair joined more than once (in C. elegans, by a chemical synapse
+    and a gap junction) is split into layers, the first copy of every pair in one layer and any second copy in the
+    next, and each layer is swapped on its own, so that degrees are kept exactly and no layer gains a duplicate."""
+    keys = sources.astype(np.int64) * (int(max(sources.max(initial=0), targets.max(initial=0))) + 1) + targets
+    order = np.argsort(keys, kind="stable")
+    sorted_keys = keys[order]
+    starts = np.r_[0, np.flatnonzero(np.diff(sorted_keys)) + 1]
+    layer = np.empty(len(keys), dtype=np.int64)
+    layer[order] = np.arange(len(keys)) - np.repeat(starts, np.diff(np.r_[starts, len(keys)]))
+    parts = [swapped_layer(sources[layer == k], targets[layer == k], weights[layer == k], rng) for k in range(int(layer.max(initial=-1)) + 1)]
+    return tuple(np.concatenate([part[i] for part in parts]) for i in range(3)) if parts else (sources, targets, weights)
+
+
+def swapped_layer(sources: np.ndarray, targets: np.ndarray, weights: np.ndarray, rng: np.random.Generator) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """One layer of distinct connections after degree-preserving swaps; each pair's weights travel with it."""
+    index = {(int(s), int(t)): k for k, (s, t) in enumerate(zip(sources, targets)) if s != t}
+    units = np.array([(s, t) for (s, t) in index if (t, s) in index and s < t], dtype=np.int64).reshape(-1, 2)
+    one_way = np.array([(s, t) for (s, t) in index if (t, s) not in index], dtype=np.int64).reshape(-1, 2)
+    forward = weights[[index[(s, t)] for s, t in units]] if len(units) else np.empty(0, dtype=weights.dtype)
+    backward = weights[[index[(t, s)] for s, t in units]] if len(units) else np.empty(0, dtype=weights.dtype)
+    single = weights[[index[(s, t)] for s, t in one_way]] if len(one_way) else np.empty(0, dtype=weights.dtype)
+    swapper = EdgeSwapper(set(index), rng)
+    swapper.one_way(one_way[:, 0], one_way[:, 1])
+    swapper.reciprocal(units[:, 0], units[:, 1])
+    new_sources = np.concatenate([one_way[:, 0], units[:, 0], units[:, 1]]).astype(np.int32)
+    new_targets = np.concatenate([one_way[:, 1], units[:, 1], units[:, 0]]).astype(np.int32)
+    return new_sources, new_targets, np.concatenate([single, forward, backward]).astype(np.float32)
+
+
 def spectral_modules(node_count: int, sources: np.ndarray, targets: np.ndarray, seed: int) -> np.ndarray:
     """k-means on the leading eigenvectors of the normalised adjacency (spectral clustering)."""
     module_count = max(2, round(node_count / NODES_PER_SPECTRAL_MODULE))
@@ -227,20 +297,45 @@ def dense_indices(labels: list[str]) -> tuple[np.ndarray, list[str]]:
 # ---------------------------------------------------------------------------
 
 
+def undirected_gap_junctions(pairs: np.ndarray, weights: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    """Each electrical contact once, as an unordered pair with the mean weight of its rows.
+
+    The c302 list gives most gap junctions in both directions, some in one, and a few with a different
+    weight in each direction; self-contacts are dropped.
+    """
+    unordered = np.sort(pairs, axis=1)
+    keys, inverse = np.unique(unordered, axis=0, return_inverse=True)
+    inverse = inverse.ravel()
+    mean_weights = np.bincount(inverse, weights=weights) / np.bincount(inverse)
+    distinct = keys[:, 0] != keys[:, 1]
+    return keys[distinct], mean_weights[distinct]
+
+
+def is_celegans_neuron(name: str) -> bool:
+    """c302 names the neurons in capitals and every other cell (body-wall and pharyngeal muscles, marginal
+    cells, hypodermis, intestine, anal sphincter) in lower case."""
+    return name[:1].isupper()
+
+
 def load_celegans(seed: int) -> Connectome:
-    """Chemical synapses (directed) and gap junctions (both directions), weighted by contact count."""
+    """Neurons only: chemical synapses (directed) and gap junctions (each once in both directions) between
+    neurons, weighted by contact count. Muscles and other cells are left out, because quorum is a property of
+    the nervous system; CANL and CANR have no synapses in the list, so 300 of the 302 neurons appear."""
     with fetch(CELEGANS).open(newline="") as handle:
         rows = [
             (row["Source"].strip(), row["Target"].strip(), float(row["Weight"]), row["Type"].strip())
             for row in csv.DictReader(handle)
+            if is_celegans_neuron(row["Source"].strip()) and is_celegans_neuron(row["Target"].strip())
         ]
     node_index, names = dense_indices([name for source, target, _, _ in rows for name in (source, target)])
     pairs = node_index.reshape(-1, 2)
     weights = np.array([weight for _, _, weight, _ in rows])
     is_gap_junction = np.array([kind == "electrical" for _, _, _, kind in rows])
-    sources = np.concatenate([pairs[:, 0], pairs[is_gap_junction, 1]])
-    targets = np.concatenate([pairs[:, 1], pairs[is_gap_junction, 0]])
-    weights = np.concatenate([weights, weights[is_gap_junction]])
+    chemical = ~is_gap_junction & (pairs[:, 0] != pairs[:, 1])
+    junctions, junction_weights = undirected_gap_junctions(pairs[is_gap_junction], weights[is_gap_junction])
+    sources = np.concatenate([pairs[chemical, 0], junctions[:, 0], junctions[:, 1]])
+    targets = np.concatenate([pairs[chemical, 1], junctions[:, 1], junctions[:, 0]])
+    weights = np.concatenate([weights[chemical], junction_weights, junction_weights])
     node_count = len(names)
     return Connectome(
         name="C. elegans",
@@ -311,13 +406,15 @@ def connection_signs(
     pairs: NeuronPairs, synapses: np.ndarray, transmitter_probabilities: dict[str, np.ndarray]
 ) -> dict[str, np.ndarray]:
     """For each sign rule, -1 where a kept pair's synapse-weighted dominant transmitter is inhibitory, else +1."""
+    # Rows with no transmitter prediction contribute nothing; a pair with no prediction at all stays excitatory.
     weighted = np.stack([
-        np.bincount(pairs.pair_of_row, weights=synapses * transmitter_probabilities[name])[pairs.kept]
+        np.bincount(pairs.pair_of_row, weights=synapses * np.nan_to_num(transmitter_probabilities[name]))[pairs.kept]
         for name in FLYWIRE_TRANSMITTERS
     ])
+    predicted = weighted.sum(axis=0) > 0
     dominant = np.asarray(FLYWIRE_TRANSMITTERS)[weighted.argmax(axis=0)]
     return {
-        rule: np.where(np.isin(dominant, inhibitory), -1, 1).astype(np.int8)
+        rule: np.where(predicted & np.isin(dominant, inhibitory), -1, 1).astype(np.int8)
         for rule, inhibitory in FLYWIRE_INHIBITORY_TRANSMITTERS.items()
     }
 

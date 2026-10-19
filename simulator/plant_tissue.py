@@ -14,8 +14,9 @@ junctions (plasmodesmata):
 where o_ij is 1 for an open junction and 0 for one closed by the anaesthetic. A row of cells
 on one edge is stimulated and the fraction of the sheet reached by the action potential is
 recorded. On a square lattice, bond percolation has the exact threshold 1/2 (Kesten, 1980),
-which provides an independent check: propagation should fail once about half the junctions
-are closed. Dependencies: numpy.
+which bounds the result: propagation cannot cross the sheet once more than half the junctions
+are closed. It can fail earlier, because a cell needs enough open neighbours to reach threshold;
+in the reported runs it fails with 17 to 35% of junctions closed. Dependencies: numpy.
 """
 
 from __future__ import annotations

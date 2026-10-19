@@ -441,7 +441,7 @@ def plant_claims(summaries: Sequence[PlantSummary]) -> dict[str, bool]:
         "Propagation is blocked in every run": None not in blocks,
         "Block never occurs below the bond-percolation threshold (1/2)": None not in blocks
         and all(value >= plant_tissue.SQUARE_LATTICE_BOND_THRESHOLD for value in blocks),
-        "Block point approaches 1/2 as junction conductance rises": len(means) == len(by_conductance)
+        "Block point falls as junction conductance rises": len(means) == len(by_conductance)
         and all(earlier > later for earlier, later in zip(means, means[1:])),
     }
 

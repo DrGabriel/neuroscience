@@ -142,6 +142,8 @@
         if (!this.button.parentElement.contains(event.target)) this.close();
       });
       select.addEventListener("change", () => this.sync());
+      // A sweep disables the select directly; the button follows it.
+      new MutationObserver(() => this.sync()).observe(select, { attributes: true, attributeFilter: ["disabled"] });
       this.sync();
     }
 

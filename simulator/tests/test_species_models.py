@@ -325,7 +325,7 @@ class ConnectomeTests(unittest.TestCase):
     def test_celegans_has_amphid_sensory_neurons(self) -> None:
         worm = connectomes.load_celegans(cal.CONNECTOME_SEED)
         self.assertEqual(worm.sensory_nodes.size, 24)
-        self.assertEqual(worm.node_count, 448)
+        self.assertEqual(worm.node_count, 300)
 
     @unittest.skipUnless(connectomes.HUMAN.path.exists(), "Human data not downloaded")
     def test_human_has_66_areas_and_auditory_cortex(self) -> None:

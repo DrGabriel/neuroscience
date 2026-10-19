@@ -67,6 +67,58 @@ class DirectedAndNullModelTests(unittest.TestCase):
         self.assertTrue(np.all(np.bincount(rewired.sources, minlength=3) <= np.bincount(connectome.sources, minlength=3)))
 
 
+class LoaderReviewTests(unittest.TestCase):
+    """Defects found by the code audit of 19 October 2026."""
+
+    def test_each_gap_junction_is_counted_once_per_direction_regression(self) -> None:
+        listed_both_ways = np.array([[0, 1], [1, 0], [2, 3], [4, 4]])
+        pairs, weights = connectomes.undirected_gap_junctions(listed_both_ways, np.array([2.0, 4.0, 1.0, 5.0]))
+        self.assertEqual(pairs.tolist(), [[0, 1], [2, 3]])
+        self.assertEqual(weights.tolist(), [3.0, 1.0])
+
+    def test_a_connection_without_transmitter_prediction_is_not_signed_inhibitory_regression(self) -> None:
+        pairs = connectomes.NeuronPairs(np.array([0, 1]), np.array([True, True]), np.array([0, 1]), np.array([1, 2]), np.array([5.0, 5.0]))
+        probabilities = {name: np.array([np.nan, 0.0]) for name in connectomes.FLYWIRE_TRANSMITTERS}
+        probabilities["gaba"] = np.array([np.nan, 1.0])
+        for signs in connectomes.connection_signs(pairs, np.array([5.0, 5.0]), probabilities).values():
+            self.assertEqual(signs.tolist(), [1, -1])
+
+    def test_rewiring_keeps_every_degree_and_reciprocity_without_self_or_duplicate_connections_regression(self) -> None:
+        rng = np.random.default_rng(0)
+        one_way = rng.integers(0, 30, size=(120, 2))
+        undirected = rng.integers(0, 30, size=(60, 2))
+        sources = np.concatenate([one_way[:, 0], undirected[:, 0], undirected[:, 1]])
+        targets = np.concatenate([one_way[:, 1], undirected[:, 1], undirected[:, 0]])
+        kept = sources != targets
+        connectome = replace(_tiny_connectome(), node_count=30, sources=sources[kept], targets=targets[kept], weights=np.ones(int(kept.sum()), dtype=np.float32))
+        rewired = connectome.rewired(seed=3)
+        for attribute in ("sources", "targets"):
+            self.assertEqual(np.bincount(getattr(rewired, attribute), minlength=30).tolist(), np.bincount(getattr(connectome, attribute), minlength=30).tolist())
+        self.assertFalse(np.any(rewired.sources == rewired.targets))
+        symmetric = replace(connectome, sources=np.r_[undirected[:, 0], undirected[:, 1]], targets=np.r_[undirected[:, 1], undirected[:, 0]], weights=np.ones(120, dtype=np.float32))
+        symmetric = replace(symmetric, sources=symmetric.sources[symmetric.sources != symmetric.targets], targets=symmetric.targets[symmetric.sources != symmetric.targets], weights=np.ones(int(np.sum(symmetric.sources != symmetric.targets)), dtype=np.float32))
+        edges = set(zip(symmetric.rewired(seed=4).sources.tolist(), symmetric.rewired(seed=4).targets.tolist()))
+        self.assertTrue(all((target, source) in edges for source, target in edges))
+
+    def test_only_neurons_enter_the_worm_graph(self) -> None:
+        self.assertTrue(connectomes.is_celegans_neuron("AVAL"))
+        for other in ("dBWML1", "pm3d", "mc1v", "hyp", "intestine", "anal"):
+            self.assertFalse(connectomes.is_celegans_neuron(other))
+
+
+class CongestionCollapseTests(unittest.TestCase):
+    @staticmethod
+    def record(synchronies: list[float]) -> ei.InductionRecord:
+        measurements = tuple(ei.CongestionMeasurement(0.25 * k, 1.0, 1.0, s, 0.0, None) for k, s in enumerate(synchronies))
+        return ei.InductionRecord(measurements=measurements, collapse_fraction=0.5)
+
+    def test_one_noisy_dip_is_not_a_collapse_regression(self) -> None:
+        self.assertEqual(self.record([0.3, 0.12, 0.3, 0.28, 0.1, 0.05]).collapse_concentration, 1.0)
+
+    def test_a_network_that_recovers_has_not_collapsed(self) -> None:
+        self.assertIsNone(self.record([0.3, 0.1, 0.3]).collapse_concentration)
+
+
 def _tiny_connectome() -> connectomes.Connectome:
     return connectomes.Connectome(
         name="tiny", organism="test", node_count=3, sources=np.array([0]), targets=np.array([1]), weights=np.ones(1, dtype=np.float32),

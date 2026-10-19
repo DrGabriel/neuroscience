@@ -57,8 +57,9 @@ def astrocytes_silenced(sleep: dpc.BrainState) -> dpc.BrainState:
 class MicroglialCoherenceModel(dpc.CoherenceModel):
     """Coherence model in which a microglial loop weakens arousal as the giant component collapses.
 
-    In wakefulness (coherent fraction 1) the loop is silent; in the collapsed state it removes
-    the share microglial_gain of the arousal drive, which stabilises the unconscious state.
+    The loop is weak in wakefulness, where the coherent fraction is close to but below 1, grows as the
+    giant component shrinks, and in the collapsed state removes the share microglial_gain of the arousal
+    drive, which stabilises the unconscious state.
     With gain 0 it reproduces dpc.CoherenceModel exactly.
     """
 

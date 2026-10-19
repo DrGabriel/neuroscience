@@ -227,6 +227,7 @@ def to_markdown(document: dict[str, object]) -> str:
 
 
 def main(arguments: Sequence[str]) -> int:
+    provenance.record_launch()
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--quick", action="store_true")
     quick = parser.parse_args(arguments).quick

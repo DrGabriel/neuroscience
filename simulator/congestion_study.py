@@ -266,6 +266,7 @@ def paired_tasks(design: ei.CongestionDesign, seeds: int, seed_offset: int) -> l
 
 
 def main(arguments: Sequence[str]) -> int:
+    provenance.record_launch()
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     choice = parser.add_mutually_exclusive_group()
     choice.add_argument("--quick", action="store_true", help="short smoke run")

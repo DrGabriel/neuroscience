@@ -107,7 +107,10 @@
   class FaultPlacementPainter extends QuorumPainter {
     constructor(outcome, network, exposedMask) {
       super(outcome, network);
-      const exposed = (k) => exposedMask()?.[k] === 1;
+      const exposed = (k) => {
+        const mask = exposedMask();
+        return mask === null || mask[k] === 1;
+      };
       this.connectionLayers = [{ token: Token.FEEDBACK, width: LINE.thin, includes: exposed }, ...this.connectionLayers];
     }
 

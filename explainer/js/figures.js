@@ -241,6 +241,11 @@
       this.feedback.value = String(context.data.inertia.targets.reduce((best, target) => (Math.abs(target.feedbackMs - reference) < Math.abs(best - reference) ? target.feedbackMs : best), 0));
       this.feedback.selectedOptions[0].defaultSelected = true;
       this.sweep = new SweepPanel(this, { model: () => this.model(), controls: [this.feedback], cycles: this.pane.cycles });
+      // A sweep's readings belong to the setting it ran with.
+      this.feedback.addEventListener("change", () => {
+        this.sweep.clear();
+        this.step();
+      });
     }
 
     model() {
@@ -385,7 +390,10 @@
   class GliaScene extends Scene {
     constructor(scope, context) {
       super(scope, context);
-      const onChange = () => this.showReadings();
+      const onChange = () => {
+        this.sweep?.clear();
+        this.showReadings();
+      };
       this.myelin = this.track(new RangeControl(scope, "myelin", { owner: this.owner, format: percent, onChange }));
       this.microglia = this.track(new RangeControl(scope, "microglia", { owner: this.owner, format: (value) => fixed(value, DECIMALS.share), onChange }));
       this.sweep = new SweepPanel(this, { model: () => this.model(), controls: [this.myelin.input, this.microglia.input] });

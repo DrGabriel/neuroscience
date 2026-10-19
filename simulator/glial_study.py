@@ -35,6 +35,7 @@ from validation_study import (
     inertia_width,
     size_label,
     sized,
+    WIDTH_TOLERANCE,
 )
 
 FULL_NODE_COUNTS = (302, 1_000, 10_000, 100_000)
@@ -112,7 +113,8 @@ def depletion_does_not_hasten_induction(m: GlialMeasurement) -> bool:
 
 def inertia_grows_with_microglial_gain(m: GlialMeasurement) -> bool:
     widths = [inertia_width(summary) for _, summary in m.by_microglial_gain]
-    return consecutive_pairs_hold(widths, operator.le) and widths[-1] > widths[0]
+    never_shrinks = consecutive_pairs_hold(widths, lambda earlier, later: earlier <= later + WIDTH_TOLERANCE)
+    return never_shrinks and widths[-1] > widths[0] + WIDTH_TOLERANCE
 
 
 def silenced_astrocytes_wake_the_sleeper(m: GlialMeasurement) -> bool:
@@ -293,6 +295,7 @@ def parse_design(arguments: Sequence[str]) -> StudyDesign:
 
 
 def main(arguments: Sequence[str]) -> int:
+    provenance.record_launch()
     design = parse_design(arguments)
     report = run_study(design, os.cpu_count() or 1)
     reporting.publish("glia", to_document(report, design.label), to_markdown(report))

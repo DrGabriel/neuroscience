@@ -42,6 +42,7 @@
       if (!interactive) return;
       const button = make("button", { type: "button", className: "key reset", textContent: t("resetFigure") });
       button.addEventListener("click", () => this.reset());
+      this.resetButton = button;
       this.scope.prepend(button);
     }
 
@@ -301,7 +302,7 @@
       const result = await this.runner.run({
         cycles: this.cycles,
         model: this.model,
-        controls: this.controls,
+        controls: [...this.controls, this.scene.resetButton].filter(Boolean),
         onStep: (points, concentration) => {
           this.points = points.slice();
           this.result = { points: this.points, ...transitionPoints(this.points, (share) => this.model().holdsQuorum(share)) };

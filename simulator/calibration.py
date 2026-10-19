@@ -192,15 +192,15 @@ PLANT_TISSUE = plant_tissue.TissueDesign(
 
 def parameter_table() -> tuple[ParameterRecord, ...]:
     return (
-        ParameterRecord("Baseline timing jitter (ms)", dpc.REFERENCE_BASELINE_JITTER_MS, "measured", "precision of rate modulation in macaque MT in vivo, Buracas et al. (1998); swept 1-10"),
-        ParameterRecord("Integration window W (ms)", dpc.REFERENCE_INTEGRATION_WINDOW_MS, "measured range", "1-10 ms in rodent barrel cortex, Gabernet et al. (2005); under 2 ms in hippocampus, Pouille and Scanziani (2001); swept 1-10"),
+        ParameterRecord("Baseline timing jitter (ms)", dpc.REFERENCE_BASELINE_JITTER_MS, "assumed", "within-neuron value used between areas: precision of rate modulation in macaque MT in vivo, Buracas et al. (1998); swept 1-10"),
+        ParameterRecord("Integration window W (ms)", dpc.REFERENCE_INTEGRATION_WINDOW_MS, "assumed", "within-cell windows used between areas: 1-10 ms in rodent barrel cortex, Gabernet et al. (2005); under 2 ms in hippocampus, Pouille and Scanziani (2001); swept 1-10"),
         ParameterRecord("Oscillation frequency (Hz)", OSCILLATION_FREQUENCY_HZ, "assumed", "within the gamma band, Fries (2015); Llinás and Ribary (1993)"),
         ParameterRecord("Jitter correlation time τ", JITTER_CORRELATION_TIME, "free", "sensitivity analysis"),
         ParameterRecord("Percolation feedback λ (ms)", dpc.REFERENCE_FEEDBACK_JITTER_MS, "calibrated", f"ratio {dpc.REFERENCE_INERTIA_RATIO}, Friedman et al. (2010), isoflurane"),
         ParameterRecord("Oscillator feedback λ", PHASE_REFERENCE_FEEDBACK, "free", f"calibration to ratio {dpc.REFERENCE_INERTIA_RATIO} failed: inertia within noise"),
         ParameterRecord("Conduction velocity (m/s)", CORTICOCORTICAL_CONDUCTION_VELOCITY_M_PER_S, "measured", "Lemaréchal et al. (2022)"),
         ParameterRecord("Arousal level", dpc.REFERENCE_AROUSAL_LEVEL, "free", "inertia ratios 1.07-1.63 reproduced at every level tested"),
-        ParameterRecord("Fallback reference rate, P8 (Hz)", ALPHA_FALLBACK_FREQUENCY_HZ, "measured", "frontal alpha 8-12 Hz, Purdon et al. (2013)"),
+        ParameterRecord("Fallback reference rate, P8 (Hz)", ALPHA_FALLBACK_FREQUENCY_HZ, "assumed", "centre of the measured frontal alpha band, 8-12 Hz, Purdon et al. (2013)"),
         ParameterRecord("Synaptic coupling K", SYNAPTIC_COUPLING, "free", "sensitivity analysis"),
         ParameterRecord("Natural-frequency spread", NATURAL_FREQUENCY_SPREAD, "free", "sensitivity analysis"),
         ParameterRecord("Noise intensity D", NOISE_INTENSITY, "free", "sensitivity analysis"),
