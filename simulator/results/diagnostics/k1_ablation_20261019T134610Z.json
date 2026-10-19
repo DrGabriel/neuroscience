@@ -1,0 +1,812 @@
+{
+  "label": "diagnostic",
+  "started_utc": "2026-10-19T13:46:10.208744+00:00",
+  "finished_utc": "2026-10-19T14:03:19.004818+00:00",
+  "provenance": {
+    "hardware": {
+      "hw.model": "Mac14,9",
+      "machdep.cpu.brand_string": "Apple M2 Pro",
+      "hw.memsize": "34359738368",
+      "hw.ncpu": "10",
+      "hw.perflevel0.physicalcpu": "6",
+      "hw.perflevel1.physicalcpu": "4"
+    },
+    "memory_gibibytes": 32.0,
+    "operating_system": {
+      "product_version": "26.7.1",
+      "build_version": "25G241",
+      "platform": "macOS-26.7.1-arm64-arm-64bit-Mach-O",
+      "machine": "arm64"
+    },
+    "python": {
+      "implementation": "CPython",
+      "version": "3.13.2",
+      "packages": {
+        "numpy": "2.5.4",
+        "scipy": "1.18.1"
+      }
+    },
+    "source": {
+      "git_commit": "55e746eafb941a6212eee51d9a1eb5cd5e07e44a",
+      "git_working_tree_dirty": true,
+      "sha256": {
+        "calibration.py": "f0760a3875a9007af2640417c43eb9c99b6a2898e63ac5ce1a5b6c915a502f8d",
+        "connectomes.py": "b13446025b96ad86be7f4121b4c2b227dc58a4f38dc1c4db866c8b3bff86f3d1",
+        "dpc_simulator.py": "07f3b3f1828859c628f596f543d65e33c45403483d5696bd355d8f48fd856fdf",
+        "phase_dynamics.py": "7470f3f061d933b64e51bb060752914bbcfa166b3653d1dc89beeb4fc032241a",
+        "plant_tissue.py": "1b04ef76f1fa0860e6a7daca5ea54dab72234bd9e11855efa616f248ad91c935",
+        "provenance.py": "f320d7cc34706f1a0a92ea109c270872557e999139b9832304eef1fc5032b122",
+        "reporting.py": "de80a53d63e90383ed325db5098aea06b71b3f846d8368ddeb12347ce3c4470b",
+        "species_study.py": "614fcb5caba1cbd4534dbd00467c79b68f1c9d1def17877508922315609b11fd"
+      },
+      "captured": "at launch"
+    }
+  },
+  "old_code_commit": "4fc14f4",
+  "checks": {
+    "nothing undone equals the current loader": true,
+    "all loader changes undone equals the old loader": true,
+    "largest difference from the rerun, nothing undone": 0.0,
+    "largest difference from the overnight run, all undone": 0.0
+  },
+  "summaries": {
+    "none undone (must match the rerun)": {
+      "median_broadcast_share_of_awake": 0.47305372115850874,
+      "quorum_held": 20,
+      "k1_holds": 12,
+      "runs": 20
+    },
+    "undo: measurement window of 600 steps instead of two whole stimulus cycles": {
+      "median_broadcast_share_of_awake": 0.7860209703921766,
+      "quorum_held": 20,
+      "k1_holds": 6,
+      "runs": 20
+    },
+    "undo: timing errors summed instead of combined in quadrature": {
+      "median_broadcast_share_of_awake": 0.43026486155735727,
+      "quorum_held": 20,
+      "k1_holds": 14,
+      "runs": 20
+    },
+    "undo: muscles and other cells kept in the graph": {
+      "median_broadcast_share_of_awake": 0.6545841104345766,
+      "quorum_held": 20,
+      "k1_holds": 7,
+      "runs": 20
+    },
+    "undo: chemical self-connections kept": {
+      "median_broadcast_share_of_awake": 0.36099859329408257,
+      "quorum_held": 20,
+      "k1_holds": 15,
+      "runs": 20
+    },
+    "undo: gap junctions as listed and mirrored, so most count twice per direction": {
+      "median_broadcast_share_of_awake": 0.43379087822043794,
+      "quorum_held": 20,
+      "k1_holds": 11,
+      "runs": 20
+    },
+    "all undone (must match the overnight run)": {
+      "median_broadcast_share_of_awake": 1.090120282011672,
+      "quorum_held": 20,
+      "k1_holds": 2,
+      "runs": 20
+    }
+  },
+  "runs": {
+    "none undone (must match the rerun)": {
+      "20261017": {
+        "deepest_coherence_fraction": 0.9585484823859287,
+        "awake_broadcast_ratio": 0.5948127434528571,
+        "deepest_broadcast_ratio": 0.23366678403105984
+      },
+      "20261018": {
+        "deepest_coherence_fraction": 0.9577978656659806,
+        "awake_broadcast_ratio": 0.4532938190212499,
+        "deepest_broadcast_ratio": 0.07640185523264159
+      },
+      "20261019": {
+        "deepest_coherence_fraction": 0.974902721262717,
+        "awake_broadcast_ratio": 0.5056523563819958,
+        "deepest_broadcast_ratio": 0.3899158914256552
+      },
+      "20261020": {
+        "deepest_coherence_fraction": 0.9563139979215416,
+        "awake_broadcast_ratio": 0.34506024006428143,
+        "deepest_broadcast_ratio": 0.22363592001768928
+      },
+      "20261021": {
+        "deepest_coherence_fraction": 0.9723930520141445,
+        "awake_broadcast_ratio": 0.6392096185277708,
+        "deepest_broadcast_ratio": 0.20825284584246254
+      },
+      "20261022": {
+        "deepest_coherence_fraction": 0.941139518333218,
+        "awake_broadcast_ratio": 0.5919953323825616,
+        "deepest_broadcast_ratio": 0.3202508307305239
+      },
+      "20261023": {
+        "deepest_coherence_fraction": 0.9632998912720964,
+        "awake_broadcast_ratio": 0.6483139817323587,
+        "deepest_broadcast_ratio": 0.5122839567883534
+      },
+      "20261024": {
+        "deepest_coherence_fraction": 0.9554355783892056,
+        "awake_broadcast_ratio": 0.31361090838105704,
+        "deepest_broadcast_ratio": 0.5279266706366836
+      },
+      "20261025": {
+        "deepest_coherence_fraction": 0.9587757381088314,
+        "awake_broadcast_ratio": 0.2286700659874324,
+        "deepest_broadcast_ratio": 0.2684357796480298
+      },
+      "20261026": {
+        "deepest_coherence_fraction": 0.9337776681839806,
+        "awake_broadcast_ratio": 0.38885039388969617,
+        "deepest_broadcast_ratio": 0.016170069808900067
+      },
+      "20261027": {
+        "deepest_coherence_fraction": 0.9511328150364698,
+        "awake_broadcast_ratio": 0.45023074882353586,
+        "deepest_broadcast_ratio": 0.2203675208844957
+      },
+      "20261028": {
+        "deepest_coherence_fraction": 0.9478014991185667,
+        "awake_broadcast_ratio": 0.6610604828098227,
+        "deepest_broadcast_ratio": 0.48774883590408674
+      },
+      "20261029": {
+        "deepest_coherence_fraction": 0.9751914410661857,
+        "awake_broadcast_ratio": 0.6656605939681208,
+        "deepest_broadcast_ratio": 0.045956940894240024
+      },
+      "20261030": {
+        "deepest_coherence_fraction": 0.9415275690291477,
+        "awake_broadcast_ratio": 0.6090745991447614,
+        "deepest_broadcast_ratio": 0.28690417605648205
+      },
+      "20261031": {
+        "deepest_coherence_fraction": 0.9597828734099219,
+        "awake_broadcast_ratio": 0.48109577310252793,
+        "deepest_broadcast_ratio": 0.22854845438772184
+      },
+      "20261032": {
+        "deepest_coherence_fraction": 0.962008432787879,
+        "awake_broadcast_ratio": 0.32487176684428215,
+        "deepest_broadcast_ratio": 0.11271348274039857
+      },
+      "20261033": {
+        "deepest_coherence_fraction": 0.9655232364045669,
+        "awake_broadcast_ratio": 0.5546743881817763,
+        "deepest_broadcast_ratio": 0.11223860650677372
+      },
+      "20261034": {
+        "deepest_coherence_fraction": 0.962847854399341,
+        "awake_broadcast_ratio": 0.48142350346074786,
+        "deepest_broadcast_ratio": 0.030117335054317147
+      },
+      "20261035": {
+        "deepest_coherence_fraction": 0.9610785901987182,
+        "awake_broadcast_ratio": 0.5510455324247466,
+        "deepest_broadcast_ratio": 0.30719390503716865
+      },
+      "20261036": {
+        "deepest_coherence_fraction": 0.9406255017797118,
+        "awake_broadcast_ratio": 0.6281798561466214,
+        "deepest_broadcast_ratio": 0.17822964726276483
+      }
+    },
+    "undo: measurement window of 600 steps instead of two whole stimulus cycles": {
+      "20261017": {
+        "deepest_coherence_fraction": 0.9615746618629508,
+        "awake_broadcast_ratio": 1.0466916049527157,
+        "deepest_broadcast_ratio": 0.2394713293999898
+      },
+      "20261018": {
+        "deepest_coherence_fraction": 0.9690063486496467,
+        "awake_broadcast_ratio": 0.19206237156565292,
+        "deepest_broadcast_ratio": 0.39550718760472214
+      },
+      "20261019": {
+        "deepest_coherence_fraction": 0.9676844402868332,
+        "awake_broadcast_ratio": 0.23264972346114685,
+        "deepest_broadcast_ratio": 0.9055516923900836
+      },
+      "20261020": {
+        "deepest_coherence_fraction": 0.9642755217250951,
+        "awake_broadcast_ratio": 0.6267370606540418,
+        "deepest_broadcast_ratio": 0.19337809718127988
+      },
+      "20261021": {
+        "deepest_coherence_fraction": 0.9682789716652386,
+        "awake_broadcast_ratio": 0.4903679222976787,
+        "deepest_broadcast_ratio": 0.3793400940753052
+      },
+      "20261022": {
+        "deepest_coherence_fraction": 0.9490089121046758,
+        "awake_broadcast_ratio": 1.1009784445178161,
+        "deepest_broadcast_ratio": 0.14425330686831672
+      },
+      "20261023": {
+        "deepest_coherence_fraction": 0.9621143595779994,
+        "awake_broadcast_ratio": 0.5796848966314427,
+        "deepest_broadcast_ratio": 0.19411698947826733
+      },
+      "20261024": {
+        "deepest_coherence_fraction": 0.9526000362822191,
+        "awake_broadcast_ratio": 0.5627695709626881,
+        "deepest_broadcast_ratio": 0.2836511703547414
+      },
+      "20261025": {
+        "deepest_coherence_fraction": 0.9718424246307426,
+        "awake_broadcast_ratio": 0.5212294116948634,
+        "deepest_broadcast_ratio": 0.09879807429096411
+      },
+      "20261026": {
+        "deepest_coherence_fraction": 0.9645066325422097,
+        "awake_broadcast_ratio": 0.5202845436985853,
+        "deepest_broadcast_ratio": 0.548123577349193
+      },
+      "20261027": {
+        "deepest_coherence_fraction": 0.9476677737200859,
+        "awake_broadcast_ratio": 0.5954520024324386,
+        "deepest_broadcast_ratio": 0.3291217247864137
+      },
+      "20261028": {
+        "deepest_coherence_fraction": 0.947153958942644,
+        "awake_broadcast_ratio": 0.4327440959691365,
+        "deepest_broadcast_ratio": 0.6498930779284728
+      },
+      "20261029": {
+        "deepest_coherence_fraction": 0.9541287318143121,
+        "awake_broadcast_ratio": 0.46066788966437794,
+        "deepest_broadcast_ratio": 0.9272679857054082
+      },
+      "20261030": {
+        "deepest_coherence_fraction": 0.9433893815535932,
+        "awake_broadcast_ratio": 0.3787523698896116,
+        "deepest_broadcast_ratio": 0.3024183662018038
+      },
+      "20261031": {
+        "deepest_coherence_fraction": 0.9559503002038381,
+        "awake_broadcast_ratio": 0.74252548352649,
+        "deepest_broadcast_ratio": 0.6543647930967595
+      },
+      "20261032": {
+        "deepest_coherence_fraction": 0.9575544020967992,
+        "awake_broadcast_ratio": 0.20969724935630515,
+        "deepest_broadcast_ratio": 0.5979235095473476
+      },
+      "20261033": {
+        "deepest_coherence_fraction": 0.9531921070005717,
+        "awake_broadcast_ratio": 0.39100978790554064,
+        "deepest_broadcast_ratio": 0.2318697459028977
+      },
+      "20261034": {
+        "deepest_coherence_fraction": 0.953726145372929,
+        "awake_broadcast_ratio": 0.33266069428175327,
+        "deepest_broadcast_ratio": 0.7737376482759883
+      },
+      "20261035": {
+        "deepest_coherence_fraction": 0.9652352469288196,
+        "awake_broadcast_ratio": 0.9052109218548252,
+        "deepest_broadcast_ratio": 0.24968206337072357
+      },
+      "20261036": {
+        "deepest_coherence_fraction": 0.9225987568252095,
+        "awake_broadcast_ratio": 0.47891473056518746,
+        "deepest_broadcast_ratio": 0.5610107827882717
+      }
+    },
+    "undo: timing errors summed instead of combined in quadrature": {
+      "20261017": {
+        "deepest_coherence_fraction": 0.9654077798068114,
+        "awake_broadcast_ratio": 0.5948127434528571,
+        "deepest_broadcast_ratio": 0.21229698473417993
+      },
+      "20261018": {
+        "deepest_coherence_fraction": 0.9561379400735766,
+        "awake_broadcast_ratio": 0.4532938190212499,
+        "deepest_broadcast_ratio": 0.05845141014019002
+      },
+      "20261019": {
+        "deepest_coherence_fraction": 0.9722082632681619,
+        "awake_broadcast_ratio": 0.5056523563819958,
+        "deepest_broadcast_ratio": 0.1889158695623031
+      },
+      "20261020": {
+        "deepest_coherence_fraction": 0.9438358552125836,
+        "awake_broadcast_ratio": 0.34506024006428143,
+        "deepest_broadcast_ratio": 0.1796054690516342
+      },
+      "20261021": {
+        "deepest_coherence_fraction": 0.9719696335308317,
+        "awake_broadcast_ratio": 0.6392096185277708,
+        "deepest_broadcast_ratio": 0.24017226922591042
+      },
+      "20261022": {
+        "deepest_coherence_fraction": 0.9449267634519976,
+        "awake_broadcast_ratio": 0.5919953323825616,
+        "deepest_broadcast_ratio": 0.2871337119139895
+      },
+      "20261023": {
+        "deepest_coherence_fraction": 0.9657598954896418,
+        "awake_broadcast_ratio": 0.6483139817323587,
+        "deepest_broadcast_ratio": 0.31227372206797965
+      },
+      "20261024": {
+        "deepest_coherence_fraction": 0.9647164147313314,
+        "awake_broadcast_ratio": 0.31361090838105704,
+        "deepest_broadcast_ratio": 0.2721843190830529
+      },
+      "20261025": {
+        "deepest_coherence_fraction": 0.9662182483502707,
+        "awake_broadcast_ratio": 0.2286700659874324,
+        "deepest_broadcast_ratio": 0.3281753358820193
+      },
+      "20261026": {
+        "deepest_coherence_fraction": 0.9376319226875692,
+        "awake_broadcast_ratio": 0.38885039388969617,
+        "deepest_broadcast_ratio": 0.15724453701286045
+      },
+      "20261027": {
+        "deepest_coherence_fraction": 0.9554328841734655,
+        "awake_broadcast_ratio": 0.45023074882353586,
+        "deepest_broadcast_ratio": 0.23137616744353526
+      },
+      "20261028": {
+        "deepest_coherence_fraction": 0.9552803946350574,
+        "awake_broadcast_ratio": 0.6610604828098227,
+        "deepest_broadcast_ratio": 0.38689119605307537
+      },
+      "20261029": {
+        "deepest_coherence_fraction": 0.9749005474364293,
+        "awake_broadcast_ratio": 0.6656605939681208,
+        "deepest_broadcast_ratio": 0.1639062958590819
+      },
+      "20261030": {
+        "deepest_coherence_fraction": 0.9385109135147327,
+        "awake_broadcast_ratio": 0.6090745991447614,
+        "deepest_broadcast_ratio": 0.27774139095619754
+      },
+      "20261031": {
+        "deepest_coherence_fraction": 0.9576092992085956,
+        "awake_broadcast_ratio": 0.48109577310252793,
+        "deepest_broadcast_ratio": 0.19461487503058225
+      },
+      "20261032": {
+        "deepest_coherence_fraction": 0.9617053677552078,
+        "awake_broadcast_ratio": 0.32487176684428215,
+        "deepest_broadcast_ratio": 0.18110884413434095
+      },
+      "20261033": {
+        "deepest_coherence_fraction": 0.9655898218395228,
+        "awake_broadcast_ratio": 0.5546743881817763,
+        "deepest_broadcast_ratio": 0.13028875011852417
+      },
+      "20261034": {
+        "deepest_coherence_fraction": 0.9650431690691919,
+        "awake_broadcast_ratio": 0.48142350346074786,
+        "deepest_broadcast_ratio": 0.10995815996111384
+      },
+      "20261035": {
+        "deepest_coherence_fraction": 0.9619181448925425,
+        "awake_broadcast_ratio": 0.5510455324247466,
+        "deepest_broadcast_ratio": 0.2635330147159495
+      },
+      "20261036": {
+        "deepest_coherence_fraction": 0.9435991937995675,
+        "awake_broadcast_ratio": 0.6281798561466214,
+        "deepest_broadcast_ratio": 0.1774879184688833
+      }
+    },
+    "undo: muscles and other cells kept in the graph": {
+      "20261017": {
+        "deepest_coherence_fraction": 0.9678645212636728,
+        "awake_broadcast_ratio": 0.4527883402315871,
+        "deepest_broadcast_ratio": 0.056792546855573306
+      },
+      "20261018": {
+        "deepest_coherence_fraction": 0.9591400925627822,
+        "awake_broadcast_ratio": 0.3999551751961869,
+        "deepest_broadcast_ratio": 0.3649037441701518
+      },
+      "20261019": {
+        "deepest_coherence_fraction": 0.942668025519455,
+        "awake_broadcast_ratio": 0.33180519658320573,
+        "deepest_broadcast_ratio": 0.23356808362801498
+      },
+      "20261020": {
+        "deepest_coherence_fraction": 0.9753171469244782,
+        "awake_broadcast_ratio": 0.4417077676241967,
+        "deepest_broadcast_ratio": 0.21060187274507014
+      },
+      "20261021": {
+        "deepest_coherence_fraction": 0.9668821875365932,
+        "awake_broadcast_ratio": 0.29059685389094625,
+        "deepest_broadcast_ratio": 0.3159308796131504
+      },
+      "20261022": {
+        "deepest_coherence_fraction": 0.9707836573183327,
+        "awake_broadcast_ratio": 0.32232755394572965,
+        "deepest_broadcast_ratio": 0.22198561091420635
+      },
+      "20261023": {
+        "deepest_coherence_fraction": 0.9649095138788877,
+        "awake_broadcast_ratio": 0.6334169960283237,
+        "deepest_broadcast_ratio": 0.09646078392729437
+      },
+      "20261024": {
+        "deepest_coherence_fraction": 0.9674724822075741,
+        "awake_broadcast_ratio": 0.37771909395775977,
+        "deepest_broadcast_ratio": 0.1870465701805754
+      },
+      "20261025": {
+        "deepest_coherence_fraction": 0.9711172913863989,
+        "awake_broadcast_ratio": 0.34895857724747037,
+        "deepest_broadcast_ratio": 0.11327551612907288
+      },
+      "20261026": {
+        "deepest_coherence_fraction": 0.9570541271342774,
+        "awake_broadcast_ratio": 0.29992797090750845,
+        "deepest_broadcast_ratio": 0.13986659102126187
+      },
+      "20261027": {
+        "deepest_coherence_fraction": 0.9681987248617901,
+        "awake_broadcast_ratio": 0.34957822838566194,
+        "deepest_broadcast_ratio": 0.22948295046784636
+      },
+      "20261028": {
+        "deepest_coherence_fraction": 0.9718652199279519,
+        "awake_broadcast_ratio": 0.38895251898826433,
+        "deepest_broadcast_ratio": 0.25029173939039845
+      },
+      "20261029": {
+        "deepest_coherence_fraction": 0.9586417166480712,
+        "awake_broadcast_ratio": 0.30298797354853607,
+        "deepest_broadcast_ratio": 0.24434530472850655
+      },
+      "20261030": {
+        "deepest_coherence_fraction": 0.965450834107964,
+        "awake_broadcast_ratio": 0.4602768977429474,
+        "deepest_broadcast_ratio": 0.36509111973645647
+      },
+      "20261031": {
+        "deepest_coherence_fraction": 0.9647097060621683,
+        "awake_broadcast_ratio": 0.4644238996324034,
+        "deepest_broadcast_ratio": 0.3031348560689431
+      },
+      "20261032": {
+        "deepest_coherence_fraction": 0.9567051340819761,
+        "awake_broadcast_ratio": 0.29845248327992485,
+        "deepest_broadcast_ratio": 0.29648114519828306
+      },
+      "20261033": {
+        "deepest_coherence_fraction": 0.9702497012522061,
+        "awake_broadcast_ratio": 0.3421298938436019,
+        "deepest_broadcast_ratio": 0.44975564744049723
+      },
+      "20261034": {
+        "deepest_coherence_fraction": 0.9545007962756654,
+        "awake_broadcast_ratio": 0.3600881639488163,
+        "deepest_broadcast_ratio": 0.2116628701058601
+      },
+      "20261035": {
+        "deepest_coherence_fraction": 0.9672474757159518,
+        "awake_broadcast_ratio": 0.1481279392857263,
+        "deepest_broadcast_ratio": 0.7904405415795247
+      },
+      "20261036": {
+        "deepest_coherence_fraction": 0.9657568921925644,
+        "awake_broadcast_ratio": 0.3245348536321998,
+        "deepest_broadcast_ratio": 0.15461498841275673
+      }
+    },
+    "undo: chemical self-connections kept": {
+      "20261017": {
+        "deepest_coherence_fraction": 0.9877308678318297,
+        "awake_broadcast_ratio": 0.29043082194052194,
+        "deepest_broadcast_ratio": 0.03237052637441897
+      },
+      "20261018": {
+        "deepest_coherence_fraction": 0.9616784406340888,
+        "awake_broadcast_ratio": 0.4754763691715516,
+        "deepest_broadcast_ratio": 0.2498671859361602
+      },
+      "20261019": {
+        "deepest_coherence_fraction": 0.9625041706147445,
+        "awake_broadcast_ratio": 0.4810146083072317,
+        "deepest_broadcast_ratio": 0.10141447217364176
+      },
+      "20261020": {
+        "deepest_coherence_fraction": 0.9510766723510355,
+        "awake_broadcast_ratio": 0.5474641043697772,
+        "deepest_broadcast_ratio": 0.16638339043924655
+      },
+      "20261021": {
+        "deepest_coherence_fraction": 0.9596222599005897,
+        "awake_broadcast_ratio": 0.3081510338142719,
+        "deepest_broadcast_ratio": 0.037953498333537616
+      },
+      "20261022": {
+        "deepest_coherence_fraction": 0.9646426430880136,
+        "awake_broadcast_ratio": 0.6690877515551769,
+        "deepest_broadcast_ratio": 0.24715220579566854
+      },
+      "20261023": {
+        "deepest_coherence_fraction": 0.9537335167924282,
+        "awake_broadcast_ratio": 0.2476095687118262,
+        "deepest_broadcast_ratio": 0.3667935965166872
+      },
+      "20261024": {
+        "deepest_coherence_fraction": 0.9609465437799183,
+        "awake_broadcast_ratio": 0.470509693275633,
+        "deepest_broadcast_ratio": 0.2096753034096107
+      },
+      "20261025": {
+        "deepest_coherence_fraction": 0.9372056545152416,
+        "awake_broadcast_ratio": 0.149465184751778,
+        "deepest_broadcast_ratio": 0.4365790694417542
+      },
+      "20261026": {
+        "deepest_coherence_fraction": 0.9910546689948355,
+        "awake_broadcast_ratio": 0.5027216163026001,
+        "deepest_broadcast_ratio": 0.1897528755165581
+      },
+      "20261027": {
+        "deepest_coherence_fraction": 0.9754914730917834,
+        "awake_broadcast_ratio": 0.5334463401497707,
+        "deepest_broadcast_ratio": 0.1960872135254542
+      },
+      "20261028": {
+        "deepest_coherence_fraction": 0.962851990190079,
+        "awake_broadcast_ratio": 0.25249523115021355,
+        "deepest_broadcast_ratio": 0.3999628325362376
+      },
+      "20261029": {
+        "deepest_coherence_fraction": 0.9816135582192257,
+        "awake_broadcast_ratio": 0.36889984853642366,
+        "deepest_broadcast_ratio": 0.13074236642587186
+      },
+      "20261030": {
+        "deepest_coherence_fraction": 0.9712727319981354,
+        "awake_broadcast_ratio": 0.5859281645952534,
+        "deepest_broadcast_ratio": 0.15369826898821384
+      },
+      "20261031": {
+        "deepest_coherence_fraction": 0.9553169066033762,
+        "awake_broadcast_ratio": 0.606658158237717,
+        "deepest_broadcast_ratio": 0.09678134012494514
+      },
+      "20261032": {
+        "deepest_coherence_fraction": 0.9529744644170846,
+        "awake_broadcast_ratio": 0.56906748645197,
+        "deepest_broadcast_ratio": 0.11431395393973365
+      },
+      "20261033": {
+        "deepest_coherence_fraction": 0.9566854486533296,
+        "awake_broadcast_ratio": 0.31749419746458796,
+        "deepest_broadcast_ratio": 0.2806362017361393
+      },
+      "20261034": {
+        "deepest_coherence_fraction": 0.9666232987777125,
+        "awake_broadcast_ratio": 0.4392749991292853,
+        "deepest_broadcast_ratio": 0.12634960321955882
+      },
+      "20261035": {
+        "deepest_coherence_fraction": 0.960391981820674,
+        "awake_broadcast_ratio": 0.40612262687620054,
+        "deepest_broadcast_ratio": 0.18814720488784112
+      },
+      "20261036": {
+        "deepest_coherence_fraction": 0.9510513974647878,
+        "awake_broadcast_ratio": 0.4885745645859107,
+        "deepest_broadcast_ratio": 0.11969055223701952
+      }
+    },
+    "undo: gap junctions as listed and mirrored, so most count twice per direction": {
+      "20261017": {
+        "deepest_coherence_fraction": 0.9565577690608519,
+        "awake_broadcast_ratio": 0.6639068605587409,
+        "deepest_broadcast_ratio": 0.03725842868048466
+      },
+      "20261018": {
+        "deepest_coherence_fraction": 0.9518252605376387,
+        "awake_broadcast_ratio": 0.5029062884101311,
+        "deepest_broadcast_ratio": 0.22015734279934504
+      },
+      "20261019": {
+        "deepest_coherence_fraction": 0.9634313686201282,
+        "awake_broadcast_ratio": 0.6277836024835878,
+        "deepest_broadcast_ratio": 0.3340153915678614
+      },
+      "20261020": {
+        "deepest_coherence_fraction": 0.956027667929321,
+        "awake_broadcast_ratio": 0.46667843040365903,
+        "deepest_broadcast_ratio": 0.23471205018471564
+      },
+      "20261021": {
+        "deepest_coherence_fraction": 0.9761933904700113,
+        "awake_broadcast_ratio": 0.3146006003639578,
+        "deepest_broadcast_ratio": 0.2918974774784726
+      },
+      "20261022": {
+        "deepest_coherence_fraction": 0.9628221780049471,
+        "awake_broadcast_ratio": 0.5256243748216044,
+        "deepest_broadcast_ratio": 0.12005453251589282
+      },
+      "20261023": {
+        "deepest_coherence_fraction": 0.9752662292701806,
+        "awake_broadcast_ratio": 0.28184541072529945,
+        "deepest_broadcast_ratio": 0.07879270762807968
+      },
+      "20261024": {
+        "deepest_coherence_fraction": 0.9685389884907637,
+        "awake_broadcast_ratio": 0.5186416019540053,
+        "deepest_broadcast_ratio": 0.3843402280873424
+      },
+      "20261025": {
+        "deepest_coherence_fraction": 0.9786790247604144,
+        "awake_broadcast_ratio": 0.40939253040848617,
+        "deepest_broadcast_ratio": 0.23049559025919739
+      },
+      "20261026": {
+        "deepest_coherence_fraction": 0.97246856575907,
+        "awake_broadcast_ratio": 0.5798434938027509,
+        "deepest_broadcast_ratio": 0.05192934160046328
+      },
+      "20261027": {
+        "deepest_coherence_fraction": 0.9720462283847132,
+        "awake_broadcast_ratio": 0.3858838112906498,
+        "deepest_broadcast_ratio": 0.27001207894086365
+      },
+      "20261028": {
+        "deepest_coherence_fraction": 0.9623699953358241,
+        "awake_broadcast_ratio": 0.5242309076114804,
+        "deepest_broadcast_ratio": 0.14619579187045068
+      },
+      "20261029": {
+        "deepest_coherence_fraction": 0.9738830081680899,
+        "awake_broadcast_ratio": 0.34109650025419874,
+        "deepest_broadcast_ratio": 0.3779942369759612
+      },
+      "20261030": {
+        "deepest_coherence_fraction": 0.9676293213314229,
+        "awake_broadcast_ratio": 0.6588574778573613,
+        "deepest_broadcast_ratio": 0.18685087681407586
+      },
+      "20261031": {
+        "deepest_coherence_fraction": 0.9639581443813586,
+        "awake_broadcast_ratio": 0.5090631476089317,
+        "deepest_broadcast_ratio": 0.058564625466528686
+      },
+      "20261032": {
+        "deepest_coherence_fraction": 0.9659944026104292,
+        "awake_broadcast_ratio": 0.18265203688815926,
+        "deepest_broadcast_ratio": 0.4916613492284252
+      },
+      "20261033": {
+        "deepest_coherence_fraction": 0.9814684147844076,
+        "awake_broadcast_ratio": 0.4732059199383131,
+        "deepest_broadcast_ratio": 0.20338941404653615
+      },
+      "20261034": {
+        "deepest_coherence_fraction": 0.9694062213708432,
+        "awake_broadcast_ratio": 0.42957027830032346,
+        "deepest_broadcast_ratio": 0.2523413453962635
+      },
+      "20261035": {
+        "deepest_coherence_fraction": 0.9601403489430285,
+        "awake_broadcast_ratio": 0.6265875075206367,
+        "deepest_broadcast_ratio": 0.0899279637464232
+      },
+      "20261036": {
+        "deepest_coherence_fraction": 0.9686696260640256,
+        "awake_broadcast_ratio": 0.5627338040354716,
+        "deepest_broadcast_ratio": 0.08514392500908224
+      }
+    },
+    "all undone (must match the overnight run)": {
+      "20261017": {
+        "deepest_coherence_fraction": 0.9820441476546307,
+        "awake_broadcast_ratio": 0.3862024803165609,
+        "deepest_broadcast_ratio": 0.8589860287803225
+      },
+      "20261018": {
+        "deepest_coherence_fraction": 0.9734807025135794,
+        "awake_broadcast_ratio": 0.42655754126901346,
+        "deepest_broadcast_ratio": 0.6215085850112281
+      },
+      "20261019": {
+        "deepest_coherence_fraction": 0.9746987881123965,
+        "awake_broadcast_ratio": 0.5547931368764365,
+        "deepest_broadcast_ratio": 0.5698887801632903
+      },
+      "20261020": {
+        "deepest_coherence_fraction": 0.9699878861539393,
+        "awake_broadcast_ratio": 0.5184567897589712,
+        "deepest_broadcast_ratio": 0.3973133924426848
+      },
+      "20261021": {
+        "deepest_coherence_fraction": 0.9584877307439867,
+        "awake_broadcast_ratio": 0.13558299044742503,
+        "deepest_broadcast_ratio": 0.28452896346397516
+      },
+      "20261022": {
+        "deepest_coherence_fraction": 0.9634570633912006,
+        "awake_broadcast_ratio": 0.3638574041612993,
+        "deepest_broadcast_ratio": 0.6072029086704503
+      },
+      "20261023": {
+        "deepest_coherence_fraction": 0.9651353574591156,
+        "awake_broadcast_ratio": 0.5704714160606987,
+        "deepest_broadcast_ratio": 0.2249892360427522
+      },
+      "20261024": {
+        "deepest_coherence_fraction": 0.9739505515613524,
+        "awake_broadcast_ratio": 0.25985319146324937,
+        "deepest_broadcast_ratio": 0.42588966549663476
+      },
+      "20261025": {
+        "deepest_coherence_fraction": 0.949396665890879,
+        "awake_broadcast_ratio": 0.48741556994977836,
+        "deepest_broadcast_ratio": 0.47891592399813426
+      },
+      "20261026": {
+        "deepest_coherence_fraction": 0.9687363681776483,
+        "awake_broadcast_ratio": 0.5950257764285828,
+        "deepest_broadcast_ratio": 0.3895362781192514
+      },
+      "20261027": {
+        "deepest_coherence_fraction": 0.9697077781980955,
+        "awake_broadcast_ratio": 0.7296274838760523,
+        "deepest_broadcast_ratio": 0.19826363514546408
+      },
+      "20261028": {
+        "deepest_coherence_fraction": 0.9742158316823495,
+        "awake_broadcast_ratio": 0.5963748475624312,
+        "deepest_broadcast_ratio": 0.4480608168361696
+      },
+      "20261029": {
+        "deepest_coherence_fraction": 0.968358840213309,
+        "awake_broadcast_ratio": 0.36530307803383477,
+        "deepest_broadcast_ratio": 0.4826860065127935
+      },
+      "20261030": {
+        "deepest_coherence_fraction": 0.9555333974027439,
+        "awake_broadcast_ratio": 0.36949440903871156,
+        "deepest_broadcast_ratio": 0.5507163266335036
+      },
+      "20261031": {
+        "deepest_coherence_fraction": 0.9696505403467534,
+        "awake_broadcast_ratio": 0.3930636845183395,
+        "deepest_broadcast_ratio": 0.3760546869796743
+      },
+      "20261032": {
+        "deepest_coherence_fraction": 0.984532635035097,
+        "awake_broadcast_ratio": 0.2450438832686442,
+        "deepest_broadcast_ratio": 0.3626255165575187
+      },
+      "20261033": {
+        "deepest_coherence_fraction": 0.9779958784870523,
+        "awake_broadcast_ratio": 0.42109619600510195,
+        "deepest_broadcast_ratio": 0.5160088779508013
+      },
+      "20261034": {
+        "deepest_coherence_fraction": 0.9678669815222208,
+        "awake_broadcast_ratio": 0.6669376361216012,
+        "deepest_broadcast_ratio": 0.5836731075593478
+      },
+      "20261035": {
+        "deepest_coherence_fraction": 0.9611246742128754,
+        "awake_broadcast_ratio": 0.47628134299093516,
+        "deepest_broadcast_ratio": 0.5491671841734875
+      },
+      "20261036": {
+        "deepest_coherence_fraction": 0.9794529740011092,
+        "awake_broadcast_ratio": 0.5168333121878325,
+        "deepest_broadcast_ratio": 0.41708944521510133
+      }
+    }
+  }
+}
