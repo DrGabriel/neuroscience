@@ -1,0 +1,438 @@
+{
+  "label": "diagnostic",
+  "started_utc": "2026-10-20T13:28:26.520656+00:00",
+  "finished_utc": "2026-10-20T13:32:31.990179+00:00",
+  "provenance": {
+    "hardware": {
+      "hw.model": "Mac14,9",
+      "machdep.cpu.brand_string": "Apple M2 Pro",
+      "hw.memsize": "34359738368",
+      "hw.ncpu": "10",
+      "hw.perflevel0.physicalcpu": "6",
+      "hw.perflevel1.physicalcpu": "4"
+    },
+    "memory_gibibytes": 32.0,
+    "operating_system": {
+      "product_version": "26.7.1",
+      "build_version": "25G241",
+      "platform": "macOS-26.7.1-arm64-arm-64bit-Mach-O",
+      "machine": "arm64"
+    },
+    "python": {
+      "implementation": "CPython",
+      "version": "3.13.2",
+      "packages": {
+        "numpy": "2.5.4",
+        "scipy": "1.18.1"
+      }
+    },
+    "source": {
+      "git_commit": "91af54d17120515c2dd248423d3d1c0990c97178",
+      "git_working_tree_dirty": false,
+      "sha256": {
+        "calibration.py": "927c086c7d329d4fbeb895412f083b07e776c05d83fd7be0a807076107bfefea",
+        "congestion_study.py": "5f229a3fa8ff0466d566339b2112d7b28bce5d4320fcf068733b1a845e46c36b",
+        "connectomes.py": "b13446025b96ad86be7f4121b4c2b227dc58a4f38dc1c4db866c8b3bff86f3d1",
+        "dpc_simulator.py": "621859b0bca3cc34cedd82e1559e1097bf90142d698e8c7d95b3e0907417c452",
+        "excitatory_inhibitory.py": "74eec6f159cd6a9d6325daf0f5a01879736c2d6bda1ee3cff2406e3b651b266e",
+        "phase_dynamics.py": "256d7f68896a7b587732757eab90ba1d931a6eb9873db312f987773cdc0718fc",
+        "plant_tissue.py": "e9dac3d0f0c2c9baa8e813f65ea71615e65a027edd4d3115e86e556203ece030",
+        "provenance.py": "4bf9f706eb10c32c3878843146193c79bbafa7ba37e2486d2fbdaa1c2b156350",
+        "reporting.py": "661056b7bab4548101eb2b1008146146ed2b0977893b0b570a00a38fa0c8b0f2"
+      },
+      "captured": "at launch"
+    }
+  },
+  "runs": [
+    {
+      "global_coupling": 0.5,
+      "seed": 20261017,
+      "regions": 998,
+      "median_inhibitory_coupling": -11.846890646274701,
+      "regions_with_one_resting_state": 998,
+      "regions_resting_stably": 996,
+      "regions_oscillating": 2,
+      "oscillation_hz": [
+        10.249966798220145,
+        10.246085813423042
+      ],
+      "highest_resting_activity": 0.12205
+    },
+    {
+      "global_coupling": 0.5,
+      "seed": 20261018,
+      "regions": 998,
+      "median_inhibitory_coupling": -11.82670356511326,
+      "regions_with_one_resting_state": 998,
+      "regions_resting_stably": 997,
+      "regions_oscillating": 1,
+      "oscillation_hz": [
+        10.246015439430373
+      ],
+      "highest_resting_activity": 0.12200000000000001
+    },
+    {
+      "global_coupling": 0.5,
+      "seed": 20261019,
+      "regions": 998,
+      "median_inhibitory_coupling": -11.803116934212134,
+      "regions_with_one_resting_state": 998,
+      "regions_resting_stably": 997,
+      "regions_oscillating": 1,
+      "oscillation_hz": [
+        10.249485685582771
+      ],
+      "highest_resting_activity": 0.12205
+    },
+    {
+      "global_coupling": 0.5,
+      "seed": 20261020,
+      "regions": 998,
+      "median_inhibitory_coupling": -11.816135084879122,
+      "regions_with_one_resting_state": 998,
+      "regions_resting_stably": 996,
+      "regions_oscillating": 2,
+      "oscillation_hz": [
+        10.25042626320123,
+        10.246151666560692
+      ],
+      "highest_resting_activity": 0.12205
+    },
+    {
+      "global_coupling": 0.5,
+      "seed": 20261021,
+      "regions": 998,
+      "median_inhibitory_coupling": -11.862253097926843,
+      "regions_with_one_resting_state": 998,
+      "regions_resting_stably": 998,
+      "regions_oscillating": 0,
+      "oscillation_hz": [],
+      "highest_resting_activity": 0.12200000000000001
+    },
+    {
+      "global_coupling": 0.5,
+      "seed": 20261022,
+      "regions": 998,
+      "median_inhibitory_coupling": -11.871077596800042,
+      "regions_with_one_resting_state": 998,
+      "regions_resting_stably": 997,
+      "regions_oscillating": 1,
+      "oscillation_hz": [
+        10.245777780254857
+      ],
+      "highest_resting_activity": 0.12200000000000001
+    },
+    {
+      "global_coupling": 0.5,
+      "seed": 20261023,
+      "regions": 998,
+      "median_inhibitory_coupling": -11.90273408953886,
+      "regions_with_one_resting_state": 998,
+      "regions_resting_stably": 998,
+      "regions_oscillating": 0,
+      "oscillation_hz": [],
+      "highest_resting_activity": 0.12200000000000001
+    },
+    {
+      "global_coupling": 0.5,
+      "seed": 20261024,
+      "regions": 998,
+      "median_inhibitory_coupling": -11.88655988307294,
+      "regions_with_one_resting_state": 998,
+      "regions_resting_stably": 997,
+      "regions_oscillating": 1,
+      "oscillation_hz": [
+        10.245627080508793
+      ],
+      "highest_resting_activity": 0.12200000000000001
+    },
+    {
+      "global_coupling": 0.5,
+      "seed": 20261025,
+      "regions": 998,
+      "median_inhibitory_coupling": -11.828786230517649,
+      "regions_with_one_resting_state": 998,
+      "regions_resting_stably": 996,
+      "regions_oscillating": 2,
+      "oscillation_hz": [
+        10.250363488233132,
+        10.250098580886375
+      ],
+      "highest_resting_activity": 0.12205
+    },
+    {
+      "global_coupling": 0.5,
+      "seed": 20261026,
+      "regions": 998,
+      "median_inhibitory_coupling": -11.897338411316381,
+      "regions_with_one_resting_state": 998,
+      "regions_resting_stably": 996,
+      "regions_oscillating": 2,
+      "oscillation_hz": [
+        10.250387201681585,
+        10.250015186792432
+      ],
+      "highest_resting_activity": 0.12205
+    },
+    {
+      "global_coupling": 1.0,
+      "seed": 20261017,
+      "regions": 998,
+      "median_inhibitory_coupling": -20.07251162266252,
+      "regions_with_one_resting_state": 998,
+      "regions_resting_stably": 996,
+      "regions_oscillating": 2,
+      "oscillation_hz": [
+        10.249966798220145,
+        10.246085813423042
+      ],
+      "highest_resting_activity": 0.12205
+    },
+    {
+      "global_coupling": 1.0,
+      "seed": 20261018,
+      "regions": 998,
+      "median_inhibitory_coupling": -20.230273190240148,
+      "regions_with_one_resting_state": 998,
+      "regions_resting_stably": 997,
+      "regions_oscillating": 1,
+      "oscillation_hz": [
+        10.246015439430373
+      ],
+      "highest_resting_activity": 0.12200000000000001
+    },
+    {
+      "global_coupling": 1.0,
+      "seed": 20261019,
+      "regions": 998,
+      "median_inhibitory_coupling": -20.20970336913608,
+      "regions_with_one_resting_state": 998,
+      "regions_resting_stably": 997,
+      "regions_oscillating": 1,
+      "oscillation_hz": [
+        10.249485685582771
+      ],
+      "highest_resting_activity": 0.12205
+    },
+    {
+      "global_coupling": 1.0,
+      "seed": 20261020,
+      "regions": 998,
+      "median_inhibitory_coupling": -20.286659204546307,
+      "regions_with_one_resting_state": 998,
+      "regions_resting_stably": 996,
+      "regions_oscillating": 2,
+      "oscillation_hz": [
+        10.25042626320123,
+        10.246151666560692
+      ],
+      "highest_resting_activity": 0.12205
+    },
+    {
+      "global_coupling": 1.0,
+      "seed": 20261021,
+      "regions": 998,
+      "median_inhibitory_coupling": -20.33783244016648,
+      "regions_with_one_resting_state": 998,
+      "regions_resting_stably": 998,
+      "regions_oscillating": 0,
+      "oscillation_hz": [],
+      "highest_resting_activity": 0.12200000000000001
+    },
+    {
+      "global_coupling": 1.0,
+      "seed": 20261022,
+      "regions": 998,
+      "median_inhibitory_coupling": -20.19291532582556,
+      "regions_with_one_resting_state": 998,
+      "regions_resting_stably": 997,
+      "regions_oscillating": 1,
+      "oscillation_hz": [
+        10.245777780254857
+      ],
+      "highest_resting_activity": 0.12200000000000001
+    },
+    {
+      "global_coupling": 1.0,
+      "seed": 20261023,
+      "regions": 998,
+      "median_inhibitory_coupling": -20.109149941994755,
+      "regions_with_one_resting_state": 998,
+      "regions_resting_stably": 998,
+      "regions_oscillating": 0,
+      "oscillation_hz": [],
+      "highest_resting_activity": 0.12200000000000001
+    },
+    {
+      "global_coupling": 1.0,
+      "seed": 20261024,
+      "regions": 998,
+      "median_inhibitory_coupling": -20.288317505009005,
+      "regions_with_one_resting_state": 998,
+      "regions_resting_stably": 997,
+      "regions_oscillating": 1,
+      "oscillation_hz": [
+        10.245627080508793
+      ],
+      "highest_resting_activity": 0.12200000000000001
+    },
+    {
+      "global_coupling": 1.0,
+      "seed": 20261025,
+      "regions": 998,
+      "median_inhibitory_coupling": -20.132256115179437,
+      "regions_with_one_resting_state": 998,
+      "regions_resting_stably": 996,
+      "regions_oscillating": 2,
+      "oscillation_hz": [
+        10.250363488233132,
+        10.250098580886375
+      ],
+      "highest_resting_activity": 0.12205
+    },
+    {
+      "global_coupling": 1.0,
+      "seed": 20261026,
+      "regions": 998,
+      "median_inhibitory_coupling": -20.13992712389514,
+      "regions_with_one_resting_state": 998,
+      "regions_resting_stably": 996,
+      "regions_oscillating": 2,
+      "oscillation_hz": [
+        10.250387201681585,
+        10.250015186792432
+      ],
+      "highest_resting_activity": 0.12205
+    },
+    {
+      "global_coupling": 2.0,
+      "seed": 20261017,
+      "regions": 998,
+      "median_inhibitory_coupling": -36.43532745870775,
+      "regions_with_one_resting_state": 998,
+      "regions_resting_stably": 996,
+      "regions_oscillating": 2,
+      "oscillation_hz": [
+        10.249966798220145,
+        10.246085813423042
+      ],
+      "highest_resting_activity": 0.12205
+    },
+    {
+      "global_coupling": 2.0,
+      "seed": 20261018,
+      "regions": 998,
+      "median_inhibitory_coupling": -36.5182092589648,
+      "regions_with_one_resting_state": 998,
+      "regions_resting_stably": 997,
+      "regions_oscillating": 1,
+      "oscillation_hz": [
+        10.246015439430373
+      ],
+      "highest_resting_activity": 0.12200000000000001
+    },
+    {
+      "global_coupling": 2.0,
+      "seed": 20261019,
+      "regions": 998,
+      "median_inhibitory_coupling": -36.2164350353392,
+      "regions_with_one_resting_state": 998,
+      "regions_resting_stably": 997,
+      "regions_oscillating": 1,
+      "oscillation_hz": [
+        10.249485685582771
+      ],
+      "highest_resting_activity": 0.12205
+    },
+    {
+      "global_coupling": 2.0,
+      "seed": 20261020,
+      "regions": 998,
+      "median_inhibitory_coupling": -36.348343800617926,
+      "regions_with_one_resting_state": 998,
+      "regions_resting_stably": 996,
+      "regions_oscillating": 2,
+      "oscillation_hz": [
+        10.25042626320123,
+        10.246151666560692
+      ],
+      "highest_resting_activity": 0.12205
+    },
+    {
+      "global_coupling": 2.0,
+      "seed": 20261021,
+      "regions": 998,
+      "median_inhibitory_coupling": -36.55497909950442,
+      "regions_with_one_resting_state": 998,
+      "regions_resting_stably": 998,
+      "regions_oscillating": 0,
+      "oscillation_hz": [],
+      "highest_resting_activity": 0.12200000000000001
+    },
+    {
+      "global_coupling": 2.0,
+      "seed": 20261022,
+      "regions": 998,
+      "median_inhibitory_coupling": -36.437173277308524,
+      "regions_with_one_resting_state": 998,
+      "regions_resting_stably": 997,
+      "regions_oscillating": 1,
+      "oscillation_hz": [
+        10.245777780254857
+      ],
+      "highest_resting_activity": 0.12200000000000001
+    },
+    {
+      "global_coupling": 2.0,
+      "seed": 20261023,
+      "regions": 998,
+      "median_inhibitory_coupling": -36.428835539234186,
+      "regions_with_one_resting_state": 998,
+      "regions_resting_stably": 998,
+      "regions_oscillating": 0,
+      "oscillation_hz": [],
+      "highest_resting_activity": 0.12200000000000001
+    },
+    {
+      "global_coupling": 2.0,
+      "seed": 20261024,
+      "regions": 998,
+      "median_inhibitory_coupling": -36.366682225509635,
+      "regions_with_one_resting_state": 998,
+      "regions_resting_stably": 997,
+      "regions_oscillating": 1,
+      "oscillation_hz": [
+        10.245627080508793
+      ],
+      "highest_resting_activity": 0.12200000000000001
+    },
+    {
+      "global_coupling": 2.0,
+      "seed": 20261025,
+      "regions": 998,
+      "median_inhibitory_coupling": -36.32493307729855,
+      "regions_with_one_resting_state": 998,
+      "regions_resting_stably": 996,
+      "regions_oscillating": 2,
+      "oscillation_hz": [
+        10.250363488233132,
+        10.250098580886375
+      ],
+      "highest_resting_activity": 0.12205
+    },
+    {
+      "global_coupling": 2.0,
+      "seed": 20261026,
+      "regions": 998,
+      "median_inhibitory_coupling": -36.41746670351419,
+      "regions_with_one_resting_state": 998,
+      "regions_resting_stably": 996,
+      "regions_oscillating": 2,
+      "oscillation_hz": [
+        10.250387201681585,
+        10.250015186792432
+      ],
+      "highest_resting_activity": 0.12205
+    }
+  ]
+}

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import sys
 import unittest
+from dataclasses import replace
 from pathlib import Path
 
 import numpy as np
@@ -11,6 +12,7 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "diagnostics"))
 
 import phase_dynamics as dynamics  # noqa: E402
+import phantom_stimulus as phantom  # noqa: E402
 import phase_inertia_scan as scan  # noqa: E402
 import reference_leak as leak  # noqa: E402
 
@@ -51,6 +53,22 @@ class InertiaScanTests(unittest.TestCase):
         # 1.4 - 1.35 is 0.04999999999999982 in floating point: one step, not more.
         summary = scan.cell_summary([self.result(1.4, 1.35), self.result(1.4500000000000002, 1.35)])
         self.assertEqual(summary["ratios_above_one_step"], 1)
+
+
+class PhantomStimulusTests(unittest.TestCase):
+    def test_the_phantom_keeps_the_rhythm_and_drives_nothing(self) -> None:
+        applied = phantom.design_for(phantom.PhantomTask(phantom.Stimulus.APPLIED, phantom.STUDY_WINDOW, "celegans", 1))
+        ghost = phantom.design_for(phantom.PhantomTask(phantom.Stimulus.PHANTOM, phantom.STUDY_WINDOW, "celegans", 1))
+        self.assertEqual(ghost.stimulus.strength, 0.0)
+        self.assertGreater(applied.stimulus.strength, 0.0)
+        self.assertEqual(ghost.stimulus.angular_frequency, applied.stimulus.angular_frequency)
+        self.assertEqual(replace(ghost, stimulus=applied.stimulus), applied)
+
+    def test_the_long_window_only_lengthens_the_measurement(self) -> None:
+        study_window = phantom.design_for(phantom.PhantomTask(phantom.Stimulus.APPLIED, phantom.STUDY_WINDOW, "celegans", 1))
+        long_window = phantom.design_for(phantom.PhantomTask(phantom.Stimulus.APPLIED, phantom.LONG_WINDOW, "celegans", 1))
+        self.assertEqual(long_window.integration.measurement_steps, phantom.LONG_WINDOW * study_window.integration.measurement_steps)
+        self.assertEqual(replace(long_window, integration=study_window.integration), study_window)
 
 
 if __name__ == "__main__":
