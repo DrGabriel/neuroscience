@@ -1,7 +1,7 @@
 # Number trace
 
 Unmatched numbers in sentences without a citation: 4.
-Numbers in sentences that cite literature (checked against their sources): 96.
+Numbers in sentences that cite literature (checked against their sources): 97.
 
 ## Unmatched
 
@@ -62,6 +62,7 @@ Numbers in sentences that cite literature (checked against their sources): 96.
 | 305 | 5 | Gabernet et al., 2005), under 2 ms in hippocampal pyramidal cells (Pouille and Scanziani, 2001) and several milliseconds for layer 5 dendrites (Larkum et al., 1999). |
 | 305 | 3 | The baseline jitter $\sigma_b$ = 3 ms is the precision, about 3 ms, of the firing of neurons in the middle temporal visual area (MT) of alert macaques responding to time-varying stimuli (Buracas et al., 1998); single neurons in vitro reach under 1 ms (Mainen and Sejnowski, 1995). |
 | 305 | 3 | The baseline jitter $\sigma_b$ = 3 ms is the precision, about 3 ms, of the firing of neurons in the middle temporal visual area (MT) of alert macaques responding to time-varying stimuli (Buracas et al., 1998); single neurons in vitro reach under 1 ms (Mainen and Sejnowski, 1995). |
+| 324 | 17 | In EEG from 17 surgical patients at graded propofol target concentrations, frontal slow-wave self-coupling (bicoherence) changed in a discrete step during loss of consciousness, whereas posterior alpha coupling declined smoothly with concentration (Tong et al., 2026). |
 | 324 | 24 | In mice, isoflurane directly depolarises sleep-promoting neurons of the ventrolateral preoptic nucleus (VLPO), halothane and isoflurane increase their activity, and destroying these neurons produces an acute resistance to isoflurane that had reversed by 24 days (Moore et al., 2012); sedation by seve |
 | 328 | 10 | Hippocampal neurons of anaesthetised patients showed plasticity: their discrimination of oddball tones grew over about 10 minutes (Katlowitz et al., 2026), so the claim is not that nothing is stored locally; it is that nothing reaches a global, reportable state [A: a local service updates its own st |
 | 330 | 40 | Under anaesthesia, patients can show implicit memory for words presented during surgery with no explicit recall, which declined as hypnosis deepened and was still present at bispectral index values of 40 to 60 (Lubke et al., 1999), on an EEG-derived scale of hypnotic depth that runs from 100 (awake) |

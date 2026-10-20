@@ -45,12 +45,15 @@ The tests must pass from the archive alone. Checked on 20 October 2026 with the 
 
 ## Checked on 20 October 2026
 
-- References: 250 in each paper, identical lists; every DOI resolves on Crossref and matches author, year, title and
+- References: 254 in each paper, identical lists; every DOI resolves on Crossref and matches author, year, title and
   journal, except six records whose Crossref metadata is incomplete (conference digitisation dates, a proceedings item,
   an online-first date, a DOI registered in 2022 for a 1959 paper), each checked against the publisher or PubMed; the
   four entries without a DOI (ISO 11898-1:2024, Fowler 2014, Overton 1901, the 2004 blackout report) checked by hand
   (`tools/audit/reference_check.py`, report in `tools/audit/reference_check_report.md`).
 - Citations: every citation in the text has a reference and every reference is cited.
+- Prior work added on 20 October 2026 after a prior-art search per contribution: Bardon et al. (2025), Kordas (2026)
+  and Tong et al. (2026), checked against the full text on PubMed Central; Waters et al. (2026), a bioRxiv preprint,
+  checked against the abstract only (the full text was not reachable), and cited only for what the abstract states.
 - Numbers: every number in the main text is supported by a printed report value or is a derived value checked against
   the JSON (`tools/audit/number_trace.py`).
 - Literature numbers: all 96 numbers in sentences that cite literature were checked against the cited sources (full text
