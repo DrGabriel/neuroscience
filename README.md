@@ -12,7 +12,7 @@ General anaesthetics are chemically unrelated and act on many molecular targets,
 
 ```mermaid
 flowchart LR
-    A["Molecular action<br/>(GABA-A, NMDA, K2P, membrane)"] --> B["Circuit effect<br/>transmission failure p(c)<br/>timing jitter σ(c)"]
+    A["Molecular action<br/>(GABA-A, NMDA, K2P, membrane)"] --> B["Circuit effect<br/>transmission failure p(c)<br/>timing jitter σ₀(c)"]
     B --> C["Network effect<br/>fewer timing-coherent connections"]
     C --> D{"Giant component<br/>≥ quorum?"}
     D -- yes --> E["Integrated, reportable<br/>conscious state"]
@@ -66,7 +66,7 @@ The feedback loop in the diagram can make the transition bistable, so that consc
 | [`congestion_study.py`](simulator/congestion_study.py) | Tests the congestion account and graceful degradation; `--confirm` runs the confirmatory test on fresh seeds |
 | [`species_study.py`](simulator/species_study.py) | Tests the pillars on the three connectomes and on plant tissue |
 | [`convergence_study.py`](simulator/convergence_study.py) | Checks that the oscillator results do not depend on the integration time or step |
-| [`prespecified_study.py`](simulator/prespecified_study.py) | Runs the tests fixed in advance in Appendix C.7 (K2, feedback faults; P1c, replication of P1b) on fresh seeds |
+| [`prespecified_study.py`](simulator/prespecified_study.py) | Runs the tests fixed in advance in Appendix C.7 (K2, feedback faults; T1c, replication of T1b, reported as P1c and P1b) on fresh seeds |
 | [`explainer_export.py`](simulator/explainer_export.py) | Exports the parameters, predictions and test outcomes the explainer shows, from the latest reports |
 | [`results_catalogue.py`](simulator/results_catalogue.py) | Lists every report, current and archived, for the explainer's results archive; reports are never changed or removed |
 | [`figures.py`](simulator/figures.py), [`paper_appendices.py`](simulator/paper_appendices.py) | Build the figures and Appendices B to D from the latest reports |

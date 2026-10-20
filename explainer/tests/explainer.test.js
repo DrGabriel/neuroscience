@@ -143,6 +143,32 @@ test("a test that reuses a postulate's name is shown by its public label (regres
   assert.equal(index.label("glia", "G1"), "G1");
 });
 
+// French and Spanish carry hand-translated predictions; English and Portuguese read theirs from the paper.
+function numbersAndLabels(text) {
+  const plain = text.replace(/<[^>]+>/g, " ").replace(/https?:\/\/\S+/g, " ");
+  const numbers = (plain.match(/\d+(?:[.,]\d+)?/g) ?? []).map((n) => n.replace(",", ".")).sort();
+  const labels = (plain.match(/\b(?:P\d+b?|T\d+[a-c]?|[CKSNHOFGWMAED]\d+[a-c]?|SG\d)\b/g) ?? []).sort();
+  return { numbers, labels };
+}
+
+test("hand-translated predictions match the paper's, number for number (regression)", () => {
+  const reference = data.predictions["en-GB"];
+  const checked = [];
+  for (const [code, locale] of globalThis.DPC.registry) {
+    const own = locale.predictions;
+    if (!own) continue;
+    checked.push(code);
+    const name = code;
+    assert.equal(own.length, reference.length, `${name}: ${own.length} predictions, the paper has ${reference.length}`);
+    reference.forEach((english, index) => {
+      for (const field of Object.keys(english)) {
+        assert.deepEqual(numbersAndLabels(own[index][field] ?? ""), numbersAndLabels(english[field]), `${name} prediction ${english.number}, ${field}`);
+      }
+    });
+  }
+  assert.ok(checked.length > 0, "no locale carries its own predictions, so this test checked nothing");
+});
+
 test("a test that applied to no run is not reported as held in no run (regression)", () => {
   const base = { report: "congestion_full_x.json", study: "congestion", label: "full", identifier: "G2", statement: "s", kind: "test" };
   const index = new OutcomeIndex([{ ...base, group: "none, C=1", holding: 0, applicable: 0 }]);
