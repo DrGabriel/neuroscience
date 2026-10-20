@@ -1,0 +1,1343 @@
+{
+  "label": "diagnostic",
+  "started_utc": "2026-10-20T11:54:53.244196+00:00",
+  "finished_utc": "2026-10-20T11:58:51.200811+00:00",
+  "provenance": {
+    "hardware": {
+      "hw.model": "Mac14,9",
+      "machdep.cpu.brand_string": "Apple M2 Pro",
+      "hw.memsize": "34359738368",
+      "hw.ncpu": "10",
+      "hw.perflevel0.physicalcpu": "6",
+      "hw.perflevel1.physicalcpu": "4"
+    },
+    "memory_gibibytes": 32.0,
+    "operating_system": {
+      "product_version": "26.7.1",
+      "build_version": "25G241",
+      "platform": "macOS-26.7.1-arm64-arm-64bit-Mach-O",
+      "machine": "arm64"
+    },
+    "python": {
+      "implementation": "CPython",
+      "version": "3.13.2",
+      "packages": {
+        "numpy": "2.5.4",
+        "scipy": "1.18.1"
+      }
+    },
+    "source": {
+      "git_commit": "73d6a215bffc2fef902f87625a5e11c3283f1a44",
+      "git_working_tree_dirty": false,
+      "sha256": {
+        "calibration.py": "5cdcad39d08837ed395d1f6dbd4c5d935fe24b8632b9814c1b672ee8c4146bb1",
+        "comparisons.py": "340b044083ffa2e8f98988da8fb400fa25c961db5f08c4bce42e5681441b92c8",
+        "connectomes.py": "b13446025b96ad86be7f4121b4c2b227dc58a4f38dc1c4db866c8b3bff86f3d1",
+        "dpc_simulator.py": "621859b0bca3cc34cedd82e1559e1097bf90142d698e8c7d95b3e0907417c452",
+        "phase_dynamics.py": "7470f3f061d933b64e51bb060752914bbcfa166b3653d1dc89beeb4fc032241a",
+        "plant_tissue.py": "e9dac3d0f0c2c9baa8e813f65ea71615e65a027edd4d3115e86e556203ece030",
+        "provenance.py": "f320d7cc34706f1a0a92ea109c270872557e999139b9832304eef1fc5032b122",
+        "reporting.py": "78a8c5e399d134fdcf01a2af3be99396ff3a3eb25ebb62915bcb27ec8635fc37",
+        "species_study.py": "423902f7037b6735db60c2826cfe212cf0c664859aeeda83317d9ea3421217ba"
+      },
+      "captured": "at launch"
+    }
+  },
+  "design": {
+    "organism": "celegans",
+    "seeds": [
+      20261017,
+      20261018,
+      20261019,
+      20261020,
+      20261021,
+      20261022,
+      20261023,
+      20261024,
+      20261025,
+      20261026
+    ],
+    "feedback_values": [
+      0.45,
+      0.6,
+      0.625,
+      0.65,
+      0.675,
+      0.7,
+      0.725,
+      0.75
+    ],
+    "arousal_levels": [
+      0.0,
+      0.5
+    ]
+  },
+  "cells": [
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.45,
+      "mean_ratio": 1.0117165242165242,
+      "ratios_above_one_step": 0,
+      "never_lost": 0,
+      "never_recovered": 0,
+      "runs": 10
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.6,
+      "mean_ratio": 0.9875141360771227,
+      "ratios_above_one_step": 0,
+      "never_lost": 0,
+      "never_recovered": 0,
+      "runs": 10
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.625,
+      "mean_ratio": 0.9890285204991087,
+      "ratios_above_one_step": 0,
+      "never_lost": 0,
+      "never_recovered": 0,
+      "runs": 10
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.65,
+      "mean_ratio": 0.9885355571847507,
+      "ratios_above_one_step": 0,
+      "never_lost": 0,
+      "never_recovered": 0,
+      "runs": 10
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.675,
+      "mean_ratio": 0.9915021547507935,
+      "ratios_above_one_step": 2,
+      "never_lost": 0,
+      "never_recovered": 0,
+      "runs": 10
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.7,
+      "mean_ratio": 0.9898403679653679,
+      "ratios_above_one_step": 1,
+      "never_lost": 0,
+      "never_recovered": 0,
+      "runs": 10
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.725,
+      "mean_ratio": 0.9553981735102433,
+      "ratios_above_one_step": 1,
+      "never_lost": 0,
+      "never_recovered": 0,
+      "runs": 10
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.75,
+      "mean_ratio": 0.9537825887869088,
+      "ratios_above_one_step": 0,
+      "never_lost": 0,
+      "never_recovered": 0,
+      "runs": 10
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.45,
+      "mean_ratio": 0.9856858658582797,
+      "ratios_above_one_step": 0,
+      "never_lost": 0,
+      "never_recovered": 0,
+      "runs": 10
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.6,
+      "mean_ratio": 1.0031366798918981,
+      "ratios_above_one_step": 0,
+      "never_lost": 0,
+      "never_recovered": 0,
+      "runs": 10
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.625,
+      "mean_ratio": 0.9928712759246686,
+      "ratios_above_one_step": 1,
+      "never_lost": 0,
+      "never_recovered": 0,
+      "runs": 10
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.65,
+      "mean_ratio": 0.9777891580927633,
+      "ratios_above_one_step": 0,
+      "never_lost": 0,
+      "never_recovered": 0,
+      "runs": 10
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.675,
+      "mean_ratio": 0.9872483655595488,
+      "ratios_above_one_step": 0,
+      "never_lost": 0,
+      "never_recovered": 0,
+      "runs": 10
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.7,
+      "mean_ratio": 0.9806153420902503,
+      "ratios_above_one_step": 1,
+      "never_lost": 0,
+      "never_recovered": 0,
+      "runs": 10
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.725,
+      "mean_ratio": 0.9529522245773254,
+      "ratios_above_one_step": 0,
+      "never_lost": 0,
+      "never_recovered": 0,
+      "runs": 10
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.75,
+      "mean_ratio": 0.9229293886937786,
+      "ratios_above_one_step": 1,
+      "never_lost": 0,
+      "never_recovered": 0,
+      "runs": 10
+    }
+  ],
+  "runs": [
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.45,
+      "seed": 20261017,
+      "loss_concentration": 1.3,
+      "recovery_concentration": 1.3
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.45,
+      "seed": 20261018,
+      "loss_concentration": 1.35,
+      "recovery_concentration": 1.35
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.45,
+      "seed": 20261019,
+      "loss_concentration": 1.4500000000000002,
+      "recovery_concentration": 1.4000000000000001
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.45,
+      "seed": 20261020,
+      "loss_concentration": 1.2000000000000002,
+      "recovery_concentration": 1.25
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.45,
+      "seed": 20261021,
+      "loss_concentration": 1.25,
+      "recovery_concentration": 1.2000000000000002
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.45,
+      "seed": 20261022,
+      "loss_concentration": 1.35,
+      "recovery_concentration": 1.35
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.45,
+      "seed": 20261023,
+      "loss_concentration": 1.4000000000000001,
+      "recovery_concentration": 1.35
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.45,
+      "seed": 20261024,
+      "loss_concentration": 1.35,
+      "recovery_concentration": 1.4000000000000001
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.45,
+      "seed": 20261025,
+      "loss_concentration": 1.3,
+      "recovery_concentration": 1.25
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.45,
+      "seed": 20261026,
+      "loss_concentration": 1.35,
+      "recovery_concentration": 1.3
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.6,
+      "seed": 20261017,
+      "loss_concentration": 1.4500000000000002,
+      "recovery_concentration": 1.5
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.6,
+      "seed": 20261018,
+      "loss_concentration": 1.4500000000000002,
+      "recovery_concentration": 1.6
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.6,
+      "seed": 20261019,
+      "loss_concentration": 1.6,
+      "recovery_concentration": 1.6
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.6,
+      "seed": 20261020,
+      "loss_concentration": 1.4000000000000001,
+      "recovery_concentration": 1.4000000000000001
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.6,
+      "seed": 20261021,
+      "loss_concentration": 1.4000000000000001,
+      "recovery_concentration": 1.4000000000000001
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.6,
+      "seed": 20261022,
+      "loss_concentration": 1.6500000000000001,
+      "recovery_concentration": 1.6500000000000001
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.6,
+      "seed": 20261023,
+      "loss_concentration": 1.6500000000000001,
+      "recovery_concentration": 1.6500000000000001
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.6,
+      "seed": 20261024,
+      "loss_concentration": 1.5,
+      "recovery_concentration": 1.55
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.6,
+      "seed": 20261025,
+      "loss_concentration": 1.5,
+      "recovery_concentration": 1.5
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.6,
+      "seed": 20261026,
+      "loss_concentration": 1.5,
+      "recovery_concentration": 1.4500000000000002
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.625,
+      "seed": 20261017,
+      "loss_concentration": 1.55,
+      "recovery_concentration": 1.55
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.625,
+      "seed": 20261018,
+      "loss_concentration": 1.6,
+      "recovery_concentration": 1.6
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.625,
+      "seed": 20261019,
+      "loss_concentration": 1.6,
+      "recovery_concentration": 1.6500000000000001
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.625,
+      "seed": 20261020,
+      "loss_concentration": 1.4500000000000002,
+      "recovery_concentration": 1.4500000000000002
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.625,
+      "seed": 20261021,
+      "loss_concentration": 1.4000000000000001,
+      "recovery_concentration": 1.4000000000000001
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.625,
+      "seed": 20261022,
+      "loss_concentration": 1.6500000000000001,
+      "recovery_concentration": 1.7000000000000002
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.625,
+      "seed": 20261023,
+      "loss_concentration": 1.6500000000000001,
+      "recovery_concentration": 1.8
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.625,
+      "seed": 20261024,
+      "loss_concentration": 1.55,
+      "recovery_concentration": 1.55
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.625,
+      "seed": 20261025,
+      "loss_concentration": 1.55,
+      "recovery_concentration": 1.5
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.625,
+      "seed": 20261026,
+      "loss_concentration": 1.5,
+      "recovery_concentration": 1.5
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.65,
+      "seed": 20261017,
+      "loss_concentration": 1.6,
+      "recovery_concentration": 1.6500000000000001
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.65,
+      "seed": 20261018,
+      "loss_concentration": 1.6500000000000001,
+      "recovery_concentration": 1.8
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.65,
+      "seed": 20261019,
+      "loss_concentration": 1.6500000000000001,
+      "recovery_concentration": 1.6500000000000001
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.65,
+      "seed": 20261020,
+      "loss_concentration": 1.4500000000000002,
+      "recovery_concentration": 1.4500000000000002
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.65,
+      "seed": 20261021,
+      "loss_concentration": 1.4500000000000002,
+      "recovery_concentration": 1.4500000000000002
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.65,
+      "seed": 20261022,
+      "loss_concentration": 1.7000000000000002,
+      "recovery_concentration": 1.7000000000000002
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.65,
+      "seed": 20261023,
+      "loss_concentration": 1.8,
+      "recovery_concentration": 1.8
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.65,
+      "seed": 20261024,
+      "loss_concentration": 1.6500000000000001,
+      "recovery_concentration": 1.6
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.65,
+      "seed": 20261025,
+      "loss_concentration": 1.6500000000000001,
+      "recovery_concentration": 1.6500000000000001
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.65,
+      "seed": 20261026,
+      "loss_concentration": 1.5,
+      "recovery_concentration": 1.55
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.675,
+      "seed": 20261017,
+      "loss_concentration": 1.6,
+      "recovery_concentration": 1.6500000000000001
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.675,
+      "seed": 20261018,
+      "loss_concentration": 1.6500000000000001,
+      "recovery_concentration": 1.9000000000000001
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.675,
+      "seed": 20261019,
+      "loss_concentration": 1.6500000000000001,
+      "recovery_concentration": 1.6500000000000001
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.675,
+      "seed": 20261020,
+      "loss_concentration": 1.5,
+      "recovery_concentration": 1.5
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.675,
+      "seed": 20261021,
+      "loss_concentration": 1.55,
+      "recovery_concentration": 1.4500000000000002
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.675,
+      "seed": 20261022,
+      "loss_concentration": 1.8,
+      "recovery_concentration": 1.85
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.675,
+      "seed": 20261023,
+      "loss_concentration": 1.9000000000000001,
+      "recovery_concentration": 1.9500000000000002
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.675,
+      "seed": 20261024,
+      "loss_concentration": 1.75,
+      "recovery_concentration": 1.6500000000000001
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.675,
+      "seed": 20261025,
+      "loss_concentration": 1.6500000000000001,
+      "recovery_concentration": 1.6500000000000001
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.675,
+      "seed": 20261026,
+      "loss_concentration": 1.6500000000000001,
+      "recovery_concentration": 1.6500000000000001
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.7,
+      "seed": 20261017,
+      "loss_concentration": 1.8,
+      "recovery_concentration": 1.75
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.7,
+      "seed": 20261018,
+      "loss_concentration": 1.9500000000000002,
+      "recovery_concentration": 1.9000000000000001
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.7,
+      "seed": 20261019,
+      "loss_concentration": 1.75,
+      "recovery_concentration": 1.6500000000000001
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.7,
+      "seed": 20261020,
+      "loss_concentration": 1.55,
+      "recovery_concentration": 1.55
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.7,
+      "seed": 20261021,
+      "loss_concentration": 1.55,
+      "recovery_concentration": 1.6
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.7,
+      "seed": 20261022,
+      "loss_concentration": 1.85,
+      "recovery_concentration": 1.9000000000000001
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.7,
+      "seed": 20261023,
+      "loss_concentration": 2.0,
+      "recovery_concentration": 2.1
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.7,
+      "seed": 20261024,
+      "loss_concentration": 1.7000000000000002,
+      "recovery_concentration": 1.75
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.7,
+      "seed": 20261025,
+      "loss_concentration": 1.75,
+      "recovery_concentration": 1.75
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.7,
+      "seed": 20261026,
+      "loss_concentration": 1.6500000000000001,
+      "recovery_concentration": 1.8
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.725,
+      "seed": 20261017,
+      "loss_concentration": 1.9000000000000001,
+      "recovery_concentration": 1.8
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.725,
+      "seed": 20261018,
+      "loss_concentration": 2.0500000000000003,
+      "recovery_concentration": 2.15
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.725,
+      "seed": 20261019,
+      "loss_concentration": 1.75,
+      "recovery_concentration": 1.9000000000000001
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.725,
+      "seed": 20261020,
+      "loss_concentration": 1.55,
+      "recovery_concentration": 1.55
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.725,
+      "seed": 20261021,
+      "loss_concentration": 1.6,
+      "recovery_concentration": 1.6500000000000001
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.725,
+      "seed": 20261022,
+      "loss_concentration": 1.9000000000000001,
+      "recovery_concentration": 2.0500000000000003
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.725,
+      "seed": 20261023,
+      "loss_concentration": 2.0,
+      "recovery_concentration": 2.4000000000000004
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.725,
+      "seed": 20261024,
+      "loss_concentration": 1.8,
+      "recovery_concentration": 1.8
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.725,
+      "seed": 20261025,
+      "loss_concentration": 1.75,
+      "recovery_concentration": 1.9000000000000001
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.725,
+      "seed": 20261026,
+      "loss_concentration": 1.8,
+      "recovery_concentration": 1.85
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.75,
+      "seed": 20261017,
+      "loss_concentration": 1.9000000000000001,
+      "recovery_concentration": 2.0
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.75,
+      "seed": 20261018,
+      "loss_concentration": 2.15,
+      "recovery_concentration": 2.25
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.75,
+      "seed": 20261019,
+      "loss_concentration": 1.9000000000000001,
+      "recovery_concentration": 1.9000000000000001
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.75,
+      "seed": 20261020,
+      "loss_concentration": 1.6,
+      "recovery_concentration": 1.6
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.75,
+      "seed": 20261021,
+      "loss_concentration": 1.75,
+      "recovery_concentration": 1.7000000000000002
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.75,
+      "seed": 20261022,
+      "loss_concentration": 2.0,
+      "recovery_concentration": 2.15
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.75,
+      "seed": 20261023,
+      "loss_concentration": 2.35,
+      "recovery_concentration": 2.7
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.75,
+      "seed": 20261024,
+      "loss_concentration": 1.85,
+      "recovery_concentration": 1.9000000000000001
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.75,
+      "seed": 20261025,
+      "loss_concentration": 1.9500000000000002,
+      "recovery_concentration": 2.1
+    },
+    {
+      "arousal_level": 0.0,
+      "feedback": 0.75,
+      "seed": 20261026,
+      "loss_concentration": 1.8,
+      "recovery_concentration": 2.0
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.45,
+      "seed": 20261017,
+      "loss_concentration": 1.35,
+      "recovery_concentration": 1.35
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.45,
+      "seed": 20261018,
+      "loss_concentration": 1.35,
+      "recovery_concentration": 1.4000000000000001
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.45,
+      "seed": 20261019,
+      "loss_concentration": 1.4500000000000002,
+      "recovery_concentration": 1.4500000000000002
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.45,
+      "seed": 20261020,
+      "loss_concentration": 1.3,
+      "recovery_concentration": 1.3
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.45,
+      "seed": 20261021,
+      "loss_concentration": 1.25,
+      "recovery_concentration": 1.3
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.45,
+      "seed": 20261022,
+      "loss_concentration": 1.4000000000000001,
+      "recovery_concentration": 1.4000000000000001
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.45,
+      "seed": 20261023,
+      "loss_concentration": 1.4000000000000001,
+      "recovery_concentration": 1.4500000000000002
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.45,
+      "seed": 20261024,
+      "loss_concentration": 1.4000000000000001,
+      "recovery_concentration": 1.4000000000000001
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.45,
+      "seed": 20261025,
+      "loss_concentration": 1.4000000000000001,
+      "recovery_concentration": 1.4000000000000001
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.45,
+      "seed": 20261026,
+      "loss_concentration": 1.4000000000000001,
+      "recovery_concentration": 1.4500000000000002
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.6,
+      "seed": 20261017,
+      "loss_concentration": 1.6,
+      "recovery_concentration": 1.6500000000000001
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.6,
+      "seed": 20261018,
+      "loss_concentration": 1.6500000000000001,
+      "recovery_concentration": 1.6500000000000001
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.6,
+      "seed": 20261019,
+      "loss_concentration": 1.6500000000000001,
+      "recovery_concentration": 1.6
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.6,
+      "seed": 20261020,
+      "loss_concentration": 1.4500000000000002,
+      "recovery_concentration": 1.4500000000000002
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.6,
+      "seed": 20261021,
+      "loss_concentration": 1.4500000000000002,
+      "recovery_concentration": 1.4500000000000002
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.6,
+      "seed": 20261022,
+      "loss_concentration": 1.7000000000000002,
+      "recovery_concentration": 1.7000000000000002
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.6,
+      "seed": 20261023,
+      "loss_concentration": 1.75,
+      "recovery_concentration": 1.7000000000000002
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.6,
+      "seed": 20261024,
+      "loss_concentration": 1.55,
+      "recovery_concentration": 1.6
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.6,
+      "seed": 20261025,
+      "loss_concentration": 1.6,
+      "recovery_concentration": 1.55
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.6,
+      "seed": 20261026,
+      "loss_concentration": 1.55,
+      "recovery_concentration": 1.55
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.625,
+      "seed": 20261017,
+      "loss_concentration": 1.6,
+      "recovery_concentration": 1.6500000000000001
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.625,
+      "seed": 20261018,
+      "loss_concentration": 1.6500000000000001,
+      "recovery_concentration": 1.8
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.625,
+      "seed": 20261019,
+      "loss_concentration": 1.6500000000000001,
+      "recovery_concentration": 1.6500000000000001
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.625,
+      "seed": 20261020,
+      "loss_concentration": 1.5,
+      "recovery_concentration": 1.5
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.625,
+      "seed": 20261021,
+      "loss_concentration": 1.55,
+      "recovery_concentration": 1.4500000000000002
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.625,
+      "seed": 20261022,
+      "loss_concentration": 1.7000000000000002,
+      "recovery_concentration": 1.75
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.625,
+      "seed": 20261023,
+      "loss_concentration": 1.8,
+      "recovery_concentration": 1.8
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.625,
+      "seed": 20261024,
+      "loss_concentration": 1.55,
+      "recovery_concentration": 1.6500000000000001
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.625,
+      "seed": 20261025,
+      "loss_concentration": 1.7000000000000002,
+      "recovery_concentration": 1.6500000000000001
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.625,
+      "seed": 20261026,
+      "loss_concentration": 1.6,
+      "recovery_concentration": 1.55
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.65,
+      "seed": 20261017,
+      "loss_concentration": 1.7000000000000002,
+      "recovery_concentration": 1.75
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.65,
+      "seed": 20261018,
+      "loss_concentration": 1.6500000000000001,
+      "recovery_concentration": 1.85
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.65,
+      "seed": 20261019,
+      "loss_concentration": 1.6500000000000001,
+      "recovery_concentration": 1.7000000000000002
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.65,
+      "seed": 20261020,
+      "loss_concentration": 1.5,
+      "recovery_concentration": 1.55
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.65,
+      "seed": 20261021,
+      "loss_concentration": 1.55,
+      "recovery_concentration": 1.55
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.65,
+      "seed": 20261022,
+      "loss_concentration": 1.8,
+      "recovery_concentration": 1.85
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.65,
+      "seed": 20261023,
+      "loss_concentration": 1.85,
+      "recovery_concentration": 1.85
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.65,
+      "seed": 20261024,
+      "loss_concentration": 1.75,
+      "recovery_concentration": 1.7000000000000002
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.65,
+      "seed": 20261025,
+      "loss_concentration": 1.75,
+      "recovery_concentration": 1.7000000000000002
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.65,
+      "seed": 20261026,
+      "loss_concentration": 1.7000000000000002,
+      "recovery_concentration": 1.8
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.675,
+      "seed": 20261017,
+      "loss_concentration": 1.75,
+      "recovery_concentration": 1.8
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.675,
+      "seed": 20261018,
+      "loss_concentration": 1.9500000000000002,
+      "recovery_concentration": 1.9000000000000001
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.675,
+      "seed": 20261019,
+      "loss_concentration": 1.75,
+      "recovery_concentration": 1.7000000000000002
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.675,
+      "seed": 20261020,
+      "loss_concentration": 1.55,
+      "recovery_concentration": 1.55
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.675,
+      "seed": 20261021,
+      "loss_concentration": 1.6,
+      "recovery_concentration": 1.6
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.675,
+      "seed": 20261022,
+      "loss_concentration": 1.8,
+      "recovery_concentration": 1.9000000000000001
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.675,
+      "seed": 20261023,
+      "loss_concentration": 1.9500000000000002,
+      "recovery_concentration": 2.0500000000000003
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.675,
+      "seed": 20261024,
+      "loss_concentration": 1.75,
+      "recovery_concentration": 1.75
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.675,
+      "seed": 20261025,
+      "loss_concentration": 1.75,
+      "recovery_concentration": 1.85
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.675,
+      "seed": 20261026,
+      "loss_concentration": 1.8,
+      "recovery_concentration": 1.8
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.7,
+      "seed": 20261017,
+      "loss_concentration": 1.9000000000000001,
+      "recovery_concentration": 1.85
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.7,
+      "seed": 20261018,
+      "loss_concentration": 2.0,
+      "recovery_concentration": 2.15
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.7,
+      "seed": 20261019,
+      "loss_concentration": 1.8,
+      "recovery_concentration": 1.85
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.7,
+      "seed": 20261020,
+      "loss_concentration": 1.6,
+      "recovery_concentration": 1.6
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.7,
+      "seed": 20261021,
+      "loss_concentration": 1.75,
+      "recovery_concentration": 1.6500000000000001
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.7,
+      "seed": 20261022,
+      "loss_concentration": 1.9000000000000001,
+      "recovery_concentration": 2.1
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.7,
+      "seed": 20261023,
+      "loss_concentration": 2.0,
+      "recovery_concentration": 2.2
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.7,
+      "seed": 20261024,
+      "loss_concentration": 1.85,
+      "recovery_concentration": 1.8
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.7,
+      "seed": 20261025,
+      "loss_concentration": 1.85,
+      "recovery_concentration": 1.9000000000000001
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.7,
+      "seed": 20261026,
+      "loss_concentration": 1.8,
+      "recovery_concentration": 1.8
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.725,
+      "seed": 20261017,
+      "loss_concentration": 1.9000000000000001,
+      "recovery_concentration": 2.0
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.725,
+      "seed": 20261018,
+      "loss_concentration": 2.0500000000000003,
+      "recovery_concentration": 2.25
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.725,
+      "seed": 20261019,
+      "loss_concentration": 1.8,
+      "recovery_concentration": 1.9000000000000001
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.725,
+      "seed": 20261020,
+      "loss_concentration": 1.6,
+      "recovery_concentration": 1.6
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.725,
+      "seed": 20261021,
+      "loss_concentration": 1.75,
+      "recovery_concentration": 1.8
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.725,
+      "seed": 20261022,
+      "loss_concentration": 2.0,
+      "recovery_concentration": 2.15
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.725,
+      "seed": 20261023,
+      "loss_concentration": 2.3000000000000003,
+      "recovery_concentration": 2.5
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.725,
+      "seed": 20261024,
+      "loss_concentration": 1.85,
+      "recovery_concentration": 1.85
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.725,
+      "seed": 20261025,
+      "loss_concentration": 1.9500000000000002,
+      "recovery_concentration": 2.0500000000000003
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.725,
+      "seed": 20261026,
+      "loss_concentration": 1.8,
+      "recovery_concentration": 1.9000000000000001
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.75,
+      "seed": 20261017,
+      "loss_concentration": 2.1,
+      "recovery_concentration": 2.0
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.75,
+      "seed": 20261018,
+      "loss_concentration": 2.3000000000000003,
+      "recovery_concentration": 2.5500000000000003
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.75,
+      "seed": 20261019,
+      "loss_concentration": 1.9000000000000001,
+      "recovery_concentration": 2.15
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.75,
+      "seed": 20261020,
+      "loss_concentration": 1.6500000000000001,
+      "recovery_concentration": 1.6500000000000001
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.75,
+      "seed": 20261021,
+      "loss_concentration": 1.8,
+      "recovery_concentration": 1.8
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.75,
+      "seed": 20261022,
+      "loss_concentration": 2.0500000000000003,
+      "recovery_concentration": 2.85
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.75,
+      "seed": 20261023,
+      "loss_concentration": 2.5500000000000003,
+      "recovery_concentration": 2.95
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.75,
+      "seed": 20261024,
+      "loss_concentration": 1.9500000000000002,
+      "recovery_concentration": 2.1
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.75,
+      "seed": 20261025,
+      "loss_concentration": 1.9500000000000002,
+      "recovery_concentration": 2.15
+    },
+    {
+      "arousal_level": 0.5,
+      "feedback": 0.75,
+      "seed": 20261026,
+      "loss_concentration": 1.9000000000000001,
+      "recovery_concentration": 1.9500000000000002
+    }
+  ]
+}

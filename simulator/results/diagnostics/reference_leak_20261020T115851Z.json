@@ -1,0 +1,966 @@
+{
+  "label": "diagnostic",
+  "started_utc": "2026-10-20T11:58:51.645317+00:00",
+  "finished_utc": "2026-10-20T12:14:44.586395+00:00",
+  "provenance": {
+    "hardware": {
+      "hw.model": "Mac14,9",
+      "machdep.cpu.brand_string": "Apple M2 Pro",
+      "hw.memsize": "34359738368",
+      "hw.ncpu": "10",
+      "hw.perflevel0.physicalcpu": "6",
+      "hw.perflevel1.physicalcpu": "4"
+    },
+    "memory_gibibytes": 32.0,
+    "operating_system": {
+      "product_version": "26.7.1",
+      "build_version": "25G241",
+      "platform": "macOS-26.7.1-arm64-arm-64bit-Mach-O",
+      "machine": "arm64"
+    },
+    "python": {
+      "implementation": "CPython",
+      "version": "3.13.2",
+      "packages": {
+        "numpy": "2.5.4",
+        "scipy": "1.18.1"
+      }
+    },
+    "source": {
+      "git_commit": "73d6a215bffc2fef902f87625a5e11c3283f1a44",
+      "git_working_tree_dirty": false,
+      "sha256": {
+        "calibration.py": "5cdcad39d08837ed395d1f6dbd4c5d935fe24b8632b9814c1b672ee8c4146bb1",
+        "comparisons.py": "340b044083ffa2e8f98988da8fb400fa25c961db5f08c4bce42e5681441b92c8",
+        "connectomes.py": "b13446025b96ad86be7f4121b4c2b227dc58a4f38dc1c4db866c8b3bff86f3d1",
+        "dpc_simulator.py": "621859b0bca3cc34cedd82e1559e1097bf90142d698e8c7d95b3e0907417c452",
+        "phase_dynamics.py": "7470f3f061d933b64e51bb060752914bbcfa166b3653d1dc89beeb4fc032241a",
+        "plant_tissue.py": "e9dac3d0f0c2c9baa8e813f65ea71615e65a027edd4d3115e86e556203ece030",
+        "provenance.py": "f320d7cc34706f1a0a92ea109c270872557e999139b9832304eef1fc5032b122",
+        "reporting.py": "78a8c5e399d134fdcf01a2af3be99396ff3a3eb25ebb62915bcb27ec8635fc37",
+        "species_study.py": "423902f7037b6735db60c2826cfe212cf0c664859aeeda83317d9ea3421217ba"
+      },
+      "captured": "at launch"
+    }
+  },
+  "species_report": "species_full_20261020T103719Z.json",
+  "checks": {
+    "largest difference from the species report, reference as in the study": 0.0
+  },
+  "summaries": {
+    "reference as in the study": {
+      "celegans": {
+        "median_broadcast_share_of_awake": 0.47305372115850874,
+        "range_broadcast_share_of_awake": [
+          0.04158429581914471,
+          1.6833810831452949
+        ],
+        "quorum_held": 20,
+        "k1_holds": 12,
+        "runs": 20
+      },
+      "human": {
+        "median_broadcast_share_of_awake": 0.5541733316384053,
+        "range_broadcast_share_of_awake": [
+          0.13639957343186754,
+          3.0604403858635854
+        ],
+        "quorum_held": 20,
+        "k1_holds": 10,
+        "runs": 20
+      }
+    },
+    "no reference (feedback 0)": {
+      "celegans": {
+        "median_broadcast_share_of_awake": 0.39061675202192725,
+        "range_broadcast_share_of_awake": [
+          0.14053850847147692,
+          0.9323051979492076
+        ],
+        "quorum_held": 20,
+        "k1_holds": 11,
+        "runs": 20
+      },
+      "human": {
+        "median_broadcast_share_of_awake": 0.5958360895592518,
+        "range_broadcast_share_of_awake": [
+          0.20323809452525862,
+          2.5528267557357878
+        ],
+        "quorum_held": 20,
+        "k1_holds": 9,
+        "runs": 20
+      }
+    },
+    "reference formed by non-sensory populations only": {
+      "celegans": {
+        "median_broadcast_share_of_awake": 0.5163433039868501,
+        "range_broadcast_share_of_awake": [
+          0.04984807202989001,
+          2.603920085879942
+        ],
+        "quorum_held": 20,
+        "k1_holds": 9,
+        "runs": 20
+      },
+      "human": {
+        "median_broadcast_share_of_awake": 0.6121486884996387,
+        "range_broadcast_share_of_awake": [
+          0.19270258122530382,
+          3.9598419546242627
+        ],
+        "quorum_held": 20,
+        "k1_holds": 8,
+        "runs": 20
+      }
+    }
+  },
+  "runs": {
+    "reference as in the study": [
+      {
+        "organism": "celegans",
+        "seed": 20261017,
+        "deepest_coherence_fraction": 0.9585484823859287,
+        "awake_broadcast_ratio": 0.5948127434528571,
+        "deepest_broadcast_ratio": 0.23366678403105984
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261018,
+        "deepest_coherence_fraction": 0.9577978656659806,
+        "awake_broadcast_ratio": 0.4532938190212499,
+        "deepest_broadcast_ratio": 0.07640185523264159
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261019,
+        "deepest_coherence_fraction": 0.974902721262717,
+        "awake_broadcast_ratio": 0.5056523563819958,
+        "deepest_broadcast_ratio": 0.3899158914256552
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261020,
+        "deepest_coherence_fraction": 0.9563139979215416,
+        "awake_broadcast_ratio": 0.34506024006428143,
+        "deepest_broadcast_ratio": 0.22363592001768928
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261021,
+        "deepest_coherence_fraction": 0.9723930520141445,
+        "awake_broadcast_ratio": 0.6392096185277708,
+        "deepest_broadcast_ratio": 0.20825284584246254
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261022,
+        "deepest_coherence_fraction": 0.941139518333218,
+        "awake_broadcast_ratio": 0.5919953323825616,
+        "deepest_broadcast_ratio": 0.3202508307305239
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261023,
+        "deepest_coherence_fraction": 0.9632998912720964,
+        "awake_broadcast_ratio": 0.6483139817323587,
+        "deepest_broadcast_ratio": 0.5122839567883534
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261024,
+        "deepest_coherence_fraction": 0.9554355783892056,
+        "awake_broadcast_ratio": 0.31361090838105704,
+        "deepest_broadcast_ratio": 0.5279266706366836
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261025,
+        "deepest_coherence_fraction": 0.9587757381088314,
+        "awake_broadcast_ratio": 0.2286700659874324,
+        "deepest_broadcast_ratio": 0.2684357796480298
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261026,
+        "deepest_coherence_fraction": 0.9337776681839806,
+        "awake_broadcast_ratio": 0.38885039388969617,
+        "deepest_broadcast_ratio": 0.016170069808900067
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261027,
+        "deepest_coherence_fraction": 0.9511328150364698,
+        "awake_broadcast_ratio": 0.45023074882353586,
+        "deepest_broadcast_ratio": 0.2203675208844957
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261028,
+        "deepest_coherence_fraction": 0.9478014991185667,
+        "awake_broadcast_ratio": 0.6610604828098227,
+        "deepest_broadcast_ratio": 0.48774883590408674
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261029,
+        "deepest_coherence_fraction": 0.9751914410661857,
+        "awake_broadcast_ratio": 0.6656605939681208,
+        "deepest_broadcast_ratio": 0.045956940894240024
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261030,
+        "deepest_coherence_fraction": 0.9415275690291477,
+        "awake_broadcast_ratio": 0.6090745991447614,
+        "deepest_broadcast_ratio": 0.28690417605648205
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261031,
+        "deepest_coherence_fraction": 0.9597828734099219,
+        "awake_broadcast_ratio": 0.48109577310252793,
+        "deepest_broadcast_ratio": 0.22854845438772184
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261032,
+        "deepest_coherence_fraction": 0.962008432787879,
+        "awake_broadcast_ratio": 0.32487176684428215,
+        "deepest_broadcast_ratio": 0.11271348274039857
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261033,
+        "deepest_coherence_fraction": 0.9655232364045669,
+        "awake_broadcast_ratio": 0.5546743881817763,
+        "deepest_broadcast_ratio": 0.11223860650677372
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261034,
+        "deepest_coherence_fraction": 0.962847854399341,
+        "awake_broadcast_ratio": 0.48142350346074786,
+        "deepest_broadcast_ratio": 0.030117335054317147
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261035,
+        "deepest_coherence_fraction": 0.9610785901987182,
+        "awake_broadcast_ratio": 0.5510455324247466,
+        "deepest_broadcast_ratio": 0.30719390503716865
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261036,
+        "deepest_coherence_fraction": 0.9406255017797118,
+        "awake_broadcast_ratio": 0.6281798561466214,
+        "deepest_broadcast_ratio": 0.17822964726276483
+      },
+      {
+        "organism": "human",
+        "seed": 20261017,
+        "deepest_coherence_fraction": 0.9901929781680817,
+        "awake_broadcast_ratio": 0.45967651937243614,
+        "deepest_broadcast_ratio": 0.1909291038501078
+      },
+      {
+        "organism": "human",
+        "seed": 20261018,
+        "deepest_coherence_fraction": 0.9890726405233049,
+        "awake_broadcast_ratio": 0.5449313921016885,
+        "deepest_broadcast_ratio": 0.6742006953288603
+      },
+      {
+        "organism": "human",
+        "seed": 20261019,
+        "deepest_coherence_fraction": 0.9882674304745845,
+        "awake_broadcast_ratio": 0.1342130683471924,
+        "deepest_broadcast_ratio": 0.11025911222881934
+      },
+      {
+        "organism": "human",
+        "seed": 20261020,
+        "deepest_coherence_fraction": 0.9901459027381998,
+        "awake_broadcast_ratio": 0.12014231917286802,
+        "deepest_broadcast_ratio": 0.05042778075082517
+      },
+      {
+        "organism": "human",
+        "seed": 20261021,
+        "deepest_coherence_fraction": 0.9896717736197994,
+        "awake_broadcast_ratio": 0.4472907059087021,
+        "deepest_broadcast_ratio": 0.209057586643138
+      },
+      {
+        "organism": "human",
+        "seed": 20261022,
+        "deepest_coherence_fraction": 0.9869792444363964,
+        "awake_broadcast_ratio": 0.5554653712118728,
+        "deepest_broadcast_ratio": 1.2166346605341882
+      },
+      {
+        "organism": "human",
+        "seed": 20261023,
+        "deepest_coherence_fraction": 0.9865924164348425,
+        "awake_broadcast_ratio": 0.06865871730711331,
+        "deepest_broadcast_ratio": 0.17010642087169575
+      },
+      {
+        "organism": "human",
+        "seed": 20261024,
+        "deepest_coherence_fraction": 0.9897865814901432,
+        "awake_broadcast_ratio": 0.07620346166751911,
+        "deepest_broadcast_ratio": 0.10799095607656249
+      },
+      {
+        "organism": "human",
+        "seed": 20261025,
+        "deepest_coherence_fraction": 0.9881476176272228,
+        "awake_broadcast_ratio": 0.13682731478911336,
+        "deepest_broadcast_ratio": 0.037275137801646145
+      },
+      {
+        "organism": "human",
+        "seed": 20261026,
+        "deepest_coherence_fraction": 0.9886672696172796,
+        "awake_broadcast_ratio": 0.555766990503589,
+        "deepest_broadcast_ratio": 0.37261097194563375
+      },
+      {
+        "organism": "human",
+        "seed": 20261027,
+        "deepest_coherence_fraction": 0.987942129687808,
+        "awake_broadcast_ratio": 0.15074248873206209,
+        "deepest_broadcast_ratio": 0.020561211161111367
+      },
+      {
+        "organism": "human",
+        "seed": 20261028,
+        "deepest_coherence_fraction": 0.988028918947933,
+        "awake_broadcast_ratio": 0.30168050113351036,
+        "deepest_broadcast_ratio": 0.24500942543844953
+      },
+      {
+        "organism": "human",
+        "seed": 20261029,
+        "deepest_coherence_fraction": 0.9908033615232104,
+        "awake_broadcast_ratio": 0.28700831695211126,
+        "deepest_broadcast_ratio": 0.08828664125239337
+      },
+      {
+        "organism": "human",
+        "seed": 20261030,
+        "deepest_coherence_fraction": 0.9878309143276993,
+        "awake_broadcast_ratio": 0.3527346252817877,
+        "deepest_broadcast_ratio": 0.2708679507441421
+      },
+      {
+        "organism": "human",
+        "seed": 20261031,
+        "deepest_coherence_fraction": 0.9883824479076794,
+        "awake_broadcast_ratio": 0.19121052121191673,
+        "deepest_broadcast_ratio": 0.06503885030334938
+      },
+      {
+        "organism": "human",
+        "seed": 20261032,
+        "deepest_coherence_fraction": 0.9908816716689569,
+        "awake_broadcast_ratio": 0.08422013759050358,
+        "deepest_broadcast_ratio": 0.040963980035938645
+      },
+      {
+        "organism": "human",
+        "seed": 20261033,
+        "deepest_coherence_fraction": 0.9891933524122933,
+        "awake_broadcast_ratio": 0.17927223695914465,
+        "deepest_broadcast_ratio": 0.06287579002066976
+      },
+      {
+        "organism": "human",
+        "seed": 20261034,
+        "deepest_coherence_fraction": 0.9911992380392889,
+        "awake_broadcast_ratio": 0.05652406999796809,
+        "deepest_broadcast_ratio": 0.17298854659516177
+      },
+      {
+        "organism": "human",
+        "seed": 20261035,
+        "deepest_coherence_fraction": 0.9898178192032105,
+        "awake_broadcast_ratio": 0.3591808903483685,
+        "deepest_broadcast_ratio": 0.22339431981414645
+      },
+      {
+        "organism": "human",
+        "seed": 20261036,
+        "deepest_coherence_fraction": 0.9886618731032232,
+        "awake_broadcast_ratio": 0.38412285203511537,
+        "deepest_broadcast_ratio": 0.14502615158869586
+      }
+    ],
+    "no reference (feedback 0)": [
+      {
+        "organism": "celegans",
+        "seed": 20261017,
+        "deepest_coherence_fraction": 0.8988918836101906,
+        "awake_broadcast_ratio": 0.38790867806690055,
+        "deepest_broadcast_ratio": 0.14391139666019315
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261018,
+        "deepest_coherence_fraction": 0.8653210587880041,
+        "awake_broadcast_ratio": 0.24331214064528447,
+        "deepest_broadcast_ratio": 0.15211657036796522
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261019,
+        "deepest_coherence_fraction": 0.957511018527406,
+        "awake_broadcast_ratio": 0.2538455055929969,
+        "deepest_broadcast_ratio": 0.15166584458333943
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261020,
+        "deepest_coherence_fraction": 0.8695752024591609,
+        "awake_broadcast_ratio": 0.3492157131476452,
+        "deepest_broadcast_ratio": 0.04907825546057319
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261021,
+        "deepest_coherence_fraction": 0.9799025651561958,
+        "awake_broadcast_ratio": 0.3558122096076701,
+        "deepest_broadcast_ratio": 0.3309737274059187
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261022,
+        "deepest_coherence_fraction": 0.8543579154130451,
+        "awake_broadcast_ratio": 0.3236641179963735,
+        "deepest_broadcast_ratio": 0.05305417703004754
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261023,
+        "deepest_coherence_fraction": 0.9420611082221544,
+        "awake_broadcast_ratio": 0.45964039533832013,
+        "deepest_broadcast_ratio": 0.26359504531390304
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261024,
+        "deepest_coherence_fraction": 0.875914558602453,
+        "awake_broadcast_ratio": 0.3862705013680213,
+        "deepest_broadcast_ratio": 0.2999888938046232
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261025,
+        "deepest_coherence_fraction": 0.841911276327567,
+        "awake_broadcast_ratio": 0.18140720065142357,
+        "deepest_broadcast_ratio": 0.16912687611273708
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261026,
+        "deepest_coherence_fraction": 0.8925881082970781,
+        "awake_broadcast_ratio": 0.2464054059606663,
+        "deepest_broadcast_ratio": 0.08627621623169014
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261027,
+        "deepest_coherence_fraction": 0.8672087607074157,
+        "awake_broadcast_ratio": 0.38395880780480307,
+        "deepest_broadcast_ratio": 0.14940578869507232
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261028,
+        "deepest_coherence_fraction": 0.8812035490618285,
+        "awake_broadcast_ratio": 0.4080531853347334,
+        "deepest_broadcast_ratio": 0.31036076225554793
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261029,
+        "deepest_coherence_fraction": 0.9036377261744188,
+        "awake_broadcast_ratio": 0.3528566183037098,
+        "deepest_broadcast_ratio": 0.07187765864183376
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261030,
+        "deepest_coherence_fraction": 0.8486101854521482,
+        "awake_broadcast_ratio": 0.3746907737825413,
+        "deepest_broadcast_ratio": 0.22109139163182537
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261031,
+        "deepest_coherence_fraction": 0.9419125743878359,
+        "awake_broadcast_ratio": 0.3174630648310739,
+        "deepest_broadcast_ratio": 0.124481771875435
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261032,
+        "deepest_coherence_fraction": 0.9268060614704398,
+        "awake_broadcast_ratio": 0.6306134383412698,
+        "deepest_broadcast_ratio": 0.1090266305449321
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261033,
+        "deepest_coherence_fraction": 0.9171140433731882,
+        "awake_broadcast_ratio": 0.3764740920594349,
+        "deepest_broadcast_ratio": 0.07789213715106177
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261034,
+        "deepest_coherence_fraction": 0.9283248222782757,
+        "awake_broadcast_ratio": 0.23126257142619366,
+        "deepest_broadcast_ratio": 0.060668643312694316
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261035,
+        "deepest_coherence_fraction": 0.9301326166104739,
+        "awake_broadcast_ratio": 0.35152474184065396,
+        "deepest_broadcast_ratio": 0.19020864665380427
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261036,
+        "deepest_coherence_fraction": 0.8697827407759751,
+        "awake_broadcast_ratio": 0.4237771904600764,
+        "deepest_broadcast_ratio": 0.12667890074523805
+      },
+      {
+        "organism": "human",
+        "seed": 20261017,
+        "deepest_coherence_fraction": 0.9660489207103744,
+        "awake_broadcast_ratio": 0.3319231742670571,
+        "deepest_broadcast_ratio": 0.08568941619149402
+      },
+      {
+        "organism": "human",
+        "seed": 20261018,
+        "deepest_coherence_fraction": 0.9505209044430273,
+        "awake_broadcast_ratio": 0.4455866928137756,
+        "deepest_broadcast_ratio": 0.29391741880574834
+      },
+      {
+        "organism": "human",
+        "seed": 20261019,
+        "deepest_coherence_fraction": 0.9834779619042365,
+        "awake_broadcast_ratio": 0.0792958705112222,
+        "deepest_broadcast_ratio": 0.1193366095870067
+      },
+      {
+        "organism": "human",
+        "seed": 20261020,
+        "deepest_coherence_fraction": 0.9706625555903808,
+        "awake_broadcast_ratio": 0.09189566412945963,
+        "deepest_broadcast_ratio": 0.019432066709060065
+      },
+      {
+        "organism": "human",
+        "seed": 20261021,
+        "deepest_coherence_fraction": 0.9730129273714146,
+        "awake_broadcast_ratio": 0.21676103745605713,
+        "deepest_broadcast_ratio": 0.08177918434908413
+      },
+      {
+        "organism": "human",
+        "seed": 20261022,
+        "deepest_coherence_fraction": 0.969090549498383,
+        "awake_broadcast_ratio": 0.47426557980143647,
+        "deepest_broadcast_ratio": 0.32393465175015895
+      },
+      {
+        "organism": "human",
+        "seed": 20261023,
+        "deepest_coherence_fraction": 0.9179414370177792,
+        "awake_broadcast_ratio": 0.05783683547676772,
+        "deepest_broadcast_ratio": 0.13206617377721008
+      },
+      {
+        "organism": "human",
+        "seed": 20261024,
+        "deepest_coherence_fraction": 0.7688678812429832,
+        "awake_broadcast_ratio": 0.05184061793908433,
+        "deepest_broadcast_ratio": 0.09100626341970855
+      },
+      {
+        "organism": "human",
+        "seed": 20261025,
+        "deepest_coherence_fraction": 0.9105213529015601,
+        "awake_broadcast_ratio": 0.10416334020595668,
+        "deepest_broadcast_ratio": 0.02138885474810533
+      },
+      {
+        "organism": "human",
+        "seed": 20261026,
+        "deepest_coherence_fraction": 0.9542581041563462,
+        "awake_broadcast_ratio": 0.4403938289173264,
+        "deepest_broadcast_ratio": 0.3756589853534805
+      },
+      {
+        "organism": "human",
+        "seed": 20261027,
+        "deepest_coherence_fraction": 0.9678477298546536,
+        "awake_broadcast_ratio": 0.11292552202516198,
+        "deepest_broadcast_ratio": 0.03415543567479459
+      },
+      {
+        "organism": "human",
+        "seed": 20261028,
+        "deepest_coherence_fraction": 0.9479428407482969,
+        "awake_broadcast_ratio": 0.2500620700059623,
+        "deepest_broadcast_ratio": 0.18767985745881385
+      },
+      {
+        "organism": "human",
+        "seed": 20261029,
+        "deepest_coherence_fraction": 0.9666002681210505,
+        "awake_broadcast_ratio": 0.2257820689797247,
+        "deepest_broadcast_ratio": 0.08232370788165706
+      },
+      {
+        "organism": "human",
+        "seed": 20261030,
+        "deepest_coherence_fraction": 0.9485045209401727,
+        "awake_broadcast_ratio": 0.30537386848585113,
+        "deepest_broadcast_ratio": 0.17236821556461082
+      },
+      {
+        "organism": "human",
+        "seed": 20261031,
+        "deepest_coherence_fraction": 0.9759672440337431,
+        "awake_broadcast_ratio": 0.177896100356242,
+        "deepest_broadcast_ratio": 0.044569539368603646
+      },
+      {
+        "organism": "human",
+        "seed": 20261032,
+        "deepest_coherence_fraction": 0.9857829506773513,
+        "awake_broadcast_ratio": 0.08216147682397297,
+        "deepest_broadcast_ratio": 0.06081390880395624
+      },
+      {
+        "organism": "human",
+        "seed": 20261033,
+        "deepest_coherence_fraction": 0.9722105531511908,
+        "awake_broadcast_ratio": 0.15703900398118611,
+        "deepest_broadcast_ratio": 0.03290483571914357
+      },
+      {
+        "organism": "human",
+        "seed": 20261034,
+        "deepest_coherence_fraction": 0.9813652826966758,
+        "awake_broadcast_ratio": 0.04391350497248684,
+        "deepest_broadcast_ratio": 0.11210357043190097
+      },
+      {
+        "organism": "human",
+        "seed": 20261035,
+        "deepest_coherence_fraction": 0.975177174278926,
+        "awake_broadcast_ratio": 0.3239450833186572,
+        "deepest_broadcast_ratio": 0.20318560949876377
+      },
+      {
+        "organism": "human",
+        "seed": 20261036,
+        "deepest_coherence_fraction": 0.940756077311303,
+        "awake_broadcast_ratio": 0.2965041952414753,
+        "deepest_broadcast_ratio": 0.0602609476596227
+      }
+    ],
+    "reference formed by non-sensory populations only": [
+      {
+        "organism": "celegans",
+        "seed": 20261017,
+        "deepest_coherence_fraction": 0.9641573306490027,
+        "awake_broadcast_ratio": 0.6163534558864928,
+        "deepest_broadcast_ratio": 0.1646924403316666
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261018,
+        "deepest_coherence_fraction": 0.9572014022936431,
+        "awake_broadcast_ratio": 0.4639888221741021,
+        "deepest_broadcast_ratio": 0.023128948228798466
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261019,
+        "deepest_coherence_fraction": 0.9757561673232505,
+        "awake_broadcast_ratio": 0.5059127795589897,
+        "deepest_broadcast_ratio": 0.23606086568588266
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261020,
+        "deepest_coherence_fraction": 0.9507602060328324,
+        "awake_broadcast_ratio": 0.3189353218778887,
+        "deepest_broadcast_ratio": 0.25903078147248765
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261021,
+        "deepest_coherence_fraction": 0.9722484792973674,
+        "awake_broadcast_ratio": 0.6397613606603186,
+        "deepest_broadcast_ratio": 0.13844350728688035
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261022,
+        "deepest_coherence_fraction": 0.9427306819832584,
+        "awake_broadcast_ratio": 0.564234754134454,
+        "deepest_broadcast_ratio": 0.28974885607521933
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261023,
+        "deepest_coherence_fraction": 0.9597089646787399,
+        "awake_broadcast_ratio": 0.18473055440464184,
+        "deepest_broadcast_ratio": 0.48102360108998427
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261024,
+        "deepest_coherence_fraction": 0.9573049027469641,
+        "awake_broadcast_ratio": 0.25083816652865987,
+        "deepest_broadcast_ratio": 0.3283204577522964
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261025,
+        "deepest_coherence_fraction": 0.9646702107385509,
+        "awake_broadcast_ratio": 0.3421314054653248,
+        "deepest_broadcast_ratio": 0.3646138297990532
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261026,
+        "deepest_coherence_fraction": 0.9371352419730213,
+        "awake_broadcast_ratio": 0.29435911093459444,
+        "deepest_broadcast_ratio": 0.1856761012556025
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261027,
+        "deepest_coherence_fraction": 0.9527375380628377,
+        "awake_broadcast_ratio": 0.3715222964598511,
+        "deepest_broadcast_ratio": 0.1928799785311247
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261028,
+        "deepest_coherence_fraction": 0.9590023815015716,
+        "awake_broadcast_ratio": 0.6830758082980584,
+        "deepest_broadcast_ratio": 0.2970702849996192
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261029,
+        "deepest_coherence_fraction": 0.9769293967108421,
+        "awake_broadcast_ratio": 0.6574834369679289,
+        "deepest_broadcast_ratio": 0.0914612111213355
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261030,
+        "deepest_coherence_fraction": 0.9471633842452704,
+        "awake_broadcast_ratio": 0.6100063411595558,
+        "deepest_broadcast_ratio": 0.3270603462951906
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261031,
+        "deepest_coherence_fraction": 0.9585510296040657,
+        "awake_broadcast_ratio": 0.4773298734738624,
+        "deepest_broadcast_ratio": 0.27278577279901495
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261032,
+        "deepest_coherence_fraction": 0.9661324264476503,
+        "awake_broadcast_ratio": 0.33953446496117884,
+        "deepest_broadcast_ratio": 0.2007458821474775
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261033,
+        "deepest_coherence_fraction": 0.9650866492097131,
+        "awake_broadcast_ratio": 0.49373913773635764,
+        "deepest_broadcast_ratio": 0.15544784094770042
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261034,
+        "deepest_coherence_fraction": 0.9663707860177154,
+        "awake_broadcast_ratio": 0.47543976864343784,
+        "deepest_broadcast_ratio": 0.05743566856204134
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261035,
+        "deepest_coherence_fraction": 0.9601266451259234,
+        "awake_broadcast_ratio": 0.5213575341607433,
+        "deepest_broadcast_ratio": 0.36680369540603247
+      },
+      {
+        "organism": "celegans",
+        "seed": 20261036,
+        "deepest_coherence_fraction": 0.9441886528615211,
+        "awake_broadcast_ratio": 0.6292641405938598,
+        "deepest_broadcast_ratio": 0.16272511260933256
+      },
+      {
+        "organism": "human",
+        "seed": 20261017,
+        "deepest_coherence_fraction": 0.9901978390473628,
+        "awake_broadcast_ratio": 0.44731167374909364,
+        "deepest_broadcast_ratio": 0.20386196099742646
+      },
+      {
+        "organism": "human",
+        "seed": 20261018,
+        "deepest_coherence_fraction": 0.9890919486945338,
+        "awake_broadcast_ratio": 0.5384569207076525,
+        "deepest_broadcast_ratio": 0.6144703578097048
+      },
+      {
+        "organism": "human",
+        "seed": 20261019,
+        "deepest_coherence_fraction": 0.9883530485916582,
+        "awake_broadcast_ratio": 0.1164405631864387,
+        "deepest_broadcast_ratio": 0.11151135650801089
+      },
+      {
+        "organism": "human",
+        "seed": 20261020,
+        "deepest_coherence_fraction": 0.9901475821222814,
+        "awake_broadcast_ratio": 0.114556233964356,
+        "deepest_broadcast_ratio": 0.04565514837757809
+      },
+      {
+        "organism": "human",
+        "seed": 20261021,
+        "deepest_coherence_fraction": 0.9896900268860229,
+        "awake_broadcast_ratio": 0.4391542075538358,
+        "deepest_broadcast_ratio": 0.21974908627612588
+      },
+      {
+        "organism": "human",
+        "seed": 20261022,
+        "deepest_coherence_fraction": 0.9869707115450874,
+        "awake_broadcast_ratio": 0.5529331462604239,
+        "deepest_broadcast_ratio": 0.8025027719872853
+      },
+      {
+        "organism": "human",
+        "seed": 20261023,
+        "deepest_coherence_fraction": 0.9867465193529659,
+        "awake_broadcast_ratio": 0.07723256963282055,
+        "deepest_broadcast_ratio": 0.2738337008865345
+      },
+      {
+        "organism": "human",
+        "seed": 20261024,
+        "deepest_coherence_fraction": 0.9897797041839591,
+        "awake_broadcast_ratio": 0.07716150904860625,
+        "deepest_broadcast_ratio": 0.10913661063634726
+      },
+      {
+        "organism": "human",
+        "seed": 20261025,
+        "deepest_coherence_fraction": 0.9881407711385922,
+        "awake_broadcast_ratio": 0.12783891927092259,
+        "deepest_broadcast_ratio": 0.039990702991500086
+      },
+      {
+        "organism": "human",
+        "seed": 20261026,
+        "deepest_coherence_fraction": 0.9886754755725491,
+        "awake_broadcast_ratio": 0.5491963936995776,
+        "deepest_broadcast_ratio": 0.3530705521163721
+      },
+      {
+        "organism": "human",
+        "seed": 20261027,
+        "deepest_coherence_fraction": 0.9879470225035704,
+        "awake_broadcast_ratio": 0.14319304436140584,
+        "deepest_broadcast_ratio": 0.027593669261952343
+      },
+      {
+        "organism": "human",
+        "seed": 20261028,
+        "deepest_coherence_fraction": 0.9879520104706252,
+        "awake_broadcast_ratio": 0.30187553334576206,
+        "deepest_broadcast_ratio": 0.28181850408730036
+      },
+      {
+        "organism": "human",
+        "seed": 20261029,
+        "deepest_coherence_fraction": 0.9908003410153368,
+        "awake_broadcast_ratio": 0.274385496988931,
+        "deepest_broadcast_ratio": 0.08146007678190409
+      },
+      {
+        "organism": "human",
+        "seed": 20261030,
+        "deepest_coherence_fraction": 0.9878686773072402,
+        "awake_broadcast_ratio": 0.3403140146511843,
+        "deepest_broadcast_ratio": 0.28316779831993966
+      },
+      {
+        "organism": "human",
+        "seed": 20261031,
+        "deepest_coherence_fraction": 0.9883837694583523,
+        "awake_broadcast_ratio": 0.18211484645186732,
+        "deepest_broadcast_ratio": 0.07410393503373242
+      },
+      {
+        "organism": "human",
+        "seed": 20261032,
+        "deepest_coherence_fraction": 0.9908853371004912,
+        "awake_broadcast_ratio": 0.07764661778690013,
+        "deepest_broadcast_ratio": 0.04894835672180996
+      },
+      {
+        "organism": "human",
+        "seed": 20261033,
+        "deepest_coherence_fraction": 0.9891948275440813,
+        "awake_broadcast_ratio": 0.16958975062320925,
+        "deepest_broadcast_ratio": 0.06729077526394421
+      },
+      {
+        "organism": "human",
+        "seed": 20261034,
+        "deepest_coherence_fraction": 0.9912113917126624,
+        "awake_broadcast_ratio": 0.052305347503572505,
+        "deepest_broadcast_ratio": 0.20712090949584785
+      },
+      {
+        "organism": "human",
+        "seed": 20261035,
+        "deepest_coherence_fraction": 0.9897826236812459,
+        "awake_broadcast_ratio": 0.3589074560193384,
+        "deepest_broadcast_ratio": 0.2131545255057989
+      },
+      {
+        "organism": "human",
+        "seed": 20261036,
+        "deepest_coherence_fraction": 0.9886647179540458,
+        "awake_broadcast_ratio": 0.3760282464917744,
+        "deepest_broadcast_ratio": 0.1469812812064479
+      }
+    ]
+  }
+}

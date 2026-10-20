@@ -8,13 +8,17 @@ Breakspear, 2017), integrated with the Euler-Maruyama scheme:
 
     dθ_i = [ω_i + synaptic_i + reference_i + sensory_i] dt + sqrt(2 D dt) ξ_i
 
-    synaptic_i  = (K / s_i) Σ_j w_ji m_ji sin(θ_j − θ_i − α_ji)
+    synaptic_i  = (K / s_i) Σ_j w_ji m_ji sin(θ_j − θ_i − α_ji + ĉ_ji)
                   m_ji: 1 if connection j→i transmits, 0 if it has failed   (failure p(c), P4(a))
                   α_ji: phase error = fixed conduction lag (if delays are modelled) plus timing
                         jitter, Gaussian with SD 2π f σ(c); by default it persists for a
                         correlation time τ (Ornstein-Uhlenbeck), so it acts as a timing
                         error during each exchange rather than averaging out within it;
                         it can instead be redrawn at every step or fixed per connection (P4(b))
+                  ĉ_ji: learned expected arrival offset (P4b, off by default), with
+                        τ_L dĉ_ji/dt = −sin(θ_j − θ_i − α_ji + ĉ_ji), driven by the arriving signal's
+                        phase relative to the receiver's own; adapted from the delay plasticity of
+                        Park & Lefebvre (2020), applied here to the receiver's expectation
     reference_i = λ [R + A(c)(1 − R)] sin(ψ − θ_i)
                                           shared phase reference whose strength grows with global
                                           coherence R (P5), partly sustained by arousal A (P7),
@@ -62,6 +66,8 @@ class PopulationDynamics:
     fallback_frequency_hz: float | None = None
     # How long a connection's timing error persists before it changes, in model time units.
     jitter_correlation_time: float = 1.0
+    # P4b: when set, each connection learns its expected arrival offset with this time constant. None: no learning.
+    arrival_learning_time: float | None = None
 
 
 @dataclass(frozen=True)
@@ -202,6 +208,8 @@ class ImpairedConnectivity:
     weights: np.ndarray
     fixed_lags: np.ndarray
     jitter_sd: np.ndarray
+    # Index of each transmitting connection in the connectome, so learned state follows the connection.
+    edges: np.ndarray
 
 
 class ConnectionImpairment:
@@ -241,6 +249,7 @@ class ConnectionImpairment:
             weights=self._weights[transmits],
             fixed_lags=fixed_lags[transmits],
             jitter_sd=np.broadcast_to(jitter_sd, transmits.shape)[transmits],
+            edges=np.flatnonzero(transmits),
         )
 
 
@@ -334,17 +343,43 @@ class TimingJitter:
         return self._state
 
 
+class ArrivalExpectation:
+    """Each connection's learned expected arrival offset ĉ (P4b), kept for the whole sweep.
+
+    It moves to cancel the average mismatch between the arriving signal's phase and the receiver's own, so a
+    constant offset is absorbed while variability, faster than the learning, is not.
+    """
+
+    def __init__(self, edge_count: int, learning_rate_per_step: float) -> None:
+        self._offsets = np.zeros(edge_count)
+        self._rate = learning_rate_per_step
+
+    @classmethod
+    def for_design(cls, edge_count: int, design: SweepDesign) -> ArrivalExpectation | None:
+        learning_time = design.dynamics.arrival_learning_time
+        return None if learning_time is None else cls(edge_count, design.integration.time_step / learning_time)
+
+    def offsets(self, edges: np.ndarray) -> np.ndarray:
+        return self._offsets[edges]
+
+    def learn(self, edges: np.ndarray, mismatch_sines: np.ndarray) -> None:
+        """One Euler step of τ_L dĉ/dt = −sin(mismatch), for the connections that transmit."""
+        self._offsets[edges] -= self._rate * mismatch_sines
+
+
 class SynapticDrive:
     """Input from connected populations, normalised by each population's intact in-strength."""
 
-    def __init__(self, connectome: Connectome, coupling: float, connectivity: ImpairedConnectivity, jitter: TimingJitter) -> None:
+    def __init__(
+        self, connectome: Connectome, coupling: float, connectivity: ImpairedConnectivity, timing: tuple[TimingJitter, ArrivalExpectation | None]
+    ) -> None:
         # Normalised by the total strength of all intact inputs, excitatory and inhibitory alike.
         in_strength = np.bincount(connectome.targets, weights=connectome.weights, minlength=connectome.node_count)
         self._gain = np.divide(coupling, in_strength, out=np.zeros_like(in_strength), where=in_strength > 0)
         self._connectivity = connectivity
         # Converted once here rather than at every step; float32 to float64 is exact.
         self._weights = connectivity.weights.astype(np.float64)
-        self._jitter = jitter
+        self._jitter, self._expectation = timing
         self._fluctuates = bool(np.any(connectivity.jitter_sd > 0))
         self._has_lags = bool(np.any(connectivity.fixed_lags != 0))
 
@@ -354,7 +389,12 @@ class SynapticDrive:
         phase_errors = self._phase_errors()
         if phase_errors is not None:
             phase_differences = phase_differences - phase_errors
-        influence = self._weights * np.sin(phase_differences)
+        if self._expectation is not None:
+            phase_differences = phase_differences + self._expectation.offsets(c.edges)
+        sines = np.sin(phase_differences)
+        if self._expectation is not None:
+            self._expectation.learn(c.edges, sines)
+        influence = self._weights * sines
         return self._gain * np.bincount(c.targets, weights=influence, minlength=phases.size)
 
     def _phase_errors(self) -> np.ndarray | None:
@@ -456,6 +496,7 @@ class PhaseNetwork:
         self._design = design
         self._rng = np.random.default_rng(design.seed)
         self._impairment = ConnectionImpairment(connectome, design, self._rng)
+        self._expectation = ArrivalExpectation.for_design(connectome.edge_count, design)
         self._natural_frequencies = self._rng.normal(0.0, design.dynamics.natural_frequency_spread, connectome.node_count)
         self._is_sensory = np.zeros(connectome.node_count, dtype=bool)
         self._is_sensory[connectome.sensory_nodes] = True
@@ -490,7 +531,7 @@ class PhaseNetwork:
 
     def _synaptic_drive(self, connectivity: ImpairedConnectivity) -> SynapticDrive:
         jitter = TimingJitter.for_design(connectivity.jitter_sd, self._design, self._rng)
-        return SynapticDrive(self._connectome, self._design.dynamics.synaptic_coupling, connectivity, jitter)
+        return SynapticDrive(self._connectome, self._design.dynamics.synaptic_coupling, connectivity, (jitter, self._expectation))
 
     def _arousal_at(self, concentration: float) -> float:
         return dpc.sustained_arousal(self._design.dynamics.arousal_level, self._design.agent, concentration)

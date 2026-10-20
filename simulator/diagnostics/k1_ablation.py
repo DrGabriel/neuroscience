@@ -132,6 +132,7 @@ def summed_impairment_at(self: dynamics.ConnectionImpairment, concentration: flo
         weights=self._weights[transmits],
         fixed_lags=fixed_lags[transmits],
         jitter_sd=np.broadcast_to(jitter_sd, transmits.shape)[transmits],
+        edges=np.flatnonzero(transmits),
     )
 
 

@@ -112,11 +112,44 @@ class DriveTests(unittest.TestCase):
         connectome = all_to_all(RING_SIZE)
         no_timing_error = np.zeros(connectome.edge_count)
         connectivity = dynamics.ImpairedConnectivity(
-            connectome.sources, connectome.targets, connectome.weights, no_timing_error, no_timing_error
+            connectome.sources, connectome.targets, connectome.weights, no_timing_error, no_timing_error, np.arange(connectome.edge_count)
         )
         jitter = dynamics.TimingJitter(no_timing_error, 0.0, np.random.default_rng(1))
-        drive = dynamics.SynapticDrive(connectome, 4.0, connectivity, jitter)
+        drive = dynamics.SynapticDrive(connectome, 4.0, connectivity, (jitter, None))
         self.assertTrue(np.allclose(drive(np.zeros(RING_SIZE), 1.0 + 0j, 0.0), 0.0))
+
+
+class ArrivalExpectationTests(unittest.TestCase):
+    """P4b: a learned expectation absorbs a constant arrival offset but not variability."""
+
+    STEPS, RATE = 4000, 0.01
+
+    def drive_with(self, lags: np.ndarray, jitter_sd: np.ndarray) -> tuple[dynamics.SynapticDrive, dynamics.ArrivalExpectation]:
+        connectome = all_to_all(RING_SIZE)
+        connectivity = dynamics.ImpairedConnectivity(
+            connectome.sources, connectome.targets, connectome.weights, lags, jitter_sd, np.arange(connectome.edge_count)
+        )
+        expectation = dynamics.ArrivalExpectation(connectome.edge_count, self.RATE)
+        jitter = dynamics.TimingJitter(jitter_sd, 0.0, np.random.default_rng(1))
+        return dynamics.SynapticDrive(connectome, 4.0, connectivity, (jitter, expectation)), expectation
+
+    def test_a_constant_offset_is_learned_and_its_drive_cancelled(self) -> None:
+        edges = all_to_all(RING_SIZE).edge_count
+        lags = np.random.default_rng(2).uniform(-1.0, 1.0, edges)
+        drive, expectation = self.drive_with(lags, np.zeros(edges))
+        synchronised = np.zeros(RING_SIZE)
+        for _ in range(self.STEPS):
+            drive(synchronised, 1.0 + 0j, 0.0)
+        np.testing.assert_allclose(expectation.offsets(np.arange(edges)), lags, atol=1e-6)
+        self.assertTrue(np.allclose(drive(synchronised, 1.0 + 0j, 0.0), 0.0, atol=1e-6))
+
+    def test_zero_mean_variability_is_not_learned_as_an_offset(self) -> None:
+        edges = all_to_all(RING_SIZE).edge_count
+        drive, expectation = self.drive_with(np.zeros(edges), np.full(edges, 1.0))
+        for _ in range(self.STEPS):
+            drive(np.zeros(RING_SIZE), 1.0 + 0j, 0.0)
+        # The learned offset only wanders by the averaged noise, far below the 1 rad spread of the jitter.
+        self.assertLess(float(np.abs(expectation.offsets(np.arange(edges))).mean()), 0.2)
 
     def test_fluctuating_jitter_weakens_effective_coupling_by_the_gaussian_factor(self) -> None:
         sd = 1.0

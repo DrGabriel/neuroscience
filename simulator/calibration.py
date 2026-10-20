@@ -101,6 +101,12 @@ NOISE_INTENSITY = 0.05
 # time (1 / K) and longer, so that an error acts during an exchange rather than averaging out.
 JITTER_CORRELATION_TIME = 1.0
 
+# Free, used only by the learned-timing test of P4b (Appendix C.10): how fast a connection learns its expected
+# arrival offset, in model time units. Ten jitter correlation times, so that the learning averages timing
+# variability rather than tracking it, and about a sixth of the time held at each concentration, so that it
+# settles within one concentration step.
+ARRIVAL_LEARNING_TIME = 10 * JITTER_CORRELATION_TIME
+
 POPULATION_DYNAMICS = dynamics.PopulationDynamics(
     synaptic_coupling=SYNAPTIC_COUPLING,
     natural_frequency_spread=NATURAL_FREQUENCY_SPREAD,
@@ -196,6 +202,7 @@ def parameter_table() -> tuple[ParameterRecord, ...]:
         ParameterRecord("Integration window W (ms)", dpc.REFERENCE_INTEGRATION_WINDOW_MS, "assumed", "within-cell windows used between areas: 1-10 ms in rodent barrel cortex, Gabernet et al. (2005); under 2 ms in hippocampus, Pouille and Scanziani (2001); swept 1-10"),
         ParameterRecord("Oscillation frequency (Hz)", OSCILLATION_FREQUENCY_HZ, "assumed", "within the gamma band, Fries (2015); Llinás and Ribary (1993)"),
         ParameterRecord("Jitter correlation time τ", JITTER_CORRELATION_TIME, "free", "sensitivity analysis"),
+        ParameterRecord("Arrival learning time τ_L (P4b test only)", ARRIVAL_LEARNING_TIME, "free", "ten jitter correlation times; not varied"),
         ParameterRecord("Percolation feedback λ (ms)", dpc.REFERENCE_FEEDBACK_JITTER_MS, "calibrated", f"ratio {dpc.REFERENCE_INERTIA_RATIO}, Friedman et al. (2010), isoflurane"),
         ParameterRecord("Oscillator feedback λ", PHASE_REFERENCE_FEEDBACK, "free", f"calibration to ratio {dpc.REFERENCE_INERTIA_RATIO} failed: inertia within noise"),
         ParameterRecord("Conduction velocity (m/s)", CORTICOCORTICAL_CONDUCTION_VELOCITY_M_PER_S, "measured", "Lemaréchal et al. (2022)"),

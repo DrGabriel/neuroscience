@@ -12,9 +12,10 @@ Each brain region is a Wilson-Cowan pair of excitatory (E) and inhibitory (I) po
 (Wilson & Cowan, 1972), in the formulation and with the local parameters of Abeysuriya et al.
 (2018, Eqs 1-4, Table 1):
 
-    τe dE_k/dt = −E_k + S(c_ee E_k + c_ie,k I_k + P_k + ξ + C Σ_j W_jk m_jk E_j(t − τ_jk))
+    τe dE_k/dt = −E_k + S(c_ee E_k + c_ie,k I_k + P_k + ξ + C Σ_j W_jk m_jk E_j(t − τ_jk) − a_k)
     τi dI_k/dt = −I_k + S(c_ei E_k + ξ)
     τisp dc_ie,k/dt = −I_k (E_k − ρ)      (c_ie is negative: activity above ρ strengthens inhibition)
+    τa da_k/dt = −a_k + β E_k             (spike-frequency adaptation, Jercog et al., 2017; β = 0 removes it)
     S(x) = 1 / (1 + exp(−(x − μ) / σ))
 
 m_jk is 1 if the long-range connection transmits and 0 if the agent has failed it. Delays
@@ -51,6 +52,10 @@ class LocalCircuit:
     target_excitatory_activity: float = 0.15
     # Standard deviation of the noise added at each step (Abeysuriya et al., 2018, Methods).
     noise_sd: float = 0.01
+    # Adaptation of the excitatory population (β and τa). Abeysuriya et al. have none; the time constant is the
+    # 500 ms of Jercog et al. (2017) and Mattia and Sanchez-Vives (2012).
+    adaptation_strength: float = 0.0
+    adaptation_time_constant_s: float = 0.5
 
 
 class Compensation(Enum):
@@ -133,6 +138,7 @@ class WilsonCowanNetwork:
         self._cursor = 0
         self._excitatory = np.zeros(node_count)
         self._inhibitory = np.zeros(node_count)
+        self._adaptation = np.zeros(node_count)
         self._inhibitory_coupling = np.full(node_count, self._circuit.initial_inhibitory_to_excitatory)
         self._burst_threshold: float | None = None
 
@@ -196,6 +202,7 @@ class WilsonCowanNetwork:
             + self._input
             + noise_e
             + self._design.global_coupling * long_range
+            - self._adaptation
         )
         drive_i = c.excitatory_to_inhibitory * self._excitatory + noise_i
         excitatory = self._excitatory + dt / c.excitatory_time_constant_s * (-self._excitatory + self._sigmoid(drive_e))
@@ -204,6 +211,7 @@ class WilsonCowanNetwork:
             # Abeysuriya et al. (2018), Eq 4, with the sign written so that, as their text states,
             # activity above target strengthens inhibition: c_ie is negative, so it becomes more negative.
             self._inhibitory_coupling -= dt / plasticity_s * self._inhibitory * (self._excitatory - c.target_excitatory_activity)
+        self._adaptation += dt / c.adaptation_time_constant_s * (c.adaptation_strength * self._excitatory - self._adaptation)
         self._excitatory, self._inhibitory = excitatory, inhibitory
         self._cursor = (self._cursor + 1) % self._history.shape[0]
         self._history[self._cursor] = self._excitatory

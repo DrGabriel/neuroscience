@@ -197,6 +197,18 @@ class WilsonCowanTests(unittest.TestCase):
         record = ei.run_induction(tiny_connectome(), self.design(agent=sealed_agent, global_coupling=2.0), 0.5)
         self.assertLess(record.measurements[-1].hub_activity, record.awake.hub_activity)
 
+    def test_without_adaptation_its_time_constant_changes_nothing(self) -> None:
+        def record(time_constant_s: float) -> ei.InductionRecord:
+            circuit = replace(ei.LocalCircuit(), adaptation_time_constant_s=time_constant_s)
+            return ei.run_induction(tiny_connectome(), self.design(circuit=circuit, global_coupling=2.0), 0.5)
+        self.assertEqual(record(0.5).measurements, record(5.0).measurements)
+
+    def test_adaptation_lowers_sustained_activity(self) -> None:
+        def awake(strength: float) -> ei.CongestionMeasurement:
+            circuit = replace(ei.LocalCircuit(), adaptation_strength=strength)
+            return ei.WilsonCowanNetwork(tiny_connectome(), self.design(circuit=circuit, global_coupling=2.0)).hold_at(0.0)
+        self.assertLess(awake(1.0).mean_activity, awake(0.0).mean_activity)
+
     def test_missing_tract_lengths_are_rejected(self) -> None:
         with self.assertRaises(ValueError):
             ei.WilsonCowanNetwork(replace(tiny_connectome(), lengths_mm=None), self.design())
