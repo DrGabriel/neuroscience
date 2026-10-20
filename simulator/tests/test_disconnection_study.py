@@ -35,6 +35,14 @@ class ConditionTests(unittest.TestCase):
         self.assertEqual(applied.integration, cal.QUICK_INTEGRATION)
 
 
+class ReportTests(unittest.TestCase):
+    def test_the_report_records_the_window_the_runs_used_regression(self) -> None:
+        # The first K1c report (20 October 2026) recorded only the study-wide 838 measurement steps.
+        design = study.prespecified_runs.StudyDesign("full", cal.FULL_INTEGRATION, {"celegans": 0, "human": 0})
+        record = study.assemble_report(design, "2026-10-20T00:00:00+00:00", [])["design"]
+        self.assertEqual(record["integration_used"]["measurement_steps"], cal.measurement_steps_for(8))
+
+
 class CriterionTests(unittest.TestCase):
     def test_a_seed_without_awake_broadcast_above_twice_the_floor_is_not_applicable(self) -> None:
         self.assertIsNone(study.disconnected_above_the_floor(pair((0.039, 0.02), (0.02, 0.02))))

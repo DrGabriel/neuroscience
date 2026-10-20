@@ -154,6 +154,8 @@ def assemble_report(design: prespecified_runs.StudyDesign, started: str, results
         "provenance": provenance.collect(provenance.loaded_sources(), species.REPORTED_PACKAGES),
         "calibration": cal.as_record(),
         "design": prespecified_runs.design_record(PLAN, design) | {
+            # The conditions measure over a longer window than the study-wide integration settings recorded above.
+            "integration_used": asdict(long_window(design.integration)),
             "window_cycles": WINDOW_CYCLES,
             "awake_signal_multiple": AWAKE_SIGNAL_MULTIPLE,
             "min_evaluable_share": float(MIN_EVALUABLE_SHARE),

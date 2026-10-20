@@ -50,8 +50,8 @@ the failed mechanisms (Abstract, Conclusion).
 ## 4. Unexploited data (post hoc, verified)
 
 1. **Islands of coherence appear without the shared reference.** Local coherence outlasts global in 18/20 *C. elegans*,
-   5/6 *Drosophila* and 18/20 human runs without reference feedback, and in none with it (S1 and S2 found none). The
-   reference suppresses islands. This bears on the ketamine and dreaming account.
+   5/6 *Drosophila* and 18/20 human runs without reference feedback (GABAergic-like agent), and in none of the same
+   runs with it; with a sensory stimulus, islands also formed with the reference (10/20 *C. elegans*, 6/6 *Drosophila*). This bears on the ketamine and dreaming account.
 2. **Reference feedback delays loss in the phase model** (loss 0.99 to 1.39 worm, 1.00 to 1.40 fly, 1.09 to 1.57 human
    without and with feedback) and widens the transition, the opposite of the percolation model, where it sharpens it.
 3. **Constant delays cost coherence even awake:** with measured conduction delays awake coherence on the human connectome
@@ -73,3 +73,14 @@ A1 is reported as uninformative, so P9's astrocytic route is untested and the co
 is stated everywhere as failed as specified, with the post hoc floor-corrected reading (16 of 20 *C. elegans* seeds)
 named as such; the islands finding is one post hoc sentence in Section 6. The explainer was brought into line in its
 four languages (threshold wording, K1, predictions 7 and 13).
+
+## 7. K1c, the pre-specified test of the post hoc ketamine reading (20 October 2026)
+
+Fixed in Appendix C.11 and committed before the run (commit at 16:35:00 UTC, run from 16:35:16 to 17:09:58 UTC, clean
+tree). On *C. elegans* K1c passed in 20 of 20 seeds: quorum held at 94% of its awake value or more, and the broadcast
+above the phantom floor fell to a median of 13% of its awake value (at most 31%). On the human connectome only 2 of 20
+seeds had an awake broadcast at least twice the floor, so the test was not evaluable, as stated before the run.
+Recomputed independently from the run data. The report's design record lists the study-wide 838 measurement steps; the
+runs used 3,351 (condition names, window of eight cycles, run times 3.3 to 3.4 times those of K1); the code now records
+the window used. Consequence for the paper: the sensory-pathway account of ketamine is shown on one connectome and is no
+longer counted among the failed mechanisms (six, not seven); ketamine's preserved complexity and dreams stay open.

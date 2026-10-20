@@ -39,6 +39,8 @@ The feedback loop in the diagram can make the transition bistable, so that consc
 | [`CITATION.cff`](CITATION.cff) | Citation metadata |
 | [`LICENSE`](LICENSE), [`LICENSE-CC-BY-4.0`](LICENSE-CC-BY-4.0) | Apache 2.0 for code; CC BY 4.0 for the paper, figures and documentation |
 | [`NOTICE.md`](NOTICE.md) | Third-party software and data, with licences and attributions |
+| [`analysis/`](analysis/) | The data assessment of 20 October 2026 and the Zenodo deposit checklist |
+| [`tools/audit/`](tools/audit/) | `number_trace.py` traces every number in the main text to a printed report value; `reference_check.py` checks every reference against Crossref |
 
 ### Models
 
@@ -51,6 +53,9 @@ The feedback loop in the diagram can make the transition bistable, so that consc
 | [`plant_tissue.py`](simulator/plant_tissue.py) | FitzHugh-Nagumo excitable tissue, the cellular control |
 | [`connectomes.py`](simulator/connectomes.py) | Loaders for the *C. elegans*, *Drosophila* and human connectomes, with integrity checks |
 | [`reporting.py`](simulator/reporting.py), [`provenance.py`](simulator/provenance.py) | Shared report writing, progress and parallel runs; machine, software and source-hash records for every report |
+| [`comparisons.py`](simulator/comparisons.py) | Comparisons of grid-derived values that treat rounding as equality, used by every verdict |
+| [`public_labels.py`](simulator/public_labels.py) | The labels the paper uses for tests whose report identifiers clash with other names (Appendix C.9) |
+| [`prespecified_runs.py`](simulator/prespecified_runs.py) | What every pre-specified study shares: fresh seeds, the pass rule, the run loop and the outcome table |
 | [`calibration.py`](simulator/calibration.py) | Every parameter of the oscillator study, labelled measured, calibrated or free, with its source |
 
 ### Studies
@@ -67,6 +72,9 @@ The feedback loop in the diagram can make the transition bistable, so that consc
 | [`species_study.py`](simulator/species_study.py) | Tests the pillars on the three connectomes and on plant tissue |
 | [`convergence_study.py`](simulator/convergence_study.py) | Checks that the oscillator results do not depend on the integration time or step |
 | [`prespecified_study.py`](simulator/prespecified_study.py) | Runs the tests fixed in advance in Appendix C.7 (K2, feedback faults; T1c, replication of T1b, reported as P1c and P1b) on fresh seeds |
+| [`learned_timing_study.py`](simulator/learned_timing_study.py) | Pre-specified test of P4b in Appendix C.10 (L1 to L4: learned arrival times) |
+| [`disconnection_study.py`](simulator/disconnection_study.py) | Pre-specified test K1c in Appendix C.11 (sensory disconnection with the broadcast floor removed) |
+| [`diagnostics/`](simulator/diagnostics/) | Post hoc diagnostics, with no verdict, each explaining a result; their reports and a summary are in `simulator/results/diagnostics/` |
 | [`explainer_export.py`](simulator/explainer_export.py) | Exports the parameters, predictions and test outcomes the explainer shows, from the latest reports |
 | [`results_catalogue.py`](simulator/results_catalogue.py) | Lists every report, current and archived, for the explainer's results archive; reports are never changed or removed |
 | [`figures.py`](simulator/figures.py), [`paper_appendices.py`](simulator/paper_appendices.py) | Build the figures and Appendices B to D from the latest reports |

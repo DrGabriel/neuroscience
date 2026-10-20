@@ -37,3 +37,6 @@ drafts/
 
 # PDF build tool dependencies
 tools/pdf/node_modules/
+
+# Crossref answers cached by tools/audit/reference_check.py
+tools/audit/crossref_cache/

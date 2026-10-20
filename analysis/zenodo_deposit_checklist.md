@@ -40,4 +40,32 @@ The tests must pass from the archive alone. Checked on 20 October 2026 with the 
 
 - Paper (EN, PT): replace "DOI to be added on deposit" with the DOI.
 - `CITATION.cff`: set `date-released` to the deposit date and add the DOI.
+- Paper (EN, PT): set the **Date** row of the title block to the deposit date (it says 17 October 2026, the start of the work).
 - Rebuild the PDFs and the archive from the new commit, then upload.
+
+## Checked on 20 October 2026
+
+- References: 250 in each paper, identical lists; every DOI resolves on Crossref and matches author, year, title and
+  journal, except six records whose Crossref metadata is incomplete (conference digitisation dates, a proceedings item,
+  an online-first date, a DOI registered in 2022 for a 1959 paper), each checked against the publisher or PubMed; the
+  four entries without a DOI (ISO 11898-1:2024, Fowler 2014, Overton 1901, the 2004 blackout report) checked by hand
+  (`tools/audit/reference_check.py`, report in `tools/audit/reference_check_report.md`).
+- Citations: every citation in the text has a reference and every reference is cited.
+- Numbers: every number in the main text is supported by a printed report value or is a derived value checked against
+  the JSON (`tools/audit/number_trace.py`).
+- Literature numbers: all 96 numbers in sentences that cite literature were checked against the cited sources (full text
+  where open, otherwise the abstract); corrected: median, not mean, latency in van Blooijs et al. (2024), 180 years since
+  1846, the bispectral-index scale no longer attributed to Lubke et al. (1999).
+- Summary claims (abstract, Sections 1.2, 5.6, 6, 7.4, 8, 10, 11, Appendix C.11) rechecked against every report after
+  K1c, on a copy with three planted errors, all found; the real discrepancies found were corrected.
+- Keywords: 8; AI statement names each tool, version and use; licences stated in the title block, `LICENSE` files and
+  `NOTICE.md`.
+
+## For the Frontiers version (after Zenodo; not needed for the deposit)
+
+From the journal's pages, checked on 17 October 2026: Hypothesis and Theory articles have at most 12,000 words
+(excluding abstract, headings, captions, tables and references; the main text is now about 25,400), appendices of at
+most one page each (code listings and full reports go to supplementary material), Harvard author-year citations with
+"and" in the text, reference lists naming the first six authors before "et al." (this paper names three), and a
+generative-AI statement with each tool's name, version and source. The plan of 19 October: a separate English file of
+about 11,000 words, with objections and limitations merged into a Discussion.
