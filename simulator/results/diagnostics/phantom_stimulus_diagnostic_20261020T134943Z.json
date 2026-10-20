@@ -1,0 +1,2148 @@
+{
+  "label": "diagnostic",
+  "started_utc": "2026-10-20T13:49:43.310642+00:00",
+  "finished_utc": "2026-10-20T14:08:25.683947+00:00",
+  "provenance": {
+    "hardware": {
+      "hw.model": "Mac14,9",
+      "machdep.cpu.brand_string": "Apple M2 Pro",
+      "hw.memsize": "34359738368",
+      "hw.ncpu": "10",
+      "hw.perflevel0.physicalcpu": "6",
+      "hw.perflevel1.physicalcpu": "4"
+    },
+    "memory_gibibytes": 32.0,
+    "operating_system": {
+      "product_version": "26.7.1",
+      "build_version": "25G241",
+      "platform": "macOS-26.7.1-arm64-arm-64bit-Mach-O",
+      "machine": "arm64"
+    },
+    "python": {
+      "implementation": "CPython",
+      "version": "3.13.2",
+      "packages": {
+        "numpy": "2.5.4",
+        "scipy": "1.18.1"
+      }
+    },
+    "source": {
+      "git_commit": "31ec578a95587e0659db6876c5dacea9ea24a8b9",
+      "git_working_tree_dirty": false,
+      "sha256": {
+        "calibration.py": "927c086c7d329d4fbeb895412f083b07e776c05d83fd7be0a807076107bfefea",
+        "comparisons.py": "340b044083ffa2e8f98988da8fb400fa25c961db5f08c4bce42e5681441b92c8",
+        "connectomes.py": "b13446025b96ad86be7f4121b4c2b227dc58a4f38dc1c4db866c8b3bff86f3d1",
+        "dpc_simulator.py": "621859b0bca3cc34cedd82e1559e1097bf90142d698e8c7d95b3e0907417c452",
+        "phase_dynamics.py": "256d7f68896a7b587732757eab90ba1d931a6eb9873db312f987773cdc0718fc",
+        "plant_tissue.py": "e9dac3d0f0c2c9baa8e813f65ea71615e65a027edd4d3115e86e556203ece030",
+        "provenance.py": "4bf9f706eb10c32c3878843146193c79bbafa7ba37e2486d2fbdaa1c2b156350",
+        "reporting.py": "661056b7bab4548101eb2b1008146146ed2b0977893b0b570a00a38fa0c8b0f2",
+        "species_study.py": "ecf45bb37fa24ec88570c5846ac80f9b74df736f1c0e3e82e21f508872348c0f"
+      },
+      "captured": "at launch"
+    }
+  },
+  "species_report": "species_full_20261020T103719Z.json",
+  "checks": {
+    "largest difference from the species report, applied stimulus, study window": 0.0
+  },
+  "summary": [
+    [
+      "C. elegans",
+      "1×",
+      "applied",
+      "0.212",
+      "0.093",
+      "0.406",
+      "20"
+    ],
+    [
+      "C. elegans",
+      "1×",
+      "phantom (zero strength)",
+      "0.093",
+      "0.090",
+      "0.086",
+      "20"
+    ],
+    [
+      "C. elegans",
+      "4×",
+      "applied",
+      "0.156",
+      "0.039",
+      "0.399",
+      "20"
+    ],
+    [
+      "C. elegans",
+      "4×",
+      "phantom (zero strength)",
+      "0.034",
+      "0.026",
+      "0.027",
+      "20"
+    ],
+    [
+      "Human",
+      "1×",
+      "applied",
+      "0.040",
+      "0.033",
+      "0.207",
+      "20"
+    ],
+    [
+      "Human",
+      "1×",
+      "phantom (zero strength)",
+      "0.029",
+      "0.033",
+      "0.026",
+      "20"
+    ]
+  ],
+  "runs": [
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261017,
+      "awake": {
+        "sensory": 0.3825498389601591,
+        "broadcast": 0.2275455192193409,
+        "ratio": 0.5948127434528571
+      },
+      "deepest": {
+        "sensory": 0.3339582281736084,
+        "broadcast": 0.07803494517803795,
+        "ratio": 0.23366678403105984
+      },
+      "deepest_coherence_fraction": 0.9585484823859287
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261018,
+      "awake": {
+        "sensory": 0.45081439672093754,
+        "broadcast": 0.2043513795593946,
+        "ratio": 0.4532938190212499
+      },
+      "deepest": {
+        "sensory": 0.37916104716178983,
+        "broadcast": 0.028968607435111857,
+        "ratio": 0.07640185523264159
+      },
+      "deepest_coherence_fraction": 0.9577978656659806
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261019,
+      "awake": {
+        "sensory": 0.5027322164741286,
+        "broadcast": 0.25420772988928675,
+        "ratio": 0.5056523563819958
+      },
+      "deepest": {
+        "sensory": 0.38600713771408846,
+        "broadcast": 0.15051031719845445,
+        "ratio": 0.3899158914256552
+      },
+      "deepest_coherence_fraction": 0.974902721262717
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261020,
+      "awake": {
+        "sensory": 0.35705650694438035,
+        "broadcast": 0.12320600400274166,
+        "ratio": 0.34506024006428143
+      },
+      "deepest": {
+        "sensory": 0.47192756826269033,
+        "broadcast": 0.10553995591013761,
+        "ratio": 0.22363592001768928
+      },
+      "deepest_coherence_fraction": 0.9563139979215416
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261021,
+      "awake": {
+        "sensory": 0.5093296259834877,
+        "broadcast": 0.32556839592979736,
+        "ratio": 0.6392096185277708
+      },
+      "deepest": {
+        "sensory": 0.39664321438754163,
+        "broadcast": 0.08260207818030753,
+        "ratio": 0.20825284584246254
+      },
+      "deepest_coherence_fraction": 0.9723930520141445
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261022,
+      "awake": {
+        "sensory": 0.3691485668441862,
+        "broadcast": 0.21853422852747026,
+        "ratio": 0.5919953323825616
+      },
+      "deepest": {
+        "sensory": 0.38790258940477734,
+        "broadcast": 0.12422612649940126,
+        "ratio": 0.3202508307305239
+      },
+      "deepest_coherence_fraction": 0.941139518333218
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261023,
+      "awake": {
+        "sensory": 0.286926142250356,
+        "broadcast": 0.18601822974543344,
+        "ratio": 0.6483139817323587
+      },
+      "deepest": {
+        "sensory": 0.3887525199073811,
+        "broadcast": 0.19915167910959627,
+        "ratio": 0.5122839567883534
+      },
+      "deepest_coherence_fraction": 0.9632998912720964
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261024,
+      "awake": {
+        "sensory": 0.37964835152633364,
+        "broadcast": 0.11906186438754436,
+        "ratio": 0.31361090838105704
+      },
+      "deepest": {
+        "sensory": 0.3631852886630204,
+        "broadcast": 0.19173520026809127,
+        "ratio": 0.5279266706366836
+      },
+      "deepest_coherence_fraction": 0.9554355783892056
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261025,
+      "awake": {
+        "sensory": 0.3791836130567059,
+        "broadcast": 0.08670794181902997,
+        "ratio": 0.2286700659874324
+      },
+      "deepest": {
+        "sensory": 0.4347038983221964,
+        "broadcast": 0.11669007986215665,
+        "ratio": 0.2684357796480298
+      },
+      "deepest_coherence_fraction": 0.9587757381088314
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261026,
+      "awake": {
+        "sensory": 0.3685712664708348,
+        "broadcast": 0.14331908214360828,
+        "ratio": 0.38885039388969617
+      },
+      "deepest": {
+        "sensory": 0.4358750850655006,
+        "broadcast": 0.007048130553469399,
+        "ratio": 0.016170069808900067
+      },
+      "deepest_coherence_fraction": 0.9337776681839806
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261027,
+      "awake": {
+        "sensory": 0.3928370667959484,
+        "broadcast": 0.1768673267491812,
+        "ratio": 0.45023074882353586
+      },
+      "deepest": {
+        "sensory": 0.36318108421866996,
+        "broadcast": 0.08003331516141154,
+        "ratio": 0.2203675208844957
+      },
+      "deepest_coherence_fraction": 0.9511328150364698
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261028,
+      "awake": {
+        "sensory": 0.463619974150229,
+        "broadcast": 0.30648084395202785,
+        "ratio": 0.6610604828098227
+      },
+      "deepest": {
+        "sensory": 0.4157071156000974,
+        "broadcast": 0.2027606617109931,
+        "ratio": 0.48774883590408674
+      },
+      "deepest_coherence_fraction": 0.9478014991185667
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261029,
+      "awake": {
+        "sensory": 0.4663096347597545,
+        "broadcast": 0.3104039484472357,
+        "ratio": 0.6656605939681208
+      },
+      "deepest": {
+        "sensory": 0.3242303881957632,
+        "broadcast": 0.01490063678642919,
+        "ratio": 0.045956940894240024
+      },
+      "deepest_coherence_fraction": 0.9751914410661857
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261030,
+      "awake": {
+        "sensory": 0.5093060934983447,
+        "broadcast": 0.3102054047394886,
+        "ratio": 0.6090745991447614
+      },
+      "deepest": {
+        "sensory": 0.540098356815631,
+        "broadcast": 0.15495647405164847,
+        "ratio": 0.28690417605648205
+      },
+      "deepest_coherence_fraction": 0.9415275690291477
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261031,
+      "awake": {
+        "sensory": 0.4035148297735602,
+        "broadcast": 0.1941292789882459,
+        "ratio": 0.48109577310252793
+      },
+      "deepest": {
+        "sensory": 0.4489157062995265,
+        "broadcast": 0.10259899082512926,
+        "ratio": 0.22854845438772184
+      },
+      "deepest_coherence_fraction": 0.9597828734099219
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261032,
+      "awake": {
+        "sensory": 0.4392735724833966,
+        "broadcast": 0.1427075816206809,
+        "ratio": 0.32487176684428215
+      },
+      "deepest": {
+        "sensory": 0.4436344852129118,
+        "broadcast": 0.05000358789209114,
+        "ratio": 0.11271348274039857
+      },
+      "deepest_coherence_fraction": 0.962008432787879
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261033,
+      "awake": {
+        "sensory": 0.38493960054066256,
+        "broadcast": 0.21351613741682934,
+        "ratio": 0.5546743881817763
+      },
+      "deepest": {
+        "sensory": 0.3183338367500495,
+        "broadcast": 0.03572934624078035,
+        "ratio": 0.11223860650677372
+      },
+      "deepest_coherence_fraction": 0.9655232364045669
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261034,
+      "awake": {
+        "sensory": 0.5285933492260769,
+        "broadcast": 0.25447726209046856,
+        "ratio": 0.48142350346074786
+      },
+      "deepest": {
+        "sensory": 0.4201663971754556,
+        "broadcast": 0.01265429216229849,
+        "ratio": 0.030117335054317147
+      },
+      "deepest_coherence_fraction": 0.962847854399341
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261035,
+      "awake": {
+        "sensory": 0.38244818832573707,
+        "broadcast": 0.21074636556083554,
+        "ratio": 0.5510455324247466
+      },
+      "deepest": {
+        "sensory": 0.45776664249612065,
+        "broadcast": 0.1406231225041368,
+        "ratio": 0.30719390503716865
+      },
+      "deepest_coherence_fraction": 0.9610785901987182
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261036,
+      "awake": {
+        "sensory": 0.5622329554596284,
+        "broadcast": 0.3531834170815192,
+        "ratio": 0.6281798561466214
+      },
+      "deepest": {
+        "sensory": 0.4349672233450095,
+        "broadcast": 0.07752405478764529,
+        "ratio": 0.17822964726276483
+      },
+      "deepest_coherence_fraction": 0.9406255017797118
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261017,
+      "awake": {
+        "sensory": 0.14041369609371854,
+        "broadcast": 0.13299274405029082,
+        "ratio": 0.9471493718214309
+      },
+      "deepest": {
+        "sensory": 0.07116525612647892,
+        "broadcast": 0.08404723301320828,
+        "ratio": 1.1810149725848633
+      },
+      "deepest_coherence_fraction": 0.9597655371065942
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261018,
+      "awake": {
+        "sensory": 0.025227493057482113,
+        "broadcast": 0.0035027301186844055,
+        "ratio": 0.13884574700717423
+      },
+      "deepest": {
+        "sensory": 0.033275781893066424,
+        "broadcast": 0.012676736788530407,
+        "ratio": 0.38095984729277904
+      },
+      "deepest_coherence_fraction": 0.9591620267578425
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261019,
+      "awake": {
+        "sensory": 0.0526478029156364,
+        "broadcast": 0.0611530564593185,
+        "ratio": 1.1615500186648062
+      },
+      "deepest": {
+        "sensory": 0.09360235764363072,
+        "broadcast": 0.10883512811598625,
+        "ratio": 1.1627391751215368
+      },
+      "deepest_coherence_fraction": 0.9744957695230323
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261020,
+      "awake": {
+        "sensory": 0.12637456333189534,
+        "broadcast": 0.09812971307188789,
+        "ratio": 0.776498928935339
+      },
+      "deepest": {
+        "sensory": 0.08330440653486021,
+        "broadcast": 0.0918063414890791,
+        "ratio": 1.1020586462093227
+      },
+      "deepest_coherence_fraction": 0.9466389266942351
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261021,
+      "awake": {
+        "sensory": 0.059828042599593956,
+        "broadcast": 0.03886036788418003,
+        "ratio": 0.6495343353326383
+      },
+      "deepest": {
+        "sensory": 0.08417768657188532,
+        "broadcast": 0.055630277803370605,
+        "ratio": 0.6608672686183167
+      },
+      "deepest_coherence_fraction": 0.9717787792921854
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261022,
+      "awake": {
+        "sensory": 0.10051647420076905,
+        "broadcast": 0.099080789908342,
+        "ratio": 0.9857169254707497
+      },
+      "deepest": {
+        "sensory": 0.10237717336411714,
+        "broadcast": 0.10918579280391053,
+        "ratio": 1.0665052493252347
+      },
+      "deepest_coherence_fraction": 0.9436584448550996
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261023,
+      "awake": {
+        "sensory": 0.12347728803529422,
+        "broadcast": 0.13982524685340972,
+        "ratio": 1.1323964842298988
+      },
+      "deepest": {
+        "sensory": 0.15132499901008334,
+        "broadcast": 0.17316719691709423,
+        "ratio": 1.1443396533943178
+      },
+      "deepest_coherence_fraction": 0.9637427596701557
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261024,
+      "awake": {
+        "sensory": 0.15525012802253965,
+        "broadcast": 0.18045248386678686,
+        "ratio": 1.1623338812357582
+      },
+      "deepest": {
+        "sensory": 0.1612695328064621,
+        "broadcast": 0.15120435701782925,
+        "ratio": 0.9375878653985315
+      },
+      "deepest_coherence_fraction": 0.9549295427090378
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261025,
+      "awake": {
+        "sensory": 0.1831193851276179,
+        "broadcast": 0.17531411176033984,
+        "ratio": 0.9573760398887399
+      },
+      "deepest": {
+        "sensory": 0.10600120908767954,
+        "broadcast": 0.13133071966389182,
+        "ratio": 1.2389549213090656
+      },
+      "deepest_coherence_fraction": 0.9588581210028041
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261026,
+      "awake": {
+        "sensory": 0.09375551107063178,
+        "broadcast": 0.10082914357207431,
+        "ratio": 1.0754476448441899
+      },
+      "deepest": {
+        "sensory": 0.0389789419045508,
+        "broadcast": 0.03655678753041501,
+        "ratio": 0.9378599249803392
+      },
+      "deepest_coherence_fraction": 0.9185042746967133
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261027,
+      "awake": {
+        "sensory": 0.0790235845485709,
+        "broadcast": 0.0873946506013635,
+        "ratio": 1.105931236865716
+      },
+      "deepest": {
+        "sensory": 0.10903316040818575,
+        "broadcast": 0.08911670191990419,
+        "ratio": 0.8173357681853793
+      },
+      "deepest_coherence_fraction": 0.9637953976563498
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261028,
+      "awake": {
+        "sensory": 0.039776136649733264,
+        "broadcast": 0.07727994614571178,
+        "ratio": 1.942872100079383
+      },
+      "deepest": {
+        "sensory": 0.16676962843018353,
+        "broadcast": 0.16669329546488232,
+        "ratio": 0.9995422849710721
+      },
+      "deepest_coherence_fraction": 0.9567651721759215
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261029,
+      "awake": {
+        "sensory": 0.04123987864067019,
+        "broadcast": 0.04189370844866428,
+        "ratio": 1.0158543097008363
+      },
+      "deepest": {
+        "sensory": 0.03453862205319202,
+        "broadcast": 0.042892016791614244,
+        "ratio": 1.2418566301098342
+      },
+      "deepest_coherence_fraction": 0.9748588257686494
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261030,
+      "awake": {
+        "sensory": 0.10998814310333649,
+        "broadcast": 0.1388068383281284,
+        "ratio": 1.2620163811449754
+      },
+      "deepest": {
+        "sensory": 0.1326088089908687,
+        "broadcast": 0.15731886780071555,
+        "ratio": 1.1863379891417951
+      },
+      "deepest_coherence_fraction": 0.946736812951705
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261031,
+      "awake": {
+        "sensory": 0.1245915264939026,
+        "broadcast": 0.13046785867459096,
+        "ratio": 1.047164781956307
+      },
+      "deepest": {
+        "sensory": 0.08865126075520602,
+        "broadcast": 0.09713445925637881,
+        "ratio": 1.095691797600009
+      },
+      "deepest_coherence_fraction": 0.9575847922910383
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261032,
+      "awake": {
+        "sensory": 0.0351567273186364,
+        "broadcast": 0.052233847497995846,
+        "ratio": 1.4857426012547803
+      },
+      "deepest": {
+        "sensory": 0.08116437204576599,
+        "broadcast": 0.08166339404755574,
+        "ratio": 1.0061482888268805
+      },
+      "deepest_coherence_fraction": 0.9568989786392709
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261033,
+      "awake": {
+        "sensory": 0.0446232638016456,
+        "broadcast": 0.040782284376852496,
+        "ratio": 0.9139242830406444
+      },
+      "deepest": {
+        "sensory": 0.043801648832582474,
+        "broadcast": 0.029726118299986965,
+        "ratio": 0.6786529523946773
+      },
+      "deepest_coherence_fraction": 0.9681979339614184
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261034,
+      "awake": {
+        "sensory": 0.04016733469957347,
+        "broadcast": 0.026639286960172755,
+        "ratio": 0.6632077323381786
+      },
+      "deepest": {
+        "sensory": 0.00790096332447628,
+        "broadcast": 0.025438060783603954,
+        "ratio": 3.219615094883399
+      },
+      "deepest_coherence_fraction": 0.9613689208803036
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261035,
+      "awake": {
+        "sensory": 0.08674150889119309,
+        "broadcast": 0.09886636804721813,
+        "ratio": 1.1397815107324711
+      },
+      "deepest": {
+        "sensory": 0.11282834087005994,
+        "broadcast": 0.12490658786402895,
+        "ratio": 1.1070497616186616
+      },
+      "deepest_coherence_fraction": 0.9619115091094365
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "celegans",
+      "seed": 20261036,
+      "awake": {
+        "sensory": 0.0795978653837678,
+        "broadcast": 0.07057242188105581,
+        "ratio": 0.8866119906708889
+      },
+      "deepest": {
+        "sensory": 0.05298006504280098,
+        "broadcast": 0.06596593809973861,
+        "ratio": 1.2451086658056523
+      },
+      "deepest_coherence_fraction": 0.9396504213045552
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261017,
+      "awake": {
+        "sensory": 0.3492139423291269,
+        "broadcast": 0.1560140064908753,
+        "ratio": 0.44675766795082694
+      },
+      "deepest": {
+        "sensory": 0.3572497768638027,
+        "broadcast": 0.015752752607493963,
+        "ratio": 0.04409450649845896
+      },
+      "deepest_coherence_fraction": 0.9594206360163124
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261018,
+      "awake": {
+        "sensory": 0.3433528099633605,
+        "broadcast": 0.13935905260427264,
+        "ratio": 0.40587712859884206
+      },
+      "deepest": {
+        "sensory": 0.39503434326981024,
+        "broadcast": 0.029817726969956646,
+        "ratio": 0.07548135365433532
+      },
+      "deepest_coherence_fraction": 0.9619730553828315
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261019,
+      "awake": {
+        "sensory": 0.3755893232537039,
+        "broadcast": 0.19254287733086625,
+        "ratio": 0.5126420412137407
+      },
+      "deepest": {
+        "sensory": 0.36829685400709283,
+        "broadcast": 0.047596719111110554,
+        "ratio": 0.12923466109812037
+      },
+      "deepest_coherence_fraction": 0.966771166642097
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261020,
+      "awake": {
+        "sensory": 0.34289625033037474,
+        "broadcast": 0.13335448707196673,
+        "ratio": 0.38890622730193736
+      },
+      "deepest": {
+        "sensory": 0.4330653506796888,
+        "broadcast": 0.044876077445573724,
+        "ratio": 0.10362426219308811
+      },
+      "deepest_coherence_fraction": 0.9654367236041222
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261021,
+      "awake": {
+        "sensory": 0.3930426001566416,
+        "broadcast": 0.17656917750162632,
+        "ratio": 0.4492367428651682
+      },
+      "deepest": {
+        "sensory": 0.35984480388799633,
+        "broadcast": 0.008042498872897779,
+        "ratio": 0.02234990969996346
+      },
+      "deepest_coherence_fraction": 0.9678071779058203
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261022,
+      "awake": {
+        "sensory": 0.3092062364635187,
+        "broadcast": 0.12001815755303323,
+        "ratio": 0.38814921369541466
+      },
+      "deepest": {
+        "sensory": 0.4716233419567803,
+        "broadcast": 0.058045917440265694,
+        "ratio": 0.12307685450730943
+      },
+      "deepest_coherence_fraction": 0.9422399546110045
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261023,
+      "awake": {
+        "sensory": 0.3753810455826676,
+        "broadcast": 0.23001588544550092,
+        "ratio": 0.6127530629269509
+      },
+      "deepest": {
+        "sensory": 0.3889868524461806,
+        "broadcast": 0.06771267520718653,
+        "ratio": 0.17407445722488812
+      },
+      "deepest_coherence_fraction": 0.9651050796585228
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261024,
+      "awake": {
+        "sensory": 0.3905170750256638,
+        "broadcast": 0.19981749431883314,
+        "ratio": 0.5116741548514918
+      },
+      "deepest": {
+        "sensory": 0.47522985260840844,
+        "broadcast": 0.0641159039087944,
+        "ratio": 0.13491556466177262
+      },
+      "deepest_coherence_fraction": 0.955062850490275
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261025,
+      "awake": {
+        "sensory": 0.36057529335338584,
+        "broadcast": 0.1318146895183119,
+        "ratio": 0.36556772454491343
+      },
+      "deepest": {
+        "sensory": 0.33417313030146856,
+        "broadcast": 0.04636054419668274,
+        "ratio": 0.13873211216850193
+      },
+      "deepest_coherence_fraction": 0.9566973896003387
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261026,
+      "awake": {
+        "sensory": 0.3940790977006238,
+        "broadcast": 0.15671498407949586,
+        "ratio": 0.3976739314363482
+      },
+      "deepest": {
+        "sensory": 0.41754449941721544,
+        "broadcast": 0.0367745248086243,
+        "ratio": 0.08807330682107432
+      },
+      "deepest_coherence_fraction": 0.9543809042856204
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261027,
+      "awake": {
+        "sensory": 0.3611256327201019,
+        "broadcast": 0.13897897500292655,
+        "ratio": 0.38484937764206056
+      },
+      "deepest": {
+        "sensory": 0.44339497331199534,
+        "broadcast": 0.03759231749187151,
+        "ratio": 0.08478291310131664
+      },
+      "deepest_coherence_fraction": 0.9416948166150068
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261028,
+      "awake": {
+        "sensory": 0.34589458850971494,
+        "broadcast": 0.19162985441500646,
+        "ratio": 0.5540122938628289
+      },
+      "deepest": {
+        "sensory": 0.40263210748735717,
+        "broadcast": 0.042577881493697706,
+        "ratio": 0.10574884789841225
+      },
+      "deepest_coherence_fraction": 0.9630395914544289
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261029,
+      "awake": {
+        "sensory": 0.3400720323375851,
+        "broadcast": 0.14737045117699918,
+        "ratio": 0.433350693863312
+      },
+      "deepest": {
+        "sensory": 0.34978147662456016,
+        "broadcast": 0.03684247461162492,
+        "ratio": 0.10532997621017533
+      },
+      "deepest_coherence_fraction": 0.9696082675780899
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261030,
+      "awake": {
+        "sensory": 0.3915678818533236,
+        "broadcast": 0.18963377881079482,
+        "ratio": 0.4842934969876545
+      },
+      "deepest": {
+        "sensory": 0.4549216827684967,
+        "broadcast": 0.04711287188762963,
+        "ratio": 0.10356259917293217
+      },
+      "deepest_coherence_fraction": 0.9401731137137064
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261031,
+      "awake": {
+        "sensory": 0.3387362390359706,
+        "broadcast": 0.12362844794991806,
+        "ratio": 0.36496965397549297
+      },
+      "deepest": {
+        "sensory": 0.3861178784040742,
+        "broadcast": 0.017460710229243316,
+        "ratio": 0.045221190744683934
+      },
+      "deepest_coherence_fraction": 0.955685972333376
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261032,
+      "awake": {
+        "sensory": 0.368724545532862,
+        "broadcast": 0.1909217558997082,
+        "ratio": 0.5177896568393563
+      },
+      "deepest": {
+        "sensory": 0.40987340248334153,
+        "broadcast": 0.054091326901413724,
+        "ratio": 0.13197081482644427
+      },
+      "deepest_coherence_fraction": 0.9754998232690444
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261033,
+      "awake": {
+        "sensory": 0.38404330302526396,
+        "broadcast": 0.1727115112083094,
+        "ratio": 0.4497188464107854
+      },
+      "deepest": {
+        "sensory": 0.3527656670205029,
+        "broadcast": 0.026946052413365725,
+        "ratio": 0.07638513305717931
+      },
+      "deepest_coherence_fraction": 0.9649785746363675
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261034,
+      "awake": {
+        "sensory": 0.3998396724029902,
+        "broadcast": 0.15592224567721585,
+        "ratio": 0.38996191833627014
+      },
+      "deepest": {
+        "sensory": 0.4154444607126453,
+        "broadcast": 0.014260828944729676,
+        "ratio": 0.0343266797209594
+      },
+      "deepest_coherence_fraction": 0.9637164574034417
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261035,
+      "awake": {
+        "sensory": 0.3316239506285819,
+        "broadcast": 0.15503106094187377,
+        "ratio": 0.4674905435750876
+      },
+      "deepest": {
+        "sensory": 0.3475585573566433,
+        "broadcast": 0.01597021320565214,
+        "ratio": 0.045949705071610385
+      },
+      "deepest_coherence_fraction": 0.9649595472233772
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261036,
+      "awake": {
+        "sensory": 0.3843179468348156,
+        "broadcast": 0.16568856622075778,
+        "ratio": 0.4311236765947146
+      },
+      "deepest": {
+        "sensory": 0.44935335602532345,
+        "broadcast": 0.03978264998580695,
+        "ratio": 0.08853310975063684
+      },
+      "deepest_coherence_fraction": 0.934511554176659
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261017,
+      "awake": {
+        "sensory": 0.01616916227187638,
+        "broadcast": 0.0075035187120632025,
+        "ratio": 0.464063541814677
+      },
+      "deepest": {
+        "sensory": 0.024521580141705246,
+        "broadcast": 0.033672112524065774,
+        "ratio": 1.3731624279300703
+      },
+      "deepest_coherence_fraction": 0.9565997791637241
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261018,
+      "awake": {
+        "sensory": 0.04541502459957692,
+        "broadcast": 0.043877695788106394,
+        "ratio": 0.9661493343882314
+      },
+      "deepest": {
+        "sensory": 0.017725876955924036,
+        "broadcast": 0.01685135399355457,
+        "ratio": 0.9506640509496939
+      },
+      "deepest_coherence_fraction": 0.9631867019445756
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261019,
+      "awake": {
+        "sensory": 0.05414552201688331,
+        "broadcast": 0.05026703128576477,
+        "ratio": 0.9283691321710931
+      },
+      "deepest": {
+        "sensory": 0.03438426462092187,
+        "broadcast": 0.04639332548977443,
+        "ratio": 1.3492603666604341
+      },
+      "deepest_coherence_fraction": 0.9691802199128059
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261020,
+      "awake": {
+        "sensory": 0.016094754307333942,
+        "broadcast": 0.011757871487835192,
+        "ratio": 0.7305406011993267
+      },
+      "deepest": {
+        "sensory": 0.03032713866810866,
+        "broadcast": 0.023408437929635848,
+        "ratio": 0.7718643748693522
+      },
+      "deepest_coherence_fraction": 0.9588281333685805
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261021,
+      "awake": {
+        "sensory": 0.042985127627603384,
+        "broadcast": 0.04572117027865375,
+        "ratio": 1.0636509137475119
+      },
+      "deepest": {
+        "sensory": 0.01663652849277127,
+        "broadcast": 0.019648889857198718,
+        "ratio": 1.181069107400402
+      },
+      "deepest_coherence_fraction": 0.9688447089611298
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261022,
+      "awake": {
+        "sensory": 0.03639668512879774,
+        "broadcast": 0.03319698698513274,
+        "ratio": 0.9120881989021208
+      },
+      "deepest": {
+        "sensory": 0.04022033144477585,
+        "broadcast": 0.040448846290216625,
+        "ratio": 1.005681575393145
+      },
+      "deepest_coherence_fraction": 0.9441124734348474
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261023,
+      "awake": {
+        "sensory": 0.05812750808364509,
+        "broadcast": 0.034981857722015494,
+        "ratio": 0.6018124443194234
+      },
+      "deepest": {
+        "sensory": 0.046948234484305164,
+        "broadcast": 0.03423144001259129,
+        "ratio": 0.729131572009058
+      },
+      "deepest_coherence_fraction": 0.9648002227445295
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261024,
+      "awake": {
+        "sensory": 0.07889667195262243,
+        "broadcast": 0.074166253701588,
+        "ratio": 0.9400428670315136
+      },
+      "deepest": {
+        "sensory": 0.04950714372129113,
+        "broadcast": 0.047779215806803776,
+        "ratio": 0.9650974024230722
+      },
+      "deepest_coherence_fraction": 0.9536312074224388
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261025,
+      "awake": {
+        "sensory": 0.05215700943724785,
+        "broadcast": 0.027961753017618936,
+        "ratio": 0.5361072906463478
+      },
+      "deepest": {
+        "sensory": 0.03784304912999281,
+        "broadcast": 0.05346592362073937,
+        "ratio": 1.4128333960902881
+      },
+      "deepest_coherence_fraction": 0.952735414060666
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261026,
+      "awake": {
+        "sensory": 0.03030805634584966,
+        "broadcast": 0.02705523622496866,
+        "ratio": 0.8926747369160664
+      },
+      "deepest": {
+        "sensory": 0.012059319092264733,
+        "broadcast": 0.013794678996969442,
+        "ratio": 1.1439019808189526
+      },
+      "deepest_coherence_fraction": 0.9536040417188507
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261027,
+      "awake": {
+        "sensory": 0.03912853590379994,
+        "broadcast": 0.031445751378577226,
+        "ratio": 0.8036526451152852
+      },
+      "deepest": {
+        "sensory": 0.02716546595544733,
+        "broadcast": 0.025183018041469295,
+        "ratio": 0.9270232317299713
+      },
+      "deepest_coherence_fraction": 0.9521081601672543
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261028,
+      "awake": {
+        "sensory": 0.0314880964056024,
+        "broadcast": 0.04297621402269566,
+        "ratio": 1.3648400166562396
+      },
+      "deepest": {
+        "sensory": 0.0010931413475046162,
+        "broadcast": 0.01692826977361864,
+        "ratio": 15.485892846576418
+      },
+      "deepest_coherence_fraction": 0.9639741358119903
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261029,
+      "awake": {
+        "sensory": 0.03289133024786681,
+        "broadcast": 0.035765331644558834,
+        "ratio": 1.087378691437341
+      },
+      "deepest": {
+        "sensory": 0.021605999823152262,
+        "broadcast": 0.02643696534480536,
+        "ratio": 1.2235937036561668
+      },
+      "deepest_coherence_fraction": 0.970837609391682
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261030,
+      "awake": {
+        "sensory": 0.06287667014144012,
+        "broadcast": 0.06520147256084798,
+        "ratio": 1.0369740066415452
+      },
+      "deepest": {
+        "sensory": 0.027129886636793443,
+        "broadcast": 0.02720968457334033,
+        "ratio": 1.0029413295239746
+      },
+      "deepest_coherence_fraction": 0.9437185773829788
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261031,
+      "awake": {
+        "sensory": 0.03686693897873201,
+        "broadcast": 0.03653211992310499,
+        "ratio": 0.9909181758805587
+      },
+      "deepest": {
+        "sensory": 0.03825864890278447,
+        "broadcast": 0.03311625169919948,
+        "ratio": 0.8655886354833946
+      },
+      "deepest_coherence_fraction": 0.9560183097171375
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261032,
+      "awake": {
+        "sensory": 0.030602948797795383,
+        "broadcast": 0.02423899228463208,
+        "ratio": 0.7920476044575888
+      },
+      "deepest": {
+        "sensory": 0.028203577387712807,
+        "broadcast": 0.03010709992985404,
+        "ratio": 1.067492237455328
+      },
+      "deepest_coherence_fraction": 0.9640037700150939
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261033,
+      "awake": {
+        "sensory": 0.05231039291888455,
+        "broadcast": 0.04222578965487691,
+        "ratio": 0.8072160673760299
+      },
+      "deepest": {
+        "sensory": 0.009662184590048094,
+        "broadcast": 0.015274590939320128,
+        "ratio": 1.5808630850473224
+      },
+      "deepest_coherence_fraction": 0.9672093487324666
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261034,
+      "awake": {
+        "sensory": 0.02716162803474549,
+        "broadcast": 0.021748110978198475,
+        "ratio": 0.8006924677113618
+      },
+      "deepest": {
+        "sensory": 0.009784536395555045,
+        "broadcast": 0.010564458170451214,
+        "ratio": 1.0797096299064792
+      },
+      "deepest_coherence_fraction": 0.9606749607608095
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261035,
+      "awake": {
+        "sensory": 0.02019841408160065,
+        "broadcast": 0.013270690512971276,
+        "ratio": 0.6570164597754212
+      },
+      "deepest": {
+        "sensory": 0.03358193634353665,
+        "broadcast": 0.022552851947671794,
+        "ratio": 0.6715768774307866
+      },
+      "deepest_coherence_fraction": 0.9653344629465245
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 4,
+      "organism": "celegans",
+      "seed": 20261036,
+      "awake": {
+        "sensory": 0.012252701791468585,
+        "broadcast": 0.01879752316051033,
+        "ratio": 1.5341533222981751
+      },
+      "deepest": {
+        "sensory": 0.016229441918730173,
+        "broadcast": 0.017056459726072594,
+        "ratio": 1.050957870978174
+      },
+      "deepest_coherence_fraction": 0.9374814025322981
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261017,
+      "awake": {
+        "sensory": 0.18927713553124434,
+        "broadcast": 0.08700625485778726,
+        "ratio": 0.45967651937243614
+      },
+      "deepest": {
+        "sensory": 0.21224722281886194,
+        "broadcast": 0.04052417204747946,
+        "ratio": 0.1909291038501078
+      },
+      "deepest_coherence_fraction": 0.9901929781680817
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261018,
+      "awake": {
+        "sensory": 0.19575866283110394,
+        "broadcast": 0.10667504065251852,
+        "ratio": 0.5449313921016885
+      },
+      "deepest": {
+        "sensory": 0.14436360666762893,
+        "broadcast": 0.09733004399549752,
+        "ratio": 0.6742006953288603
+      },
+      "deepest_coherence_fraction": 0.9890726405233049
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261019,
+      "awake": {
+        "sensory": 0.17240191990938333,
+        "broadcast": 0.023138590659985254,
+        "ratio": 0.1342130683471924
+      },
+      "deepest": {
+        "sensory": 0.21677396833285312,
+        "broadcast": 0.023901305302698583,
+        "ratio": 0.11025911222881934
+      },
+      "deepest_coherence_fraction": 0.9882674304745845
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261020,
+      "awake": {
+        "sensory": 0.20217367749004161,
+        "broadcast": 0.024289614489361063,
+        "ratio": 0.12014231917286802
+      },
+      "deepest": {
+        "sensory": 0.203418716004741,
+        "broadcast": 0.010257954411301451,
+        "ratio": 0.05042778075082517
+      },
+      "deepest_coherence_fraction": 0.9901459027381998
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261021,
+      "awake": {
+        "sensory": 0.14779072334407273,
+        "broadcast": 0.06610541697132799,
+        "ratio": 0.4472907059087021
+      },
+      "deepest": {
+        "sensory": 0.1975965248645639,
+        "broadcast": 0.041309052617256536,
+        "ratio": 0.209057586643138
+      },
+      "deepest_coherence_fraction": 0.9896717736197994
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261022,
+      "awake": {
+        "sensory": 0.24586392304233348,
+        "broadcast": 0.1365688952803171,
+        "ratio": 0.5554653712118728
+      },
+      "deepest": {
+        "sensory": 0.1024533342745075,
+        "broadcast": 0.12464827756566113,
+        "ratio": 1.2166346605341882
+      },
+      "deepest_coherence_fraction": 0.9869792444363964
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261023,
+      "awake": {
+        "sensory": 0.19565519257247274,
+        "broadcast": 0.013433434556502224,
+        "ratio": 0.06865871730711331
+      },
+      "deepest": {
+        "sensory": 0.250159293038722,
+        "broadcast": 0.04255370198661071,
+        "ratio": 0.17010642087169575
+      },
+      "deepest_coherence_fraction": 0.9865924164348425
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261024,
+      "awake": {
+        "sensory": 0.1992710967266356,
+        "broadcast": 0.015185147380852668,
+        "ratio": 0.07620346166751911
+      },
+      "deepest": {
+        "sensory": 0.18926305473319005,
+        "broadcast": 0.02043869823060797,
+        "ratio": 0.10799095607656249
+      },
+      "deepest_coherence_fraction": 0.9897865814901432
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261025,
+      "awake": {
+        "sensory": 0.1703742552115981,
+        "broadcast": 0.02331185184979807,
+        "ratio": 0.13682731478911336
+      },
+      "deepest": {
+        "sensory": 0.2014723413752128,
+        "broadcast": 0.007509909287981352,
+        "ratio": 0.037275137801646145
+      },
+      "deepest_coherence_fraction": 0.9881476176272228
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261026,
+      "awake": {
+        "sensory": 0.16691164258285449,
+        "broadcast": 0.09276398127828372,
+        "ratio": 0.555766990503589
+      },
+      "deepest": {
+        "sensory": 0.29729813211944073,
+        "broadcast": 0.11077654596664624,
+        "ratio": 0.37261097194563375
+      },
+      "deepest_coherence_fraction": 0.9886672696172796
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261027,
+      "awake": {
+        "sensory": 0.15507167813269995,
+        "broadcast": 0.02337589069358048,
+        "ratio": 0.15074248873206209
+      },
+      "deepest": {
+        "sensory": 0.2222866273117806,
+        "broadcast": 0.0045704822824487856,
+        "ratio": 0.020561211161111367
+      },
+      "deepest_coherence_fraction": 0.987942129687808
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261028,
+      "awake": {
+        "sensory": 0.15846961293694936,
+        "broadcast": 0.047807192245252296,
+        "ratio": 0.30168050113351036
+      },
+      "deepest": {
+        "sensory": 0.18982323820846553,
+        "broadcast": 0.04650848252832208,
+        "ratio": 0.24500942543844953
+      },
+      "deepest_coherence_fraction": 0.988028918947933
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261029,
+      "awake": {
+        "sensory": 0.160623932869333,
+        "broadcast": 0.046100404635056165,
+        "ratio": 0.28700831695211126
+      },
+      "deepest": {
+        "sensory": 0.19515437367350122,
+        "broadcast": 0.017229524177347924,
+        "ratio": 0.08828664125239337
+      },
+      "deepest_coherence_fraction": 0.9908033615232104
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261030,
+      "awake": {
+        "sensory": 0.14855226768726315,
+        "broadcast": 0.052399528477426585,
+        "ratio": 0.3527346252817877
+      },
+      "deepest": {
+        "sensory": 0.17473701207700593,
+        "broadcast": 0.04733065638045301,
+        "ratio": 0.2708679507441421
+      },
+      "deepest_coherence_fraction": 0.9878309143276993
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261031,
+      "awake": {
+        "sensory": 0.17722074422003387,
+        "broadcast": 0.033886470871876455,
+        "ratio": 0.19121052121191673
+      },
+      "deepest": {
+        "sensory": 0.2298917247132383,
+        "broadcast": 0.014951893469603112,
+        "ratio": 0.06503885030334938
+      },
+      "deepest_coherence_fraction": 0.9883824479076794
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261032,
+      "awake": {
+        "sensory": 0.18506902416330592,
+        "broadcast": 0.015586538678773857,
+        "ratio": 0.08422013759050358
+      },
+      "deepest": {
+        "sensory": 0.21567846857461875,
+        "broadcast": 0.008835048480872503,
+        "ratio": 0.040963980035938645
+      },
+      "deepest_coherence_fraction": 0.9908816716689569
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261033,
+      "awake": {
+        "sensory": 0.1718434625288158,
+        "broadcast": 0.030806761934345762,
+        "ratio": 0.17927223695914465
+      },
+      "deepest": {
+        "sensory": 0.23466329013169737,
+        "broadcast": 0.01475463975588011,
+        "ratio": 0.06287579002066976
+      },
+      "deepest_coherence_fraction": 0.9891933524122933
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261034,
+      "awake": {
+        "sensory": 0.19875827690262174,
+        "broadcast": 0.011234626756319315,
+        "ratio": 0.05652406999796809
+      },
+      "deepest": {
+        "sensory": 0.20999793473342523,
+        "broadcast": 0.03632723751752087,
+        "ratio": 0.17298854659516177
+      },
+      "deepest_coherence_fraction": 0.9911992380392889
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261035,
+      "awake": {
+        "sensory": 0.25014408428695206,
+        "broadcast": 0.08984697490956477,
+        "ratio": 0.3591808903483685
+      },
+      "deepest": {
+        "sensory": 0.2281360980202636,
+        "broadcast": 0.05096430844229023,
+        "ratio": 0.22339431981414645
+      },
+      "deepest_coherence_fraction": 0.9898178192032105
+    },
+    {
+      "stimulus": "applied",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261036,
+      "awake": {
+        "sensory": 0.18314619410967783,
+        "broadcast": 0.0703506384207863,
+        "ratio": 0.38412285203511537
+      },
+      "deepest": {
+        "sensory": 0.20448088529199981,
+        "broadcast": 0.029655075867348297,
+        "ratio": 0.14502615158869586
+      },
+      "deepest_coherence_fraction": 0.9886618731032232
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261017,
+      "awake": {
+        "sensory": 0.07396154637689606,
+        "broadcast": 0.07323661341946631,
+        "ratio": 0.9901985154050782
+      },
+      "deepest": {
+        "sensory": 0.043799991898253704,
+        "broadcast": 0.03848104519762008,
+        "ratio": 0.8785628382537283
+      },
+      "deepest_coherence_fraction": 0.9901550408990926
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261018,
+      "awake": {
+        "sensory": 0.11538783904540455,
+        "broadcast": 0.09218929886720564,
+        "ratio": 0.7989516020915307
+      },
+      "deepest": {
+        "sensory": 0.09154139635357653,
+        "broadcast": 0.09810385562965226,
+        "ratio": 1.0716884331841345
+      },
+      "deepest_coherence_fraction": 0.9892974023438708
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261019,
+      "awake": {
+        "sensory": 0.016154237464431388,
+        "broadcast": 0.012242860030346173,
+        "ratio": 0.7578729765055555
+      },
+      "deepest": {
+        "sensory": 0.019219898591446266,
+        "broadcast": 0.023916733371857273,
+        "ratio": 1.2443735464088928
+      },
+      "deepest_coherence_fraction": 0.988426929466411
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261020,
+      "awake": {
+        "sensory": 0.02504353299399329,
+        "broadcast": 0.02281421276807304,
+        "ratio": 0.9109821994183107
+      },
+      "deepest": {
+        "sensory": 0.004641303400888329,
+        "broadcast": 0.009950643829644789,
+        "ratio": 2.143933065815148
+      },
+      "deepest_coherence_fraction": 0.9901399420303022
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261021,
+      "awake": {
+        "sensory": 0.05426488784518267,
+        "broadcast": 0.05469353414184392,
+        "ratio": 1.0078991464588332
+      },
+      "deepest": {
+        "sensory": 0.04576138456516619,
+        "broadcast": 0.04236975875767182,
+        "ratio": 0.9258845456770535
+      },
+      "deepest_coherence_fraction": 0.9898110311467938
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261022,
+      "awake": {
+        "sensory": 0.10829699983314381,
+        "broadcast": 0.12304726572742619,
+        "ratio": 1.1362019808213388
+      },
+      "deepest": {
+        "sensory": 0.11631052393942842,
+        "broadcast": 0.12397952298750343,
+        "ratio": 1.0659355558579449
+      },
+      "deepest_coherence_fraction": 0.9870871880977169
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261023,
+      "awake": {
+        "sensory": 0.02204958720968059,
+        "broadcast": 0.018616073880337335,
+        "ratio": 0.8442821946419108
+      },
+      "deepest": {
+        "sensory": 0.0674910653136389,
+        "broadcast": 0.041795596192420896,
+        "ratio": 0.6192759885799973
+      },
+      "deepest_coherence_fraction": 0.9866866805053937
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261024,
+      "awake": {
+        "sensory": 0.042413430732859456,
+        "broadcast": 0.016179149454789356,
+        "ratio": 0.3814628803949758
+      },
+      "deepest": {
+        "sensory": 0.01849523511653059,
+        "broadcast": 0.019604987684582385,
+        "ratio": 1.0600020795118157
+      },
+      "deepest_coherence_fraction": 0.9897750070905073
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261025,
+      "awake": {
+        "sensory": 0.033144378249845244,
+        "broadcast": 0.010954099089444684,
+        "ratio": 0.3304964421680117
+      },
+      "deepest": {
+        "sensory": 0.01509630051652874,
+        "broadcast": 0.007917741957915515,
+        "ratio": 0.5244822696293363
+      },
+      "deepest_coherence_fraction": 0.9881450245166102
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261026,
+      "awake": {
+        "sensory": 0.07903303691705574,
+        "broadcast": 0.07943072360974922,
+        "ratio": 1.0050319044820566
+      },
+      "deepest": {
+        "sensory": 0.10258369633384705,
+        "broadcast": 0.10956003887861737,
+        "ratio": 1.0680063479294664
+      },
+      "deepest_coherence_fraction": 0.9886424879337028
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261027,
+      "awake": {
+        "sensory": 0.025303979327721285,
+        "broadcast": 0.012433796686187059,
+        "ratio": 0.49137712788776483
+      },
+      "deepest": {
+        "sensory": 0.02149221361121179,
+        "broadcast": 0.005833778118012827,
+        "ratio": 0.2714368200290702
+      },
+      "deepest_coherence_fraction": 0.9880982285732626
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261028,
+      "awake": {
+        "sensory": 0.027770900774557877,
+        "broadcast": 0.03869171938536831,
+        "ratio": 1.3932468269381981
+      },
+      "deepest": {
+        "sensory": 0.02597510296189311,
+        "broadcast": 0.04821287471503096,
+        "ratio": 1.8561187143612816
+      },
+      "deepest_coherence_fraction": 0.9880247370056477
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261029,
+      "awake": {
+        "sensory": 0.04689421563733281,
+        "broadcast": 0.03603813810839311,
+        "ratio": 0.7684985795924669
+      },
+      "deepest": {
+        "sensory": 0.015749778730275183,
+        "broadcast": 0.015535941923202385,
+        "ratio": 0.986422869125028
+      },
+      "deepest_coherence_fraction": 0.9908118177890837
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261030,
+      "awake": {
+        "sensory": 0.057083767363795085,
+        "broadcast": 0.040547963322336414,
+        "ratio": 0.7103238835643779
+      },
+      "deepest": {
+        "sensory": 0.04598512576785157,
+        "broadcast": 0.04867208145905494,
+        "ratio": 1.058430974066876
+      },
+      "deepest_coherence_fraction": 0.9879985179247692
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261031,
+      "awake": {
+        "sensory": 0.033409164334213745,
+        "broadcast": 0.021807679622905432,
+        "ratio": 0.6527454384895394
+      },
+      "deepest": {
+        "sensory": 0.02575784302321877,
+        "broadcast": 0.01644226999436014,
+        "ratio": 0.6383403291781327
+      },
+      "deepest_coherence_fraction": 0.9885061979709047
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261032,
+      "awake": {
+        "sensory": 0.012909360568178832,
+        "broadcast": 0.009736283614984163,
+        "ratio": 0.7542033986550655
+      },
+      "deepest": {
+        "sensory": 0.012387301740484708,
+        "broadcast": 0.010564208882985692,
+        "ratio": 0.8528256681161882
+      },
+      "deepest_coherence_fraction": 0.9908731236009578
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261033,
+      "awake": {
+        "sensory": 0.019051772637653706,
+        "broadcast": 0.020620153236569412,
+        "ratio": 1.0823220300149907
+      },
+      "deepest": {
+        "sensory": 0.01806755740481228,
+        "broadcast": 0.015406599525439053,
+        "ratio": 0.8527217697581809
+      },
+      "deepest_coherence_fraction": 0.9892721234195042
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261034,
+      "awake": {
+        "sensory": 0.015868264873968124,
+        "broadcast": 0.008188561891325092,
+        "ratio": 0.5160338547636939
+      },
+      "deepest": {
+        "sensory": 0.033139069524503725,
+        "broadcast": 0.034793862264809766,
+        "ratio": 1.049934797930354
+      },
+      "deepest_coherence_fraction": 0.9912118717948415
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261035,
+      "awake": {
+        "sensory": 0.09233017979641188,
+        "broadcast": 0.08545322750484559,
+        "ratio": 0.9255178284421196
+      },
+      "deepest": {
+        "sensory": 0.04133056966279377,
+        "broadcast": 0.05219217465250599,
+        "ratio": 1.2627983373645575
+      },
+      "deepest_coherence_fraction": 0.9897496507888178
+    },
+    {
+      "stimulus": "phantom (zero strength)",
+      "window_multiple": 1,
+      "organism": "human",
+      "seed": 20261036,
+      "awake": {
+        "sensory": 0.05891032078895209,
+        "broadcast": 0.05641359894487809,
+        "ratio": 0.9576182609322638
+      },
+      "deepest": {
+        "sensory": 0.025442507812317827,
+        "broadcast": 0.030223083399817406,
+        "ratio": 1.1878971846157829
+      },
+      "deepest_coherence_fraction": 0.9888031505246881
+    }
+  ]
+}
