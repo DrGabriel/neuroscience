@@ -16,20 +16,21 @@
     </details>
     <div class="transport" role="group" data-i18n-aria-label="page.arialabel2">
       <button type="button" class="key" data-play aria-pressed="false" data-i18n="page.button1"></button>
-      <button type="button" class="key" data-step data-i18n="page.button2"></button>
-      <div class="choice" role="group" data-i18n-aria-label="page.arialabel3">
+      <button type="button" class="key phone-extra" data-step data-i18n="page.button2"></button>
+      <div class="choice phone-extra" role="group" data-i18n-aria-label="page.arialabel3">
         <button type="button" data-choice="speed" data-value="SLOW" aria-pressed="false" data-i18n="page.button3"></button>
         <button type="button" data-choice="speed" data-value="MEDIUM" aria-pressed="true" data-i18n="page.button4"></button>
         <button type="button" data-choice="speed" data-value="FAST" aria-pressed="false" data-i18n="page.button5"></button>
       </div>
-      <span class="timebase" data-timebase></span>
+      <span class="timebase phone-extra" data-timebase></span>
     </div>
-    <label class="language"><span class="bar-label" data-picker-caption data-i18n="page.language"></span> <select data-language></select></label>
-    <div class="choice theme" role="group" data-i18n-aria-label="page.arialabel4">
+    <label class="language phone-extra"><span class="bar-label" data-picker-caption data-i18n="page.language"></span> <select data-language></select></label>
+    <div class="choice theme phone-extra" role="group" data-i18n-aria-label="page.arialabel4">
       <button type="button" data-theme-mode="SYSTEM" aria-pressed="true" data-i18n="page.button6"></button>
       <button type="button" data-theme-mode="LIGHT" aria-pressed="false" data-i18n="page.button7"></button>
       <button type="button" data-theme-mode="DARK" aria-pressed="false" data-i18n="page.button8"></button>
     </div>
+    <button type="button" class="key bar-more" data-bar-more aria-expanded="false" data-i18n="page.settings"></button>
   </div>
 </header>
 
@@ -196,9 +197,8 @@
           <label class="control"><span data-i18n="fig-faults.label1"></span> <span class="value" data-control-value="dose"></span>
             <input type="range" min="0" max="2.5" step="0.01" value="0" data-control="dose"></label>
           <div class="dose-instrument"><span class="dose-curve-label" data-message="doseCurveLabel"></span><canvas class="dose-curve" data-dose-curve aria-hidden="true"></canvas><span class="dose-effect" data-reading="doseEffect"></span></div>
-          <p class="status" data-status data-quorum="held" data-reading="status"></p>
           <dl class="readings"><dt data-i18n="fig-faults.dt3"></dt><dd data-reading="giant"></dd><dt data-i18n="fig-quorum.dt1"></dt><dd data-reading="coherence"></dd><dt data-i18n="fig-quorum.dt2"></dt><dd data-reading="threshold"></dd></dl>
-          <div class="gauge" aria-hidden="true"><span data-i18n="fig-quorum.span3"></span><span class="meter coherence"></span><span data-i18n="fig-quorum.span4"></span><span class="meter threshold"></span></div>
+          <div class="connection-bar" data-connection-bar></div>
         </div>
       </div>
       <figcaption data-i18n="fig-quorum.figcaption1"></figcaption>
@@ -213,7 +213,9 @@
     <aside class="note" data-i18n="inertia.aside1"></aside>
     <figure id="fig-inertia" class="channel" data-scene="InertiaScene" data-channel="Inertia" data-i18n-data-channel="fig-inertia.channel">
       <div class="stage">
-        <canvas class="network" data-network role="img" data-i18n-aria-label="fig-inertia.arialabel1"></canvas>
+        <div class="pane">
+          <canvas class="network" data-network role="img" data-i18n-aria-label="fig-inertia.arialabel1"></canvas>
+        </div>
         <div class="panel">
           <label class="control"><span data-i18n="fig-inertia.label1"></span> <select data-feedback></select></label>
           <button type="button" class="key" data-sweep data-i18n="fig-inertia.button1"></button>
@@ -240,7 +242,9 @@
     <aside class="note" data-i18n="broadcast.aside1"></aside>
     <figure id="fig-broadcast" class="channel" data-scene="BroadcastScene" data-channel="Broadcast" data-i18n-data-channel="fig-broadcast.channel">
       <div class="stage">
-        <canvas class="network" data-network role="img" data-i18n-aria-label="fig-broadcast.arialabel1"></canvas>
+        <div class="pane">
+          <canvas class="network" data-network role="img" data-i18n-aria-label="fig-broadcast.arialabel1"></canvas>
+        </div>
         <div class="panel">
           <div class="control"><span data-i18n="fig-quorum.span2"></span>
             <div class="choice" role="group" data-i18n-aria-label="fig-quorum.span2">
@@ -266,7 +270,9 @@
     <aside class="note" data-i18n="ketamine.aside1"></aside>
     <figure id="fig-feedback" class="channel" data-scene="FeedbackScene" data-channel="Wiring" data-i18n-data-channel="fig-feedback.channel">
       <div class="stage">
-        <canvas class="network" data-network role="img" data-i18n-aria-label="fig-feedback.arialabel1"></canvas>
+        <div class="pane">
+          <canvas class="network" data-network role="img" data-i18n-aria-label="fig-feedback.arialabel1"></canvas>
+        </div>
         <div class="panel">
           <div class="control"><span data-i18n="fig-feedback.span1"></span>
             <div class="choice" role="group" data-i18n-aria-label="fig-feedback.span1">
@@ -293,7 +299,9 @@
     <aside class="note" data-i18n="sleep.aside1"></aside>
     <figure id="fig-sleep" class="channel" data-scene="SleepScene" data-channel="Sleep" data-i18n-data-channel="fig-sleep.channel">
       <div class="stage">
-        <canvas class="network" data-network role="img" data-i18n-aria-label="fig-sleep.arialabel1"></canvas>
+        <div class="pane">
+          <canvas class="network" data-network role="img" data-i18n-aria-label="fig-sleep.arialabel1"></canvas>
+        </div>
         <div class="panel">
           <label class="control"><span data-i18n="fig-sleep.label1"></span> <span class="value" data-control-value="silenced"></span>
             <input type="range" min="0" max="0.6" step="0.005" value="0.095" data-control="silenced"></label>
@@ -339,7 +347,9 @@
     <aside class="note" data-i18n="edge.aside1"></aside>
     <figure id="fig-edge" class="channel" data-scene="EdgeScene" data-channel="Edge" data-i18n-data-channel="fig-edge.channel">
       <div class="stage">
-        <canvas class="network" data-network role="img" data-i18n-aria-label="fig-edge.arialabel1"></canvas>
+        <div class="pane">
+          <canvas class="network" data-network role="img" data-i18n-aria-label="fig-edge.arialabel1"></canvas>
+        </div>
         <div class="panel">
           <label class="control"><span data-i18n="fig-faults.label1"></span> <span class="value" data-control-value="dose"></span>
             <input type="range" min="0" max="2.5" step="0.01" value="1.3" data-control="dose"></label>
@@ -527,6 +537,7 @@
 <script src="js/simulation.js"></script>
 <script src="js/drug.js"></script>
 <script src="js/controls.js"></script>
+<script src="js/quorum-gauge.js"></script>
 <script src="js/charts.js"></script>
 <script src="js/network-views.js"></script>
 <script src="js/projection.js"></script>

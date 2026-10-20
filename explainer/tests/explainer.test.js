@@ -18,7 +18,7 @@ for (const file of ["data/explainer-data.js", "js/core.js", "js/model.js", "js/n
 
 const {
   PlantTissue, FaultKind, erf, ModelFactory, Network, IntegrationCycles, CycleOutcome, ConnectionOutcome, CycleConditions,
-  SweepPlan, SweepDirection, transitionPoints, OutcomeIndex, Verdict, DrugCloud, mirroredLayout, FaultPlacement, agentJitterMasks,
+  SweepPlan, SweepDirection, transitionPoints, CellGroup, assignGroups, OutcomeIndex, Verdict, DrugCloud, mirroredLayout, FaultPlacement, agentJitterMasks,
 } = globalThis.DPC;
 const data = globalThis.DPC_EXPLAINER_DATA;
 const factory = new ModelFactory(data);
@@ -51,6 +51,20 @@ function smallNetwork() {
   });
 }
 
+
+test("islands take colours only once quorum is lost, the largest first_Regression", () => {
+  // The first version coloured the small clusters outside a quorum-holding group as "largest island (quorum lost)".
+  const network = smallNetwork();
+  const outcome = new CycleOutcome(network);
+  network.analyse(Uint8Array.from([1, 1, 1]), outcome);
+  const { NONE, AGREEING, ISLAND_1, ISLAND_2 } = CellGroup;
+  outcome.quorumHeld = true;
+  assignGroups(outcome);
+  assert.deepEqual(Array.from(outcome.group), [AGREEING, AGREEING, AGREEING, NONE, NONE, NONE]);
+  outcome.quorumHeld = false;
+  assignGroups(outcome);
+  assert.deepEqual(Array.from(outcome.group), [ISLAND_1, ISLAND_1, ISLAND_1, ISLAND_2, ISLAND_2, NONE]);
+});
 
 test("analysis finds the giant component and the cells a sensory stimulus reaches", () => {
   const network = smallNetwork();

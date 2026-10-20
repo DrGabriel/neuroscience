@@ -3,7 +3,7 @@
 (function (root) {
   "use strict";
 
-  const { Token, Swatch, LegendGroup, labelled, palette, Surface, scale, polyline, make, t, count, organismName, drawShareAxes } = root.DPC;
+  const { Token, Swatch, LegendGroup, labelled, palette, Surface, scale, polyline, make, t, count, organismName, drawShareAxes, AxisTitle } = root.DPC;
 
   const SIDE = Object.freeze({ LEFT: "_L", RIGHT: "_R" });
   const UNASSIGNED = "UNASGD";
@@ -158,7 +158,7 @@
   });
 
   class SpeciesCurvesView {
-    static MARGIN = Object.freeze({ left: 44, right: 96, top: 12, bottom: 30 });
+    static MARGIN = Object.freeze({ left: 60, right: 96, top: 12, bottom: 46 });
     static LABEL_GAP_PX = 18;
     static LABEL_OFFSET_PX = 6;
 
@@ -183,7 +183,7 @@
       const maxConcentration = Math.max(...this.curves.map((curve) => curve.concentrations[curve.concentrations.length - 1]));
       const px = scale([0, maxConcentration], [margin.left, width - margin.right]);
       const py = scale([0, 1], [height - margin.bottom, margin.top]);
-      drawShareAxes(context, { px, py, margin, width, height, maxConcentration });
+      drawShareAxes(context, { px, py, margin, width, height, maxConcentration, shareTitle: AxisTitle.COHERENCE });
       context.strokeStyle = context.fillStyle = palette.get(Token.INK);
       context.lineWidth = 2;
       const ends = this.curves.map((curve) => {

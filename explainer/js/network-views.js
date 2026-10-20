@@ -12,8 +12,13 @@
     ARRIVAL: 0.6, WINDOW_HALF_WIDTH: 0.07, EARLIEST: 0.25, LATEST: 1.25,
     FAIL_FADE_START: 0.2, FAIL_FADE_END: 0.38, SETTLE_START: 0.62, SETTLE_END: 0.8,
   });
-  const PULSE_SIZE_PX = 2.2;
-  const PULSE_COLOURS = Object.freeze([[ConnectionOutcome.ON_TIME, Token.HELD], [ConnectionOutcome.LATE, Token.LATE]]);
+  // Even awake, most signals miss the window (about 62% at 3 ms of scatter), yet the network agrees because only a small
+  // share needs to count. Late signals are therefore drawn smaller and fainter, so the eye follows the ones that count.
+  const PULSE_STYLES = Object.freeze([
+    Object.freeze({ kind: ConnectionOutcome.LATE, token: Token.LATE, sizePx: 1.6, alpha: 0.55 }),
+    Object.freeze({ kind: ConnectionOutcome.ON_TIME, token: Token.HELD, sizePx: 2.4, alpha: 1 }),
+  ]);
+  const FAILED_PULSE_SIZE_PX = 2.2;
   const DEPTH_SHADING = Object.freeze({ floor: 0.45, range: 0.55 });
 
   const smooth = (value) => value * value * (3 - 2 * value);
@@ -106,24 +111,25 @@
     _drawPulses(context, points, progress) {
       const { sources, targets } = this.network;
       // Draws a pulse part-way along connection k; called thousands of times a frame, so it allocates nothing.
-      const drawAt = (shape, k, along, colour) => {
+      const drawAt = (shape, k, along, { colour, sizePx }) => {
         const a = points[sources[k]], b = points[targets[k]];
-        shape(context, a.x + (b.x - a.x) * along, a.y + (b.y - a.y) * along, PULSE_SIZE_PX, colour);
+        shape(context, a.x + (b.x - a.x) * along, a.y + (b.y - a.y) * along, sizePx, colour);
       };
       const fade = 1 - clamp((progress - CYCLE.FAIL_FADE_START) / (CYCLE.FAIL_FADE_END - CYCLE.FAIL_FADE_START));
       if (fade > 0) {
         context.globalAlpha = fade;
         context.lineWidth = 1;
-        const failed = palette.get(Token.STRAY);
+        const failed = { colour: palette.get(Token.STRAY), sizePx: FAILED_PULSE_SIZE_PX };
         for (const k of this.pulses.byOutcome.get(ConnectionOutcome.FAILED)) drawAt(cross, k, progress / CYCLE.ARRIVAL, failed);
-        context.globalAlpha = 1;
       }
-      for (const [kind, token] of PULSE_COLOURS) {
-        const colour = palette.get(token);
-        for (const k of this.pulses.byOutcome.get(kind)) {
-          if (progress < this.pulses.arrival[k]) drawAt(diamond, k, progress / this.pulses.arrival[k], colour);
+      for (const style of PULSE_STYLES) {
+        const look = { colour: palette.get(style.token), sizePx: style.sizePx };
+        context.globalAlpha = style.alpha;
+        for (const k of this.pulses.byOutcome.get(style.kind)) {
+          if (progress < this.pulses.arrival[k]) drawAt(diamond, k, progress / this.pulses.arrival[k], look);
         }
       }
+      context.globalAlpha = 1;
     }
 
     _drawCells(context, points, painter, settledShare) {
@@ -181,9 +187,11 @@
       Object.assign(this, { surface: new Surface(canvas), network });
     }
 
-    legend() {
+    // The same colours as the network view: the painter decides which group gets which.
+    legend(painter) {
       return labelled([
         { group: LegendGroup.CELLS, swatch: Swatch.DOT, token: Token.HELD, message: "legendGiantIsland" },
+        ...painter.islands.map((island) => ({ group: LegendGroup.CELLS, swatch: Swatch.DOT, token: island.style.token, message: island.message })),
         { group: LegendGroup.CELLS, swatch: Swatch.DOT, token: Token.STRAY, message: "legendIsland" },
       ]);
     }
@@ -204,16 +212,17 @@
           rowHeight = 0;
         }
         if (y + 2 * radius > height) break;
-        this._bubble(context, { x: x + radius, y: y + radius, radius, isGiant: outcome.inGiant[rootOfNode] === 1 && size > 1, share: size / this.network.nodeCount });
+        const { token } = painter.styleOf(0, outcome.group[rootOfNode]);
+        this._bubble(context, { x: x + radius, y: y + radius, radius, token, share: size / this.network.nodeCount });
         x += 2 * radius + IslandsView.GAP;
         rowHeight = Math.max(rowHeight, 2 * radius);
       }
     }
 
-    _bubble(context, { x, y, radius, isGiant, share }) {
+    _bubble(context, { x, y, radius, token, share }) {
       context.beginPath();
       context.arc(x, y, radius, 0, 2 * Math.PI);
-      context.fillStyle = palette.get(isGiant ? Token.HELD : Token.STRAY);
+      context.fillStyle = palette.get(token);
       context.fill();
       if (radius <= IslandsView.LABEL_MIN_RADIUS) return;
       context.fillStyle = palette.get(Token.PAPER);
@@ -229,9 +238,10 @@
       Object.assign(this, { surface: new Surface(canvas), network });
     }
 
-    legend() {
+    legend(painter) {
       return labelled([
         { group: LegendGroup.CONNECTIONS, swatch: Swatch.SQUARE, token: Token.HELD, message: "legendMatrixGiant" },
+        ...painter.islands.map((island) => ({ group: LegendGroup.CONNECTIONS, swatch: Swatch.SQUARE, token: island.style.token, message: island.message })),
         { group: LegendGroup.CONNECTIONS, swatch: Swatch.SQUARE, token: Token.STRAY, message: "legendMatrixOther" },
         { group: LegendGroup.CONNECTIONS, swatch: Swatch.SQUARE, token: Token.LATE, message: "legendMatrixLate" },
       ]);
@@ -247,12 +257,13 @@
       const pixel = Math.max(1, cell);
       context.strokeStyle = palette.get(Token.RULE);
       context.strokeRect(left, top, side, side);
-      const fill = { held: palette.get(Token.HELD), stray: palette.get(Token.STRAY), late: palette.get(Token.LATE_SOFT) };
+      const late = palette.get(Token.LATE_SOFT);
+      const colourOf = (node) => palette.get(painter.styleOf(0, outcome.group[node]).token);
       for (let k = 0; k < this.network.connectionCount; k++) {
         const kind = outcome.connections[k];
         if (kind !== ConnectionOutcome.ON_TIME && kind !== ConnectionOutcome.LATE) continue;
         const a = position[this.network.sources[k]], b = position[this.network.targets[k]];
-        context.fillStyle = kind === ConnectionOutcome.LATE ? fill.late : outcome.inGiant[this.network.sources[k]] ? fill.held : fill.stray;
+        context.fillStyle = kind === ConnectionOutcome.LATE ? late : colourOf(this.network.sources[k]);
         context.fillRect(left + a * cell, top + b * cell, pixel, pixel);
         context.fillRect(left + b * cell, top + a * cell, pixel, pixel);
       }

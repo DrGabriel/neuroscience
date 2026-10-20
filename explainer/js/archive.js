@@ -4,7 +4,7 @@
 (function (root) {
   "use strict";
 
-  const { Token, Swatch, LegendGroup, labelled, legendEntry, palette, Surface, scale, polyline, make, t, organismName, Picker, drawShareAxes, DASH, studyMessage } = root.DPC;
+  const { Token, Swatch, LegendGroup, labelled, legendEntry, palette, Surface, scale, polyline, make, t, organismName, Picker, drawShareAxes, AxisTitle, DASH, studyMessage } = root.DPC;
   const CURRENT_SET = "current";
   const JSON_CHUNK = 100;
   // Reports can be tens of megabytes once parsed, so only the most recently opened few are kept.
@@ -150,7 +150,7 @@
 
   // Global coherence of every seed, as recorded in the report, with the mean going under and coming back.
   class CurveView {
-    static MARGIN = Object.freeze({ left: 44, right: 12, top: 12, bottom: 30 });
+    static MARGIN = Object.freeze({ left: 60, right: 12, top: 12, bottom: 46 });
 
     constructor(canvas) {
       this.runs = [];
@@ -166,7 +166,7 @@
       const maxConcentration = concentrations[concentrations.length - 1];
       const px = scale([0, maxConcentration], [margin.left, width - margin.right]);
       const py = scale([0, 1], [height - margin.bottom, margin.top]);
-      drawShareAxes(context, { px, py, margin, width, height, maxConcentration });
+      drawShareAxes(context, { px, py, margin, width, height, maxConcentration, shareTitle: AxisTitle.COHERENCE });
       const series = (values) => values.map((y, k) => ({ x: concentrations[k], y }));
       context.lineWidth = CURVE_LINE.seed;
       context.strokeStyle = palette.get(Token.STRAY);

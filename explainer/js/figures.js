@@ -7,12 +7,9 @@
     CycleConditions, FaultPlacement, agentJitterMasks,
     ArrivalView, PhaseDialView, RasterView, StripView, ThresholdView, FlyMapView, SpeciesCurvesView, namedNeuropils, RandomSource, RangeControl, ChoiceGroup,
     Scene, NetworkPane, NetworkScene, DosedScene, DoseInstrument, DrugLayer, SweepPanel, NetworkViewKind, alternativeViews, conditionsWith,
-    DECIMALS, withinWindow, wrapPhase, phaseOf, percent, fixed, formatConcentration, make, t, count,
+    DECIMALS, withinWindow, wrapPhase, phaseOf, percent, fixed, formatConcentration, make, t, count, quorumState, ThresholdBar,
   } = root.DPC;
 
-  // The state is a fixed key for styling (styles.css matches it); the word shown is translated from it.
-  const QuorumState = Object.freeze({ HELD: "held", LOST: "lost" });
-  const quorumState = (holds) => (holds ? QuorumState.HELD : QuorumState.LOST);
   const quorumWord = (holds) => t(quorumState(holds));
   const ms = (value) => `${fixed(value, DECIMALS.ms)} ms`;
 
@@ -165,6 +162,11 @@
       for (const { pane } of this.panes) pane.draw(this.progress);
     }
 
+    showReadings() {
+      super.showReadings();
+      for (const { pane } of this.panes) pane.showVerdict();
+    }
+
     readings() {
       return Object.fromEntries(this.panes.flatMap(({ kind, pane }) => [
         [`failure-${kind}`, fixed(pane.outcome.failureProbability, DECIMALS.share)],
@@ -189,7 +191,9 @@
         this.showLegend();
       } }));
       this.measuredThreshold = context.data.thresholds.organisms.find((row) => row.organism === context.network.name).quorum_threshold_measured_mean;
-      this.status = this.element("[data-status]");
+      // Why quorum holds or fails: the connections that count against the share the measured threshold needs.
+      this.connections = new ThresholdBar({ label: "connectionsThatCount", mark: "connectionsNeeded" });
+      this.element("[data-connection-bar]").append(this.connections.element);
     }
 
     render() {
@@ -198,7 +202,7 @@
     }
 
     legend() {
-      return this.view.value === NetworkViewKind.NETWORK ? super.legend() : this.alternatives[this.view.value].legend();
+      return this.view.value === NetworkViewKind.NETWORK ? super.legend() : this.alternatives[this.view.value].legend(this.pane.painter);
     }
 
     showsDrug() {
@@ -207,15 +211,12 @@
 
     showReadings() {
       super.showReadings();
-      this.status.dataset.quorum = quorumState(this.holdsQuorum());
-      this.scope.style.setProperty("--coherence", String(this.pane.outcome.expectedCoherence));
-      this.scope.style.setProperty("--threshold", String(this.measuredThreshold));
+      this.connections.show({ share: this.pane.outcome.expectedCoherence, threshold: this.measuredThreshold });
     }
 
     readings() {
       const outcome = this.pane.outcome;
       return {
-        status: t("quorumStatus", { state: quorumWord(this.holdsQuorum()) }),
         giant: percent(outcome.giantShare),
         coherence: fixed(outcome.expectedCoherence, DECIMALS.threshold),
         threshold: fixed(this.measuredThreshold, DECIMALS.threshold),

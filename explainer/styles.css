@@ -1,6 +1,6 @@
 /* Identity: the EEG record an anaesthetist reads in theatre. Each figure is a recording channel on millimetre paper,
-   labels are set in condensed instrument lettering, the story in a book serif, and specialist notes are red-pen
-   annotations in the margin. Semantic colours are the Okabe-Ito colour-blind-safe set (Wong, 2011), one meaning each,
+   labels are set in condensed instrument lettering, the story in a book serif, and specialist notes sit quietly in
+   the margin. Semantic colours are the Okabe-Ito colour-blind-safe set (Wong, 2011), one meaning each,
    and every meaning also has its own shape, so no concept is told apart by colour alone. Both modes were checked with
    the dataviz palette validator (lightness band, CVD separation, normal-vision floor, contrast). */
 :root {
@@ -27,6 +27,13 @@
   --focus: var(--ink);
   --stray: #a3adb7;
   --stray-soft: rgba(163, 173, 183, 0.25);
+  /* The two largest islands once quorum is lost. Checked as one set with the grey and the vermilion they share the
+     network with (all pairs, both modes): Okabe-Ito blue and the feedback purple, so a figure that also marks feedback
+     connections colours only the first island. */
+  --island-1: #0072b2;
+  --island-1-soft: rgba(0, 114, 178, 0.26);
+  --island-2: #a6438a;
+  --island-2-soft: rgba(166, 67, 138, 0.26);
   --silenced: var(--muted);
   --emergence: var(--ink);
   --quorum: var(--muted);
@@ -37,8 +44,6 @@
   --measure: 38rem;
   --margin-note: 15rem;
   --bar-height: 3.4rem;
-  /* Awake coherence probability is about 0.38, so gauges are scaled to 0.4 to keep both bars readable. */
-  --gauge-full: 0.4;
   /* The one chevron used by every menu and picker, as a mask so it takes the current text colour. */
   --chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
@@ -49,7 +54,8 @@
     --held: #22a884; --held-soft: rgba(34, 168, 132, 0.26); --late: #c8432f; --late-soft: rgba(200, 67, 47, 0.13);
     --reach: #3d86d8; --reach-soft: rgba(61, 134, 216, 0.28); --feedback: #b85fa8;
     --drug: #b88400; --drug-soft: rgba(184, 132, 0, 0.3);
-    --stray: #5f6d79; --stray-soft: rgba(95, 109, 121, 0.28);
+    --stray: #5a6670; --stray-soft: rgba(90, 102, 112, 0.28);
+    --island-1: #4a8fe0; --island-1-soft: rgba(74, 143, 224, 0.28); --island-2: #b85fa8; --island-2-soft: rgba(184, 95, 168, 0.28);
     color-scheme: dark;
   }
 }
@@ -59,7 +65,8 @@
   --held: #22a884; --held-soft: rgba(34, 168, 132, 0.26); --late: #c8432f; --late-soft: rgba(200, 67, 47, 0.13);
   --reach: #3d86d8; --reach-soft: rgba(61, 134, 216, 0.28); --feedback: #b85fa8;
   --drug: #b88400; --drug-soft: rgba(184, 132, 0, 0.3);
-  --stray: #5f6d79; --stray-soft: rgba(95, 109, 121, 0.28);
+  --stray: #5a6670; --stray-soft: rgba(90, 102, 112, 0.28);
+  --island-1: #4a8fe0; --island-1-soft: rgba(74, 143, 224, 0.28); --island-2: #b85fa8; --island-2-soft: rgba(184, 95, 168, 0.28);
   color-scheme: dark;
 }
 
@@ -142,6 +149,18 @@ a:hover { text-decoration-thickness: 2px; }
 @media (max-width: 1600px) { .bar-title { display: none; } }
 @media (max-width: 1500px) { .timebase { display: none; } }
 @media (max-width: 760px) { .timebase { flex-basis: 100%; } }
+/* On a phone the sticky bar keeps one row (section, pause, settings); the rest opens from Settings. */
+.bar-more { display: none; }
+@media (max-width: 760px) {
+  .bar-more { display: inline-flex; align-items: center; }
+  .topbar:not(.expanded) .phone-extra { display: none; }
+  .bar-inner { flex-wrap: nowrap; }
+  .topbar.expanded .bar-inner { flex-wrap: wrap; }
+  .sections { flex: 1; min-width: 0; }
+  .sections summary { max-width: 100%; width: 100%; }
+  .sections summary .bar-label { display: none; }
+  .transport { margin-left: 0; }
+}
 
 /* Instrument keys and pressed-button groups */
 .key {
@@ -189,8 +208,9 @@ p { margin: 0 0 0.9rem; }
 .postulate { font-family: var(--font-label); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-size: 0.95rem; }
 
 /* Red-pen annotations for the specialist */
-.note { margin: 0.3rem 0 1rem; padding-left: 0.75rem; border-left: 2px solid var(--pen); font-size: 0.88rem; line-height: 1.5; color: var(--pen); font-style: italic; }
-.note b { font-style: normal; font-weight: 600; }
+/* Specialist notes in the margin: quieter than the story but not red, so a reader never takes them for corrections. */
+.note { margin: 0.3rem 0 1rem; padding-left: 0.8rem; border-left: 3px solid var(--rule); font-size: 0.9rem; line-height: 1.55; color: var(--muted); }
+.note b { font-weight: 600; color: var(--ink); }
 .note .formula { display: block; margin: 0.35rem 0; font-family: var(--font-data); font-style: normal; font-size: 0.8rem; color: var(--ink); }
 .note a { color: inherit; }
 
@@ -217,13 +237,13 @@ figure.channel::before {
 @media (max-width: 760px) { .stage, .stage.split { grid-template-columns: minmax(0, 1fr); } }
 canvas { display: block; width: 100%; max-width: 100%; }
 canvas.network { aspect-ratio: 1; max-width: 36rem; margin-inline: auto; }
-canvas.trace { height: 210px; }
-canvas.strip { height: 110px; }
+canvas.trace { height: 240px; }
+canvas.strip { height: 130px; }
 canvas.dial { aspect-ratio: 1; max-width: 300px; margin-inline: auto; }
-canvas.arrivals { height: 160px; }
+canvas.arrivals { height: 180px; }
 canvas.raster { height: 190px; }
-canvas.thresholds { height: 180px; }
-canvas.species-curves { height: 260px; }
+canvas.thresholds { height: 200px; }
+canvas.species-curves { height: 280px; }
 canvas.fly-map { aspect-ratio: 4 / 5; max-width: 40rem; margin-inline: auto; cursor: crosshair; }
 .fly-readout { margin: 0; text-align: center; color: var(--muted); font-size: 0.8rem; min-height: 1.4em; }
 canvas.plant { aspect-ratio: 1; max-width: 28rem; margin-inline: auto; }
@@ -255,7 +275,7 @@ input[type="range"]:disabled { opacity: 0.45; cursor: not-allowed; }
 /* The anaesthetic's dose-response under each dose slider */
 .dose-instrument { display: grid; gap: 0.2rem; padding: 0.4rem 0.5rem; border: 1px solid var(--rule); border-radius: 4px; background: var(--paper); }
 .dose-curve-label { font-family: var(--font-label); text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.75rem; color: var(--muted); }
-canvas.dose-curve { height: 64px; }
+canvas.dose-curve { height: 80px; }
 .dose-effect { font-family: var(--font-data); font-size: 0.78rem; color: var(--ink); }
 .check { display: flex; align-items: center; gap: 0.5rem; min-height: 2rem; font-size: 0.95rem; }
 /* Our own switch for tick boxes */
@@ -266,17 +286,32 @@ canvas.dose-curve { height: 64px; }
 .readings { display: grid; grid-template-columns: 1fr auto; gap: 0.3rem 0.8rem; margin: 0; font-size: 0.92rem; }
 .readings dt { color: var(--muted); }
 .readings dd { margin: 0; text-align: right; font-family: var(--font-data); font-size: 0.85rem; font-variant-numeric: tabular-nums; }
-.status { display: inline-flex; align-items: center; gap: 0.55rem; margin: 0; font-family: var(--font-label); text-transform: uppercase; letter-spacing: 0.08em; font-size: 1.05rem; }
-.status::before { content: ""; width: 0.8rem; height: 0.8rem; border-radius: 50%; }
-.status[data-quorum="held"]::before { background: var(--held); }
-.status[data-quorum="lost"]::before { box-shadow: inset 0 0 0 2px var(--lost); }
-.gauge { display: grid; gap: 0.25rem; font-size: 0.82rem; color: var(--muted); }
-.meter { display: block; height: 6px; border-radius: 3px; background: var(--wash); position: relative; overflow: hidden; }
-.meter::after { content: ""; position: absolute; inset: 0 auto 0 0; width: calc(min(1, var(--fill) / var(--gauge-full)) * 100%); }
-.meter.coherence { --fill: var(--coherence, 0); }
-.meter.coherence::after { background: var(--held); }
-.meter.threshold { --fill: var(--threshold, 0); }
-.meter.threshold::after { background: var(--ink); }
+/* The model's verdict under every network: a word with its own icon, then one bar with the quorum line drawn on it. */
+.verdict { display: grid; gap: 0.45rem; width: 100%; max-width: 36rem; margin-inline: auto; padding: 0.7rem 0.9rem 0.8rem; background: var(--sheet); border: 1px solid var(--rule); border-left: 6px solid var(--verdict-colour); border-radius: 4px; }
+.verdict[data-quorum="held"] { --verdict-colour: var(--held); }
+.verdict[data-quorum="lost"] { --verdict-colour: var(--ink); }
+.verdict-heading { font-family: var(--font-label); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.85rem; color: var(--muted); }
+.verdict-line { margin: 0; display: flex; flex-wrap: wrap; align-items: center; column-gap: 0.6rem; row-gap: 0.1rem; }
+.verdict-word { font-family: var(--font-label); text-transform: uppercase; letter-spacing: 0.04em; font-size: 1.6rem; line-height: 1.1; }
+.verdict-reason { color: var(--muted); font-size: 1rem; line-height: 1.35; }
+.verdict-icon { width: 1.5rem; height: 1.5rem; border-radius: 50%; display: inline-grid; place-items: center; background: var(--verdict-colour); color: var(--paper); font-family: var(--font-data); font-weight: 700; font-size: 0.95rem; flex: none; }
+.verdict[data-quorum="held"] .verdict-icon::before { content: "\2713"; }
+.verdict[data-quorum="lost"] .verdict-icon::before { content: "\2715"; }
+.threshold-bar { display: grid; gap: 0.25rem; }
+.threshold-head { display: flex; justify-content: space-between; gap: 0.75rem; font-size: 0.98rem; }
+.threshold-value { font-family: var(--font-data); font-weight: 600; }
+/* Room above the track for the line's label. */
+.threshold-track { position: relative; display: block; height: 14px; margin-top: 1.5rem; border-radius: 7px; background: var(--wash); }
+.threshold-fill { position: absolute; inset: 0 auto 0 0; width: calc(var(--share, 0) * 100%); border-radius: 7px; background: var(--muted); transition: width 0.25s ease-out; }
+.verdict[data-quorum="held"] .threshold-fill { background: var(--held); }
+/* Without quorum the largest group is drawn hatched, so the state is told apart by texture as well as colour. */
+.verdict[data-quorum="lost"] .threshold-fill { background: repeating-linear-gradient(135deg, var(--muted) 0 4px, var(--wash) 4px 7px); }
+.connection-bar .threshold-fill { background: var(--held); }
+.threshold-mark { position: absolute; top: -5px; bottom: -5px; left: calc(var(--threshold, 0) * 100%); width: 3px; margin-left: -1.5px; background: var(--ink); border-radius: 1px; }
+/* The label starts at the line and runs right, so a line near the left edge keeps its label inside the bar. */
+.threshold-mark-label { position: absolute; bottom: calc(100% + 2px); left: 0; white-space: nowrap; font-family: var(--font-label); text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.82rem; color: var(--ink); }
+.threshold-scale { display: flex; justify-content: space-between; font-family: var(--font-data); font-size: 0.8rem; color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { .threshold-fill { transition: none; } }
 .presets { display: flex; flex-wrap: wrap; gap: 0.4rem; }
 .presets button { min-height: 2rem; padding: 0.25rem 0.6rem; border: 1px solid var(--rule); border-radius: 4px; background: transparent; color: var(--ink); cursor: pointer; font-family: var(--font-label); font-size: 0.95rem; }
 .steps { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.2rem; font-size: 0.85rem; color: var(--muted); }

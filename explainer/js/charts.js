@@ -11,7 +11,7 @@
     { group: LegendGroup.SIGNALS, swatch: Swatch.DIAMOND, token: Token.LATE, message: "legendOffTime" },
   ]);
 
-  const AXIS = Object.freeze({ fontSizePx: 11, labelGapPx: 6 });
+  const AXIS = Object.freeze({ fontSizePx: 12, labelGapPx: 6, titleSizePx: 13, titleInsetPx: 2 });
   const DASH = Object.freeze({ threshold: Object.freeze([1.5, 3]), emergence: Object.freeze([6, 3]), halfEffect: Object.freeze([4, 4]) });
   // Where along a sweep line its direction arrow sits, and its size.
   const ARROW = Object.freeze({ along: 0.55, sizePx: 7 });
@@ -74,6 +74,33 @@
     context.fillStyle = palette.get(Token.MUTED);
   }
 
+  // Axis titles drawn on the chart, so a reader never needs the caption to know what an axis measures.
+  // titles: { x, y } message keys, either optional; frame: { margin, width, height }.
+  function axisTitles(context, frame, titles) {
+    const { margin, width, height } = frame;
+    context.save();
+    context.font = `${AXIS.titleSizePx}px ${palette.get(Token.FONT_LABEL)}`;
+    context.fillStyle = palette.get(Token.INK);
+    context.textAlign = "center";
+    if (titles.x) {
+      context.textBaseline = "bottom";
+      context.fillText(t(titles.x), margin.left + (width - margin.left - margin.right) / 2, height - AXIS.titleInsetPx);
+    }
+    if (titles.y) {
+      context.translate(AXIS.titleInsetPx, margin.top + (height - margin.top - margin.bottom) / 2);
+      context.rotate(-Math.PI / 2);
+      context.textBaseline = "top";
+      context.fillText(t(titles.y), 0, 0);
+    }
+    context.restore();
+  }
+
+  // The titles of every chart, as message keys.
+  const AxisTitle = Object.freeze({
+    CONCENTRATION: "axisConcentration", AGREEING_GROUP: "axisAgreeingGroup", AGREEING_SHORT: "axisAgreeingShort", COHERENCE: "axisCoherence", RECENT_CYCLES: "axisRecentCycles",
+    ARRIVAL_MS: "axisArrivalMs", QUORUM_THRESHOLD: "axisQuorumThreshold", DOSE: "axisDose",
+  });
+
   function shareLabels(context, { shares, x, py }) {
     context.textAlign = "right";
     context.textBaseline = "middle";
@@ -84,9 +111,9 @@
   const CONCENTRATION_TICK = 0.5;
 
   // Ruled share axis (0, 0.5, 1) and concentration labels every half unit, shared by every dose chart.
-  // frame: { px, py, margin, width, height, maxConcentration }.
+  // frame: { px, py, margin, width, height, maxConcentration, shareTitle }; shareTitle names the vertical axis.
   function drawShareAxes(context, frame) {
-    const { px, py, margin, width, height, maxConcentration } = frame;
+    const { px, py, margin, width, height, maxConcentration, shareTitle } = frame;
     context.strokeStyle = palette.get(Token.RULE);
     context.lineWidth = LINE_WIDTH.rule;
     context.beginPath();
@@ -101,11 +128,12 @@
     context.textBaseline = "top";
     const ticks = Math.round(maxConcentration / CONCENTRATION_TICK);
     for (let k = 0; k <= ticks; k++) context.fillText(fixed(k * CONCENTRATION_TICK, 1), px(k * CONCENTRATION_TICK), height - margin.bottom + AXIS.labelGapPx);
+    axisTitles(context, frame, { x: AxisTitle.CONCENTRATION, y: shareTitle });
   }
 
   // The agreeing group (vertical) against concentration, rising then falling.
   class TraceView {
-    static MARGIN = Object.freeze({ left: 40, right: 10, top: 10, bottom: 26 });
+    static MARGIN = Object.freeze({ left: 58, right: 10, top: 10, bottom: 44 });
 
     constructor(canvas, { maxConcentration, quorumFraction }) {
       Object.assign(this, { surface: new Surface(canvas), maxConcentration, quorumFraction, plotted: [] });
@@ -134,7 +162,7 @@
       const px = scale([0, this.maxConcentration], [margin.left, width - margin.right]);
       const py = scale([0, 1], [height - margin.bottom, margin.top]);
       this.plotted = points.map((data) => ({ x: px(data.concentration), y: py(data.share), data }));
-      drawShareAxes(context, { px, py, margin, width, height, maxConcentration: this.maxConcentration });
+      drawShareAxes(context, { px, py, margin, width, height, maxConcentration: this.maxConcentration, shareTitle: AxisTitle.AGREEING_GROUP });
       dashedRule(context, { x0: margin.left, x1: width - margin.right, y: py(this.quorumFraction), colour: palette.get(Token.QUORUM), dash: DASH.threshold });
       for (const direction of Object.values(SweepDirection)) this._drawSeries(context, { direction, points, px, py });
       if (current) dot(context, px(current.concentration), py(current.share), MARKER_RADIUS, palette.get(Token.INK));
@@ -163,7 +191,7 @@
 
   // A value over the most recent cycles, against a threshold.
   class StripView {
-    static MARGIN = Object.freeze({ left: 40, right: 10, top: 8, bottom: 8 });
+    static MARGIN = Object.freeze({ left: 58, right: 10, top: 8, bottom: 24 });
 
     constructor(canvas, { capacity, threshold }) {
       Object.assign(this, { surface: new Surface(canvas), capacity, threshold, values: [], plotted: [] });
@@ -203,6 +231,7 @@
       const py = scale([0, 1], [height - margin.bottom, margin.top]);
       useAxisFont(context);
       shareLabels(context, { shares: [0, 1], x: margin.left, py });
+      axisTitles(context, { margin, width, height }, { x: AxisTitle.RECENT_CYCLES, y: AxisTitle.AGREEING_SHORT });
       dashedRule(context, { x0: margin.left, x1: width - margin.right, y: py(this.threshold), colour: palette.get(Token.QUORUM), dash: DASH.threshold });
       context.strokeStyle = palette.get(Token.INK);
       context.lineWidth = LINE_WIDTH.strip;
@@ -216,7 +245,7 @@
     static SPAN_MS = 20;
     static TICK_MS = 5;
     static INSET = 16;
-    static AXIS_BOTTOM = 26;
+    static AXIS_BOTTOM = 44;
     static ROW_PX = 7;
     static DOT_RADIUS = 2.6;
 
@@ -239,6 +268,7 @@
       context.textAlign = "center";
       context.textBaseline = "top";
       for (let ms = -span; ms <= span; ms += ArrivalView.TICK_MS) context.fillText(String(ms), px(ms), axisY + AXIS.labelGapPx);
+      axisTitles(context, { margin: { left: ArrivalView.INSET, right: ArrivalView.INSET, top: 0, bottom: ArrivalView.AXIS_BOTTOM }, width, height }, { x: AxisTitle.ARRIVAL_MS });
       const rows = Math.max(1, Math.floor(axisY / ArrivalView.ROW_PX) - 1);
       const colours = { held: palette.get(Token.HELD), late: palette.get(Token.LATE) };
       arrivalsMs.forEach((ms, k) => {
@@ -291,7 +321,7 @@
 
   // Formula against measurement, per organism: hollow formula, filled measured, and the stricter directed value.
   class ThresholdView {
-    static MARGIN = Object.freeze({ left: 96, right: 16, top: 10, bottom: 26 });
+    static MARGIN = Object.freeze({ left: 96, right: 16, top: 10, bottom: 44 });
     static HEADROOM = 1.15;
     static TICK = 0.02;
     static MARK_RADIUS = 5;
@@ -338,6 +368,7 @@
       context.textAlign = "center";
       context.textBaseline = "top";
       for (let value = 0; value <= maximum; value += ThresholdView.TICK) context.fillText(fixed(value, 2), px(value), height - margin.bottom + AXIS.labelGapPx);
+      axisTitles(context, { margin, width, height }, { x: AxisTitle.QUORUM_THRESHOLD });
     }
 
     _drawMark(context, { x, y, mark }) {
@@ -409,7 +440,7 @@
   // The anaesthetic's dose-response: the model's Hill curve of drug effect against concentration, with the current
   // dose marked and the half-effect concentration dashed. Drawn from the agent's own parameters.
   class DoseCurveView {
-    static MARGIN = Object.freeze({ left: 4, right: 4, top: 14, bottom: 4 });
+    static MARGIN = Object.freeze({ left: 4, right: 4, top: 14, bottom: 20 });
     static SAMPLES = 120;
     static MARKER_RADIUS = 4;
 
@@ -457,10 +488,11 @@
       context.textAlign = "left";
       context.textBaseline = "top";
       context.fillText(halfEffectLabel, px(half) + AXIS.labelGapPx, 0);
+      axisTitles(context, { margin, width, height }, { x: AxisTitle.DOSE });
       context.lineWidth = LINE_WIDTH.rule;
       hexagon(context, { x: px(concentration), y: py(agent.effectFraction(concentration)), radius: DoseCurveView.MARKER_RADIUS + 1, fill: palette.get(Token.DRUG), edge: palette.get(Token.DRUG_EDGE) });
     }
   }
 
-  root.DPC = Object.assign(root.DPC || {}, { DASH, ChartHover, closest, drawShareAxes, DoseCurveView, TraceView, StripView, ArrivalView, PhaseDialView, ThresholdView, RasterView });
+  root.DPC = Object.assign(root.DPC || {}, { DASH, ChartHover, closest, drawShareAxes, AxisTitle, DoseCurveView, TraceView, StripView, ArrivalView, PhaseDialView, ThresholdView, RasterView });
 })(globalThis);

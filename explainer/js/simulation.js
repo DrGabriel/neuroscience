@@ -68,6 +68,33 @@
   }
   const AWAKE = new CycleConditions();
 
+  // Which group a cell is drawn in. While quorum holds, the giant component is the agreeing group; once it is lost,
+  // the giant component is only the largest of several islands, and the two largest islands take their own colours.
+  const CellGroup = Object.freeze({ NONE: 0, AGREEING: 1, ISLAND_1: 2, ISLAND_2: 3 });
+  const ISLAND_GROUPS = Object.freeze([CellGroup.ISLAND_1, CellGroup.ISLAND_2]);
+  // A single cell agrees with nobody, so it is never an island.
+  const MIN_ISLAND_CELLS = 2;
+
+  // The roots of the largest islands, largest first. While quorum holds there are none: the cells outside the agreeing
+  // group are simply cut off from it.
+  function largestIslandRoots(outcome) {
+    if (outcome.quorumHeld) return [];
+    const roots = [];
+    outcome.componentOf.forEach((rootOfNode, node) => {
+      if (rootOfNode === node && outcome.componentSize[node] >= MIN_ISLAND_CELLS) roots.push(node);
+    });
+    roots.sort((a, b) => outcome.componentSize[b] - outcome.componentSize[a] || a - b);
+    return roots.slice(0, ISLAND_GROUPS.length);
+  }
+
+  function assignGroups(outcome) {
+    const groupOfRoot = new Map(largestIslandRoots(outcome).map((rootOfNode, rank) => [rootOfNode, ISLAND_GROUPS[rank]]));
+    outcome.group.forEach((_, node) => {
+      const agreeing = outcome.quorumHeld && outcome.inGiant[node];
+      outcome.group[node] = agreeing ? CellGroup.AGREEING : groupOfRoot.get(outcome.componentOf[node]) ?? CellGroup.NONE;
+    });
+  }
+
   // Everything one cycle produced, held in reusable typed arrays.
   class CycleOutcome {
     constructor(network) {
@@ -80,6 +107,10 @@
       this.inReach = new Uint8Array(network.nodeCount);
       this.componentOf = new Int32Array(network.nodeCount);
       this.componentSize = new Int32Array(network.nodeCount);
+      this.group = new Uint8Array(network.nodeCount);
+      this.wasGroup = new Uint8Array(network.nodeCount);
+      this.quorumHeld = true;
+      this.quorumFraction = 0;
       this.halfWindowMs = 0;
       this.failureProbability = 0;
       this.jitterMs = 0;
@@ -109,6 +140,7 @@
       const { network, outcome } = this;
       const previousGiant = outcome.giantShare;
       outcome.wasInGiant.set(outcome.inGiant);
+      outcome.wasGroup.set(outcome.group);
       outcome.failureProbability = model.agent.transmissionFailure(concentration);
       outcome.jitterMs = model.effectiveJitterMs(concentration, previousGiant);
       this._mask = conditions.agentJitterMask;
@@ -119,8 +151,14 @@
       this._silence(conditions.silencedShare);
       for (let k = 0; k < network.connectionCount; k++) this._transmit(k);
       outcome.giantShare = network.analyse(outcome.kept, outcome);
+      outcome.quorumHeld = model.holdsQuorum(outcome.giantShare);
+      outcome.quorumFraction = model.settings.quorumFraction;
+      assignGroups(outcome);
       // The first cycle has no previous one to change from.
-      if (outcome.cycle === 0) outcome.wasInGiant.set(outcome.inGiant);
+      if (outcome.cycle === 0) {
+        outcome.wasInGiant.set(outcome.inGiant);
+        outcome.wasGroup.set(outcome.group);
+      }
       outcome.cycle += 1;
       return outcome;
     }
@@ -169,5 +207,5 @@
     return { lostAt, regainedAt: back?.concentration ?? null };
   }
 
-  root.DPC = Object.assign(root.DPC || {}, { ConnectionOutcome, SweepDirection, RandomSource, CycleConditions, FaultPlacement, agentJitterMasks, CycleOutcome, IntegrationCycles, SweepPlan, transitionPoints });
+  root.DPC = Object.assign(root.DPC || {}, { ConnectionOutcome, CellGroup, assignGroups, SweepDirection, RandomSource, CycleConditions, FaultPlacement, agentJitterMasks, CycleOutcome, IntegrationCycles, SweepPlan, transitionPoints });
 })(globalThis);

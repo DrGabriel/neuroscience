@@ -4,7 +4,7 @@
 
   const {
     FaultKind, IntegrationCycles, CycleConditions, transitionPoints, NetworkView, IslandsView, MatrixView, CycleBar, RingProjector,
-    QuorumPainter, RangeControl, ChoiceGroup, SweepRunner, SweepPlan, TraceView, DoseCurveView, DrugCloud, required, fixed, percent, t, make, renderLegend,
+    QuorumPainter, QuorumVerdict, RangeControl, ChoiceGroup, SweepRunner, SweepPlan, TraceView, DoseCurveView, DrugCloud, required, fixed, percent, t, make, renderLegend,
   } = root.DPC;
 
   const DECIMALS = Object.freeze({ share: 2, concentration: 2, ms: 1, ratio: 2, threshold: 3 });
@@ -171,6 +171,12 @@
       this.cycles = new IntegrationCycles(network, seed);
       this.view = new NetworkView(canvas, network, projector);
       this.painter = painterFor(this.cycles.outcome);
+      this.verdict = new QuorumVerdict(canvas);
+    }
+
+    showVerdict() {
+      const { giantShare, quorumFraction, quorumHeld } = this.outcome;
+      this.verdict.show({ share: giantShare, quorum: quorumFraction, holds: quorumHeld });
     }
 
     get outcome() {
@@ -220,6 +226,7 @@
 
     showReadings() {
       super.showReadings();
+      this.pane.showVerdict();
       this.cycleBar?.showStrength(this.pane.outcome.referenceStrength);
     }
 

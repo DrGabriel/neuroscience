@@ -5,8 +5,9 @@
   const Token = Object.freeze({
     PAPER: "--paper", INK: "--ink", MUTED: "--muted", RULE: "--rule", GRID: "--grid",
     HELD: "--held", HELD_SOFT: "--held-soft", LATE: "--late", LATE_SOFT: "--late-soft",
-    STRAY: "--stray", STRAY_SOFT: "--stray-soft", WASH: "--wash", SILENCED: "--silenced", REACH: "--reach", REACH_SOFT: "--reach-soft",
-    FEEDBACK: "--feedback", EMERGENCE: "--emergence", QUORUM: "--quorum", FONT_DATA: "--font-data",
+    STRAY: "--stray", STRAY_SOFT: "--stray-soft",
+    ISLAND_1: "--island-1", ISLAND_1_SOFT: "--island-1-soft", ISLAND_2: "--island-2", ISLAND_2_SOFT: "--island-2-soft", WASH: "--wash", SILENCED: "--silenced", REACH: "--reach", REACH_SOFT: "--reach-soft",
+    FEEDBACK: "--feedback", EMERGENCE: "--emergence", QUORUM: "--quorum", FONT_DATA: "--font-data", FONT_LABEL: "--font-label",
     DRUG: "--drug", DRUG_SOFT: "--drug-soft", DRUG_EDGE: "--drug-edge",
   });
 

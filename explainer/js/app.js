@@ -133,6 +133,14 @@
   for (const scene of scenes) observer.observe(scene.scope);
 
   // Moving figures can be paused (WCAG 2.2.2); readers who ask for reduced motion start paused.
+  // Phones: the bar's extra controls open from Settings, so the sticky bar stays one row high.
+  const bar = document.querySelector("[data-playback]");
+  const more = bar.querySelector("[data-bar-more]");
+  more.addEventListener("click", () => {
+    const expanded = bar.classList.toggle("expanded");
+    more.setAttribute("aria-expanded", String(expanded));
+  });
+
   const playback = new Playback(document.querySelector("[data-playback]"), { startPlaying: !root.matchMedia("(prefers-reduced-motion: reduce)").matches });
   playback.on("pause", () => visible.forEach((scene) => scene.settle()));
   playback.on("step", () => visible.forEach((scene) => {
