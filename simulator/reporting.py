@@ -231,8 +231,8 @@ class CheckOutcome:
 
     @property
     def holds(self) -> bool:
-        """True when the check holds in every run where it is defined (vacuously if it is defined in none)."""
-        return self.runs_holding == self.runs_applicable
+        """True when the check holds in every run where it is defined; false when it is defined in none."""
+        return self.runs_applicable > 0 and self.runs_holding == self.runs_applicable
 
     def cell(self) -> str:
         """Count with its Wilson 95% confidence interval for the share of runs in which the check holds."""

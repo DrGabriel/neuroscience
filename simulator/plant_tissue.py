@@ -16,7 +16,7 @@ on one edge is stimulated and the fraction of the sheet reached by the action po
 recorded. On a square lattice, bond percolation has the exact threshold 1/2 (Kesten, 1980),
 which bounds the result: propagation cannot cross the sheet once more than half the junctions
 are closed. It can fail earlier, because a cell needs enough open neighbours to reach threshold;
-in the reported runs it fails with 17 to 35% of junctions closed. Dependencies: numpy.
+in the reported runs it fails with 17 to 35% of junctions closed on average (14 to 38% in single runs). Dependencies: numpy.
 """
 
 from __future__ import annotations

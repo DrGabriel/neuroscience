@@ -15,6 +15,7 @@ is a scientific result, not a software error: the report is written either way.
 from __future__ import annotations
 
 import argparse
+import json
 import statistics
 import sys
 import time
@@ -22,9 +23,11 @@ from dataclasses import asdict, dataclass, replace
 from enum import StrEnum
 from datetime import datetime, timezone
 from functools import lru_cache, partial
+from pathlib import Path
 from typing import Callable, Sequence
 
 import calibration as cal
+import comparisons
 import connectomes
 import phase_dynamics as dynamics
 import plant_tissue
@@ -237,7 +240,7 @@ def fluctuation_surge_at_collapse(run: RunSummary) -> bool:
     if run.loss_concentration is None:
         return False
     distance = abs(run.susceptibility_peak_concentration - run.loss_concentration)
-    return run.susceptibility_surge >= cal.MINIMUM_SUSCEPTIBILITY_SURGE and distance <= cal.SURGE_WINDOW
+    return run.susceptibility_surge >= cal.MINIMUM_SUSCEPTIBILITY_SURGE and comparisons.at_most(distance, cal.SURGE_WINDOW)
 
 
 def quorum_is_lost(run: RunSummary) -> bool:
@@ -245,11 +248,11 @@ def quorum_is_lost(run: RunSummary) -> bool:
 
 
 def no_hysteresis(run: RunSummary) -> bool:
-    return run.hysteresis_width == 0
+    return run.hysteresis_width is not None and comparisons.equals(run.hysteresis_width, 0)
 
 
 def non_negative_hysteresis(run: RunSummary) -> bool:
-    return run.hysteresis_width is not None and run.hysteresis_width >= 0
+    return run.hysteresis_width is not None and comparisons.at_most(0, run.hysteresis_width)
 
 
 def broadcast_collapses_while_sensory_retains(run: RunSummary, retention: float) -> bool:
@@ -350,17 +353,17 @@ MISSING = object()
 def larger_gain_against_jitter(comparison: FallbackComparison) -> bool | None:
     if comparison.gabaergic_gain is None or comparison.nmda_gain is None:
         return None
-    return comparison.nmda_gain > comparison.gabaergic_gain
+    return comparisons.exceeds(comparison.nmda_gain, comparison.gabaergic_gain)
 
 
 FALLBACK_TESTS = (
     reporting.Check(
         "F1", "Adaptive reference rate (P8) raises the loss concentration, GABAergic-like agent, paired by seed",
-        lambda c: None if c.gabaergic_gain is None else c.gabaergic_gain > 0,
+        lambda c: None if c.gabaergic_gain is None else comparisons.exceeds(c.gabaergic_gain, 0),
     ),
     reporting.Check(
         "F2", "Adaptive reference rate (P8) raises the loss concentration, NMDA-antagonist-like agent, paired by seed",
-        lambda c: None if c.nmda_gain is None else c.nmda_gain > 0,
+        lambda c: None if c.nmda_gain is None else comparisons.exceeds(c.nmda_gain, 0),
     ),
     reporting.Check(
         "F3", "The adaptive rate protects more against the jitter-type than the failure-type agent, paired by seed",
@@ -393,7 +396,7 @@ SECONDARY_ANALYSES = (
     Pillar("H1", "Hysteresis is never negative with reference feedback", ConditionName.GABAERGIC, non_negative_hysteresis),
     Pillar("S1", "Spontaneous local coherence outlasts global coherence (uniform jitter)", ConditionName.NMDA_ANTAGONIST, local_coherence_outlasts_global),
     Pillar("S2", "Spontaneous local coherence outlasts global coherence (conduction-length jitter)", ConditionName.NMDA_CONDUCTION_LENGTH_JITTER, local_coherence_outlasts_global),
-    Pillar("S3", "Hysteresis is strictly positive with reference feedback", ConditionName.GABAERGIC, lambda run: (run.hysteresis_width or 0) > 0),
+    Pillar("S3", "Hysteresis is strictly positive with reference feedback", ConditionName.GABAERGIC, lambda run: comparisons.exceeds(run.hysteresis_width or 0, 0)),
     Pillar("S4", "NMDA-antagonist-like agent abolishes quorum with fixed timing offsets instead of fluctuating jitter", ConditionName.NMDA_FIXED_OFFSETS, quorum_is_lost),
 )
 
@@ -575,12 +578,23 @@ def plant_rows(report: dict[str, object]) -> list[list[str]]:
     ]
 
 
+def reevaluation_note(report: dict[str, object]) -> list[str]:
+    if "reevaluated_from" not in report:
+        return []
+    return [
+        f"Re-evaluation: the runs of `{report['reevaluated_from']}` (run {report['run_started_utc']} to {report['run_finished_utc']}), "
+        "unchanged, with every verdict recomputed by the code recorded above. No simulation was run.",
+        "",
+    ]
+
+
 def to_markdown(report: dict[str, object]) -> str:
     organisms = [o for o in cal.ORGANISMS if any(run["organism"] == o for run in report["runs"])]
     names = [cal.ORGANISMS[o].display_name for o in organisms]
     datasets = [f"| Dataset `{d['key']}` | {d['licence']}; SHA-256 `{d['sha256']}` |" for d in report["provenance"]["datasets"]]
     return "\n".join([
         *reporting.run_metadata_section(report, [*provenance.markdown_rows(report["provenance"]), *datasets]),
+        *reevaluation_note(report),
         "### Pillars (seeds in which the pillar holds)",
         "",
         *reporting.outcome_table(outcomes_from(report["pillars"]), names),
@@ -610,18 +624,52 @@ def all_pillars_hold(report: dict[str, object]) -> bool:
     return all(outcome["holds"] for outcome in report["pillars"]) and all(report["plant_claims"].values())
 
 
-def parse_design(arguments: Sequence[str]) -> StudyDesign:
+def parse_arguments(arguments: Sequence[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--quick", action="store_true", help="short smoke run instead of the full study")
-    if parser.parse_args(arguments).quick:
+    parser.add_argument(
+        "--reevaluate", type=Path, metavar="REPORT",
+        help="recompute the verdicts of a stored report's runs with the current code; no simulation is run",
+    )
+    return parser.parse_args(arguments)
+
+
+def design_from(options: argparse.Namespace) -> StudyDesign:
+    if options.quick:
         return StudyDesign("quick", cal.QUICK_INTEGRATION, {o: 1 for o in cal.ORGANISMS}, plant_seeds=1)
     seeds = {organism: spec.full_study_seeds for organism, spec in cal.ORGANISMS.items()}
     return StudyDesign("full", cal.FULL_INTEGRATION, seeds, cal.PLANT_SEEDS)
 
 
+def results_from_report(stored: dict[str, object]) -> SpeciesResults:
+    """The runs of a stored report, unchanged, ready to be evaluated again. The new report is named by the time of
+    evaluation, so it never replaces the report it was read from."""
+    def run_from(record: dict[str, object]) -> RunSummary:
+        return RunSummary(**{field: tuple(value) if isinstance(value, list) else value for field, value in record.items()})
+    return SpeciesResults(
+        str(stored["label"]), datetime.now(timezone.utc).isoformat(), dict(stored["design"]),
+        [run_from(record) for record in stored["runs"]], [PlantSummary(**record) for record in stored["plant_runs"]],
+    )
+
+
+def reevaluation_record(source: Path, stored: dict[str, object]) -> dict[str, object]:
+    """Where the re-evaluated runs came from, and the record of the run that produced them."""
+    return {
+        "reevaluated_from": source.name,
+        "run_started_utc": stored["started_utc"],
+        "run_finished_utc": stored["finished_utc"],
+        "run_provenance": stored["provenance"],
+    }
+
+
 def main(arguments: Sequence[str]) -> int:
     provenance.record_launch()
-    report = assemble_report(run_study(parse_design(arguments)))
+    options = parse_arguments(arguments)
+    if options.reevaluate:
+        stored = json.loads(options.reevaluate.read_text())
+        report = assemble_report(results_from_report(stored)) | reevaluation_record(options.reevaluate, stored)
+    else:
+        report = assemble_report(run_study(design_from(options)))
     reporting.publish("species", report, to_markdown(report))
     return 0 if all_pillars_hold(report) else 1
 

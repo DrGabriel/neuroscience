@@ -70,7 +70,7 @@ REFERENCE_FEEDBACK_JITTER_MS = CALIBRATED_FEEDBACK_MS_BY_AROUSAL[REFERENCE_AROUS
 # Free.
 REFERENCE_QUORUM_FRACTION = 0.5
 
-# Concentrations are expressed relative to each agent's half-effect value.
+# Concentrations are expressed relative to each agent's half-maximal effective concentration (EC50).
 REFERENCE_MAX_RELATIVE_CONCENTRATION = 3.0
 REFERENCE_CONCENTRATION_STEP = 0.01
 

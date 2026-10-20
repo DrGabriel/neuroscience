@@ -19,17 +19,19 @@ import sys
 from dataclasses import asdict, dataclass, replace
 from datetime import datetime, timezone
 from enum import StrEnum
+from fractions import Fraction
 from functools import partial
 from typing import Sequence
 
 import calibration as cal
+import comparisons
 import phase_dynamics as dynamics
 import provenance
 import reporting
 import species_study as species
 
 SEED_OFFSET = 2000
-PASS_SHARE = 0.8
+PASS_SHARE = Fraction(4, 5)
 # Diffusion imaging gives no direction, so the human connectome has no feedback connections to test.
 DIRECTED_ORGANISMS = ("celegans", "drosophila")
 FULL_SEEDS = {"celegans": 20, "drosophila": 6, "human": 20}
@@ -82,7 +84,7 @@ def feedback_faults_act_at_a_lower_concentration(pair: FaultPlacementPair) -> bo
     feedback_loss, random_loss = pair.feedback.loss_concentration, pair.matched_random.loss_concentration
     if feedback_loss is None:
         return False
-    return random_loss is None or random_loss > feedback_loss
+    return random_loss is None or comparisons.exceeds(random_loss, feedback_loss)
 
 
 RUN_TESTS = (
@@ -121,7 +123,7 @@ def evaluate(runs: Sequence[species.RunSummary], organisms: Sequence[str]) -> li
 
 
 def passes(outcome: reporting.CheckOutcome) -> bool:
-    return outcome.runs_applicable > 0 and outcome.runs_holding >= PASS_SHARE * outcome.runs_applicable
+    return comparisons.at_least_share(outcome.runs_holding, outcome.runs_applicable, PASS_SHARE)
 
 
 # ---------------------------------------------------------------------------
@@ -175,7 +177,7 @@ def assemble_report(design: StudyDesign, started: str, runs: Sequence[species.Ru
             "integration": asdict(design.integration),
             "seeds_per_organism": design.seeds_per_organism,
             "first_seed": cal.BASE_SEED + SEED_OFFSET,
-            "pass_share": PASS_SHARE,
+            "pass_share": float(PASS_SHARE),
         },
         "feedback_shares": feedback_shares(),
         "tests": [asdict(o) | {"passes": passes(o)} for o in outcomes],
@@ -220,7 +222,7 @@ def to_markdown(report: dict[str, object]) -> str:
     shares = [[cal.ORGANISMS[o].display_name, f"{100 * share:.1f}%"] for o, share in report["feedback_shares"].items()]
     return "\n".join([
         *reporting.run_metadata_section(report, provenance.markdown_rows(report["provenance"])),
-        f"### Pre-specified tests (seeds in which the test holds; passes at {100 * PASS_SHARE:.0f}% or more)",
+        f"### Pre-specified tests (seeds in which the test holds; passes at {float(100 * PASS_SHARE):.0f}% or more)",
         "",
         *outcome_table(outcomes, organisms),
         "",

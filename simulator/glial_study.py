@@ -22,6 +22,7 @@ from dataclasses import asdict, dataclass, replace
 from datetime import datetime, timezone
 from typing import Callable, Sequence
 
+import comparisons
 import dpc_simulator as dpc
 import glial_regulation as glia
 import provenance
@@ -35,7 +36,6 @@ from validation_study import (
     inertia_width,
     size_label,
     sized,
-    WIDTH_TOLERANCE,
 )
 
 FULL_NODE_COUNTS = (302, 1_000, 10_000, 100_000)
@@ -113,8 +113,8 @@ def depletion_does_not_hasten_induction(m: GlialMeasurement) -> bool:
 
 def inertia_grows_with_microglial_gain(m: GlialMeasurement) -> bool:
     widths = [inertia_width(summary) for _, summary in m.by_microglial_gain]
-    never_shrinks = consecutive_pairs_hold(widths, lambda earlier, later: earlier <= later + WIDTH_TOLERANCE)
-    return never_shrinks and widths[-1] > widths[0] + WIDTH_TOLERANCE
+    never_shrinks = consecutive_pairs_hold(widths, comparisons.at_most)
+    return never_shrinks and comparisons.exceeds(widths[-1], widths[0])
 
 
 def silenced_astrocytes_wake_the_sleeper(m: GlialMeasurement) -> bool:

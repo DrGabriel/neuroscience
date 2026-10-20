@@ -18,6 +18,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 import calibration as cal
+import comparisons
 import dpc_simulator as dpc
 import plant_tissue
 import reporting
@@ -97,7 +98,7 @@ def figure_percolation_hysteresis() -> None:
             axis.plot(x, y, color=colour, linewidth=LINE_WIDTH, label=name)
         axis.axhline(dpc.REFERENCE_QUORUM_FRACTION, color=TEXT_SECONDARY, linewidth=1, linestyle="--")
         axis.annotate("quorum", (0.05, dpc.REFERENCE_QUORUM_FRACTION), xytext=(0, 3), textcoords="offset points", fontsize=8, color=TEXT_SECONDARY)
-        if result.hysteresis_width == 0:
+        if result.hysteresis_width is not None and comparisons.equals(result.hysteresis_width, 0):
             axis.annotate("curves coincide: no hysteresis", (1.6, 0.2), fontsize=8, color=TEXT_SECONDARY)
         style(axis, title, "Concentration (× EC50)", "Coherent fraction S")
         axis.legend(frameon=False, fontsize=8, loc="upper right")

@@ -23,6 +23,7 @@ from dataclasses import asdict, dataclass, replace
 from datetime import datetime, timezone
 from typing import Callable, Sequence
 
+import comparisons
 import dpc_simulator as dpc
 import provenance
 import reporting
@@ -177,7 +178,8 @@ def strongest_feedback(measurement: SeedMeasurement) -> ThresholdSummary:
 
 
 def no_hysteresis_without_feedback(measurement: SeedMeasurement) -> bool:
-    return without_feedback(measurement).hysteresis_width == 0
+    width = without_feedback(measurement).hysteresis_width
+    return width is not None and comparisons.equals(width, 0)
 
 
 def inertia_width(summary: ThresholdSummary) -> float | None:
@@ -191,16 +193,12 @@ def is_trapped_unconscious(summary: ThresholdSummary) -> bool:
     return summary.loss_concentration is not None and summary.recovery_concentration is None
 
 
-# Widths are differences of grid concentrations, so equal widths can differ by floating-point rounding.
-WIDTH_TOLERANCE = 1e-9
-
-
 def hysteresis_grows_with_feedback(measurement: SeedMeasurement) -> bool:
     widths = [inertia_width(summary) for _, summary in measurement.feedback_series]
     if any(width is None for width in widths):
         return False
-    never_shrinks = all(earlier <= later + WIDTH_TOLERANCE for earlier, later in zip(widths, widths[1:]))
-    return never_shrinks and widths[-1] > widths[0] + WIDTH_TOLERANCE
+    never_shrinks = all(comparisons.at_most(earlier, later) for earlier, later in zip(widths, widths[1:]))
+    return never_shrinks and comparisons.exceeds(widths[-1], widths[0])
 
 
 def feedback_sharpens_transition(measurement: SeedMeasurement) -> bool:
@@ -212,7 +210,7 @@ def feedback_sharpens_transition(measurement: SeedMeasurement) -> bool:
 def hub_lesion_lowers_threshold_more(measurement: SeedMeasurement) -> bool:
     hub = measurement.by_lesion["hub lesion"].loss_concentration
     random_lesion = measurement.by_lesion["random lesion"].loss_concentration
-    return hub is not None and random_lesion is not None and hub < random_lesion
+    return hub is not None and random_lesion is not None and comparisons.exceeds(random_lesion, hub)
 
 
 def reduced_arousal_delays_emergence_more_than_induction(measurement: SeedMeasurement) -> bool | None:
@@ -225,7 +223,7 @@ def reduced_arousal_delays_emergence_more_than_induction(measurement: SeedMeasur
         return False
     induction_shift = abs(intact.loss_concentration - reduced.loss_concentration)
     emergence_shift = intact.recovery_concentration - reduced.recovery_concentration
-    return emergence_shift > induction_shift
+    return comparisons.exceeds(emergence_shift, induction_shift)
 
 
 def active_shutdown_accelerates_but_is_not_required(measurement: SeedMeasurement) -> bool | None:
@@ -234,7 +232,7 @@ def active_shutdown_accelerates_but_is_not_required(measurement: SeedMeasurement
         return None
     with_shutdown = measurement.by_shutdown["with active shutdown"].loss_concentration
     network_only = measurement.by_shutdown["network only"].loss_concentration
-    return with_shutdown is not None and network_only is not None and network_only > with_shutdown
+    return with_shutdown is not None and network_only is not None and comparisons.exceeds(network_only, with_shutdown)
 
 
 CLAIMS = (
