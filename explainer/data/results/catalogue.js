@@ -121,6 +121,26 @@ globalThis.DPC_RESULTS_CATALOGUE = Object.freeze([
   "script": "data/results/current/glia_full_20261020T011431Z.js"
  },
  {
+  "identifier": "current/learned_timing_full_20261020T130252Z",
+  "kind": "learned_timing",
+  "label": "full",
+  "report_set": "current",
+  "set_note": "",
+  "started_utc": "2026-10-20T13:02:52.282850+00:00",
+  "machine": "Mac14,9 · Apple M2 Pro",
+  "git_commit": "07dc10efe4c7ecd55177b7f3af2c0ad62fece747",
+  "working_tree_dirty": false,
+  "checks": {
+   "checks": 7,
+   "holding_in_every_run": 2,
+   "holding_in_none": 5
+  },
+  "has_curves": true,
+  "json_link": "../simulator/results/learned_timing_full_20261020T130252Z.json",
+  "markdown_link": "../simulator/results/learned_timing_full_20261020T130252Z.md",
+  "script": "data/results/current/learned_timing_full_20261020T130252Z.js"
+ },
+ {
   "identifier": "current/percolation_full_20261020T011339Z",
   "kind": "percolation",
   "label": "full",

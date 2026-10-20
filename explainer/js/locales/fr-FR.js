@@ -49,6 +49,7 @@ globalThis.DPC.registerLocale("fr-FR", {
     study_calibration_feedback: "Calibrage de la rétroaction (modèle de percolation)",
     study_calibration_phase_feedback: "Calibrage de la rétroaction (modèle d'oscillateurs)",
     study_prespecified: "Tests fixés à l'avance (K2, T1c)",
+    study_learned_timing: "Tests fixés à l'avance des temps d'arrivée appris (L1–L4)",
     study_convergence: "Convergence numérique",
     run_full: "Exécution complète",
     run_confirmatory: "Exécution de confirmation, nouvelles graines",

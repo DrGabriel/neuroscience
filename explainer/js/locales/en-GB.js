@@ -48,6 +48,7 @@ globalThis.DPC.registerLocale("en-GB", {
     study_calibration_feedback: "Feedback calibration (percolation model)",
     study_calibration_phase_feedback: "Feedback calibration (oscillator model)",
     study_prespecified: "Pre-specified tests (K2, T1c)",
+    study_learned_timing: "Pre-specified tests of learned arrival times (L1–L4)",
     study_convergence: "Numerical convergence",
     run_full: "Full run",
     run_confirmatory: "Confirmatory run, fresh seeds",
