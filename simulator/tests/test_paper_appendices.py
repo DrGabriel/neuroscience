@@ -85,6 +85,20 @@ class PublicLabelTests(unittest.TestCase):
         relabelled = appendices.public_labels.relabel_table_rows(report)
         self.assertEqual(relabelled, "| T3 | Stimulated area keeps processing (P3) | 17/20 |\n| K1 | Ketamine | 12/20 |\nPostulate P3 in prose.")
 
+    def test_congestion_batching_tests_do_not_share_labels_with_the_glial_checks_Regression(self) -> None:
+        labels = appendices.public_labels
+        self.assertEqual(labels.public_label("G1", "congestion"), "B1")
+        self.assertEqual(labels.public_label("G2", "congestion"), "B2")
+        self.assertEqual(labels.public_label("G1", "glia"), "G1")
+        self.assertEqual(labels.relabel_table_rows("| G1 | Batching |\n| W1 | Hub |", "congestion"), "| B1 | Batching |\n| W1 | Hub |")
+        self.assertEqual(labels.relabel_table_rows("| G1 | Microglia |", "glia"), "| G1 | Microglia |")
+
+    def test_every_public_label_is_unique_and_names_no_postulate(self) -> None:
+        public = [label for _, _, label in appendices.public_labels.correspondence_rows()]
+        self.assertEqual(len(public), len(set(public)))
+        for label in public:
+            self.assertNotRegex(label, r"^P\d")
+
     def test_report_sections_show_public_labels(self) -> None:
         with mock.patch.object(appendices, "report_name", return_value="species_full_x.md"), mock.patch.object(appendices, "latest_report", return_value="| P1b | rise | 18/20 |"):
             self.assertIn("| T1b | rise | 18/20 |", appendices.report_section("species"))

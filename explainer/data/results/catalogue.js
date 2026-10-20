@@ -21,14 +21,14 @@ globalThis.DPC_RESULTS_CATALOGUE = Object.freeze([
   "script": "data/results/current/calibration_feedback_full_20261018T210709Z.js"
  },
  {
-  "identifier": "current/calibration_phase_feedback_full_20261018T211914Z",
+  "identifier": "current/calibration_phase_feedback_full_20261019T114211Z",
   "kind": "calibration_phase_feedback",
   "label": "full",
   "report_set": "current",
   "set_note": "",
-  "started_utc": "2026-10-18T21:19:14.870447+00:00",
+  "started_utc": "2026-10-19T11:42:11.362852+00:00",
   "machine": "Mac14,9 · Apple M2 Pro",
-  "git_commit": "0677161701738895512e2b047b40f3857406a5d5",
+  "git_commit": "d8b06eb7b3df89d97b0e5aa7570ac537e4627cfe",
   "working_tree_dirty": true,
   "checks": {
    "checks": 0,
@@ -36,59 +36,59 @@ globalThis.DPC_RESULTS_CATALOGUE = Object.freeze([
    "holding_in_none": 0
   },
   "has_curves": false,
-  "json_link": "../simulator/results/calibration_phase_feedback_full_20261018T211914Z.json",
-  "markdown_link": "../simulator/results/calibration_phase_feedback_full_20261018T211914Z.md",
-  "script": "data/results/current/calibration_phase_feedback_full_20261018T211914Z.js"
+  "json_link": "../simulator/results/calibration_phase_feedback_full_20261019T114211Z.json",
+  "markdown_link": "../simulator/results/calibration_phase_feedback_full_20261019T114211Z.md",
+  "script": "data/results/current/calibration_phase_feedback_full_20261019T114211Z.js"
  },
  {
-  "identifier": "current/congestion_confirmatory_20261018T221119Z",
+  "identifier": "current/congestion_confirmatory_20261020T013236Z",
   "kind": "congestion",
   "label": "confirmatory",
   "report_set": "current",
   "set_note": "",
-  "started_utc": "2026-10-18T22:11:19.971565+00:00",
+  "started_utc": "2026-10-20T01:32:36.901705+00:00",
   "machine": "Mac14,9 · Apple M2 Pro",
-  "git_commit": "0677161701738895512e2b047b40f3857406a5d5",
-  "working_tree_dirty": true,
+  "git_commit": "38e86cbaa5c084c7a9d05a0da2bf4d08648ada80",
+  "working_tree_dirty": false,
   "checks": {
-   "checks": 53,
-   "holding_in_every_run": 5,
-   "holding_in_none": 17
+   "checks": 50,
+   "holding_in_every_run": 4,
+   "holding_in_none": 16
   },
   "has_curves": false,
-  "json_link": "../simulator/results/congestion_confirmatory_20261018T221119Z.json",
-  "markdown_link": "../simulator/results/congestion_confirmatory_20261018T221119Z.md",
-  "script": "data/results/current/congestion_confirmatory_20261018T221119Z.js"
+  "json_link": "../simulator/results/congestion_confirmatory_20261020T013236Z.json",
+  "markdown_link": "../simulator/results/congestion_confirmatory_20261020T013236Z.md",
+  "script": "data/results/current/congestion_confirmatory_20261020T013236Z.js"
  },
  {
-  "identifier": "current/congestion_full_20261018T215236Z",
+  "identifier": "current/congestion_full_20261020T011438Z",
   "kind": "congestion",
   "label": "full",
   "report_set": "current",
   "set_note": "",
-  "started_utc": "2026-10-18T21:52:36.593736+00:00",
+  "started_utc": "2026-10-20T01:14:38.594732+00:00",
   "machine": "Mac14,9 · Apple M2 Pro",
-  "git_commit": "0677161701738895512e2b047b40f3857406a5d5",
-  "working_tree_dirty": true,
+  "git_commit": "38e86cbaa5c084c7a9d05a0da2bf4d08648ada80",
+  "working_tree_dirty": false,
   "checks": {
-   "checks": 51,
-   "holding_in_every_run": 2,
-   "holding_in_none": 20
+   "checks": 50,
+   "holding_in_every_run": 4,
+   "holding_in_none": 18
   },
   "has_curves": false,
-  "json_link": "../simulator/results/congestion_full_20261018T215236Z.json",
-  "markdown_link": "../simulator/results/congestion_full_20261018T215236Z.md",
-  "script": "data/results/current/congestion_full_20261018T215236Z.js"
+  "json_link": "../simulator/results/congestion_full_20261020T011438Z.json",
+  "markdown_link": "../simulator/results/congestion_full_20261020T011438Z.md",
+  "script": "data/results/current/congestion_full_20261020T011438Z.js"
  },
  {
-  "identifier": "current/convergence_full_20261019T011301Z",
+  "identifier": "current/convergence_full_20261019T225958Z",
   "kind": "convergence",
   "label": "full",
   "report_set": "current",
   "set_note": "",
-  "started_utc": "2026-10-19T01:13:01.996261+00:00",
+  "started_utc": "2026-10-19T22:59:58.084085+00:00",
   "machine": "Mac14,9 · Apple M2 Pro",
-  "git_commit": "6d8b0370bbc02702955f7037e6bd8002a6b57754",
+  "git_commit": "f71c3697cd844b603ce53bbf7dcf405b5e5f8d92",
   "working_tree_dirty": false,
   "checks": {
    "checks": 0,
@@ -96,39 +96,139 @@ globalThis.DPC_RESULTS_CATALOGUE = Object.freeze([
    "holding_in_none": 0
   },
   "has_curves": false,
-  "json_link": "../simulator/results/convergence_full_20261019T011301Z.json",
-  "markdown_link": "../simulator/results/convergence_full_20261019T011301Z.md",
-  "script": "data/results/current/convergence_full_20261019T011301Z.js"
+  "json_link": "../simulator/results/convergence_full_20261019T225958Z.json",
+  "markdown_link": "../simulator/results/convergence_full_20261019T225958Z.md",
+  "script": "data/results/current/convergence_full_20261019T225958Z.js"
  },
  {
-  "identifier": "current/glia_full_20261018T211808Z",
+  "identifier": "current/glia_full_20261020T011431Z",
   "kind": "glia",
   "label": "full",
   "report_set": "current",
   "set_note": "",
-  "started_utc": "2026-10-18T21:18:08.049681+00:00",
+  "started_utc": "2026-10-20T01:14:31.794327+00:00",
   "machine": "Mac14,9 · Apple M2 Pro",
-  "git_commit": "0677161701738895512e2b047b40f3857406a5d5",
-  "working_tree_dirty": true,
+  "git_commit": "38e86cbaa5c084c7a9d05a0da2bf4d08648ada80",
+  "working_tree_dirty": false,
   "checks": {
    "checks": 20,
    "holding_in_every_run": 16,
    "holding_in_none": 4
   },
   "has_curves": false,
-  "json_link": "../simulator/results/glia_full_20261018T211808Z.json",
-  "markdown_link": "../simulator/results/glia_full_20261018T211808Z.md",
-  "script": "data/results/current/glia_full_20261018T211808Z.js"
+  "json_link": "../simulator/results/glia_full_20261020T011431Z.json",
+  "markdown_link": "../simulator/results/glia_full_20261020T011431Z.md",
+  "script": "data/results/current/glia_full_20261020T011431Z.js"
  },
  {
-  "identifier": "current/percolation_full_20261018T211816Z",
+  "identifier": "current/percolation_full_20261020T011339Z",
   "kind": "percolation",
   "label": "full",
   "report_set": "current",
   "set_note": "",
-  "started_utc": "2026-10-18T21:18:16.041723+00:00",
+  "started_utc": "2026-10-20T01:13:39.951591+00:00",
   "machine": "Mac14,9 · Apple M2 Pro",
-  "git_commit": "0677161701738895512e2b047b40f3857406a5d5",
+  "git_commit": "38e86cbaa5c084c7a9d05a0da2bf4d08648ada80",
+  "working_tree_dirty": false,
+  "checks": {
+   "checks": 0,
+   "holding_in_every_run": 0,
+   "holding_in_none": 0
+  },
+  "has_curves": false,
+  "json_link": "../simulator/results/percolation_full_20261020T011339Z.json",
+  "markdown_link": "../simulator/results/percolation_full_20261020T011339Z.md",
+  "script": "data/results/current/percolation_full_20261020T011339Z.js"
+ },
+ {
+  "identifier": "current/prespecified_full_20261019T202442Z",
+  "kind": "prespecified",
+  "label": "full",
+  "report_set": "current",
+  "set_note": "",
+  "started_utc": "2026-10-19T20:24:42.209041+00:00",
+  "machine": "Mac14,9 · Apple M2 Pro",
+  "git_commit": "3f06e46337f6f6fb5efc703dd7b9851a195c82f2",
+  "working_tree_dirty": false,
+  "checks": {
+   "checks": 9,
+   "holding_in_every_run": 2,
+   "holding_in_none": 3
+  },
+  "has_curves": true,
+  "json_link": "../simulator/results/prespecified_full_20261019T202442Z.json",
+  "markdown_link": "../simulator/results/prespecified_full_20261019T202442Z.md",
+  "script": "data/results/current/prespecified_full_20261019T202442Z.js"
+ },
+ {
+  "identifier": "current/sensitivity_full_20261019T114501Z",
+  "kind": "sensitivity",
+  "label": "full",
+  "report_set": "current",
+  "set_note": "",
+  "started_utc": "2026-10-19T11:45:01.242397+00:00",
+  "machine": "Mac14,9 · Apple M2 Pro",
+  "git_commit": "d8b06eb7b3df89d97b0e5aa7570ac537e4627cfe",
+  "working_tree_dirty": true,
+  "checks": {
+   "checks": 225,
+   "holding_in_every_run": 184,
+   "holding_in_none": 27
+  },
+  "has_curves": false,
+  "json_link": "../simulator/results/sensitivity_full_20261019T114501Z.json",
+  "markdown_link": "../simulator/results/sensitivity_full_20261019T114501Z.md",
+  "script": "data/results/current/sensitivity_full_20261019T114501Z.js"
+ },
+ {
+  "identifier": "current/species_full_20261020T103719Z",
+  "kind": "species",
+  "label": "full",
+  "report_set": "current",
+  "set_note": "",
+  "started_utc": "2026-10-20T10:37:19.773458+00:00",
+  "machine": "Mac14,9 · Apple M2 Pro",
+  "git_commit": "ca2968fa252b68b06ddf08bfc97ee530bb2939ef",
+  "working_tree_dirty": false,
+  "checks": {
+   "checks": 53,
+   "holding_in_every_run": 23,
+   "holding_in_none": 11
+  },
+  "has_curves": true,
+  "json_link": "../simulator/results/species_full_20261020T103719Z.json",
+  "markdown_link": "../simulator/results/species_full_20261020T103719Z.md",
+  "script": "data/results/current/species_full_20261020T103719Z.js"
+ },
+ {
+  "identifier": "current/validation_full_20261019T113035Z",
+  "kind": "validation",
+  "label": "full",
+  "report_set": "current",
+  "set_note": "",
+  "started_utc": "2026-10-19T11:30:35.138638+00:00",
+  "machine": "Mac14,9 · Apple M2 Pro",
+  "git_commit": "d8b06eb7b3df89d97b0e5aa7570ac537e4627cfe",
+  "working_tree_dirty": true,
+  "checks": {
+   "checks": 75,
+   "holding_in_every_run": 54,
+   "holding_in_none": 11
+  },
+  "has_curves": false,
+  "json_link": "../simulator/results/validation_full_20261019T113035Z.json",
+  "markdown_link": "../simulator/results/validation_full_20261019T113035Z.md",
+  "script": "data/results/current/validation_full_20261019T113035Z.js"
+ },
+ {
+  "identifier": "checks_2026-10-19/percolation_quick_20261019T133355Z",
+  "kind": "percolation",
+  "label": "quick",
+  "report_set": "checks_2026-10-19",
+  "set_note": "Code checks, 19 October 2026",
+  "started_utc": "2026-10-19T13:33:55.479523+00:00",
+  "machine": "Mac14,9 · Apple M2 Pro",
+  "git_commit": "55e746eafb941a6212eee51d9a1eb5cd5e07e44a",
   "working_tree_dirty": true,
   "checks": {
    "checks": 0,
@@ -136,89 +236,9 @@ globalThis.DPC_RESULTS_CATALOGUE = Object.freeze([
    "holding_in_none": 0
   },
   "has_curves": false,
-  "json_link": "../simulator/results/percolation_full_20261018T211816Z.json",
-  "markdown_link": "../simulator/results/percolation_full_20261018T211816Z.md",
-  "script": "data/results/current/percolation_full_20261018T211816Z.js"
- },
- {
-  "identifier": "current/preregistered_full_20261018T174910Z",
-  "kind": "preregistered",
-  "label": "full",
-  "report_set": "current",
-  "set_note": "",
-  "started_utc": "2026-10-18T17:49:10.413562+00:00",
-  "machine": "Mac14,9 · Apple M2 Pro",
-  "git_commit": "7ba034e3e40e82e11e30a6833d3c32e56c0192d1",
-  "working_tree_dirty": false,
-  "checks": {
-   "checks": 9,
-   "holding_in_every_run": 2,
-   "holding_in_none": 6
-  },
-  "has_curves": true,
-  "json_link": "../simulator/results/preregistered_full_20261018T174910Z.json",
-  "markdown_link": "../simulator/results/preregistered_full_20261018T174910Z.md",
-  "script": "data/results/current/preregistered_full_20261018T174910Z.js"
- },
- {
-  "identifier": "current/sensitivity_full_20261018T212118Z",
-  "kind": "sensitivity",
-  "label": "full",
-  "report_set": "current",
-  "set_note": "",
-  "started_utc": "2026-10-18T21:21:18.636721+00:00",
-  "machine": "Mac14,9 · Apple M2 Pro",
-  "git_commit": "0677161701738895512e2b047b40f3857406a5d5",
-  "working_tree_dirty": true,
-  "checks": {
-   "checks": 225,
-   "holding_in_every_run": 191,
-   "holding_in_none": 27
-  },
-  "has_curves": false,
-  "json_link": "../simulator/results/sensitivity_full_20261018T212118Z.json",
-  "markdown_link": "../simulator/results/sensitivity_full_20261018T212118Z.md",
-  "script": "data/results/current/sensitivity_full_20261018T212118Z.js"
- },
- {
-  "identifier": "current/species_full_20261019T025707Z",
-  "kind": "species",
-  "label": "full",
-  "report_set": "current",
-  "set_note": "",
-  "started_utc": "2026-10-19T02:57:07.612055+00:00",
-  "machine": "Mac14,9 · Apple M2 Pro",
-  "git_commit": "6d8b0370bbc02702955f7037e6bd8002a6b57754",
-  "working_tree_dirty": true,
-  "checks": {
-   "checks": 53,
-   "holding_in_every_run": 24,
-   "holding_in_none": 11
-  },
-  "has_curves": true,
-  "json_link": "../simulator/results/species_full_20261019T025707Z.json",
-  "markdown_link": "../simulator/results/species_full_20261019T025707Z.md",
-  "script": "data/results/current/species_full_20261019T025707Z.js"
- },
- {
-  "identifier": "current/validation_full_20261018T210913Z",
-  "kind": "validation",
-  "label": "full",
-  "report_set": "current",
-  "set_note": "",
-  "started_utc": "2026-10-18T21:09:13.200064+00:00",
-  "machine": "Mac14,9 · Apple M2 Pro",
-  "git_commit": "0677161701738895512e2b047b40f3857406a5d5",
-  "working_tree_dirty": true,
-  "checks": {
-   "checks": 75,
-   "holding_in_every_run": 51,
-   "holding_in_none": 11
-  },
-  "has_curves": false,
-  "json_link": "../simulator/results/validation_full_20261018T210913Z.json",
-  "markdown_link": "../simulator/results/validation_full_20261018T210913Z.md",
-  "script": "data/results/current/validation_full_20261018T210913Z.js"
+  "json_link": "../simulator/results/archive/checks_2026-10-19/percolation_quick_20261019T133355Z.json",
+  "markdown_link": "../simulator/results/archive/checks_2026-10-19/percolation_quick_20261019T133355Z.md",
+  "script": "data/results/checks_2026-10-19/percolation_quick_20261019T133355Z.js"
  },
  {
   "identifier": "draft_v1_2026-10-17/calibration_feedback_full_20261017T213546Z",
@@ -679,5 +699,225 @@ globalThis.DPC_RESULTS_CATALOGUE = Object.freeze([
   "json_link": "../simulator/results/archive/superseded_2026-10-18/validation_full_20261018T123515Z.json",
   "markdown_link": "../simulator/results/archive/superseded_2026-10-18/validation_full_20261018T123515Z.md",
   "script": "data/results/superseded_2026-10-18/validation_full_20261018T123515Z.js"
+ },
+ {
+  "identifier": "superseded_2026-10-20/calibration_phase_feedback_full_20261018T211914Z",
+  "kind": "calibration_phase_feedback",
+  "label": "full",
+  "report_set": "superseded_2026-10-20",
+  "set_note": "Superseded by the corrected runs of 19-20 October 2026",
+  "started_utc": "2026-10-18T21:19:14.870447+00:00",
+  "machine": "Mac14,9 · Apple M2 Pro",
+  "git_commit": "0677161701738895512e2b047b40f3857406a5d5",
+  "working_tree_dirty": true,
+  "checks": {
+   "checks": 0,
+   "holding_in_every_run": 0,
+   "holding_in_none": 0
+  },
+  "has_curves": false,
+  "json_link": "../simulator/results/archive/superseded_2026-10-20/calibration_phase_feedback_full_20261018T211914Z.json",
+  "markdown_link": "../simulator/results/archive/superseded_2026-10-20/calibration_phase_feedback_full_20261018T211914Z.md",
+  "script": "data/results/superseded_2026-10-20/calibration_phase_feedback_full_20261018T211914Z.js"
+ },
+ {
+  "identifier": "superseded_2026-10-20/congestion_confirmatory_20261018T221119Z",
+  "kind": "congestion",
+  "label": "confirmatory",
+  "report_set": "superseded_2026-10-20",
+  "set_note": "Superseded by the corrected runs of 19-20 October 2026",
+  "started_utc": "2026-10-18T22:11:19.971565+00:00",
+  "machine": "Mac14,9 · Apple M2 Pro",
+  "git_commit": "0677161701738895512e2b047b40f3857406a5d5",
+  "working_tree_dirty": true,
+  "checks": {
+   "checks": 53,
+   "holding_in_every_run": 5,
+   "holding_in_none": 17
+  },
+  "has_curves": false,
+  "json_link": "../simulator/results/archive/superseded_2026-10-20/congestion_confirmatory_20261018T221119Z.json",
+  "markdown_link": "../simulator/results/archive/superseded_2026-10-20/congestion_confirmatory_20261018T221119Z.md",
+  "script": "data/results/superseded_2026-10-20/congestion_confirmatory_20261018T221119Z.js"
+ },
+ {
+  "identifier": "superseded_2026-10-20/congestion_full_20261018T215236Z",
+  "kind": "congestion",
+  "label": "full",
+  "report_set": "superseded_2026-10-20",
+  "set_note": "Superseded by the corrected runs of 19-20 October 2026",
+  "started_utc": "2026-10-18T21:52:36.593736+00:00",
+  "machine": "Mac14,9 · Apple M2 Pro",
+  "git_commit": "0677161701738895512e2b047b40f3857406a5d5",
+  "working_tree_dirty": true,
+  "checks": {
+   "checks": 51,
+   "holding_in_every_run": 2,
+   "holding_in_none": 20
+  },
+  "has_curves": false,
+  "json_link": "../simulator/results/archive/superseded_2026-10-20/congestion_full_20261018T215236Z.json",
+  "markdown_link": "../simulator/results/archive/superseded_2026-10-20/congestion_full_20261018T215236Z.md",
+  "script": "data/results/superseded_2026-10-20/congestion_full_20261018T215236Z.js"
+ },
+ {
+  "identifier": "superseded_2026-10-20/convergence_full_20261019T011301Z",
+  "kind": "convergence",
+  "label": "full",
+  "report_set": "superseded_2026-10-20",
+  "set_note": "Superseded by the corrected runs of 19-20 October 2026",
+  "started_utc": "2026-10-19T01:13:01.996261+00:00",
+  "machine": "Mac14,9 · Apple M2 Pro",
+  "git_commit": "6d8b0370bbc02702955f7037e6bd8002a6b57754",
+  "working_tree_dirty": false,
+  "checks": {
+   "checks": 0,
+   "holding_in_every_run": 0,
+   "holding_in_none": 0
+  },
+  "has_curves": false,
+  "json_link": "../simulator/results/archive/superseded_2026-10-20/convergence_full_20261019T011301Z.json",
+  "markdown_link": "../simulator/results/archive/superseded_2026-10-20/convergence_full_20261019T011301Z.md",
+  "script": "data/results/superseded_2026-10-20/convergence_full_20261019T011301Z.js"
+ },
+ {
+  "identifier": "superseded_2026-10-20/glia_full_20261018T211808Z",
+  "kind": "glia",
+  "label": "full",
+  "report_set": "superseded_2026-10-20",
+  "set_note": "Superseded by the corrected runs of 19-20 October 2026",
+  "started_utc": "2026-10-18T21:18:08.049681+00:00",
+  "machine": "Mac14,9 · Apple M2 Pro",
+  "git_commit": "0677161701738895512e2b047b40f3857406a5d5",
+  "working_tree_dirty": true,
+  "checks": {
+   "checks": 20,
+   "holding_in_every_run": 16,
+   "holding_in_none": 4
+  },
+  "has_curves": false,
+  "json_link": "../simulator/results/archive/superseded_2026-10-20/glia_full_20261018T211808Z.json",
+  "markdown_link": "../simulator/results/archive/superseded_2026-10-20/glia_full_20261018T211808Z.md",
+  "script": "data/results/superseded_2026-10-20/glia_full_20261018T211808Z.js"
+ },
+ {
+  "identifier": "superseded_2026-10-20/percolation_full_20261018T211816Z",
+  "kind": "percolation",
+  "label": "full",
+  "report_set": "superseded_2026-10-20",
+  "set_note": "Superseded by the corrected runs of 19-20 October 2026",
+  "started_utc": "2026-10-18T21:18:16.041723+00:00",
+  "machine": "Mac14,9 · Apple M2 Pro",
+  "git_commit": "0677161701738895512e2b047b40f3857406a5d5",
+  "working_tree_dirty": true,
+  "checks": {
+   "checks": 0,
+   "holding_in_every_run": 0,
+   "holding_in_none": 0
+  },
+  "has_curves": false,
+  "json_link": "../simulator/results/archive/superseded_2026-10-20/percolation_full_20261018T211816Z.json",
+  "markdown_link": "../simulator/results/archive/superseded_2026-10-20/percolation_full_20261018T211816Z.md",
+  "script": "data/results/superseded_2026-10-20/percolation_full_20261018T211816Z.js"
+ },
+ {
+  "identifier": "superseded_2026-10-20/preregistered_full_20261018T174910Z",
+  "kind": "preregistered",
+  "label": "full",
+  "report_set": "superseded_2026-10-20",
+  "set_note": "Superseded by the corrected runs of 19-20 October 2026",
+  "started_utc": "2026-10-18T17:49:10.413562+00:00",
+  "machine": "Mac14,9 · Apple M2 Pro",
+  "git_commit": "7ba034e3e40e82e11e30a6833d3c32e56c0192d1",
+  "working_tree_dirty": false,
+  "checks": {
+   "checks": 9,
+   "holding_in_every_run": 2,
+   "holding_in_none": 6
+  },
+  "has_curves": true,
+  "json_link": "../simulator/results/archive/superseded_2026-10-20/preregistered_full_20261018T174910Z.json",
+  "markdown_link": "../simulator/results/archive/superseded_2026-10-20/preregistered_full_20261018T174910Z.md",
+  "script": "data/results/superseded_2026-10-20/preregistered_full_20261018T174910Z.js"
+ },
+ {
+  "identifier": "superseded_2026-10-20/sensitivity_full_20261018T212118Z",
+  "kind": "sensitivity",
+  "label": "full",
+  "report_set": "superseded_2026-10-20",
+  "set_note": "Superseded by the corrected runs of 19-20 October 2026",
+  "started_utc": "2026-10-18T21:21:18.636721+00:00",
+  "machine": "Mac14,9 · Apple M2 Pro",
+  "git_commit": "0677161701738895512e2b047b40f3857406a5d5",
+  "working_tree_dirty": true,
+  "checks": {
+   "checks": 225,
+   "holding_in_every_run": 191,
+   "holding_in_none": 27
+  },
+  "has_curves": false,
+  "json_link": "../simulator/results/archive/superseded_2026-10-20/sensitivity_full_20261018T212118Z.json",
+  "markdown_link": "../simulator/results/archive/superseded_2026-10-20/sensitivity_full_20261018T212118Z.md",
+  "script": "data/results/superseded_2026-10-20/sensitivity_full_20261018T212118Z.js"
+ },
+ {
+  "identifier": "superseded_2026-10-20/species_full_20261019T025707Z",
+  "kind": "species",
+  "label": "full",
+  "report_set": "superseded_2026-10-20",
+  "set_note": "Superseded by the corrected runs of 19-20 October 2026",
+  "started_utc": "2026-10-19T02:57:07.612055+00:00",
+  "machine": "Mac14,9 · Apple M2 Pro",
+  "git_commit": "6d8b0370bbc02702955f7037e6bd8002a6b57754",
+  "working_tree_dirty": true,
+  "checks": {
+   "checks": 53,
+   "holding_in_every_run": 24,
+   "holding_in_none": 11
+  },
+  "has_curves": true,
+  "json_link": "../simulator/results/archive/superseded_2026-10-20/species_full_20261019T025707Z.json",
+  "markdown_link": "../simulator/results/archive/superseded_2026-10-20/species_full_20261019T025707Z.md",
+  "script": "data/results/superseded_2026-10-20/species_full_20261019T025707Z.js"
+ },
+ {
+  "identifier": "superseded_2026-10-20/species_full_20261019T123532Z",
+  "kind": "species",
+  "label": "full",
+  "report_set": "superseded_2026-10-20",
+  "set_note": "Superseded by the corrected runs of 19-20 October 2026",
+  "started_utc": "2026-10-19T12:35:32.250135+00:00",
+  "machine": "Mac14,9 · Apple M2 Pro",
+  "git_commit": "f8aafa2a0fdf9a1d67757889ab4d8fcb136c03ec",
+  "working_tree_dirty": true,
+  "checks": {
+   "checks": 53,
+   "holding_in_every_run": 24,
+   "holding_in_none": 10
+  },
+  "has_curves": true,
+  "json_link": "../simulator/results/archive/superseded_2026-10-20/species_full_20261019T123532Z.json",
+  "markdown_link": "../simulator/results/archive/superseded_2026-10-20/species_full_20261019T123532Z.md",
+  "script": "data/results/superseded_2026-10-20/species_full_20261019T123532Z.js"
+ },
+ {
+  "identifier": "superseded_2026-10-20/validation_full_20261018T210913Z",
+  "kind": "validation",
+  "label": "full",
+  "report_set": "superseded_2026-10-20",
+  "set_note": "Superseded by the corrected runs of 19-20 October 2026",
+  "started_utc": "2026-10-18T21:09:13.200064+00:00",
+  "machine": "Mac14,9 · Apple M2 Pro",
+  "git_commit": "0677161701738895512e2b047b40f3857406a5d5",
+  "working_tree_dirty": true,
+  "checks": {
+   "checks": 75,
+   "holding_in_every_run": 51,
+   "holding_in_none": 11
+  },
+  "has_curves": false,
+  "json_link": "../simulator/results/archive/superseded_2026-10-20/validation_full_20261018T210913Z.json",
+  "markdown_link": "../simulator/results/archive/superseded_2026-10-20/validation_full_20261018T210913Z.md",
+  "script": "data/results/superseded_2026-10-20/validation_full_20261018T210913Z.js"
  }
 ]);

@@ -30,9 +30,10 @@
   }
 
   // Outcomes keyed by study, run label and identifier, each with its groups (sizes, organisms or settings). Reports keep
-  // their identifiers; publicLabels maps those that reuse a postulate's name to the label the paper shows (test P3 -> T3).
+  // their identifiers; publicLabels maps those that clash with another name to the label the paper shows: shared ones
+  // in every study (test P3 -> T3), byStudy ones in one study only (congestion G1 -> B1).
   class OutcomeIndex {
-    constructor(outcomes, publicLabels = {}) {
+    constructor(outcomes, publicLabels = { shared: {}, byStudy: {} }) {
       this.publicLabels = publicLabels;
       this.entries = new Map();
       for (const outcome of outcomes) {
@@ -46,8 +47,8 @@
       for (const entry of this.entries.values()) entry.verdict = verdictOf(entry.holding, entry.applicable);
     }
 
-    label(identifier) {
-      return this.publicLabels[identifier] ?? identifier;
+    label(study, identifier) {
+      return this.publicLabels.byStudy?.[study]?.[identifier] ?? this.publicLabels.shared?.[identifier] ?? identifier;
     }
 
     static key(study, label, identifier) {
@@ -98,7 +99,7 @@
     for (const [key, { report, entries }] of index.byStudy()) {
       const rows = entries.map((entry) =>
         make("tr", { className: `verdict-${entry.verdict}` }, [
-          make("th", { scope: "row", textContent: index.label(entry.identifier) }),
+          make("th", { scope: "row", textContent: index.label(entry.study, entry.identifier) }),
           make("td", {}, [make("span", { textContent: entry.statement }), make("span", { className: "check-kind", textContent: ` ${t("checkKind", { kind: t(KIND_MESSAGE[entry.kind]), verdict: verdictLabel(entry.verdict) })}` })]),
           make("td", { className: "groups" }, entry.groups.map(groupCell)),
         ]),
@@ -117,7 +118,8 @@
   function renderInlineOutcomes(scope, index) {
     for (const node of scope.querySelectorAll("[data-outcome]")) {
       const entry = index.find(node.dataset.outcome);
-      const identifier = index.label(node.dataset.outcome.split(":").pop());
+      const parts = node.dataset.outcome.split(":");
+      const identifier = index.label(parts[0], parts.at(-1));
       if (!entry) {
         markPending(node, t("outcomePending", { identifier }));
         continue;

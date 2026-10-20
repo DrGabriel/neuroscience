@@ -1,8 +1,10 @@
-"""Labels the paper and the explainer use for tests whose report identifiers reuse the names of postulates P1 to P3.
+"""Labels the paper and the explainer use for tests whose report identifiers clash with another name.
 
-Those tests do not correspond to the postulates of the same name (test P3 asks whether a stimulated sensory area keeps
-processing; postulate P3 is quorum), so readers see them as T1 to T3b instead. The reports keep the identifiers they
-were written with, so archived results stay unchanged and traceable.
+Two kinds of clash are resolved. The species and pre-specified studies name tests P1 to P3b, the labels of postulates
+P1 to P3, although the tests do not correspond to them (test P3 asks whether a stimulated sensory area keeps processing;
+postulate P3 is quorum); readers see them as T1 to T3b. The congestion study names its batching and backoff tests G1
+and G2, the labels of the glial study's microglia checks; readers see them as B1 and B2. The reports keep the
+identifiers they were written with, so archived results stay unchanged and traceable.
 """
 
 from __future__ import annotations
@@ -18,13 +20,29 @@ REPORT_TO_PUBLIC = {
     "P3": "T3",
     "P3b": "T3b",
 }
-_TABLE_ROW_IDENTIFIER = re.compile(r"^\| (" + "|".join(sorted(REPORT_TO_PUBLIC, key=len, reverse=True)) + r") \|", re.MULTILINE)
+# Identifiers that clash only in one study, keyed by the study's report kind.
+STUDY_REPORT_TO_PUBLIC = {
+    "congestion": {"G1": "B1", "G2": "B2"},
+}
 
 
-def public_label(identifier: str) -> str:
-    return REPORT_TO_PUBLIC.get(identifier, identifier)
+def labels_for(study: str | None) -> dict[str, str]:
+    return REPORT_TO_PUBLIC | STUDY_REPORT_TO_PUBLIC.get(study or "", {})
 
 
-def relabel_table_rows(markdown: str) -> str:
+def public_label(identifier: str, study: str | None = None) -> str:
+    return labels_for(study).get(identifier, identifier)
+
+
+def relabel_table_rows(markdown: str, study: str | None = None) -> str:
     """A report's Markdown with the identifier cell that opens each table row shown by its public label."""
-    return _TABLE_ROW_IDENTIFIER.sub(lambda match: f"| {public_label(match.group(1))} |", markdown)
+    labels = labels_for(study)
+    row_identifier = re.compile(r"^\| (" + "|".join(sorted(map(re.escape, labels), key=len, reverse=True)) + r") \|", re.MULTILINE)
+    return row_identifier.sub(lambda match: f"| {labels[match.group(1)]} |", markdown)
+
+
+def correspondence_rows() -> list[tuple[str, str, str]]:
+    """(study, report identifier, label in the paper) for every relabelled test."""
+    shared = [("species and pre-specified", identifier, label) for identifier, label in REPORT_TO_PUBLIC.items()]
+    specific = [(study, identifier, label) for study, labels in STUDY_REPORT_TO_PUBLIC.items() for identifier, label in labels.items()]
+    return shared + specific

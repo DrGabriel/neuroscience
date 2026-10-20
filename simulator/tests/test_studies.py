@@ -246,6 +246,17 @@ class CongestionCheckTests(unittest.TestCase):
         self.assertFalse(congestion_study.rise_grows_with_load(self.run_with(1.2, 1.1)))
 
 
+class SensitivityRecordTests(unittest.TestCase):
+    def test_report_keeps_every_percolation_seed_measurement_Regression(self) -> None:
+        variation = sensitivity_study.variations(sensitivity_study.PERCOLATION_RANGES)[0]
+        measurement = unittest.mock.MagicMock()
+        with unittest.mock.patch.object(sensitivity_study, "asdict", side_effect=lambda value: {"id": id(value)}):
+            records = sensitivity_study.run_records([(variation, measurement)], [])
+        self.assertEqual(len(records["percolation_runs"]), 1)
+        self.assertIn("measurement", records["percolation_runs"][0])
+        self.assertEqual(records["oscillator_runs"], [])
+
+
 class SensitivityRuleTests(unittest.TestCase):
     def test_arousal_claims_are_undefined_without_arousal(self) -> None:
         without_arousal = sensitivity_study.with_arousal_level(0.0)

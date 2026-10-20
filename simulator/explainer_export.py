@@ -427,7 +427,7 @@ def main() -> int:
         "thresholds": thresholds_record(),
         "validation": validation_record(),
         "outcomes": outcomes_record(),
-        "publicLabels": public_labels.REPORT_TO_PUBLIC,
+        "publicLabels": {"shared": public_labels.REPORT_TO_PUBLIC, "byStudy": public_labels.STUDY_REPORT_TO_PUBLIC},
         "inertia": inertia_record(),
         "predictions": predictions_record(),
         "plantClaims": plant_claims_record(),

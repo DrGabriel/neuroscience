@@ -87,9 +87,9 @@ NMDA_ANTAGONIST_AGENT = dpc.NMDA_ANTAGONIST_LIKE_AGENT
 # is found in waking and dreaming but much reduced in deep sleep (Llinás & Ribary, 1993).
 OSCILLATION_FREQUENCY_HZ = 40.0
 # Free: calibration against the reference inertia ratio was attempted with calibrate_phase_feedback.py
-# on the human connectome and failed. For λ from 0 to 0.75 every run recovered and the ratio of each
-# run stayed within 0.95-1.05 (means 0.99-1.03), within run-to-run noise. The mid-range value is used,
-# and inertia is tested in the percolation model instead.
+# on the human connectome and failed. For λ from 0 to 0.75 the ratio of each run stayed within 0.91-1.05
+# (means 0.99-1.00), within run-to-run noise, except one run at 0.75 that never recovered. The mid-range
+# value is used, and inertia is tested in the percolation model instead.
 PHASE_REFERENCE_FEEDBACK = 0.45
 INERTIA_TARGET_RATIO = dpc.REFERENCE_INERTIA_RATIO
 # Free: in units of the natural-frequency spread, coupling well above the synchronisation

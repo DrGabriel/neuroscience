@@ -134,10 +134,13 @@ test("outcome index groups runs and gives a verdict", () => {
 
 test("a test that reuses a postulate's name is shown by its public label (regression)", () => {
   const base = { report: "species_full_x.json", study: "species", label: "full", identifier: "P3", statement: "s", kind: "test" };
-  const index = new OutcomeIndex([{ ...base, group: "C. elegans", holding: 17, applicable: 20 }], { P3: "T3" });
+  const labels = { shared: { P3: "T3" }, byStudy: { congestion: { G1: "B1" } } };
+  const index = new OutcomeIndex([{ ...base, group: "C. elegans", holding: 17, applicable: 20 }], labels);
   assert.equal(index.find("species:P3").holding, 17);
-  assert.equal(index.label("P3"), "T3");
-  assert.equal(index.label("K1"), "K1");
+  assert.equal(index.label("species", "P3"), "T3");
+  assert.equal(index.label("species", "K1"), "K1");
+  assert.equal(index.label("congestion", "G1"), "B1");
+  assert.equal(index.label("glia", "G1"), "G1");
 });
 
 test("a test that applied to no run is not reported as held in no run (regression)", () => {

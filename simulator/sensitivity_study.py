@@ -190,6 +190,15 @@ def oscillator_outcomes(results: Sequence[tuple[Variation, str, species_study.Ru
     return outcomes
 
 
+def run_records(percolation_results: Sequence[tuple[Variation, validation_study.SeedMeasurement]],
+                oscillator_results: Sequence[tuple[Variation, str, species_study.RunSummary]]) -> dict[str, list[dict[str, object]]]:
+    """Every seed's measurement, so that each count in the report can be checked against the values behind it."""
+    return {
+        "oscillator_runs": [{"variation": asdict(v), "condition": c, "run": asdict(r)} for v, c, r in oscillator_results],
+        "percolation_runs": [{"variation": asdict(v), "measurement": asdict(m)} for v, m in percolation_results],
+    }
+
+
 def main(arguments: Sequence[str]) -> int:
     provenance.record_launch()
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -225,7 +234,7 @@ def main(arguments: Sequence[str]) -> int:
         "provenance": provenance.collect(provenance.loaded_sources(), REPORTED_PACKAGES),
         "percolation": [asdict(o) for o in percolation],
         "oscillator": [asdict(o) for o in oscillator],
-        "oscillator_runs": [{"variation": asdict(v), "condition": c, "run": asdict(r)} for v, c, r in oscillator_results],
+        **run_records(percolation_results, oscillator_results),
     }
     markdown = "\n".join([
         *reporting.run_metadata_section(document, provenance.markdown_rows(document["provenance"])),
