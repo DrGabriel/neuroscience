@@ -209,6 +209,19 @@ class WilsonCowanTests(unittest.TestCase):
             return ei.WilsonCowanNetwork(tiny_connectome(), self.design(circuit=circuit, global_coupling=2.0)).hold_at(0.0)
         self.assertLess(awake(1.0).mean_activity, awake(0.0).mean_activity)
 
+    def test_strong_inhibition_leaves_one_stable_low_resting_state(self) -> None:
+        states = ei.resting_states(ei.LocalCircuit(), -11.85, 0.31)
+        self.assertEqual(len(states), 1)
+        self.assertTrue(states[0].stable)
+        self.assertLess(states[0].excitatory_activity, 0.05)
+
+    def test_weaker_inhibition_and_stronger_input_make_the_region_oscillate(self) -> None:
+        # One steady state, unstable: the E-I pair cycles around it (about 20 Hz), it does not switch between two states.
+        states = ei.resting_states(ei.LocalCircuit(), -2.5, 0.6)
+        self.assertEqual(len(states), 1)
+        self.assertFalse(states[0].stable)
+        self.assertGreater(states[0].oscillation_hz, 10.0)
+
     def test_missing_tract_lengths_are_rejected(self) -> None:
         with self.assertRaises(ValueError):
             ei.WilsonCowanNetwork(replace(tiny_connectome(), lengths_mm=None), self.design())

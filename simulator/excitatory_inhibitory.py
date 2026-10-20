@@ -217,12 +217,66 @@ class WilsonCowanNetwork:
         self._history[self._cursor] = self._excitatory
 
     def _sigmoid(self, drive: np.ndarray) -> np.ndarray:
-        c = self._circuit
-        return 1 / (1 + np.exp(-(drive - c.firing_threshold) / c.threshold_variability))
+        return sigmoid(self._circuit, drive)
+
+    @property
+    def inhibitory_coupling(self) -> np.ndarray:
+        """Each region's local inhibitory weight c_ie, as set by plasticity so far."""
+        return self._inhibitory_coupling.copy()
 
 
 # The top decile of regions by connection strength are treated as hubs.
 HUB_QUANTILE = 0.9
+# Resolution of the activity axis searched for steady states; activity lies between 0 and 1.
+STEADY_STATE_GRID_POINTS = 20_001
+
+
+@dataclass(frozen=True)
+class RestingState:
+    """A steady state of one region without long-range input and without noise, with its linear stability.
+
+    A stable state is where the region rests; an unstable one has the region oscillate around it, at roughly
+    the frequency given by the imaginary part of its leading eigenvalue.
+    """
+
+    excitatory_activity: float
+    stable: bool
+    oscillation_hz: float
+
+
+def resting_states(circuit: LocalCircuit, inhibitory_coupling: float, external_input: float) -> list[RestingState]:
+    """At rest I = S(c_ei E), so E is a steady state where S(c_ee E + c_ie S(c_ei E) + P) − E changes sign."""
+    activity = np.linspace(0.0, 1.0, STEADY_STATE_GRID_POINTS)
+    excess = sigmoid(circuit, local_drive(circuit, activity, inhibitory_coupling, external_input)) - activity
+    crossings = activity[np.flatnonzero(np.sign(excess[:-1]) != np.sign(excess[1:]))]
+    return [resting_state(circuit, float(e), inhibitory_coupling, external_input) for e in crossings]
+
+
+def local_drive(circuit: LocalCircuit, activity: np.ndarray | float, inhibitory_coupling: float, external_input: float) -> np.ndarray | float:
+    inhibitory = sigmoid(circuit, circuit.excitatory_to_inhibitory * activity)
+    return circuit.excitatory_to_excitatory * activity + inhibitory_coupling * inhibitory + external_input
+
+
+def resting_state(circuit: LocalCircuit, activity: float, inhibitory_coupling: float, external_input: float) -> RestingState:
+    """Linear stability from the Jacobian of the E-I pair at the steady state."""
+    gain_e = sigmoid_slope(circuit, local_drive(circuit, activity, inhibitory_coupling, external_input))
+    gain_i = sigmoid_slope(circuit, circuit.excitatory_to_inhibitory * activity)
+    jacobian = np.array([
+        [(-1 + gain_e * circuit.excitatory_to_excitatory) / circuit.excitatory_time_constant_s, gain_e * inhibitory_coupling / circuit.excitatory_time_constant_s],
+        [gain_i * circuit.excitatory_to_inhibitory / circuit.inhibitory_time_constant_s, -1 / circuit.inhibitory_time_constant_s],
+    ])
+    eigenvalues = np.linalg.eigvals(jacobian)
+    leading = eigenvalues[np.argmax(eigenvalues.real)]
+    return RestingState(activity, bool(leading.real < 0), float(abs(leading.imag) / (2 * np.pi)))
+
+
+def sigmoid(circuit: LocalCircuit, drive: np.ndarray) -> np.ndarray:
+    return 1 / (1 + np.exp(-(drive - circuit.firing_threshold) / circuit.threshold_variability))
+
+
+def sigmoid_slope(circuit: LocalCircuit, drive: np.ndarray | float) -> np.ndarray | float:
+    value = sigmoid(circuit, drive)
+    return value * (1 - value) / circuit.threshold_variability
 
 
 def coefficient_of_variation(values: np.ndarray) -> float:
