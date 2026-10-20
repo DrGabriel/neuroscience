@@ -20,7 +20,8 @@ import functools
 import json
 import re
 import sys
-from enum import IntEnum
+from enum import IntEnum, StrEnum
+from typing import Iterator
 
 import numpy as np
 import scipy.io
@@ -90,6 +91,8 @@ OUTCOME_REPORTS: tuple[tuple[str, str, bool], ...] = (
     ("congestion", reporting.RunLabel.CONFIRMATORY, True),
     ("species", reporting.RunLabel.FULL, False),
     ("prespecified", reporting.RunLabel.FULL, False),
+    ("learned_timing", reporting.RunLabel.FULL, False),
+    ("disconnection", reporting.RunLabel.FULL, False),
 )
 # The predictions table of Section 8, read from each language version of the paper.
 PREDICTION_SOURCES: tuple[tuple[str, str, str], ...] = (
@@ -330,20 +333,53 @@ def latest_document(study: str, label: str, *, required: bool) -> tuple[str, dic
     return path.name, json.loads(path.read_text())
 
 
+class GroupVerdict(StrEnum):
+    """A group's verdict under a pass rule fixed in advance, as the pre-specified studies record it."""
+
+    PASSES = "passes"
+    FAILS = "fails"
+    NOT_EVALUABLE = "not evaluable"
+
+
+def group_verdict(outcome: dict) -> str | None:
+    """The verdict a report wrote for one group: `passes` (true or false) in the K2/T1c and learned-timing studies,
+    `verdict` ("passes", "fails" or "not evaluable (reason)") in the disconnection study; None where the study has no
+    per-group pass rule and the explainer applies the paper's rule for that study instead."""
+    if "passes" in outcome:
+        return GroupVerdict.PASSES if outcome["passes"] else GroupVerdict.FAILS
+    written = outcome.get("verdict")
+    if written is None:
+        return None
+    for verdict in GroupVerdict:
+        if written.startswith(verdict):
+            return verdict
+    raise ValueError(f"Unknown verdict {written!r} for {outcome['identifier']}, {outcome['group']}")
+
+
+def sectioned_outcomes(document: dict) -> Iterator[tuple[str, dict]]:
+    """Each check outcome with the report section that lists it (claims, observations, pillars, secondary, ...),
+    because the paper's pass rule depends on the section: observations and secondary analyses have none."""
+    for section, value in document.items():
+        for outcome in check_outcomes(value):
+            yield section, outcome
+
+
 def outcomes_from(study: str, label: str, report: str, document: dict) -> list[dict[str, object]]:
     outcomes = [
         {
             "report": report,
             "study": study,
             "label": label,
+            "section": section,
             "identifier": outcome["identifier"],
             "statement": outcome["statement"],
             "group": outcome["group"],
             "kind": outcome.get("kind", reporting.TEST),
             "holding": outcome["runs_holding"],
             "applicable": outcome["runs_applicable"],
+            "groupVerdict": group_verdict(outcome),
         }
-        for outcome in check_outcomes(document)
+        for section, outcome in sectioned_outcomes(document)
     ]
     if not outcomes:
         raise ValueError(f"{report}: no check outcomes found; has the report format changed?")

@@ -115,7 +115,7 @@ class DriveTests(unittest.TestCase):
             connectome.sources, connectome.targets, connectome.weights, no_timing_error, no_timing_error, np.arange(connectome.edge_count)
         )
         jitter = dynamics.TimingJitter(no_timing_error, 0.0, np.random.default_rng(1))
-        drive = dynamics.SynapticDrive(connectome, 4.0, connectivity, dynamics.ConnectionTiming(jitter))
+        drive = dynamics.SynapticDrive(connectome, 4.0, dynamics.SynapticInputs(connectivity, dynamics.ConnectionTiming(jitter)))
         self.assertTrue(np.allclose(drive(np.zeros(RING_SIZE), 1.0 + 0j, 0.0), 0.0))
 
 
@@ -131,7 +131,8 @@ class ArrivalExpectationTests(unittest.TestCase):
         )
         expectation = dynamics.ArrivalExpectation(connectome.edge_count, self.RATE)
         jitter = dynamics.TimingJitter(jitter_sd, 0.0, np.random.default_rng(1))
-        return dynamics.SynapticDrive(connectome, 4.0, connectivity, dynamics.ConnectionTiming(jitter, expectation)), expectation
+        inputs = dynamics.SynapticInputs(connectivity, dynamics.ConnectionTiming(jitter, expectation))
+        return dynamics.SynapticDrive(connectome, 4.0, inputs), expectation
 
     def test_a_constant_offset_is_learned_and_its_drive_cancelled(self) -> None:
         edges = all_to_all(RING_SIZE).edge_count

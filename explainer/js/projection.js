@@ -39,7 +39,9 @@
   });
   const KEY_TURN = Object.freeze({ ArrowLeft: Turn.LEFT, ArrowRight: Turn.RIGHT, ArrowUp: Turn.UP, ArrowDown: Turn.DOWN });
 
-  // Orthographic-with-mild-perspective view of 3D coordinates, rotated by yaw and pitch.
+  // Orthographic-with-mild-perspective view of 3D coordinates, rotated by yaw and pitch. In the Lausanne coordinates
+  // the first axis runs from front to back, the second from right to left and the third upwards (checked against the
+  // regions' names and hemispheres), so the starting view shows the left hemisphere from the side, front to the left.
   class OrbitProjector {
     constructor(coordinates) {
       const count = coordinates.length / 3;
@@ -73,17 +75,20 @@
     }
 
     project(width, height, padding) {
+      return this.points.map((point) => this.projectPoint(point, { width, height, padding }));
+    }
+
+    // Any point in the brain's own normalised frame (for example the end of an axis), seen from the current angle.
+    projectPoint([x, y, z], { width, height, padding }) {
       const half = Math.min(width, height) / 2 - padding;
       const [cy, sy, cp, sp] = [Math.cos(this.yaw), Math.sin(this.yaw), Math.cos(this.pitch), Math.sin(this.pitch)];
-      return this.points.map(([x, y, z]) => {
-        const x1 = cy * x + sy * y;
-        const y1 = -sy * x + cy * y;
-        const y2 = cp * y1 - sp * z;
-        const z2 = sp * y1 + cp * z;
-        const scale = ORBIT.perspective / (ORBIT.perspective - y2);
-        const depth = (y2 + 1) / 2;
-        return { x: width / 2 + x1 * half * scale, y: height / 2 - z2 * half * scale, depth, size: ORBIT.farSize + (ORBIT.nearSize - ORBIT.farSize) * depth };
-      });
+      const x1 = cy * x + sy * y;
+      const y1 = -sy * x + cy * y;
+      const y2 = cp * y1 - sp * z;
+      const z2 = sp * y1 + cp * z;
+      const scale = ORBIT.perspective / (ORBIT.perspective - y2);
+      const depth = (y2 + 1) / 2;
+      return { x: width / 2 + x1 * half * scale, y: height / 2 - z2 * half * scale, depth, size: ORBIT.farSize + (ORBIT.nearSize - ORBIT.farSize) * depth };
     }
 
     // Drag with a pointer or use the arrow keys to turn the brain.

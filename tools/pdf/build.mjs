@@ -71,13 +71,14 @@ function fontFaces() {
   }).join("\n");
 }
 
-function htmlPage({ markdown, draft, lang }) {
+// baseHref: the folder of the Markdown source, so its relative image paths resolve from the temporary page.
+function htmlPage({ markdown, draft, lang, baseHref }) {
   const require = createRequire(import.meta.url);
   const katexCssPath = require.resolve("katex/dist/katex.min.css");
   const katexCss = fs.readFileSync(katexCssPath, "utf8").replace(/url\(fonts\//g, `url(${pathToFileURL(path.dirname(katexCssPath)).href}/fonts/`);
   const title = (markdown.match(/^# (.+)$/m) || [, "Paper"])[1];
   const banner = draft ? `<p class="draft">${draft}</p>` : "";
-  return `<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><title>${title}</title>
+  return `<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><base href="${baseHref}"><title>${title}</title>
 <style>${fontFaces()}</style><style>${katexCss}</style>
 <style>
   body { font-family: "Source Serif 4", Georgia, serif; font-size: 10.5pt; line-height: 1.45; color: #111; background: #fff; }
@@ -117,6 +118,13 @@ async function printPdf({ html, target, draft }) {
     await tab.goto(pathToFileURL(page).href);
     await tab.waitForFunction("window.__rendered === true", null, { timeout: RENDER_TIMEOUT_MS });
     await tab.evaluate(() => document.fonts.ready);
+    // A missing figure prints as a tiny broken-image icon that no text check notices, so refuse to build without it.
+    const broken = await tab.evaluate(async () => {
+      const images = [...document.images];
+      await Promise.all(images.map((image) => (image.complete ? null : new Promise((done) => { image.onload = image.onerror = done; }))));
+      return images.filter((image) => image.naturalWidth === 0).map((image) => image.getAttribute("src"));
+    });
+    if (broken.length) throw new Error(`images failed to load: ${broken.join(", ")}`);
     const footer = `<div style="font-family:Source Serif 4,serif;font-size:8px;width:100%;text-align:center;color:#666">${draft ? `${draft} · ` : ""}<span class="pageNumber"></span>/<span class="totalPages"></span></div>`;
     await tab.pdf({ path: target, ...PAGE, printBackground: true, displayHeaderFooter: true, headerTemplate: "<span></span>", footerTemplate: footer });
   } finally {
@@ -126,5 +134,6 @@ async function printPdf({ html, target, draft }) {
 }
 
 const { source, target, lang, draft } = parseArguments(process.argv.slice(2));
-await printPdf({ html: htmlPage({ markdown: fs.readFileSync(source, "utf8"), draft, lang }), target, draft });
+const baseHref = pathToFileURL(path.dirname(path.resolve(source)) + path.sep).href;
+await printPdf({ html: htmlPage({ markdown: fs.readFileSync(source, "utf8"), draft, lang, baseHref }), target, draft });
 console.log(`wrote ${target}`);

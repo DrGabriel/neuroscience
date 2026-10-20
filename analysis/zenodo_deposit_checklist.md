@@ -27,7 +27,7 @@ The tests must pass from the archive alone. Checked on 20 October 2026 with the 
 |---|---|
 | Resource type | Publication / Preprint |
 | Title | The Distributed Perceptual Consensus Hypothesis of General Anaesthesia |
-| Creators | Santos de Oliveira, Gabriel (Independent researcher, Rio de Janeiro, Brazil; ORCID 0009-0003-9528-9731); Gertrudes Ferreira, Callina (Universidade Veiga de Almeida, Rio de Janeiro, Brazil; ORCID 0009-0002-8512-213X) |
+| Creators | Santos de Oliveira, Gabriel (Independent researcher, Rio de Janeiro, Brazil; ORCID 0009-0003-9528-9731); Gertrudes Ferreira, Callina (Independent researcher, Rio de Janeiro, Brazil; ORCID 0009-0002-8512-213X) |
 | Description | The paper's abstract |
 | Version | 1.0.0 |
 | Language | English (a Brazilian Portuguese translation is included) |

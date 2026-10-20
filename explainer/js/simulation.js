@@ -207,5 +207,25 @@
     return { lostAt, regainedAt: back?.concentration ?? null };
   }
 
-  root.DPC = Object.assign(root.DPC || {}, { ConnectionOutcome, CellGroup, assignGroups, SweepDirection, RandomSource, CycleConditions, FaultPlacement, agentJitterMasks, CycleOutcome, IntegrationCycles, SweepPlan, transitionPoints });
+  // One whole sweep run at once, off screen: each step's mean giant share, as a visible sweep records it.
+  function sweepPoints(cycles, model, plan) {
+    cycles.restart();
+    const points = [];
+    for (const { direction, concentration } of plan.steps()) {
+      let total = 0;
+      for (let n = 0; n < plan.cyclesPerStep; n++) total += cycles.run(model, concentration).giantShare;
+      points.push({ direction, concentration, share: total / plan.cyclesPerStep });
+    }
+    return points;
+  }
+
+  // Loss-to-recovery ratios of several sweeps summarised as mean and range; sweeps that never lose or never regain
+  // quorum have no ratio and are left out of the summary but counted in `sweeps`. Null when no sweep has a ratio.
+  function ratioSummary(transitions) {
+    const ratios = transitions.filter(({ lostAt, regainedAt }) => lostAt !== null && regainedAt).map(({ lostAt, regainedAt }) => lostAt / regainedAt);
+    if (!ratios.length) return null;
+    return { mean: ratios.reduce((sum, ratio) => sum + ratio, 0) / ratios.length, low: Math.min(...ratios), high: Math.max(...ratios), count: ratios.length, sweeps: transitions.length };
+  }
+
+  root.DPC = Object.assign(root.DPC || {}, { ConnectionOutcome, CellGroup, assignGroups, SweepDirection, RandomSource, CycleConditions, FaultPlacement, agentJitterMasks, CycleOutcome, IntegrationCycles, SweepPlan, transitionPoints, sweepPoints, ratioSummary });
 })(globalThis);

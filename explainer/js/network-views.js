@@ -3,7 +3,23 @@
 (function (root) {
   "use strict";
 
-  const { ConnectionOutcome, Token, Swatch, LegendGroup, labelled, palette, Surface, clamp, percent, diamond, cross } = root.DPC;
+  const { ConnectionOutcome, Token, Swatch, LegendGroup, labelled, palette, Surface, clamp, percent, diamond, cross, t } = root.DPC;
+
+  // A single cell agrees with nobody, so islands start at two cells (as in simulation.js).
+  const MIN_ISLAND_CELLS = 2;
+  const VIEW_TEXT = Object.freeze({ fontSizePx: 13, insetPx: 3 });
+
+  // A short label with a paper-coloured box behind it, so it stays legible over bubbles and links.
+  function boxedLabel(context, { text, x, y }) {
+    context.font = `${VIEW_TEXT.fontSizePx}px ${palette.get(Token.FONT_LABEL)}`;
+    context.textAlign = "center";
+    context.textBaseline = "middle";
+    const width = context.measureText(text).width + 2 * VIEW_TEXT.insetPx;
+    context.fillStyle = palette.get(Token.PAPER);
+    context.fillRect(x - width / 2, y - VIEW_TEXT.fontSizePx / 2 - VIEW_TEXT.insetPx, width, VIEW_TEXT.fontSizePx + 2 * VIEW_TEXT.insetPx);
+    context.fillStyle = palette.get(Token.INK);
+    context.fillText(text, x, y);
+  }
 
   // Timing of one cycle as drawn, in fractions of the cycle: signals leave at 0 and the window opens around ARRIVAL.
   // A timing error of half the window moves an arrival by WINDOW_HALF_WIDTH. Failed signals fade out mid-flight.
@@ -173,7 +189,8 @@
     return [...sizes.entries()].sort((a, b) => b[1] - a[1]);
   }
 
-  // Each island of agreeing cells as a bubble whose area is its share of the network, largest first.
+  // Each island of agreeing cells as a bubble whose area is its share of the network, largest first. The largest sits
+  // inside a dashed circle the size quorum needs, so whether it reaches quorum is seen, not read.
   class IslandsView {
     static AREA_SHARE = 0.32;
     static INSET = 12;
@@ -182,6 +199,9 @@
     static MIN_RADIUS = 1.5;
     static LABEL_MIN_RADIUS = 22;
     static FONT_SIZE_PX = 12;
+    static DASH = Object.freeze([5, 4]);
+    static QUORUM_LINE_PX = 1.5;
+    static QUORUM_LABEL_INSET_PX = 12;
 
     constructor(canvas, network) {
       Object.assign(this, { surface: new Surface(canvas), network });
@@ -193,6 +213,7 @@
         { group: LegendGroup.CELLS, swatch: Swatch.DOT, token: Token.HELD, message: "legendGiantIsland" },
         ...painter.islands.map((island) => ({ group: LegendGroup.CELLS, swatch: Swatch.DOT, token: island.style.token, message: island.message })),
         { group: LegendGroup.CELLS, swatch: Swatch.DOT, token: Token.STRAY, message: "legendIsland" },
+        { group: LegendGroup.CHART, swatch: Swatch.DASHED, token: Token.INK, message: "legendQuorumCircle", params: { share: percent(painter.outcome.quorumFraction) } },
       ]);
     }
 
@@ -200,23 +221,43 @@
       const { context, width, height } = this.surface.begin();
       const { outcome } = painter;
       const unit = Math.sqrt((width * height * IslandsView.AREA_SHARE) / this.network.nodeCount / Math.PI);
-      let x = IslandsView.INSET, y = IslandsView.INSET, rowHeight = 0;
-      context.textBaseline = "middle";
-      context.textAlign = "center";
+      const quorumRadius = unit * Math.sqrt(outcome.quorumFraction * this.network.nodeCount);
+      const islands = islandSizes(outcome);
+      const radiusOf = (size) => Math.max(IslandsView.MIN_RADIUS, unit * Math.sqrt(size));
+      // The first slot is wide enough for the dashed circle as well as the largest island.
+      const first = Math.max(quorumRadius, radiusOf(islands[0]?.[1] ?? 0));
+      const centre = { x: IslandsView.INSET + first, y: IslandsView.INSET + first };
+      let x = IslandsView.INSET + 2 * first + IslandsView.GAP, y = IslandsView.INSET, rowHeight = 2 * first;
       context.font = `${IslandsView.FONT_SIZE_PX}px ${palette.get(Token.FONT_DATA)}`;
-      for (const [rootOfNode, size] of islandSizes(outcome)) {
-        const radius = Math.max(IslandsView.MIN_RADIUS, unit * Math.sqrt(size));
+      islands.forEach(([rootOfNode, size], index) => {
+        const radius = radiusOf(size);
+        const token = painter.styleOf(0, outcome.group[rootOfNode]).token;
+        if (index === 0) {
+          this._bubble(context, { ...centre, radius, token, share: size / this.network.nodeCount });
+          return;
+        }
         if (x + 2 * radius > width - IslandsView.INSET) {
           x = IslandsView.INSET;
           y += rowHeight + IslandsView.ROW_GAP;
           rowHeight = 0;
         }
-        if (y + 2 * radius > height) break;
-        const { token } = painter.styleOf(0, outcome.group[rootOfNode]);
+        if (y + 2 * radius > height) return;
         this._bubble(context, { x: x + radius, y: y + radius, radius, token, share: size / this.network.nodeCount });
         x += 2 * radius + IslandsView.GAP;
         rowHeight = Math.max(rowHeight, 2 * radius);
-      }
+      });
+      this._quorumCircle(context, { ...centre, radius: quorumRadius, share: outcome.quorumFraction });
+    }
+
+    _quorumCircle(context, { x, y, radius, share }) {
+      context.strokeStyle = palette.get(Token.INK);
+      context.lineWidth = IslandsView.QUORUM_LINE_PX;
+      context.setLineDash(IslandsView.DASH);
+      context.beginPath();
+      context.arc(x, y, radius, 0, 2 * Math.PI);
+      context.stroke();
+      context.setLineDash([]);
+      boxedLabel(context, { text: t("islandsQuorumCircle", { share: percent(share) }), x, y: y + radius - IslandsView.QUORUM_LABEL_INSET_PX });
     }
 
     _bubble(context, { x, y, radius, token, share }) {
@@ -225,14 +266,19 @@
       context.fillStyle = palette.get(token);
       context.fill();
       if (radius <= IslandsView.LABEL_MIN_RADIUS) return;
+      context.textAlign = "center";
+      context.textBaseline = "middle";
       context.fillStyle = palette.get(Token.PAPER);
       context.fillText(percent(share), x, y);
     }
   }
 
-  // Connection matrix with cells ordered by island (largest first): islands appear as blocks on the diagonal.
+  // Connection matrix with cells ordered by island (largest first): islands appear as blocks on the diagonal, each
+  // outlined. Once quorum is lost, the view zooms in on the cells that belong to an island, since the rest have no
+  // link that counts and would only shrink the blocks to dots.
   class MatrixView {
-    static INSET = 4;
+    static MARGIN = Object.freeze({ left: 22, right: 4, top: 4, bottom: 22 });
+    static TITLE_INSET_PX = 4;
 
     constructor(canvas, network) {
       Object.assign(this, { surface: new Surface(canvas), network });
@@ -244,38 +290,75 @@
         ...painter.islands.map((island) => ({ group: LegendGroup.CONNECTIONS, swatch: Swatch.SQUARE, token: island.style.token, message: island.message })),
         { group: LegendGroup.CONNECTIONS, swatch: Swatch.SQUARE, token: Token.STRAY, message: "legendMatrixOther" },
         { group: LegendGroup.CONNECTIONS, swatch: Swatch.SQUARE, token: Token.LATE, message: "legendMatrixLate" },
+        { group: LegendGroup.CHART, swatch: Swatch.SQUARE_OPEN, token: Token.MUTED, message: "legendMatrixBlock" },
       ]);
     }
 
     draw(painter) {
       const { context, width, height } = this.surface.begin();
       const { outcome } = painter;
-      const position = this._positions(outcome);
-      const side = Math.min(width, height) - 2 * MatrixView.INSET;
-      const cell = side / this.network.nodeCount;
-      const left = (width - side) / 2, top = (height - side) / 2;
-      const pixel = Math.max(1, cell);
+      const { position, order, shown } = this._positions(outcome);
+      const margin = MatrixView.MARGIN;
+      const side = Math.min(width - margin.left - margin.right, height - margin.top - margin.bottom);
+      const frame = { left: margin.left + (width - margin.left - margin.right - side) / 2, top: margin.top, side, cell: side / shown };
       context.strokeStyle = palette.get(Token.RULE);
-      context.strokeRect(left, top, side, side);
+      context.strokeRect(frame.left, frame.top, side, side);
+      this._drawLinks(context, { painter, position, shown, frame });
+      this._outlineBlocks(context, { outcome, order, shown, frame });
+      this._titles(context, frame);
+    }
+
+    _drawLinks(context, { painter, position, shown, frame }) {
+      const { outcome } = painter;
       const late = palette.get(Token.LATE_SOFT);
       const colourOf = (node) => palette.get(painter.styleOf(0, outcome.group[node]).token);
+      const pixel = Math.max(1, frame.cell);
       for (let k = 0; k < this.network.connectionCount; k++) {
         const kind = outcome.connections[k];
         if (kind !== ConnectionOutcome.ON_TIME && kind !== ConnectionOutcome.LATE) continue;
         const a = position[this.network.sources[k]], b = position[this.network.targets[k]];
+        if (a >= shown || b >= shown) continue;
         context.fillStyle = kind === ConnectionOutcome.LATE ? late : colourOf(this.network.sources[k]);
-        context.fillRect(left + a * cell, top + b * cell, pixel, pixel);
-        context.fillRect(left + b * cell, top + a * cell, pixel, pixel);
+        context.fillRect(frame.left + a * frame.cell, frame.top + b * frame.cell, pixel, pixel);
+        context.fillRect(frame.left + b * frame.cell, frame.top + a * frame.cell, pixel, pixel);
       }
     }
 
+    // One outline per island on the diagonal.
+    _outlineBlocks(context, { outcome, order, shown, frame }) {
+      context.strokeStyle = palette.get(Token.MUTED);
+      context.lineWidth = 1;
+      for (let start = 0; start < shown;) {
+        const size = outcome.componentSize[outcome.componentOf[order[start]]];
+        if (size >= MIN_ISLAND_CELLS) context.strokeRect(frame.left + start * frame.cell, frame.top + start * frame.cell, size * frame.cell, size * frame.cell);
+        start += Math.max(1, size);
+      }
+    }
+
+    _titles(context, frame) {
+      const text = t("axisCellsByIsland");
+      context.save();
+      context.font = `${VIEW_TEXT.fontSizePx}px ${palette.get(Token.FONT_LABEL)}`;
+      context.fillStyle = palette.get(Token.INK);
+      context.textAlign = "center";
+      context.textBaseline = "top";
+      context.fillText(text, frame.left + frame.side / 2, frame.top + frame.side + MatrixView.TITLE_INSET_PX);
+      context.translate(frame.left - MatrixView.TITLE_INSET_PX, frame.top + frame.side / 2);
+      context.rotate(-Math.PI / 2);
+      context.textBaseline = "bottom";
+      context.fillText(text, 0, 0);
+      context.restore();
+    }
+
+    // Cells in order of island size, largest first; shown counts the cells in islands, or every cell when none is.
     _positions(outcome) {
       const size = (node) => outcome.componentSize[outcome.componentOf[node]];
       const order = Array.from({ length: this.network.nodeCount }, (_, node) => node);
       order.sort((a, b) => size(b) - size(a) || outcome.componentOf[a] - outcome.componentOf[b] || a - b);
       const position = new Int32Array(order.length);
       order.forEach((node, index) => { position[node] = index; });
-      return position;
+      const inIslands = order.filter((node) => size(node) >= MIN_ISLAND_CELLS).length;
+      return { position, order, shown: inIslands || order.length };
     }
   }
 

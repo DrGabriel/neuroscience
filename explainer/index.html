@@ -40,6 +40,22 @@
     <p class="kicker" data-i18n="top.p1"></p>
     <h1 data-i18n="page.a2"></h1>
     <p class="standfirst" data-i18n="top.p2"></p>
+    <p class="question" data-i18n="top.p4"></p>
+    <p class="roadmap" data-i18n="top.p5"></p>
+    <section class="howto" aria-labelledby="howto-title">
+      <h2 id="howto-title" data-i18n="top.h21"></h2>
+      <ul>
+        <li data-i18n="top.li1"></li>
+        <li data-i18n="top.li2"></li>
+        <li data-i18n="top.li3"></li>
+        <li data-i18n="top.li4"></li>
+        <li data-i18n="top.li5"></li>
+        <li data-i18n="page.colourCode"></li>
+        <li data-i18n="top.li6"></li>
+        <li data-i18n="top.li7"></li>
+      </ul>
+      <p data-i18n="top.p3"></p>
+    </section>
     <ul class="authors">
       <li>
         <img src="assets/gabriel-santos-de-oliveira.jpg" alt="Gabriel Santos de Oliveira" width="72" height="72">
@@ -51,18 +67,6 @@
       </li>
     </ul>
     <p data-i18n="authors.aiNote"></p>
-    <section class="howto" aria-labelledby="howto-title">
-      <h2 id="howto-title" data-i18n="top.h21"></h2>
-      <ul>
-        <li data-i18n="top.li1"></li>
-        <li data-i18n="top.li2"></li>
-        <li data-i18n="top.li3"></li>
-        <li data-i18n="top.li4"></li>
-        <li data-i18n="top.li5"></li>
-        <li data-i18n="page.colourCode"></li>
-      </ul>
-      <p data-i18n="top.p3"></p>
-    </section>
   </header>
 
   <section class="part" id="agreement">
@@ -131,7 +135,7 @@
         <div class="panel">
           <label class="control"><span data-i18n="fig-streaming.label1"></span>
             <input type="range" min="0" max="1" step="0.05" value="0" data-control="depth"></label>
-          <ol class="steps"><li data-i18n="fig-streaming.li1"></li><li data-i18n="fig-streaming.li2"></li><li data-i18n="fig-streaming.li3"></li></ol>
+          <ol class="stops" data-stops aria-hidden="true"><li data-i18n="fig-streaming.li1"></li><li data-i18n="fig-streaming.li2"></li><li data-i18n="fig-streaming.li3"></li></ol>
         </div>
       </div>
       <figcaption data-i18n="fig-streaming.figcaption1"></figcaption>
@@ -152,12 +156,12 @@
         <div class="pane" data-pane="OMISSION">
           <span class="pane-title" data-i18n="fig-faults.span1"></span>
           <canvas class="network" role="img" data-i18n-aria-label="fig-faults.arialabel1"></canvas>
-          <dl class="readings"><dt data-i18n="fig-faults.dt1"></dt><dd data-reading="failure-OMISSION"></dd><dt data-i18n="fig-faults.dt2"></dt><dd data-reading="jitter-OMISSION"></dd><dt data-i18n="fig-faults.dt3"></dt><dd data-reading="giant-OMISSION"></dd></dl>
+          <dl class="readings"><dt data-i18n="fig-faults.dt1"></dt><dd data-reading="counting-OMISSION"></dd></dl>
         </div>
         <div class="pane" data-pane="TIMING">
           <span class="pane-title" data-i18n="fig-faults.span2"></span>
           <canvas class="network" role="img" data-i18n-aria-label="fig-faults.arialabel2"></canvas>
-          <dl class="readings"><dt data-i18n="fig-faults.dt1"></dt><dd data-reading="failure-TIMING"></dd><dt data-i18n="fig-faults.dt2"></dt><dd data-reading="jitter-TIMING"></dd><dt data-i18n="fig-faults.dt3"></dt><dd data-reading="giant-TIMING"></dd></dl>
+          <dl class="readings"><dt data-i18n="fig-faults.dt1"></dt><dd data-reading="counting-TIMING"></dd></dl>
         </div>
       </div>
       <figcaption data-i18n="fig-faults.figcaption1"></figcaption>
@@ -197,7 +201,6 @@
           <label class="control"><span data-i18n="fig-faults.label1"></span> <span class="value" data-control-value="dose"></span>
             <input type="range" min="0" max="2.5" step="0.01" value="0" data-control="dose"></label>
           <div class="dose-instrument"><span class="dose-curve-label" data-message="doseCurveLabel"></span><canvas class="dose-curve" data-dose-curve aria-hidden="true"></canvas><span class="dose-effect" data-reading="doseEffect"></span></div>
-          <dl class="readings"><dt data-i18n="fig-faults.dt3"></dt><dd data-reading="giant"></dd><dt data-i18n="fig-quorum.dt1"></dt><dd data-reading="coherence"></dd><dt data-i18n="fig-quorum.dt2"></dt><dd data-reading="threshold"></dd></dl>
           <div class="connection-bar" data-connection-bar></div>
         </div>
       </div>
@@ -219,10 +222,11 @@
         <div class="panel">
           <label class="control"><span data-i18n="fig-inertia.label1"></span> <select data-feedback></select></label>
           <button type="button" class="key" data-sweep data-i18n="fig-inertia.button1"></button>
-          <dl class="readings"><dt data-i18n="fig-inertia.dt1"></dt><dd data-reading="lost"></dd><dt data-i18n="fig-inertia.dt2"></dt><dd data-reading="regained"></dd><dt data-i18n="fig-inertia.dt3"></dt><dd data-reading="ratio"></dd></dl>
+          <dl class="readings stacked"><dt data-i18n="fig-inertia.dt1"></dt><dd data-reading="lost"></dd><dt data-i18n="fig-inertia.dt2"></dt><dd data-reading="regained"></dd><dt data-i18n="fig-inertia.dt3"></dt><dd data-reading="ratio"></dd><dt data-i18n="fig-inertia.dt4"></dt><dd data-reading="ratioMean"></dd><dt data-i18n="fig-inertia.dt5"></dt><dd data-reading="ratioNoFeedback"></dd></dl>
         </div>
       </div>
       <canvas class="trace" data-trace role="img" data-i18n-aria-label="fig-inertia.arialabel2"></canvas>
+      <p class="figure-note" data-i18n="fig-inertia.note1"></p>
       <figcaption data-i18n="fig-inertia.figcaption1"></figcaption>
     </figure>
   </section>
@@ -255,7 +259,7 @@
           <label class="control"><span data-i18n="fig-faults.label1"></span> <span class="value" data-control-value="dose"></span>
             <input type="range" min="0" max="2.5" step="0.01" value="0" data-control="dose"></label>
           <div class="dose-instrument"><span class="dose-curve-label" data-message="doseCurveLabel"></span><canvas class="dose-curve" data-dose-curve aria-hidden="true"></canvas><span class="dose-effect" data-reading="doseEffect"></span></div>
-          <dl class="readings"><dt data-i18n="fig-broadcast.dt1"></dt><dd data-reading="reach"></dd><dt data-i18n="fig-faults.dt3"></dt><dd data-reading="giant"></dd></dl>
+          <dl class="readings"><dt data-i18n="fig-broadcast.dt1"></dt><dd data-reading="reach"></dd></dl>
         </div>
       </div>
       <figcaption data-i18n="fig-broadcast.figcaption1"></figcaption>
@@ -284,7 +288,7 @@
           <label class="control"><span data-i18n="fig-faults.label1"></span> <span class="value" data-control-value="dose"></span>
             <input type="range" min="0" max="2.5" step="0.01" value="0" data-control="dose"></label>
           <div class="dose-instrument"><span class="dose-curve-label" data-message="doseCurveLabel"></span><canvas class="dose-curve" data-dose-curve aria-hidden="true"></canvas><span class="dose-effect" data-reading="doseEffect"></span></div>
-          <dl class="readings"><dt data-i18n="fig-faults.dt3"></dt><dd data-reading="giant"></dd><dt data-i18n="fig-feedback.dt1"></dt><dd data-reading="exposed"></dd></dl>
+          <dl class="readings"><dt data-i18n="fig-feedback.dt1"></dt><dd data-reading="exposed"></dd></dl>
         </div>
       </div>
       <figcaption data-i18n="fig-feedback.figcaption1"></figcaption>
@@ -310,7 +314,7 @@
             <button type="button" data-preset="HUMAN" data-i18n="fig-sleep.button2"></button>
             <button type="button" data-preset="GLOBAL" data-i18n="fig-sleep.button3"></button>
           </div>
-          <dl class="readings"><dt data-i18n="fig-faults.dt3"></dt><dd data-reading="giant"></dd></dl>
+          <p class="figure-note" data-i18n="fig-sleep.note1"></p>
           <canvas class="strip" data-strip role="img" data-i18n-aria-label="fig-sleep.arialabel3"></canvas>
         </div>
       </div>
@@ -428,7 +432,7 @@
           <div class="dose-instrument"><span class="dose-curve-label" data-message="doseCurveLabel"></span><canvas class="dose-curve" data-dose-curve aria-hidden="true"></canvas><span class="dose-effect" data-reading="doseEffect"></span></div>
           <label class="check"><input type="checkbox" data-stimulus> <span data-i18n="fig-brain.check1"></span></label>
           <label class="check"><input type="checkbox" data-auto-turn checked> <span data-i18n="fig-brain.check2"></span></label>
-          <dl class="readings"><dt data-i18n="fig-brain.dt1"></dt><dd data-reading="giant"></dd><dt data-i18n="fig-brain.dt2"></dt><dd data-reading="reach"></dd></dl>
+          <dl class="readings"><dt data-i18n="fig-brain.dt2"></dt><dd data-reading="reach"></dd></dl>
         </div>
       </div>
       <figcaption data-i18n="fig-brain.figcaption1"></figcaption>
@@ -468,6 +472,8 @@
       <p data-i18n="revisions.p7"></p>
       <p class="step" data-i18n="revisions.p8"></p>
       <p data-i18n="revisions.p9"></p>
+      <p class="step" data-i18n="revisions.p10"></p>
+      <p data-i18n="revisions.p11"></p>
     </div>
     <div data-ledger></div>
   </section>
@@ -519,6 +525,25 @@
     <ol class="predictions" data-predictions></ol>
   </section>
 
+  <section class="part" id="glossary">
+    <h2 data-i18n="glossary.h21"></h2>
+    <p data-i18n="glossary.p1"></p>
+    <dl class="glossary">
+      <dt data-i18n="glossary.dt1"></dt><dd data-i18n="glossary.dd1"></dd>
+      <dt data-i18n="glossary.dt2"></dt><dd data-i18n="glossary.dd2"></dd>
+      <dt data-i18n="glossary.dt3"></dt><dd data-i18n="glossary.dd3"></dd>
+      <dt data-i18n="glossary.dt4"></dt><dd data-i18n="glossary.dd4"></dd>
+      <dt data-i18n="glossary.dt5"></dt><dd data-i18n="glossary.dd5"></dd>
+      <dt data-i18n="glossary.dt6"></dt><dd data-i18n="glossary.dd6"></dd>
+      <dt data-i18n="glossary.dt7"></dt><dd data-i18n="glossary.dd7"></dd>
+      <dt data-i18n="glossary.dt8"></dt><dd data-i18n="glossary.dd8"></dd>
+      <dt data-i18n="glossary.dt9"></dt><dd data-i18n="glossary.dd9"></dd>
+      <dt data-i18n="glossary.dt10"></dt><dd data-i18n="glossary.dd10"></dd>
+      <dt data-i18n="glossary.dt11"></dt><dd data-i18n="glossary.dd11"></dd>
+      <dt data-i18n="glossary.dt12"></dt><dd data-i18n="glossary.dd12"></dd>
+    </dl>
+  </section>
+
   <footer>
     <p data-i18n="predictions.p2"></p>
     <p data-i18n="predictions.p3"></p>
@@ -531,6 +556,7 @@
 <script src="js/locales/pt-BR.js"></script>
 <script src="js/locales/fr-FR.js"></script>
 <script src="js/locales/es-ES.js"></script>
+<script src="js/locales/zh-CN.js"></script>
 <script src="js/core.js"></script>
 <script src="js/model.js"></script>
 <script src="js/network.js"></script>

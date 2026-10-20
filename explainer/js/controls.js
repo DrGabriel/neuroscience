@@ -5,11 +5,13 @@
   const { required, transitionPoints, t, make, clamp } = root.DPC;
 
   // <input type="range" data-control="name"> with an optional <span data-control-value="name"> showing its value.
+  // speak(value) is what a screen reader hears (aria-valuetext), with its unit in words; it defaults to format.
   class RangeControl {
-    constructor(scope, name, { owner, format = String, onChange }) {
+    constructor(scope, name, { owner, format = String, speak = format, onChange }) {
       this.input = required(scope, `[data-control="${name}"]`, owner);
       this.label = scope.querySelector(`[data-control-value="${name}"]`);
       this.format = format;
+      this.speak = speak;
       this.input.addEventListener("input", () => {
         this.show();
         onChange(this.value);
@@ -33,6 +35,7 @@
     // Shows the value, and fills the track up to it (in the drug's colour on dose sliders, see styles.css).
     show() {
       if (this.label) this.label.textContent = this.format(this.value);
+      this.input.setAttribute("aria-valuetext", this.speak(this.value));
       const [min, max] = [Number(this.input.min), Number(this.input.max)];
       this.input.style.setProperty("--range-fill", String((this.value - min) / (max - min)));
     }
@@ -74,8 +77,9 @@
       Object.assign(this, { button, plan, idleLabel: button.textContent, running: false });
     }
 
-    // Returns {points, lostAt, regainedAt}, or null when a sweep is already running.
-    async run({ cycles, model, conditions, onStep, controls = [] }) {
+    // Returns {points, lostAt, regainedAt}, or null when a sweep is already running. finish(result), when given, runs
+    // before the button is freed, so work that follows the sweep keeps it busy too.
+    async run({ cycles, model, conditions, onStep, controls = [], finish = null }) {
       if (this.running) return null;
       this._setBusy(true, controls);
       const points = [];
@@ -90,10 +94,12 @@
           points.push({ direction, concentration, share: total / this.plan.cyclesPerStep });
           onStep(points, concentration);
         }
+        const result = { points, ...transitionPoints(points, (share) => model().holdsQuorum(share)) };
+        await finish?.(result);
+        return result;
       } finally {
         this._setBusy(false, controls);
       }
-      return { points, ...transitionPoints(points, (share) => model().holdsQuorum(share)) };
     }
 
     _setBusy(busy, controls) {
@@ -122,9 +128,15 @@
       this.list.setAttribute("role", "listbox");
       this.button.setAttribute("aria-controls", id);
       const label = select.closest("label");
-      if (label) this.button.setAttribute("aria-label", label.textContent.trim());
-      this.value = make("span", { className: "picker-value" });
       const caption = label?.querySelector("[data-picker-caption]");
+      this.value = make("span", { className: "picker-value", id: `${id}-value` });
+      // Named by its caption, then the current choice. Not by the label's text, which also holds every option of the
+      // select inside it.
+      const captionNode = caption ?? label?.querySelector(":scope > span");
+      if (captionNode) {
+        captionNode.id ||= `${id}-caption`;
+        this.button.setAttribute("aria-labelledby", `${captionNode.id} ${this.value.id}`);
+      }
       this.button.append(...(caption ? [caption] : []), this.value);
       select.classList.add("visually-hidden");
       select.tabIndex = -1;

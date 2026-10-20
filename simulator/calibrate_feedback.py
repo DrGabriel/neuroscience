@@ -102,7 +102,7 @@ def main() -> None:
         for target in PUBLISHED_TARGETS:
             result = calibrate(target, arousal_level)
             elapsed = (datetime.now(timezone.utc) - datetime.fromisoformat(started)).total_seconds()
-            reporting.report_progress("feedback calibration", len(records) + 1, total, elapsed)
+            reporting.report_progress(reporting.Progress("feedback calibration", len(records) + 1, total, elapsed))
             records.append({"target": asdict(target), "calibration": asdict(result), "reproduced": reproduces(result, target)})
             model_ratio = "n/a" if result.model_ratio is None else f"{result.model_ratio:.3f}"
             source = f"{target.source}{' (reference target)' if target is REFERENCE_TARGET else ''}"

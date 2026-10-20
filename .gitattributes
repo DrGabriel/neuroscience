@@ -1,0 +1,3 @@
+# Left out of `git archive` (the Zenodo source archive): the author photographs are all rights reserved
+# (NOTICE.md) and must not ship inside a record licensed CC BY 4.0. They stay in the repository for the explainer.
+explainer/assets/*.jpg export-ignore

@@ -55,6 +55,10 @@
       });
     }
 
+    has(key) {
+      return key in this.locale.messages || key in this.fallback.messages;
+    }
+
     content(key) {
       const html = this.locale.content[key] ?? this.fallback.content[key];
       if (html === undefined) throw new Error(`No page text "${key}"`);

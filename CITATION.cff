@@ -9,10 +9,12 @@ authors:
     orcid: "https://orcid.org/0009-0003-9528-9731"
   - given-names: Callina
     family-names: Gertrudes Ferreira
-    affiliation: Universidade Veiga de Almeida (UVA), Rio de Janeiro, Brazil
+    affiliation: Independent researcher, Rio de Janeiro, Brazil
     orcid: "https://orcid.org/0009-0002-8512-213X"
 version: 1.0.0
 date-released: 2026-10-17
+# Code (simulator/, explainer/js/, tools/) is under Apache-2.0; text, figures and results are under CC-BY-4.0.
+# Third-party items keep their own licences (NOTICE.md); the author photographs are all rights reserved.
 license:
   - Apache-2.0
   - CC-BY-4.0
@@ -24,9 +26,22 @@ keywords:
   - distributed consensus
   - neural synchrony
   - neural inertia
+  - perturbational complexity index
 abstract: >-
   A hypothesis and theory paper, with a reference simulator, proposing that
   anaesthetic-induced unconsciousness occurs when the timing-coherent subgraph
   of the thalamocortical network falls below a percolation threshold,
   preventing distributed neural populations from reaching quorum on a shared
   state.
+preferred-citation:
+  type: article
+  status: preprint
+  title: "The Distributed Perceptual Consensus Hypothesis of General Anaesthesia"
+  authors:
+    - given-names: Gabriel
+      family-names: Santos de Oliveira
+      orcid: "https://orcid.org/0009-0003-9528-9731"
+    - given-names: Callina
+      family-names: Gertrudes Ferreira
+      orcid: "https://orcid.org/0009-0002-8512-213X"
+  year: 2026

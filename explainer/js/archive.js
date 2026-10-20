@@ -4,7 +4,7 @@
 (function (root) {
   "use strict";
 
-  const { Token, Swatch, LegendGroup, labelled, legendEntry, palette, Surface, scale, polyline, make, t, organismName, Picker, drawShareAxes, AxisTitle, DASH, studyMessage } = root.DPC;
+  const { Token, Swatch, LegendGroup, labelled, legendEntry, palette, Surface, scale, polyline, make, t, translator, organismName, Picker, drawShareAxes, AxisTitle, DASH, studyMessage } = root.DPC;
   const CURRENT_SET = "current";
   const JSON_CHUNK = 100;
   // Reports can be tens of megabytes once parsed, so only the most recently opened few are kept.
@@ -310,6 +310,12 @@
 
   // ---- The list --------------------------------------------------------------------------------------------------
 
+  // An archived set's note in the reader's language when the locale has one (setNote_<set>), else as its README says.
+  function setNote(set, written) {
+    const key = `setNote_${set}`;
+    return translator().has(key) ? t(key) : written;
+  }
+
   function checksText(checks) {
     if (!checks.checks) return t("archiveNoChecks");
     return t("archiveChecksSummary", { every: checks.holding_in_every_run, none: checks.holding_in_none, checks: checks.checks });
@@ -333,7 +339,7 @@
       const entries = this.catalogue.filter((entry) => entry.report_set === set);
       const current = set === CURRENT_SET;
       const heading = make("h3", { textContent: current ? t("archiveCurrent") : t("archiveSuperseded", { set }) });
-      const note = entries[0]?.set_note ? [make("p", { className: "muted", textContent: entries[0].set_note })] : [];
+      const note = entries[0]?.set_note ? [make("p", { className: "muted", textContent: setNote(set, entries[0].set_note) })] : [];
       const head = make("tr", {}, ["archiveStudy", "archiveStarted", "archiveChecks", "archiveMachine", ""].map((key) => make("th", { textContent: key ? t(key) : "" })));
       const rows = entries.map((entry) => this._row(entry));
       const tableNode = make("div", { className: "table-scroll" }, [make("table", { className: "archive-table" }, [make("thead", {}, [head]), make("tbody", {}, rows)])]);

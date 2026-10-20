@@ -24,6 +24,17 @@ PASS_SHARE = Fraction(4, 5)
 Outcomes = Callable[[Sequence[species.RunSummary], Sequence[str]], list[reporting.CheckOutcome]]
 
 
+def passes(outcome: reporting.CheckOutcome) -> bool:
+    return comparisons.at_least_share(outcome.runs_holding, outcome.runs_applicable, PASS_SHARE)
+
+
+Verdict = Callable[[reporting.CheckOutcome], str]
+
+
+def pass_or_fail(outcome: reporting.CheckOutcome) -> str:
+    return "passes" if passes(outcome) else "fails"
+
+
 @dataclass(frozen=True)
 class StudyPlan:
     """One pre-specified study: its name, conditions, organisms, fresh seeds and tests."""
@@ -34,6 +45,10 @@ class StudyPlan:
     seed_offset: int
     full_seeds: dict[str, int]
     outcomes: Outcomes
+    # What one seed of one condition runs; a study with extra measurements supplies its own.
+    work: Callable[[species.RunTask], object] = species.run_task
+    # How an outcome is judged in the live summaries; a study with its own pass rule supplies it.
+    verdict: Verdict = pass_or_fail
 
 
 @dataclass(frozen=True)
@@ -47,10 +62,6 @@ def first_seed(plan: StudyPlan) -> int:
     return cal.BASE_SEED + plan.seed_offset
 
 
-def passes(outcome: reporting.CheckOutcome) -> bool:
-    return comparisons.at_least_share(outcome.runs_holding, outcome.runs_applicable, PASS_SHARE)
-
-
 def tasks_for(plan: StudyPlan, design: StudyDesign) -> list[species.RunTask]:
     return [
         species.RunTask(organism, condition, first_seed(plan) + index)
@@ -58,13 +69,6 @@ def tasks_for(plan: StudyPlan, design: StudyDesign) -> list[species.RunTask]:
         for organism in condition.organisms
         for index in range(design.seeds_per_organism[organism])
     ]
-
-
-Verdict = Callable[[reporting.CheckOutcome], str]
-
-
-def pass_or_fail(outcome: reporting.CheckOutcome) -> str:
-    return "passes" if passes(outcome) else "fails"
 
 
 def outcome_table(outcomes: Sequence[reporting.CheckOutcome], organisms: Sequence[str], verdict: Verdict = pass_or_fail) -> list[str]:
@@ -79,7 +83,7 @@ def outcome_table(outcomes: Sequence[reporting.CheckOutcome], organisms: Sequenc
 
 
 def outcomes_markdown(runs: list[species.RunSummary], plan: StudyPlan, organism: str) -> str:
-    return "\n".join(outcome_table(plan.outcomes(runs, [organism]), [organism]))
+    return "\n".join(outcome_table(plan.outcomes(runs, [organism]), [organism], plan.verdict))
 
 
 def run_study(plan: StudyPlan, design: StudyDesign) -> list[species.RunSummary]:
@@ -89,14 +93,19 @@ def run_study(plan: StudyPlan, design: StudyDesign) -> list[species.RunSummary]:
     for organism in plan.organisms:
         spec = cal.ORGANISMS[organism]
         live = reporting.ParallelRun(f"{plan.name}: {spec.display_name}", spec.worker_processes, partial(outcomes_markdown, plan=plan, organism=organism))
-        runs.extend(reporting.run_in_parallel(species.run_task, [t for t in tasks if t.organism == organism], live))
+        runs.extend(reporting.run_in_parallel(plan.work, [t for t in tasks if t.organism == organism], live))
     return runs
 
 
 def parse_design(plan: StudyPlan, arguments: Sequence[str], description: str) -> StudyDesign:
     parser = argparse.ArgumentParser(description=description, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--quick", action="store_true", help="short smoke run instead of the full study")
-    if parser.parse_args(arguments).quick:
+    return study_design(plan, parser.parse_args(arguments).quick)
+
+
+def study_design(plan: StudyPlan, quick: bool) -> StudyDesign:
+    """A smoke run uses one seed per organism and the short integration; the full study the plan's seeds."""
+    if quick:
         return StudyDesign(reporting.RunLabel.QUICK, cal.QUICK_INTEGRATION, {o: 1 for o in plan.organisms})
     return StudyDesign(reporting.RunLabel.FULL, cal.FULL_INTEGRATION, plan.full_seeds)
 

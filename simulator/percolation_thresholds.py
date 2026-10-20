@@ -240,7 +240,7 @@ def main(arguments: Sequence[str]) -> int:
     thresholds = []
     for done, organism in enumerate(cal.ORGANISMS, start=1):
         thresholds.append(threshold_for(organism, seeds))
-        reporting.report_progress("percolation thresholds", done, len(cal.ORGANISMS), (datetime.now(timezone.utc) - started).total_seconds())
+        reporting.report_progress(reporting.Progress("percolation thresholds", done, len(cal.ORGANISMS), (datetime.now(timezone.utc) - started).total_seconds()))
     document = {
         "label": reporting.RunLabel.QUICK if quick else reporting.RunLabel.FULL,
         "started_utc": started.isoformat(),

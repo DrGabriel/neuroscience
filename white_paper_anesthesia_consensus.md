@@ -4,8 +4,8 @@
 
 | | |
 |---|---|
-| **Authors** | Gabriel Santos de Oliveira<sup>1</sup> ([ORCID 0009-0003-9528-9731](https://orcid.org/0009-0003-9528-9731); [Lattes CV](https://lattes.cnpq.br/2102695116731989)); Callina Gertrudes Ferreira<sup>2</sup> ([ORCID 0009-0002-8512-213X](https://orcid.org/0009-0002-8512-213X); [Lattes CV](https://lattes.cnpq.br/2112739936897542)) |
-| **Affiliations** | <sup>1</sup> Independent researcher, Rio de Janeiro, Brazil. <sup>2</sup> Undergraduate student, Universidade Veiga de Almeida (UVA), Rio de Janeiro, Brazil (named for identification; the work was not carried out at or endorsed by UVA) |
+| **Authors** | Gabriel Santos de Oliveira<sup>1</sup> ([ORCID 0009-0003-9528-9731](https://orcid.org/0009-0003-9528-9731); [Lattes CV](https://lattes.cnpq.br/2102695116731989)); Callina Gertrudes Ferreira<sup>1</sup> ([ORCID 0009-0002-8512-213X](https://orcid.org/0009-0002-8512-213X); [Lattes CV](https://lattes.cnpq.br/2112739936897542)) |
+| **Affiliations** | <sup>1</sup> Independent researchers, Rio de Janeiro, Brazil. The work was not carried out at or funded by any institution |
 | **Date** | 17 October 2026 |
 | **Version** | 1.0.0 |
 | **Article type** | Hypothesis and theory paper (not peer reviewed) |
@@ -16,7 +16,7 @@
 
 ## Abstract
 
-General anaesthetics are chemically diverse, act on many molecular targets, and yet reliably produce a common end state: reversible loss of consciousness. We propose the **Distributed Perceptual Consensus (DPC) hypothesis**: conscious experience is the outcome of a continuously repeated, timing-constrained agreement among distributed cortical and thalamic populations, possible only when signals between areas arrive within an integration window around a shared rhythm. The idea is borrowed from distributed computing, where deterministic agreement among processes that can crash requires bounds on delays. Anaesthetics, by whatever molecular route, cause transmission failure on some connections and increase the timing variability of the rest. We model the brain as a graph whose *timing-coherent* subgraph undergoes a percolation transition as concentration rises; consciousness is lost when no giant component large enough to reach quorum remains. This extends an earlier percolation model of anaesthesia, which reduced every agent to one probability of transmission on a synthetic network and reproduced the electroencephalographic signatures of anaesthesia (Zhou et al., 2015); DPC adds timing variability as a second route, a shared rhythm whose feedback produces inertia, and thresholds computed on real connectomes, and it does not reproduce those signatures. Simulations of a percolation model on networks of up to one million nodes and of a phase-oscillator model on the *C. elegans*, *Drosophila* and human connectomes, with an excitatory-inhibitory population model for further tests, show that the model is internally consistent and produces its central claims: agents that cause transmission failure and agents that cause timing variability both abolish quorum on all three connectomes, the share of connections each connectome needs for quorum lies 2 to 5.5% above the standard estimate from its degree distribution when the direction of connections is ignored (Callaway et al., 2000), and, in most conditions, fluctuations rise at least tenfold before the collapse, a behaviour found after the first runs and reproduced on new random seeds of the same model. A single feedback assumption, that the shared rhythm depends on the size of the agreeing group, produces neural inertia in the percolation model once its strength is calibrated, for transmission failure on random graphs, but not in the phase-oscillator model, and even in the percolation model not up to the largest measured ratio. Six proposed mechanisms failed and are reported with the revisions they prompted, among them congestion as the source of induction excitation and two accounts of ketamine's disconnected consciousness. The remaining account, sensory-pathway faults, failed its first test but passed a test fixed in advance once a flaw in its measure had been corrected: on the *C. elegans* connectome, ketamine-like timing faults on the sensory pathways cut the senses off from an agreement that survives. Why ketamine preserves complexity and dreams remains the main open problem. The hypothesis is mechanism-agnostic at the molecular level and complements receptor-level pharmacology and existing network theories. We distinguish established findings from hypothesis and analogy, address eight principal objections, and list falsifiable predictions with an analysis protocol.
+General anaesthetics are chemically diverse, act on many molecular targets, and yet reliably produce a common end state: reversible loss of consciousness. We propose the **Distributed Perceptual Consensus (DPC) hypothesis**: integrated, reportable content requires that signals between brain areas arrive within a short integration window around a shared rhythm, and that the connections meeting this condition link a connected group of populations spanning a minimum share of the network, a quorum. The terms come from distributed computing and are used as analogy, not as claims of equivalence. Anaesthetics are proposed to reduce the connections that meet the condition by making transmission fail, by making the timing of signals between areas more variable, or both, so that the connected group undergoes a percolation transition. This extends the percolation model of Zhou et al. (2015), which reduced every agent to one probability of transmission on a synthetic network, with timing variability as a second route, a shared rhythm that depends on the agreeing group, and thresholds computed on the wiring of a nematode, an insect and a human. The most distinctive predictions are that trial-to-trial variability in the latency of responses between areas, rather than mean latency or the coherence of ongoing rhythms, rises just before responsiveness is lost, and that between the concentrations of recovery and loss a brief arousing stimulus restores responsiveness that outlasts it. Simulations show that the mechanism can operate, not that brains use it: several central results could not have failed at the doses chosen; the threshold computed from a connectome's degree distribution matches simulation within 2 to 5.5%, as expected for dense networks; feedback produces neural inertia in the percolation model once calibrated but not in an oscillator model; and on the connectomes quorum is lost only when 85 to 90% of transmissions fail, more than has been measured. Six proposed mechanisms failed and are reported with the revisions they prompted. We separate established findings from hypothesis and analogy, answer eight principal objections, and give fifteen falsifiable predictions with an analysis protocol; the simulator and every result are open.
 
 ---
 
@@ -36,29 +36,30 @@ This is a **hypothesis**, not a theorem. It has no formal proof and its value li
 
 **The postulates.** The hypothesis is stated as postulates P1 to P9, with P4b a refinement of P4, all of type [H], defined in Section 3.3 and referred to by number throughout. In one line each:
 
-| Postulate | In one line |
-|---|---|
-| P1 Integration cycles | Conscious content is generated in repeated cycles in which distributed populations converge on a shared state |
-| P2 Bounded-delay condition | A population contributes to a cycle only if its signals arrive within an integration window around a shared rhythm |
-| P3 Quorum | Integrated, reportable content requires the timing-coherent populations to form one connected group of at least a share $q^*$ of the network |
-| P4 Two failure modes | Anaesthetics reduce the timing-coherent connections by making transmission fail, by making signal timing variable, or both |
-| P4b Network timing | What anaesthesia degrades is the timing of signals between areas relative to the shared rhythm, not the precision of single neurons |
-| P5 Reference feedback | The shared rhythm is generated by the coherent thalamocortical core itself, so a smaller agreeing group weakens it |
-| P6 Default dynamics | When quorum is lost, cortex falls into its own local, agent-specific dynamics |
-| P7 Arousal and brain state | Wake-promoting arousal systems sustain part of the shared rhythm independently of cortical coherence |
-| P8 Graceful degradation | As timing slack shrinks, the shared rhythm slows and activity turns into bursts before agreement fails |
-| P9 Glial cascade control | Slower glial loops maintain the conditions for timing coherence; an extension on which P1 to P8 do not depend |
+| Postulate | In one line | Status in the models |
+|---|---|---|
+| P1 Integration cycles | Conscious content is generated in repeated cycles in which distributed populations converge on a shared state | Assumed by both models, not tested |
+| P2 Bounded-delay condition | A population contributes to a cycle only if its signals arrive within an integration window around a shared rhythm | Implemented in the percolation model; in the oscillator model only by the readout of Appendix C.12 |
+| P3 Quorum | Integrated, reportable content requires the timing-coherent populations to form one connected group of at least a share $q^*$ of the network | As for P2 |
+| P4 Two failure modes | Anaesthetics reduce the timing-coherent connections by making transmission fail, by making signal timing variable, or both | Operates on all three connectomes; built in at the doses chosen (limitation 25) |
+| P4b Network timing | What anaesthesia degrades is the timing of signals between areas relative to the shared rhythm, not the precision of single neurons | Not tested in data; the learned-compensation version failed (Appendix C.10) |
+| P5 Reference feedback | The shared rhythm is generated by the coherent thalamocortical core itself, so a smaller agreeing group weakens it | Produces inertia in the percolation model once calibrated; absent from the oscillator model |
+| P6 Default dynamics | When quorum is lost, cortex falls into its own local, agent-specific dynamics | Not tested directly (limitation 30) |
+| P7 Arousal and brain state | Wake-promoting arousal systems sustain part of the shared rhythm independently of cortical coherence | In the model's equations; recovery driven by arousal at a fixed concentration not simulated |
+| P8 Graceful degradation | As timing slack shrinks, the shared rhythm slows and activity turns into bursts before agreement fails | The slower rhythm delays loss, but its distinctive prediction failed (F3) |
+| P9 Glial cascade control | Slower glial loops maintain the conditions for timing coherence; an extension on which P1 to P8 do not depend | Consistency checks only; its one test could not have passed (A1) |
 
 **What is new, and what is borrowed.** Several ingredients of DPC are not new: communication through coherence (Fries, 2005, 2015), recurrent processing (Lamme and Roelfsema, 2000; Lamme, 2006), functional disconnection as the common end point of anaesthesia (Hudetz and Mashour, 2016), percolation models of anaesthesia and of conscious perception (Zhou et al., 2015; Arese Lucini et al., 2019) and feedback-driven hysteresis (Kim et al., 2018); Section 2.3 credits each. The closest prior model is that of Zhou et al. (2015): anaesthesia lowers a single probability of transmission on a synthetic, layered network, loss of consciousness appears as a percolation transition, and the model reproduces the electroencephalographic signatures of general anaesthesia, which this paper does not attempt. The contributions of this paper, relative to that model and to the others above, are:
 
 1. Timing variability between areas as a second, independent route to the loss of usable connections, alongside transmission failure, combined with it into one probability per connection. Placing all agents on one transmission parameter is not new (Zhou et al., 2015). In the percolation model the two routes are interchangeable for the loss of quorum, though only transmission failure produces hysteresis in larger networks (Appendix B), so they can be told apart only by measuring each separately (Section 10, item 13).
-2. The proposal [H] that one quantity anaesthetics degrade is the *variability* of signal timing between areas relative to a shared rhythm, rather than its mean or the coherence of ongoing rhythms (P4b, Section 7.8). Section 8 tests it directly in predictions 1, 3 and 8.
-3. A quorum threshold computed from a network's degree distribution with the standard generating-function estimate (Callaway et al., 2000) and compared with measurement on the wiring of a nematode, an insect and a human, including the directed wiring and, in the phase model, a rewired null model (Appendices B and C).
-4. Falsifiable predictions, an analysis protocol and an open, tested simulator in which every parameter is labelled measured, calibrated, assumed or free.
+2. The proposal [H] that one quantity anaesthetics degrade is the *variability* of signal timing between areas relative to a shared rhythm, rather than its mean or the coherence of ongoing rhythms (P4b, Section 7.8). Section 8 proposes direct tests of it (predictions 3 and 8).
+3. A quorum threshold computed from a network's degree distribution with the standard generating-function estimate (Callaway et al., 2000) and compared with measurement on the wiring of a nematode, an insect and a human, including the directed wiring and, in the phase model, a rewired null model (Appendices B and C). The estimate itself is standard and known to be accurate on dense networks (Melnik et al., 2011); what is new is its application to anaesthesia on three real connectomes.
+4. The proposal [H] that arousal drive restores quorum at a fixed concentration by strengthening the shared rhythm (P7), with the prediction that between the concentrations of recovery and loss the restoration outlasts the stimulus (Section 5.4, prediction 15).
+5. Falsifiable predictions, an analysis protocol and an open, tested simulator in which every parameter is labelled measured, calibrated, assumed or free.
 
 ### 1.3 Scope and definitions
 
-General anaesthesia comprises several separable components: unconsciousness, amnesia, analgesia and immobility, while autonomic, cardiovascular, respiratory and thermoregulatory function is kept stable (Brown et al., 2010). It is not sleep: during maintenance the EEG can resemble that of slow-wave sleep, but its patterns generally differ from those of sleep, and burst suppression, seen in deep anaesthesia and in coma, does not occur in sleep. Brown et al. (2010) describe general anaesthesia as a reversible drug-induced coma. **This hypothesis addresses only unconsciousness.** Immobility, the basis of the minimum alveolar concentration (MAC) standard (Eger et al., 1965), is outside scope: it does not depend on the forebrain (Rampil et al., 1993) and is mediated largely at the level of the spinal cord (Antognini and Schwartz, 1993; Rampil, 1994). Memory and responsiveness can be impaired separately (Veselis et al., 1997); amnesia is discussed only where it bears on the hypothesis.
+General anaesthesia comprises several separable components: unconsciousness, amnesia, analgesia and immobility, while the anaesthetist maintains autonomic, cardiovascular, respiratory and thermoregulatory stability (Brown et al., 2010). It is not sleep: during maintenance the EEG can resemble that of slow-wave sleep, but its patterns generally differ from those of sleep, and burst suppression, seen in deep anaesthesia and in coma, does not occur in sleep. Brown et al. (2010) describe general anaesthesia as a reversible drug-induced coma. **This hypothesis addresses only unconsciousness.** Immobility, the basis of the minimum alveolar concentration (MAC) standard (Eger et al., 1965), is outside scope: it does not depend on the forebrain (Rampil et al., 1993) and is mediated largely at the level of the spinal cord (Antognini and Schwartz, 1993; Rampil, 1994). Memory and responsiveness can be impaired separately (Veselis et al., 1997); amnesia is discussed only where it bears on the hypothesis.
 
 We follow the distinctions of Sanders et al. (2012):
 
@@ -73,7 +74,7 @@ Other causes of unconsciousness, including fainting (syncope), epileptic seizure
 
 ### 1.4 Terminology
 
-Every term is used in one defined sense, given with the symbols and abbreviations in Appendix A (A.1 to A.3). The argument rests on six of them: *timing-coherent* connections, the *integration window*, *timing slack*, the *giant component*, *quorum* and *neural inertia*. For readability some have synonyms: a timing-coherent connection is also called *occupied*, the percolation term; the shared rhythm is also called the *phase reference* or *reference rhythm*; and the giant component is also called the *agreeing group*. Words borrowed from computing (for example bus, clock, quorum, circuit breaker) appear only in passages marked [A] as analogies; Appendix A.4 maps each to a defined term, and none is used to state a claim. Two exceptions are names given to parts of the hypothesis: *quorum* (P3) and *graceful degradation* (P8).
+Every term is used in one defined sense, given with the symbols and abbreviations in Appendix A (A.1 to A.3). The argument rests on six of them: *timing-coherent* connections, the *integration window*, *timing slack*, the *giant component*, *quorum* and *neural inertia*. For readability some have synonyms: a timing-coherent connection is also called *occupied*, the percolation term; the shared rhythm is also called the *phase reference* or *reference rhythm*; and the giant component is also called the *agreeing group*. Words borrowed from computing (for example bus, clock, quorum, circuit breaker) appear only in passages marked [A] as analogies; Appendix A.4 maps each to a defined term, and none is used to state a claim. Two exceptions are names given to parts of the hypothesis: *quorum* (P3) and *graceful degradation* (P8). Quorum here means only that the giant component of timing-coherent connections includes at least a share $q^*$ of the populations; there is no vote, no voter and no value agreed on. Loss of responsiveness (LOR) is used wherever the measurement is behavioural, and loss of consciousness only where the cited study used the term or had evidence beyond behaviour, such as post hoc interview or the perturbational complexity index.
 
 ---
 
@@ -87,7 +88,7 @@ The Meyer-Overton correlation, which relates anaesthetic potency to lipid solubi
 2. Optical isomers of isoflurane, which have identical lipid solubility, differ in their effects on neuronal ion channels (Franks and Lieb, 1991).
 3. Some lipophilic halogenated compounds violate the correlation (Koblin et al., 1994); such compounds were later termed *non-immobilisers*.
 4. A single point mutation (N265M) in the β3 subunit of the γ-aminobutyric acid type A (GABA-A) receptor strongly reduces the in vivo effects of propofol and etomidate in mice (Jurd et al., 2003).
-5. Xenon has negligible effects on GABA-A receptors, which most general anaesthetics enhance, and instead potently inhibits N-methyl-D-aspartate (NMDA) receptors, a class of glutamate receptor (Franks et al., 1998).
+5. Xenon has negligible effects on GABA-A receptors, which most general anaesthetics enhance, and instead inhibits N-methyl-D-aspartate (NMDA) receptors, a class of glutamate receptor (Franks et al., 1998).
 
 Membrane-mediated mechanisms remain biologically plausible as *contributing* routes. These include changes in the lateral pressure profile of the lipid bilayer that alter the conformational equilibria of embedded channels (Cantor, 1997), and the disruption of ordered lipid domains that activates TREK-1 potassium channels via phospholipase D2 (PLD2; Pavel et al., 2020). The current view is that anaesthetics act on multiple targets, chiefly GABA-A receptors, NMDA receptors and two-pore-domain potassium (K2P) channels, with agent-specific profiles (Rudolph and Antkowiak, 2004; Hemmings et al., 2019).
 
@@ -98,7 +99,7 @@ The known routes differ in mechanism. Most shift ion currents so as to reduce ex
 | GABA-A receptor potentiation (prolonging channel opening) | Propofol, etomidate, barbiturates, isoflurane, sevoflurane | More Cl⁻ inhibitory current | Transmission failure | Mihic et al. (1997); Jurd et al. (2003) |
 | NMDA receptor block: open-channel block together with fewer channel openings (ketamine), or binding at the glycine co-agonist site (xenon, isoflurane) | Ketamine, xenon, nitrous oxide; isoflurane | Less Na⁺ and Ca²⁺ excitatory current | Timing variability and transmission failure | Orser et al. (1997); Franks et al. (1998); Jevtović-Todorović et al. (1998); Dickinson et al. (2007) |
 | Two-pore-domain K⁺ channel activation (TREK-1, TASK) | TREK-1: the volatile agents halothane, isoflurane, chloroform and diethyl ether, and the gases xenon, nitrous oxide and cyclopropane; TASK: of these agents only halothane and isoflurane, as the gases leave TASK-3 unaffected | More K⁺ leak, hyperpolarisation | Transmission failure | Patel et al. (1999); Gruss et al. (2004); Heurteaux et al. (2004) |
-| Inhibition of hyperpolarisation-activated cyclic-nucleotide-gated (HCN) channels | Volatile agents (subunit-specific); propofol | Less pacemaker cation current | Altered rhythm and timing | Chen et al. (2005); Ying et al. (2006) |
+| Inhibition of hyperpolarisation-activated cyclic-nucleotide-gated (HCN) channels | Volatile agents (subunit-specific); propofol; ketamine, whose hypnotic potency is strongly reduced in mice lacking HCN1 | Less pacemaker cation current | Altered rhythm and timing | Chen et al. (2005); Ying et al. (2006); Chen et al. (2009) |
 | Presynaptic Na⁺ channel inhibition, reducing Ca²⁺ entry and vesicle release | Isoflurane | Less transmitter released per spike | Transmission failure | Herold and Hemmings (2012) for Na⁺ channels; Baumgart et al. (2015) for reduced Ca²⁺ entry and release |
 | α2-adrenoceptor agonism, acting through the endogenous sleep pathway | Dexmedetomidine | Indirect: inhibition of locus coeruleus neurons | Arousal suppression (P7) | Nelson et al. (2003) |
 | Disruption of membrane lipid domains, releasing PLD2, which activates TREK-1 | Chloroform, isoflurane | Indirect: more K⁺ current | Transmission failure | Pavel et al. (2020) |
@@ -112,14 +113,16 @@ Two further proposals are unconfirmed and are noted only for completeness. A pho
 
 ### 2.2 Systems-level findings [E]
 
-- **Thalamocortical involvement.** Two volatile anaesthetics both suppressed regional thalamic and midbrain reticular activity in human volunteers (Alkire et al., 2000). Nicotine microinjected into the central medial thalamus reverses sevoflurane-induced LORR in rats (Alkire et al., 2007). Thalamic stimulation can restore arousal in anaesthetised macaques (Redinbaugh et al., 2020).
-- **Breakdown of cortical communication.** Propofol, sevoflurane and ketamine all disrupt frontal-parietal feedback connectivity (U. Lee et al., 2013). At the onset of propofol-induced unconsciousness, a slow oscillation appears and neuronal spiking becomes confined to brief phase windows that are asynchronous across cortex, fragmenting cortical networks (Lewis et al., 2012). A recent review reads this finding as a fragmentation of the timing and coordination of local activity across cortical areas rather than its disappearance, and describes activity under propofol and volatile agents as often more stereotyped, temporally restricted and poorly coordinated between regions (Kordas, 2026). Reviews of large-scale network studies conclude that unresponsiveness under anaesthetics is commonly accompanied by reduced activity in, or functional disconnection of, the lateral frontoparietal networks (Hudetz and Mashour, 2016), together with reduced complexity and a smaller repertoire of brain states (Mashour and Hudetz, 2018).
+The findings below are established unless a sentence says otherwise: results from a single study, a review's reading, results that their own authors doubt and results later found to be confounded are marked as such where they appear.
+
+- **Thalamocortical involvement.** Two volatile anaesthetics both suppressed regional thalamic and midbrain reticular activity in human volunteers (Alkire et al., 2000). Nicotine microinjected into the central medial thalamus reverses sevoflurane-induced LORR in rats (Alkire et al., 2007). Thalamic stimulation can restore arousal in anaesthetised macaques (Redinbaugh et al., 2020). Whether the thalamus or the cortex changes first is open: in patients with deep-brain electrodes, frontal EEG changed sharply at loss of consciousness while subcortical recordings changed little (Velly et al., 2007), whereas in stereo-EEG complexity in the anterior thalamic nucleus fell before that of prefrontal and temporal cortex (Fan et al., 2026).
+- **Breakdown of cortical communication.** Propofol, sevoflurane and ketamine all disrupt frontal-parietal feedback connectivity (U. Lee et al., 2013). At the onset of propofol-induced unconsciousness, a slow oscillation appears and neuronal spiking becomes confined to brief phase windows that are asynchronous across cortex, fragmenting cortical networks (Lewis et al., 2012). A recent review reads this finding as a fragmentation of the timing and coordination of local activity across cortical areas rather than its disappearance, and describes activity under propofol and volatile agents as often more stereotyped, temporally restricted and poorly coordinated between regions (Kordas, 2026). Under anaesthesia in monkeys, the most frequent patterns of functional connectivity come to mirror anatomical connectivity, whereas wakefulness explores a richer repertoire unlike the anatomy (Barttfeld et al., 2015). Reviews of large-scale network studies conclude that unresponsiveness under anaesthetics is commonly accompanied by reduced activity in, or functional disconnection of, the lateral frontoparietal networks (Hudetz and Mashour, 2016), together with reduced complexity and a smaller repertoire of brain states (Mashour and Hudetz, 2018).
 - **Agent-specific EEG signatures.** Propofol produces increased beta power during sedation, followed by coherent frontal alpha (8 to 12 Hz) together with slow-delta (0.1 to 4 Hz) oscillations at LOR (Purdon et al., 2013, 2015; Ching et al., 2010). Ketamine produces increased gamma power and does not produce the propofol-like alpha pattern (Akeju et al., 2016).
 - **Cellular decoupling.** In mice, anaesthetics decouple the apical dendrites of layer 5 pyramidal neurons from their somata, which would interrupt cortico-cortical feedback integration if that feedback arrives mainly on the apical dendrites (Suzuki and Larkum, 2020).
 - **Loss of coordination, not of activity, across species.** In *Caenorhabditis elegans*, isoflurane leaves individual head neurons active but collapses the correlations between them (Awal et al., 2020). In *Drosophila*, isoflurane reduces stimulus-locked power and coherence in the central brain, while increasing them at twice the stimulus frequency in the optic lobes for some stimuli (Cohen et al., 2016). It also impairs low-frequency feedback while leaving high-frequency feedforward connectivity intact (Cohen et al., 2018), and fragments the integrated structure of brain activity into separate clusters (Leung et al., 2021).
-- **Loss of individual signature.** Under sevoflurane and propofol, functional connectivity becomes less distinctive between individuals, most strongly in transmodal association cortex, and anaesthetised human connectivity becomes more similar to that of the macaque (Luppi et al., 2025).
+- **Loss of individual signature.** Under sevoflurane and propofol, functional connectivity becomes less distinctive between individuals, most strongly in transmodal association cortex, and anaesthetised human connectivity becomes more similar to that of the macaque (Luppi et al., 2025; a single study).
 - **Complexity.** The perturbational complexity index (PCI) is high in wakefulness and low during propofol- and xenon-induced unconsciousness. It remains high under ketamine, consistent with the dream reports of healthy volunteers on emergence (Sarasso et al., 2015); the original validation of the index used midazolam, xenon and propofol (Casali et al., 2013).
-- **Neural inertia.** In both insects and mammals, the concentration at which consciousness returns is lower than the concentration at which it is lost, and the difference is not fully explained by pharmacokinetics. This hysteresis is termed neural inertia; it was demonstrated in both mice and *Drosophila* (Friedman et al., 2010) and depends on excitability genes that act independently of induction sensitivity (Joiner et al., 2013; see also Kelz et al., 2008). Its measured size varies by agent. The ratio of induction to emergence concentration is about 1.08 for isoflurane and 2.85 for halothane in mice (Friedman et al., 2010). In humans it is about 1.07 for propofol effect-site concentrations (1.5 and 1.4 µg/ml at loss and recovery of behavioural responsiveness; Warnaby et al., 2017), whose authors found no consistent hysteresis in these values and identified inertia instead in slow-wave saturation. It is 1.11 in another study (Iwakiri et al., 2005), whose authors describe the concentrations as similar, although the difference was statistically significant. For measured propofol concentrations it is about 1.63 (Sepúlveda et al., 2018), whose authors caution that the gap could instead arise from systematic error in how effect-site concentrations were estimated, not from neural inertia. Recovery proceeds through a sequence of discrete, metastable activity states (Hudson et al., 2014).
+- **Neural inertia.** In both insects and mammals, the concentration at which consciousness returns is lower than the concentration at which it is lost, and the difference is not fully explained by pharmacokinetics. This hysteresis is termed neural inertia; it was demonstrated in both mice and *Drosophila* (Friedman et al., 2010) and depends on excitability genes that act independently of induction sensitivity (Joiner et al., 2013; see also Kelz et al., 2008). Its measured size varies by agent. The ratio of induction to emergence concentration is about 1.08 for isoflurane and 2.85 for halothane in mice (Friedman et al., 2010). In humans it is about 1.07 for propofol effect-site concentrations (1.5 and 1.4 µg/ml at loss and recovery of behavioural responsiveness; Warnaby et al., 2017), whose authors found no consistent hysteresis in these values and identified inertia instead in slow-wave saturation. It is 1.11 in another study (Iwakiri et al., 2005), whose authors describe the concentrations as similar, although the difference was statistically significant. For measured propofol concentrations it is about 1.63 (Sepúlveda et al., 2018), whose authors caution that the gap could instead arise from systematic error in how effect-site concentrations were estimated, not from neural inertia. The one study designed to test neural inertia in humans, in 36 volunteers with stepwise increases and decreases of propofol or sevoflurane, each with or without remifentanil, found no difference between induction and recovery concentrations for propofol, and differences for sevoflurane at most endpoints, for some only with remifentanil; its authors concluded that the endpoint measured influences whether neural inertia is detected (Kuizenga et al., 2018). Whether neural inertia exists in humans is therefore contested, and DPC's account of it (P5) is conditional on it. Recovery proceeds through a sequence of discrete, metastable activity states (Hudson et al., 2014).
 - **Glial cells.** Glia respond to anaesthetics, and manipulating them changes induction and emergence in mice. In awake mice, anaesthetics suppress calcium signals in cortical astrocytes even at doses too low to change how neurons respond when the whiskers are stimulated (Thrane et al., 2012). Inhaled agents also cause a reversible disruption of the fine astrocytic processes in somatosensory cortex (Zhou et al., 2025). Activating astrocytes in the basal forebrain speeds isoflurane induction and slows recovery (Lin et al., 2023), whereas activating astrocytes in the parabrachial nucleus or the paraventricular thalamus speeds emergence (Liu et al., 2023; Zhao et al., 2024). The effect therefore depends on the region. Depleting microglia with the drug PLX5622 reduces sensitivity to several anaesthetics and shortens their effect (Cao et al., 2023; He et al., 2023). The same group later found, however, that PLX5622 also activates a liver receptor that speeds the clearance of anaesthetics, and that depleting microglia genetically did not hasten emergence (Cao et al., 2026). The firmer evidence is that genetic loss of the microglial receptor P2Y12 speeds recovery (Cao et al., 2023). Myelin sets conduction timing. In auditory brainstem circuits the geometry of myelinated axons is tuned to set when action potentials arrive (Ford et al., 2015), and in mice a subtle myelin deficit spreads out conduction times and reduces the synchrony of motor cortex activity (Kato et al., 2020). We found no study of anaesthetic requirements in human demyelinating disease, only case reports. Two animal studies exist. Demyelinated mice took longer to recover from isoflurane, with effects that depended on the region demyelinated (Wang et al., 2024), and older demyelinated mice took longer to be induced at a fixed concentration, in small groups (Tot et al., 2024).
 
 ### 2.3 Prior models and the position of DPC
@@ -147,6 +150,8 @@ The second group consists of quantitative models, several of which already conta
 | Arese Lucini et al. (2019) | Human functional brain networks are modelled as passing from conscious to subliminal perception by k-core percolation: the outer k-shells of the network switch off, while its innermost core stays active | DPC applies percolation to anaesthetic loss of consciousness and defines occupation by a timing criterion rather than by functional activation |
 | Zhou et al. (2015) | A percolation model of thalamocortical and cortico-cortical transmission, with one transmission probability *p*, reproduces EEG features of anaesthesia; information transfer changes sharply near a critical *p* | Zhou et al. already placed every agent on one transmission parameter; DPC adds timing variability as a second, independent route into the same occupation probability |
 | Su et al. (2020) | Measured an induction-recovery hysteresis loop in the burst-suppression ratio of local field potentials (two mice, isoflurane) and explained it by percolation on self-similar multilayer networks | DPC attributes hysteresis to feedback through the shared rhythm rather than to self-similar network structure; for feedback-driven hysteresis see Kim et al. (2018), below |
+| Tian and Sun (2022) | On the fruit-fly connectome, the formation of functional connectivity is described as a percolation process controlled by the balance of excitation and inhibition | DPC uses percolation on the same connectome for the loss of quorum under anaesthesia, with occupation set by transmission and timing |
+| Du and Huang (2025) | A recurrent network model fitted to macaque electrocorticography across wakefulness, anaesthesia and recovery: its response function is suppressed and its dynamics more chaotic under anaesthesia | Unlike this model, DPC's models are not fitted to recordings; Section 8 proposes the measurements that would test them |
 | Kim et al. (2016) | The conditions for explosive synchronisation are met in human EEG networks just after anaesthetic-induced loss of consciousness | DPC tests a percolation transition, not explosive synchronisation, on empirical connectomes of three species with a single parameter set |
 | Kim et al. (2018) | Stuart-Landau oscillators with adaptive feedback on a 78-region connectome reproduce hysteresis of functional connectivity seen in EEG under ketamine and sevoflurane | The feedback mechanism in DPC (P5) is closely related, and Kim et al. already linked the size of the hysteresis to anaesthetic potency; DPC attributes the feedback to a shared timing reference and calibrates its strength to measured inertia ratios |
 | Moon et al. (2015); H. Lee et al. (2013) | Network topology determines phase lead and lag between hubs and periphery, and the front-to-back direction of information flow disappears under sevoflurane; the hub structure of EEG networks is reconfigured after propofol-induced unconsciousness | Hub disruption under anaesthesia has already been reported. DPC explains why hubs are vulnerable, by percolation on networks whose degree distribution is heavy-tailed (Albert et al., 2000), and predicts that disrupting hub connections lowers the concentration needed for loss of responsiveness more than disrupting the same number of random connections (prediction 6) |
@@ -167,7 +172,7 @@ The analogy, which is not a claim of literal equivalence, is that the brain must
 
 ### 3.2 Engineering analogues and their limits [A]
 
-The terms used in this paper come from engineered systems that solve the same problem the brain is proposed to solve: keeping many distributed units in agreement despite delays, noise and failures. The table lists the systems that motivated each postulate, with references to their specifications, and states where each analogy fails.
+The terms used in this paper come from engineered systems that keep many distributed units in agreement despite delays, noise and failures, a problem the brain is proposed to face as well [A]. The table lists the systems that motivated each postulate, with references to their specifications, and states where each analogy fails.
 
 | Engineered system | How it works | Counterpart in DPC | Where the analogy fails |
 |---|---|---|---|
@@ -208,8 +213,8 @@ flowchart TB
 - **P1 (Integration cycles).** Conscious content is generated in repeated integration cycles, during which distributed populations converge on a shared state. The cycles adopt two earlier proposals (Section 2.3): that perception proceeds in discrete epochs (VanRullen and Koch, 2003), and that awareness needs recurrent processing between areas rather than a single feedforward sweep (Lamme and Roelfsema, 2000; Lamme, 2006). Related accounts tie such loops to re-entry between cortex and thalamus (Edelman and Gally, 2013), to dynamic links established by synchronisation across frequency bands (Varela et al., 2001), to thalamocortical binding by temporal coincidence (Llinás et al., 1998) and to the comparison of feedback predictions with feedforward errors (Rao and Ballard, 1999). The evidence points to several perceptual rhythms rather than one (VanRullen, 2016), so DPC's single phase reference (P5) is a simplification (Section 10). Several studies report that anaesthesia disrupts this recurrent component more than the feedforward one, though not uniformly. Under propofol, directed feedback connectivity from frontal to parietal cortex weakens as consciousness is lost and recovers when the participants again respond to spoken commands, while earlier animal data had indicated that feedforward processing may continue (Lee et al., 2009). In rats, halothane and isoflurane reduced both feedforward and feedback information transfer at 50 Hz, the feedback transfer from frontal to posterior regions most, while increasing both at 30 Hz (Imas et al., 2005). In mice, anaesthesia decouples the apical dendrites of layer 5 pyramidal neurons, the presumed target of feedback input, from their somata (Suzuki and Larkum, 2020). In the terms of the analogy [A], each cycle is a loop that checks what arrived, and when, against what was expected. DPC proposes [H] that a cycle that loses quorum partway is abandoned rather than half-completed [A: a saga rolled back when one of its steps fails].
 - **P2 (Bounded-delay condition).** A population contributes to a cycle only if its signals arrive within an integration window $W$ relative to a shared phase reference. Signals outside the window are not integrated. This is the condition proposed by communication through coherence, in which oscillating neuronal groups interact effectively only when their windows for receiving and sending signals coincide in time (Fries, 2005, 2015). The behavioural temporal binding window for multisensory events, of the order of 100 ms or more (Wallace and Stevenson, 2014), is a psychophysical counterpart of $W$. The neural window is expected to be narrower and frequency-dependent.
 - **P3 (Quorum).** A cycle produces globally integrated, reportable content only if the timing-coherent populations form a connected component that includes at least a critical fraction $q^*$ of the network.
-- **P4 (Two failure modes).** Anaesthetics reduce the fraction of functional connections that are timing-coherent in one or both of two ways. (a) They increase the probability that transmission fails (omission faults, signals that never arrive: for example enhanced GABA-A-mediated inhibition and reduced glutamate release; Baumgart et al., 2015). (b) They increase the trial-to-trial variability of signal timing (timing faults, signals that arrive outside their window: proposed here for NMDA antagonism by ketamine [H]). The hypothesis is that the molecular route affects the network only through these two quantities [H]. Counting enhanced inhibition as an omission fault is a modelling simplification: an inhibitory signal does arrive, but the excitatory transmission the connection would otherwise carry does not. Networks with signed, inhibitory connections are tested separately (Appendix C, tests SG1 and SG2). The assignment of ketamine to timing faults is an assumption of the model, not a finding. We found no study showing that ketamine increases timing variability between areas. Nor can the assignment rest on NMDA antagonism alone: xenon, also an NMDA antagonist (Section 2.1), lowers cortical complexity as propofol does, whereas ketamine leaves it wakefulness-like (Sarasso et al., 2015). A circuit effect of NMDA receptor inhibition that is established is different: in awake rats it mainly reduced the activity of putative inhibitory interneurons and, with a delay, increased the firing of most pyramidal neurons, which suggests disinhibition (Homayoun and Moghaddam, 2007).
-- **P4b (Network timing, a hypothesis not yet tested in data).** The brain integrates inputs against learned expectations of when they will arrive. What fails under anaesthesia is proposed to be the timing of signals *between* areas relative to the shared rhythm, which becomes more variable as that rhythm weakens (P5), and not the precision of single neurons. A constant delay is harmless under this hypothesis, because it can be anticipated; only variability matters. The models contain no such anticipation, and in them constant timing errors are not harmless. In the phase model, fixed timing offsets abolish quorum (S4) one or two concentration steps earlier than fluctuating jitter of the same size in 20 of 20 *C. elegans* and 18 of 20 human seeds, and at the same step in all 6 *Drosophila* seeds; with measured conduction delays, quorum on the human connectome is lost at a mean of 1.1575 rather than 1.565 times the EC50 (D1; both comparisons post hoc). This part of P4b therefore depends on a compensation mechanism that the models lack. A test fixed before its run (Appendix C.10) gave each connection a learned expectation of its arrival time, driven by the arriving signal's phase relative to the receiver's own, and it failed: coherence fell even at zero concentration with every agent, most likely because the learning also absorbed the small phase differences that keep populations with different natural frequencies in step (this mechanism was not measured directly), and without conduction delays quorum was lost below 0.13 times the EC50 with every agent, against 0.60 to 1.58 without learning (tests L1, L3 and L4 held in no seed). With measured conduction delays, the learning first did what P4b proposes, raising awake coherence from 0.41 to 0.62 in every seed, before the same drift took quorum away at a mean of 0.735 times the EC50, against 1.205 without learning. A receiver that sees only the arrival phase cannot tell a constant delay from the phase relation that coupling maintains, so how the brain would make constant delays harmless remains open. At the behavioural scale, people adapt to the mean of a variable delay about as well as to a constant one (Yamamoto and Kawabata, 2011; Beech et al., 2025, 2026); those delays, of 100 to 230 ms on average, are far longer than the window proposed here, so they do not test whether variability between areas is compensated. The few local measurements agree that single-neuron timing does not become noisier. Deepening ketamine-xylazine anaesthesia lengthened first-spike latency in the gerbil auditory brainstem without changing spike jitter (Jing et al., 2021). Propofol made the spike timing of rat insular pyramidal neurons more synchronous, by strengthening shared inhibition (Koyanagi et al., 2021). The timing regularity of bursting neurons was maintained under pentobarbital (Kato et al., 2016). We found no study of the trial-to-trial latency variability of responses between cortical areas under anaesthesia. In the nearest intracranial study, responses of distant areas to single electrical pulses were more variable under propofol than in wakefulness, most of all in prefrontal cortex, while the latency of the first response peak did not change with state (Zelmann et al., 2023). That variability was the spread of the response signal, not of its timing. It also rose in spontaneous activity, and it was measured after loss of consciousness rather than across graded concentrations. The hypothesis predicts that the trial-to-trial latency variability of responses between areas rises at concentrations just below loss of responsiveness, before their mean latency changes appreciably (Section 8, prediction 8).
+- **P4 (Two failure modes).** Anaesthetics reduce the fraction of functional connections that are timing-coherent in one or both of two ways. (a) They increase the probability that transmission fails (omission faults, signals that never arrive: for example enhanced GABA-A-mediated inhibition and reduced glutamate release; Baumgart et al., 2015). (b) They increase the trial-to-trial variability of signal timing (timing faults, signals that arrive outside their window: proposed here for NMDA antagonism by ketamine [H]). The hypothesis is that the molecular route affects the network only through these two quantities and through the share of the shared rhythm sustained by arousal (P7) [H]. Counting enhanced inhibition as an omission fault is a modelling simplification: an inhibitory signal does arrive, but the excitatory transmission the connection would otherwise carry does not. Networks with signed, inhibitory connections are tested separately (Appendix C, tests SG1 and SG2). The assignment of ketamine to timing faults is an assumption of the model, not a finding. We found no study showing that ketamine increases timing variability between areas. Nor can the assignment rest on NMDA antagonism alone: xenon, also an NMDA antagonist (Section 2.1), lowers cortical complexity as propofol does, whereas ketamine leaves it wakefulness-like (Sarasso et al., 2015). A circuit effect of NMDA receptor inhibition that is established is different: in awake rats it mainly reduced the activity of putative inhibitory interneurons and, with a delay, increased the firing of most pyramidal neurons, which suggests disinhibition (Homayoun and Moghaddam, 2007).
+- **P4b (Network timing, a hypothesis not yet tested in data).** The brain integrates inputs against learned expectations of when they will arrive. What fails under anaesthesia is proposed to be the timing of signals *between* areas relative to the shared rhythm, which becomes more variable as that rhythm weakens (P5), and not the precision of single neurons. A constant delay is harmless under this hypothesis, because it can be anticipated; only variability matters. The models contain no such anticipation, and in them constant timing errors are not harmless. In the phase model, fixed timing offsets abolish quorum (S4) one or two concentration steps earlier than fluctuating jitter of the same size in 20 of 20 *C. elegans* and 18 of 20 human seeds, and at the same step in all 6 *Drosophila* seeds; with measured conduction delays, quorum on the human connectome is lost at a mean of 1.16 rather than 1.57 times the EC50, the concentration at which the agent has half its maximal effect (D1; both comparisons post hoc; concentrations were sampled every 0.05 EC50). This part of P4b therefore depends on a compensation mechanism that the models lack. A test fixed before its run (Appendix C.10) gave each connection a learned expectation of its arrival time, driven by the arriving signal's phase relative to the receiver's own, and it failed: coherence fell even at zero concentration with every agent, most likely because the learning also absorbed the small phase differences that keep populations with different natural frequencies in step (this mechanism was not measured directly), and without conduction delays quorum was lost below 0.13 times the EC50 with every agent, against 0.60 to 1.58 without learning (tests L1, L3 and L4 held in no seed). With measured conduction delays, the learning first did what P4b proposes, raising awake coherence from 0.41 to 0.62 in every seed, before the same drift took quorum away at a mean of 0.735 times the EC50, against 1.205 without learning. A receiver that sees only the arrival phase cannot tell a constant delay from the phase relation that coupling maintains, so how the brain would make constant delays harmless remains open. At the behavioural scale, people adapt to the mean of a variable delay about as well as to a constant one (Yamamoto and Kawabata, 2011; Beech et al., 2025, 2026); those delays, of 100 to 230 ms on average, are far longer than the window proposed here, so they do not test whether variability between areas is compensated. The few local measurements agree that single-neuron timing does not become noisier. Deepening ketamine-xylazine anaesthesia lengthened first-spike latency in the gerbil auditory brainstem without changing spike jitter (Jing et al., 2021). Propofol made the spike timing of rat insular pyramidal neurons more synchronous, by strengthening shared inhibition (Koyanagi et al., 2021). The timing regularity of bursting neurons was maintained under pentobarbital (Kato et al., 2016). We found no study of the trial-to-trial latency variability of responses between cortical areas under anaesthesia. The closest measured the trial-to-trial variability of auditory responses with fMRI: the reduction in variability that a repeated stimulus normally produces was abolished under propofol sedation and anaesthesia (Huang et al., 2018), which concerns the amplitude of responses within regions, not the timing of signals between them. In the nearest intracranial study, responses of distant areas to single electrical pulses were more variable under propofol than in wakefulness, most of all in prefrontal cortex, while the latency of the first response peak did not change with state (Zelmann et al., 2023). That variability was the spread of the response signal, not of its timing. It also rose in spontaneous activity, and it was measured after loss of consciousness rather than across graded concentrations. The hypothesis predicts that the trial-to-trial latency variability of responses between areas rises at concentrations just below loss of responsiveness, before their mean latency changes appreciably (Section 8, prediction 8).
 - **P5 (Reference feedback).** The shared phase reference is proposed to be generated by the coherent thalamocortical core itself [A: a gateway or orchestrator that keeps services in step, but is itself made of those services]. A smaller giant component therefore produces a weaker reference and greater effective timing error for all remaining connections.
 - **P6 (Default dynamics).** When quorum is lost, cortex does not become silent. It falls into its intrinsic, locally generated dynamics (for example the slow oscillation, Steriade et al., 1993a), whose form is agent-specific.
 - **P7 (Arousal and brain state).** Wake-promoting arousal systems sustain part of the shared reference independently of cortical coherence. Anaesthetics suppress these systems. Isoflurane and sevoflurane lower the number of orexinergic neurons that express c-Fos, which suggests that these agents inhibit them (Kelz et al., 2008), and isoflurane depolarises sleep-promoting neurons (Moore et al., 2012). In the model, this suppression accelerates the loss of quorum without being required for it (Appendix B, consistency check C7). In natural sleep the arousal drive is withdrawn, and during slow-oscillation down-states whole local populations of cortical neurons fall silent (Vyazovskiy et al., 2009).
@@ -264,7 +269,7 @@ where $F$ is the giant-component function of the graph. In this percolation mode
 
 ### 4.4 Graded depth
 
-Although conscious *access* is modelled as a threshold on $S$, the order parameter itself is continuous. This is consistent with graded sedation, with the progressive EEG changes seen with increasing concentration, and with individual variability in thresholds.
+Although conscious *access* is modelled as a threshold on $S$, the order parameter itself is continuous. This is consistent with graded sedation, with the progressive EEG changes seen with increasing concentration, and with individual variability in thresholds. Recordings disagree on how abrupt the transition is. During slow propofol induction, functional connectivity measured with fMRI fell gradually while recovery was abrupt (Huang et al., 2021); in stereo-EEG, complexity in the anterior nucleus of the thalamus fell before loss of consciousness and earlier than in prefrontal and temporal cortex, so local and inter-regional changes were staggered in time (Fan et al., 2026); and frontal slow-wave coupling changed in a discrete step while posterior alpha coupling declined smoothly (Tong et al., 2026). DPC predicts an abrupt change in the giant component of timing-coherent connections, not in every measure of brain activity; a gradual decline of that giant component through loss of responsiveness would refute it (prediction 1). Several measures in fact do not fall abruptly or at all. In stereo-EEG, inter-regional permutation mutual information increased or stayed stable after propofol-induced loss of consciousness (Liang et al., 2025); under sevoflurane the magnitude of EEG functional connectivity was larger during loss of consciousness than when conscious (Dong et al., 2023); during an ultra-slow propofol infusion the EEG spectral slope tracked response time continuously (Zhang et al., 2023); and in monkeys functional connectivity kept declining with isoflurane dose beyond loss of consciousness (Lv et al., 2016). Measures of the magnitude of coupling can rise when activity becomes hypersynchronous (Section 7.8), so they do not test DPC; the order in which regions change, which these studies report, is not predicted by DPC as stated.
 
 ### 4.5 Adaptive reference rate (P8)
 
@@ -305,6 +310,8 @@ so that it is weak in wakefulness, where $S$ is close to but below 1, grows as t
 The model is deliberately minimal. The integration window $W$ = 3 ms lies within measured integration windows for coincident synaptic input: 1 to 10 ms for thalamic input to rodent barrel cortex (the whisker area of somatosensory cortex; Gabernet et al., 2005), under 2 ms in hippocampal pyramidal cells (Pouille and Scanziani, 2001) and several milliseconds for layer 5 dendrites (Larkum et al., 1999). The baseline jitter $\sigma_b$ = 3 ms is the precision, about 3 ms, of the firing of neurons in the middle temporal visual area (MT) of alert macaques responding to time-varying stimuli (Buracas et al., 1998); single neurons in vitro reach under 1 ms (Mainen and Sejnowski, 1995). We found no study that measures the trial-to-trial latency variability of signals between cortical areas; intracranial stimulation studies under propofol report the variability of the response signal and the response latency instead (Zelmann et al., 2023; van Blooijs et al., 2024). Both values are therefore varied from 1 to 10 ms in the sensitivity analysis. The results depend on them: with $W$ = 1 ms, with $\sigma_b$ = 10 ms, or with a mean degree of 4, all or nearly all claims of the validation study fail (Appendix B, sensitivity analysis). At the reference values only about 38% of connections are timing-coherent in wakefulness ($\operatorname{erf}(W / (2\sqrt{2}\,\sigma_b)) \approx 0.38$). $\lambda$ is calibrated to measured neural inertia; the quorum $q^*$, the maximal effects $p(c)$ and $\sigma_0(c)$ of each agent class, the Hill coefficient of the dose-response and the share $a$ of the agent's effect on arousal are free parameters, and the EC50 sets the unit of concentration. The sensitivity analysis varies $q^*$, the GABAergic-like agent's maximal transmission failure and the Hill coefficient, among others; the NMDA-antagonist-like agent's maximal effects and the share $a$ are not varied. Random-graph percolation ignores the spatial embedding, modularity and directed (feedforward and feedback) structure of real connectomes; the quorum thresholds of the empirical connectomes are therefore also measured on their directed wiring (Appendix B). One further test uses a third model, of interacting excitatory and inhibitory populations on the human connectome (Wilson and Cowan, 1972), to ask whether congestion causes the excitation seen at induction (Section 5.1, Appendix C.5). The model's purpose is to generate qualitative, falsifiable predictions (Section 8) and to guide future simulation on empirical connectomes. A reference implementation and a size-scaling validation study are given in Appendix B.
 
 
+**How the phase-oscillator model reads P2 and P3.** The percolation model implements the window and the quorum as stated: a connection counts only when its timing error lies within $W/2$, and quorum is the share of populations in the giant component of counting connections. The phase-oscillator model, which produces every result on the connectomes, did not, as first built. In it, timing error weakens the coupling of a connection smoothly instead of excluding late signals, and quorum is read as global phase coherence of at least half its awake value, a cut on a smooth curve rather than a giant component. Its results in Appendix C.3 to C.11 therefore show what the two kinds of fault do to agreement among coupled oscillators on real wiring; they do not test P2 and P3 directly. A readout that does, counting a connection when its timing error within a cycle lies inside the window and asking whether the counting connections form a giant component of at least $q^*$, was added afterwards, with its tests fixed before they were run (Appendix C.12).
+
 ---
 
 ## 5. Mapping to clinical and physiological observations
@@ -325,13 +332,15 @@ At $\pi$ < $\pi_c$ the giant component disappears. The thalamic reticular nucleu
 
 ### 5.3 Light anaesthesia and isolated local processing
 
-Under propofol sedation, temporal-lobe responses to speech persist at every level of sedation, while the extra responses that sentences containing ambiguous words evoke in frontal and posterior temporal cortex are lost at light sedation (Davis et al., 2007). With the isolated forearm technique, in which a cuff keeps the muscle relaxant out of one forearm so that the patient can still move it, some patients respond to commands during apparently adequate anaesthesia (Tunstall, 1977; Sanders et al., 2012). Intracranial recordings agree: after propofol-induced loss of consciousness, primary auditory cortex continues to respond to sounds, whereas responses beyond primary cortex are attenuated (Krom et al., 2020). Hippocampal neurons of anaesthetised patients still encode grammatical and semantic features of natural speech and predict features of upcoming words (Katlowitz et al., 2026). DPC interprets these findings as local processing inside small clusters of coherent populations that fall below quorum [A: a microservice running in an isolated sandbox]. Their content is computed, and local state can even change, but DPC proposes [H] that it is not globally broadcast or available for later report. Hippocampal neurons of anaesthetised patients showed plasticity: their discrimination of oddball tones grew over about 10 minutes (Katlowitz et al., 2026), so the claim is not that nothing is stored locally; it is that nothing reaches a global, reportable state [A: a local service updates its own state but cannot commit to the shared store].
+Under propofol sedation, temporal-lobe responses to speech persist at every level of sedation, while the extra responses that sentences containing ambiguous words evoke in frontal and posterior temporal cortex are lost at light sedation (Davis et al., 2007). Intracranial recordings agree: after propofol-induced loss of responsiveness, spiking and field-potential responses in primary auditory cortex persisted, responses in higher-order auditory regions were variable with spiking largely attenuated, and responses in association cortices were attenuated (Krom et al., 2020). Hippocampal neurons of anaesthetised patients still encode grammatical and semantic features of natural speech and predict features of upcoming words (Katlowitz et al., 2026). DPC interprets these findings as local processing inside small clusters of coherent populations that fall below quorum [A: a microservice running in an isolated sandbox]. Their content is computed, and local state can even change, but DPC proposes [H] that it is not globally broadcast or available for later report. Hippocampal neurons of anaesthetised patients showed plasticity: their discrimination of oddball tones grew over about 10 minutes (Katlowitz et al., 2026), so the claim is not that nothing is stored locally; it is that nothing reaches a global, reportable state [A: a local service updates its own state but cannot commit to the shared store].
+
+The isolated forearm technique shows something different. A cuff keeps the muscle relaxant out of one forearm, and some patients move that hand on command during apparently adequate anaesthesia (Tunstall, 1977; Sanders et al., 2012): after tracheal intubation, 12 of 260 patients (4.6%) did so in a multicentre study (Sanders et al., 2017). A patient who follows a command is responsive and connected, so DPC reads these cases not as local processing but as quorum retained at a dose judged adequate [H], and predicts that a giant component above quorum would be found in such a patient.
 
 The same distinction separates two kinds of memory. Implicit memory, such as priming, depends on plasticity within the populations that processed the input and does not require awareness; explicit (episodic) memory is memory for events that were consciously experienced. Under anaesthesia, patients can show implicit memory for words presented during surgery with no explicit recall, which declined as hypnosis deepened and was still present at bispectral index values of 40 to 60 (Lubke et al., 1999), on an EEG-derived scale of hypnotic depth that runs from 100 (awake) to 0; a meta-analysis pooling 44 studies found memory for specific material presented during anaesthesia, provided that patients were tested within 36 hours (Merikle and Daneman, 1996), although individual studies conflict, and in one study implicit memory appeared only for words played during surgical stimulation, although that group did not differ significantly from the group tested before stimulation (Deeprose et al., 2004). DPC proposes an account of this pattern [H]: local learning continues while populations process their inputs, but an episode can only be written for a state that reached quorum, and under anaesthesia no such state exists [A: services keep updating their own state, but no transaction is committed to the shared log]. On emergence, local traces persist, but no episode exists to recall. At equally sedating concentrations, propofol and midazolam impair memory strongly, thiopental mildly and fentanyl not at all (Veselis et al., 1997), so memory and responsiveness can be affected separately; we do not claim that loss of quorum is the *only* cause of anaesthetic amnesia.
 
 ### 5.4 Emergence and neural inertia
 
-As concentration falls, the system remains on the low-$S$ branch until $c_{\text{on}}$ is reached (Section 4.3), which can reproduce the hysteresis observed by Friedman et al. (2010) once $\lambda$ is fitted to it (Section 4.3); this is a calibration, not an independent explanation. In the terms of an analogy (Appendix A.4), recovery resembles an integrity check before a reboot, which waits until timing variance has fallen [A]; in the model this corresponds to the requirement that $\sigma_{\text{eff}}$ falls below the value at which the high-$S$ branch becomes the only solution. Emergence is an active process that involves arousal pathways, including orexinergic signalling (Kelz et al., 2008): methylphenidate actively induces emergence from isoflurane in rats (Solt et al., 2011), optogenetic activation of dopamine neurons of the ventral tegmental area restores righting during continuous isoflurane in mice (Taylor et al., 2016), and cholinergic stimulation of prefrontal, but not parietal, cortex restores wake-like behaviour despite continuous sevoflurane in rats (Pal et al., 2018). It passes through discrete metastable states (Hudson et al., 2014), and early return of consciousness is associated with subcortical and limbic activation before full frontal-parietal recovery (Långsjö et al., 2012). DPC proposes [H] that these intermediate states correspond to giant components of intermediate size.
+As concentration falls, the system remains on the low-$S$ branch until $c_{\text{on}}$ is reached (Section 4.3), which can reproduce the hysteresis observed by Friedman et al. (2010) once $\lambda$ is fitted to it (Section 4.3); this is a calibration, not an independent explanation. In the terms of an analogy (Appendix A.4), recovery resembles an integrity check before a reboot, which waits until timing variance has fallen [A]; in the model this corresponds to the requirement that $\sigma_{\text{eff}}$ falls below the value at which the high-$S$ branch becomes the only solution. Emergence is an active process that involves arousal pathways, including orexinergic signalling (Kelz et al., 2008): methylphenidate actively induces emergence from isoflurane in rats (Solt et al., 2011), optogenetic activation of dopamine neurons of the ventral tegmental area restores righting during continuous isoflurane in mice (Taylor et al., 2016), and cholinergic stimulation of prefrontal, but not parietal, cortex restores wake-like behaviour despite continuous sevoflurane in rats (Pal et al., 2018); stimulating the central lateral thalamus in anaesthetised macaques restored arousal and wake-like neural processing (Redinbaugh et al., 2020), and thalamic stimulation reversed the electrophysiological features of propofol-induced unconsciousness in macaques, among them the fall in coherence above 4 Hz (Bastos et al., 2021). In these experiments consciousness returns while the agent's concentration, and so its action on connections, is unchanged. DPC accounts for this through P7 [H]: the arousal drive sustains part of the shared rhythm, so raising it at a fixed concentration lowers the error of a weakened reference, $\sigma_{\text{ref}} = \lambda(1 - S)(1 - A)$ in Section 4.3, more connections fall inside the window, and $S$ can rise above $q^*$ with $p(c)$ and $\sigma_0(c)$ unchanged. This follows from the model's equation and has not been simulated. It gives a sharper prediction (prediction 15): between $c_{\text{on}}$ and $c_{\text{off}}$, where the percolation model has two stable states, a brief arousing stimulus should restore quorum that outlasts the stimulus, whereas above $c_{\text{off}}$ quorum should return only while the stimulus lasts. The phase model showed no robust inertia (Section 4.3), so this prediction rests on the percolation model alone. It passes through discrete metastable states (Hudson et al., 2014), and early return of consciousness is associated with subcortical and limbic activation before full frontal-parietal recovery (Långsjö et al., 2012). DPC proposes [H] that these intermediate states correspond to giant components of intermediate size. Recovery of responsiveness does not mean that every measure of coordination has recovered: in mice, the inter-regional correlation of cortical calcium activity stayed below its level before anaesthesia for at least 1.5 hours after behavioural recovery, while local activity recovered (Zhang et al., 2026). DPC requires only that the giant component of timing-coherent connections exceed $q^*$ [H], so it predicts that this component, unlike the mean correlation, returns with responsiveness.
 
 **What the simulations showed.** P5 was proposed to explain neural inertia: the shared reference is produced by the agreeing group, so a shrinking group weakens it, which shrinks the group further, and recovery has to rebuild the reference from a weak start. In the percolation model this produces inertia. Without reference feedback there is none (consistency check C2, every seed at every network size), and with it quorum is lost at a higher concentration than the one at which it returns: on random networks of up to 1,000,000 nodes, $c_{\text{off}}$ ≈ 0.88 and $c_{\text{on}}$ ≈ 0.83 times the EC50. With $\lambda$ calibrated, the model reproduces every measured ratio from 1.07 to 1.63 at every arousal level tested (Appendix B.3), although the lowest, 1.07, comes from a study that reported no consistent hysteresis (Warnaby et al., 2017). Four limits qualify this result. First, reproducing a ratio is a calibration, and a feedback loop acting through a threshold is expected to have two stable states, so the result shows that the mechanism works, not that the brain uses it. Second, the model has a ceiling: the halothane ratio of 2.85 (Friedman et al., 2010) could not be reached, because before the mean ratio approached it some networks no longer recovered at zero concentration; the largest ratio reached rose with the arousal level, from 2.04 at level 0 to 2.40 at 0.7. Third, the phase-oscillator model, in which coupling is graded rather than all-or-nothing, showed no graded inertia at any feedback strength tried (Appendix C.2): each run's ratio of loss to recovery concentration stayed within run-to-run noise, 0.91 to 1.05, except one of four runs at the strongest feedback, for which no ratio could be computed (no loss or no recovery within the concentration range). A post hoc scan on the *C. elegans* connectome found no inertia beyond run-to-run noise at arousal level 0 or at feedback strengths between 0.6 and 0.75, and every run recovered (`simulator/results/diagnostics/`). At the reference strength, hysteresis averaged −0.0075 ± 0.029, 0.000 and 0.005 ± 0.032 EC50 on the *C. elegans*, *Drosophila* and human connectomes, and it was strictly positive in only 2 of 20, 0 of 6 and 5 of 20 seeds (test S3, Appendix C.3). That network instead flickered near the threshold, its fluctuations rising at least tenfold before collapse (T1b, replicated on fresh seeds as T1c). Fourth, other mechanisms also explain inertia, among them noise-driven switching between metastable states (Proekt and Hudson, 2018) and adaptive feedback in oscillator networks (Kim et al., 2018). We therefore keep P5 as a hypothesis that the models show to be workable under one condition, an all-or-nothing integration window (P2), not as an established explanation; prediction 5 tests it in data.
 
@@ -341,7 +350,7 @@ Microglia are a candidate biological contribution to neural inertia (P9). Geneti
 
 ### 5.5 Emergence delirium [H]
 
-Emergence delirium (agitation and confusion in the immediate recovery period) is classified separately from postoperative delirium, which is defined as delirium occurring in hospital up to one week after the procedure or until discharge (Evered et al., 2018). DPC proposes that emergence delirium partly reflects **asynchronous recovery** of subsystems: limbic and subcortical components regain coherence before frontal-parietal components (consistent with Långsjö et al., 2012), producing a transient state in which affective processing is integrated but executive and contextual processing is not. We do not adopt the metaphor of "corrupted memory" because we know of no evidence that anaesthesia corrupts stored information.
+Emergence delirium (agitation and confusion in the immediate recovery period) is classified separately from postoperative delirium, which is defined as delirium occurring in hospital up to one week after the procedure or until discharge (Evered et al., 2018). Emergence delirium is described mostly in children, its incidence rose with the newer inhaled anaesthetics, and anxiety before surgery and pain after it are among its suspected contributors (Vlajkovic and Sindjelic, 2007). DPC proposes that emergence delirium partly reflects **asynchronous recovery** of subsystems: limbic and subcortical components regain coherence before frontal-parietal components (consistent with Långsjö et al., 2012), producing a transient state in which affective processing is integrated but executive and contextual processing is not. We do not adopt the metaphor of "corrupted memory" because we know of no evidence that anaesthesia corrupts stored information. As stated, this account does not distinguish emergence delirium from agitation driven by pain, and it is not tested here.
 
 ### 5.6 Sleep and dreaming [H]
 
@@ -350,16 +359,17 @@ Figure B sets out the states the hypothesis distinguishes: wakefulness, sedation
 ```mermaid
 stateDiagram-v2
     Awake --> Sedated: agent rises
-    Sedated --> Unconscious: quorum lost (c > c_off)
-    Unconscious --> Awake: quorum regained (c < c_on < c_off)
+    Sedated --> Unconscious: quorum lost (dose above the loss dose)
+    Unconscious --> Awake: quorum regained (dose below the lower recovery dose)
+    Unconscious --> Awake: arousal drive, at a fixed dose (Section 5.4)
     Awake --> NREM: arousal withdrawn and down-states
     NREM --> Awake: strong stimulus
     NREM --> Dreaming: internal agreement, sensory input gated
     Dreaming --> NREM
-    note right of Unconscious: deep anaesthesia has only this state,<br/>so no stimulus restores quorum
+    note right of Unconscious: above the loss dose, quorum returns<br/>only while arousal drive lasts;<br/>between the two doses it may persist (prediction 15)
 ```
 
-*Figure B. States distinguished by the hypothesis. Recovery from anaesthesia occurs at a lower concentration than loss (neural inertia); sleep, unlike deep anaesthesia, retains a conscious state that a strong stimulus can restore.*
+*Figure B. States distinguished by the hypothesis. In the percolation model, recovery from anaesthesia occurs at a lower dose than loss (neural inertia). From sleep, an ordinary strong stimulus restores quorum; under deep anaesthesia, the model restores it only through strong arousal drive, such as thalamic stimulation, and only while that drive lasts.*
 
 Natural sleep also abolishes consciousness, without any drug, and is neurophysiologically distinct from anaesthesia (Akeju and Brown, 2017). Under P7, non-rapid-eye-movement (NREM) sleep combines withdrawal of the arousal drive with slow-oscillation down-states. A down-state is a period in which a whole local population falls silent together (Vyazovskiy et al., 2009), and slow waves are often regional, the widespread ones being typical of early NREM sleep (Nir et al., 2011). The model therefore treats a down-state as silencing whole populations and asks what share of populations must be silent at the same moment for the sleeping network to lose quorum (Appendix B). In the model that share is about 15% (0.152 in the largest networks) at the reference parameters; it moves with the arousal level, the integration window and the mean degree (Appendix B.6). The measured share of time spent in down-states gives a scale for comparison: 0.095 in rat NREM sleep (silent periods of at least 50 ms, averaging 85.8 ms, between active periods averaging 815.5 ms; Vyazovskiy et al., 2009; shorter silences are not counted, so this underestimates the share), and an upper estimate of about 0.25 for human NREM sleep (down-states of about 400 ms, the duration Cash et al., 2009, report for both K-complexes and slow-oscillation down-states, at 37.3 slow waves per minute at each recording site, Nir et al., 2011). In human sleep, a slow wave involves on average 27.1% of the monitored regions, and 85% of slow waves reach fewer than half of the recording sites (Nir et al., 2011). A slow wave detected at more than half of the recording sites is classed as global (Nir et al., 2011), so a global down-state silences a larger share than either average. The rat share therefore abolishes quorum in no seed at any network size (test O3, which asks whether it does), whereas the human upper estimate abolishes it in every seed (test O4); the sleep result rests on that upper estimate. Appendix B also reports an alternative account in which down-states make individual connections fail. It fits the finding that, after transcranial magnetic stimulation, activity in wakefulness travels on to linked cortical regions some centimetres distant, whereas in NREM sleep the response fades quickly and stays confined to the site of stimulation (Massimini et al., 2005).
 
@@ -379,16 +389,16 @@ Appendices B and C report every test; this section summarises them. The simulati
 
 | Result | Status | Evidence |
 |---|---|---|
-| Agents that cause transmission failure and agents that cause timing jitter both abolish quorum | Held | Percolation: every seed at every size (C1). Phase model: 20 of 20, 6 of 6 and 20 of 20 seeds for each agent class (T2a, T2b); also with measured conduction delays (D1), with inhibitory connections signed (SG1, SG2), with fixed timing offsets (S4) and on rewired connectomes with the same degrees (N1) |
-| The quorum threshold of a connectome is predictable from its wiring | Held | The generating-function formula lies 2 to 5% below the measured threshold on all three connectomes with direction ignored (Appendix B.5); with direction kept, quorum needs 1.3 to 3.4 times as many timing-coherent connections |
-| Reference feedback sharpens the transition (prediction 1) | Failed the every-seed rule by one seed | 19 of 20 seeds at 302 nodes, every seed at every larger size (C4) |
-| Hub damage lowers the loss concentration more than random damage | Held | Every seed at every network size (C5) |
-| Fluctuations rise before the collapse | Held after revision | The pre-specified surge at the collapse failed (T1: 7 of 20, 0 of 6, 5 of 20); a rise of at least tenfold on the conscious side of the threshold, found post hoc (T1b: 18 of 20, 6 of 6, 20 of 20), passed on fresh seeds as a pre-specified test (T1c: 16 of 20, 6 of 6, 20 of 20); re-computed post hoc for every condition, it does not hold with measured conduction delays (human, 0 of 20), in several *Drosophila* conditions (0 of 6) or, on *C. elegans* and *Drosophila*, without reference feedback (3 of 20, 1 of 6) |
-| Reduced arousal delays emergence more than it shifts induction | Held | Every seed at every size (C6) |
-| Sleep loses quorum at the measured human share of down-states but not at the rat share | Held at the reference parameters | Quorum is lost when about 15% of populations are silent at once (0.152 in the largest networks); in the sensitivity analysis the threshold fell between the rat and human shares in 18 of 26 settings, not at either extreme of arousal, integration window or mean degree, at the largest baseline jitter or at the strongest feedback; the rat share (0.095) abolishes quorum in no seed (O3) and the human estimates (0.25 and 0.271) in every seed (O4, O5); deep anaesthesia has no conscious state to return to (E3) |
+| Agents that cause transmission failure and agents that cause timing jitter both abolish quorum | Built in at the doses chosen | These tests could not fail with the maximum effects chosen (limitation 25), so they show that the mechanism operates, not that it is right. Percolation: every seed at every size (C1). Phase model, where quorum is read as global coherence at least half its awake value rather than as the giant component of P3 (Section 4.7): 20 of 20, 6 of 6 and 20 of 20 seeds for each agent class (T2a, T2b); also with measured conduction delays (D1), with inhibitory connections signed (SG1, SG2), with fixed timing offsets (S4) and on rewired connectomes with the same degrees (N1). With a natural-frequency spread of 0.25 instead of 0.5, the GABAergic-like agent abolished it in no seed of 5 (phase-model sensitivity, Appendix B.6) |
+| The quorum threshold of a connectome is predictable from its wiring | Supported with direction ignored; not tested with direction kept | The measured threshold lies 2.0%, 5.5% and 3.4% above the generating-function estimate on the *C. elegans*, *Drosophila* and human connectomes (Appendix B.5); the gap exceeds seed-to-seed variation only for *Drosophila* (2.0% and 3.4% are 0.7 and 1.8 standard errors). Tree-based estimates of this kind are known to work well on dense networks (Melnik et al., 2011), so this confirms a known property rather than a new one. With direction kept, quorum needs 1.8 and 3.4 times as many timing-coherent connections on the *C. elegans* and *Drosophila* wiring, and no directed estimate was computed; the human connectome comes from diffusion imaging, which gives no direction (each of its 17,865 connections is recorded in both directions), so its directed value only splits each fibre into two independent links and is not reported as a result |
+| Reference feedback sharpens the transition | Consistency check; failed the every-seed rule by one seed | 19 of 20 seeds at 302 nodes, every seed at every larger size (C4); positive feedback through a threshold is expected to sharpen it |
+| Hub damage lowers the loss concentration more than random damage | Consistency check, sensitive to calibration | Every seed at every network size with $\lambda$ calibrated to 1.08 (C5), but 9 of 20 seeds at 10,000 nodes with the earlier target of 1.11 (Appendix D); expected for networks with heavy-tailed degree distributions (Callaway et al., 2000; Albert et al., 2000) |
+| Fluctuations rise before the collapse | Not established | The pre-specified surge at the collapse failed (T1: 7 of 20, 0 of 6, 5 of 20). A rise of at least tenfold on the conscious side of the threshold, found post hoc (T1b: 18 of 20, 6 of 6, 20 of 20), passed on fresh seeds as a pre-specified test (T1c: 16 of 20, 6 of 6, 20 of 20). But the ratio is measured against the awake value, which is very small when awake coherence is close to 1: the susceptibility at loss is similar across conditions (median 0.41 to 0.78 on the human connectome), and the ratio fails where awake coherence is low, as with measured conduction delays (awake coherence 0.41; 0 of 20 seeds) or without reference feedback (3 of 20, 1 of 6). The result may therefore reflect the awake baseline rather than a rise before collapse; a comparison at matched coherence is in Appendix C.12 |
+| Reduced arousal delays emergence more than it shifts induction | Consistency check | Every seed at every size (C6); it follows from the model's equation, since the reference error $\lambda(1 - S)(1 - A(c))$ is close to zero on the conscious branch |
+| Sleep loses quorum at the measured human share of down-states but not at the rat share | Mixed | Quorum is lost when about 15% of populations are silent at once (0.152 in the largest networks); in the sensitivity analysis the threshold fell between the rat and human shares in 18 of 26 settings, not at either extreme of arousal, integration window or mean degree, at the largest baseline jitter or at the strongest feedback; the rat share (0.095) abolishes quorum in no seed (O3), which implies that rats keep quorum in NREM sleep (limitation 27), and the human estimates (0.25 and 0.271) in every seed (O4, O5); the model equates a share of time spent in down-states with a share of populations silent at once; deep anaesthesia has no conscious state to return to without arousal drive (E3) |
 | Glial extension (P9) | Not tested | Damaged myelin lowers the loss concentration (M1) and the microglial loop shapes emergence (G1 to G3) in every seed, but all four are consistency checks that follow from the equations; the one test, whether silencing astrocytes restores quorum in sleep, failed in every seed (A1) but could not have passed, since the share of populations it leaves silent already loses quorum (O4) |
 | Learned arrival times make constant delays harmless (P4b) | Failed | Pre-specified (Appendix C.10): with learning, coherence fell even at zero concentration and, without conduction delays, quorum was lost on average below 0.13 times the EC50 with every agent (L1, L3 and L4: no seed); with conduction delays, learning first raised awake coherence (0.41 to 0.62, every seed); L2 held in every seed only because quorum was lost earlier, not later |
-| Neural inertia from reference feedback (P5) | Held in one model, with limits | Reproduced in the percolation model once $\lambda$ is calibrated, up to a ceiling below the largest measured ratio; absent from the phase model (Section 5.4) |
+| Neural inertia from reference feedback (P5) | Calibrated in one model, absent from the other | Reproduced in the percolation model once $\lambda$ is calibrated, up to a ceiling below the largest measured ratio; absent from the phase model (Section 5.4); whether neural inertia exists in humans is contested (Kuizenga et al., 2018) |
 | The sensory area keeps processing while broadcast collapses (T3) | Held in most seeds of two connectomes | 17 of 20 *C. elegans* and 16 of 20 human seeds, but 0 of 6 *Drosophila* seeds (see below); it also holds on rewired connectomes (N2: 19 of 20 and 20 of 20), so, within the limits of the broadcast measure, it reflects the degree distribution rather than the particular wiring. The broadcast measure has a floor, and the human count cannot be read as propagation (limitation 31) |
 | A slower reference rate protects more against timing faults (P8) | Failed | The slower rate raised the loss concentration (F1, every seed) but its distinctive prediction failed in every seed (F3; in the fly the two gains were equal). In the Wilson-Cowan model, burstiness rose after the synchrony surge mainly at the middle coupling in the exploratory run (B1: 23 of 30 seeds, against 4 and 3 of 30), less clearly in the confirmatory run (18 of 30, against 5 and 15 of 30), and the gaps between bursts (B2) could rarely be measured in 1 s windows |
 | Congestion causes the excitation of induction | Failed | Hub activity rose by at least 10% in at most 1 of 10 seeds in every setting (W1 to W4), in an exploratory and a confirmatory run; replaced by survivor lock-in with critical fluctuations (Section 5.1) |
@@ -412,7 +422,7 @@ Appendices B and C report every test; this section summarises them. The simulati
 
 **Objection.** Etomidate acts selectively on GABA-A receptors containing β2 or β3 subunits. Xenon acts mainly on NMDA receptors. Ketamine increases high-frequency activity rather than silencing cortex. How can one framework cover them?
 
-**Response.** DPC is explicitly mechanism-agnostic at the molecular level (P4). DPC proposes [H] that GABAergic agents act chiefly by increasing transmission failure $p(c)$, which corresponds to omission faults [A], and that ketamine acts chiefly by increasing timing jitter $\sigma_0(c)$, which corresponds to timing faults [A]; the spurious activity ketamine also causes resembles a Byzantine fault [A] but is not modelled. Ketamine does affect timing in cortex: in two macaques, subanaesthetic doses dilated the estimation of elapsed time and flattened anticipatory ramping activity in parietal area LIP (Waters et al., 2026, a preprint). That is interval timing within one area, not the timing of signals between areas that DPC requires, so it is consistent with the proposal but does not test it. Both reduce $\pi(c)$ and can therefore abolish the giant component. Ketamine's preserved PCI and dream reports (Sarasso et al., 2015) indicate disconnected consciousness rather than unconsciousness. Of DPC's two accounts of it, sensory-pathway faults failed their first test (K1) but passed a test fixed in advance on *C. elegans* once a floor in the broadcast measure had been removed (K1c), and faults concentrated on feedback connections were not supported (K2; Section 5.6). We state this as an open problem rather than a solved case.
+**Response.** DPC is explicitly mechanism-agnostic at the molecular level (P4). DPC proposes [H] that GABAergic agents act chiefly by increasing transmission failure $p(c)$, which corresponds to omission faults [A], and that ketamine acts chiefly by increasing timing jitter $\sigma_0(c)$, which corresponds to timing faults [A]; the spurious activity ketamine also causes resembles a Byzantine fault [A] but is not modelled. Ketamine does affect timing in cortex: in two macaques, subanaesthetic doses dilated the estimation of elapsed time and flattened anticipatory ramping activity in the lateral intraparietal area (LIP; Waters et al., 2026, a preprint). That is interval timing within one area, not the timing of signals between areas that DPC requires, so it is consistent with the proposal but does not test it. Both kinds of fault reduce $\pi(c)$ and can therefore abolish the giant component. Ketamine's preserved PCI and dream reports (Sarasso et al., 2015) indicate disconnected consciousness rather than unconsciousness. Of DPC's two accounts of it, sensory-pathway faults failed their first test (K1) but passed a test fixed in advance on *C. elegans* once a floor in the broadcast measure had been removed (K1c), and faults concentrated on feedback connections were not supported (K2; Section 5.6). We state this as an open problem rather than a solved case.
 
 ### 7.3 Stereoselectivity and receptor specificity
 
@@ -424,7 +434,7 @@ Appendices B and C report every test; this section summarises them. The simulati
 
 **Objection.** If integration collapses, why is complex auditory processing still present?
 
-**Response.** DPC predicts a specific form of this dissociation: a stimulated sensory area can continue to follow its input, while propagation of that input to the rest of the network fails once global quorum is lost (Section 5.3). The prediction concerns broadcast, not the internal coherence of every local module, which in the simulations fell together with global coherence (Section 10, item 10). It matches intracranial recordings in which primary auditory cortex keeps responding after loss of consciousness while responses beyond it are attenuated (Krom et al., 2020). The hypothesis would be weakened by evidence of globally broadcast, reportable content at the same time as a giant component demonstrably below quorum.
+**Response.** DPC predicts a specific form of this dissociation: a stimulated sensory area can continue to follow its input, while propagation of that input to the rest of the network fails once global quorum is lost (Section 5.3). The prediction concerns broadcast, not the internal coherence of every local module, which in the simulations fell together with global coherence (Section 10, item 10). It matches intracranial recordings in which primary auditory cortex keeps responding after loss of responsiveness, responses in higher-order auditory regions vary, and responses in association cortices are attenuated (Krom et al., 2020); DPC predicts the sharpest change at the step from local to network-wide responses, not a smooth gradient. The hypothesis would be weakened by evidence of globally broadcast, reportable content at the same time as a giant component demonstrably below quorum.
 
 ### 7.5 Organisms without a cortex
 
@@ -448,7 +458,7 @@ Appendices B and C report every test; this section summarises them. The simulati
 
 **Objection.** Anaesthesia often increases large-scale synchrony rather than reducing it: propofol produces strong, spatially coordinated frontal alpha (Cimenser et al., 2011; Purdon et al., 2013), and the slow oscillation is shared across cortex. A hypothesis in which unconsciousness follows a loss of coherence appears to predict the opposite.
 
-**Response.** DPC distinguishes the shared rhythm from the timing of the content carried relative to it. The rhythm is the phase reference of P5; integration requires that signals between populations arrive within the window around it (P2). The two can move in opposite directions [A: on a computer bus the clock and the data travel on separate lines, and a strong clock does not rescue data that arrive outside the sampling window; in a consensus cluster, heartbeats can be perfectly regular while no entry is committed]. Recordings during propofol induction show this dissociation. As consciousness is lost, frontal cortex enters a hypersynchronous alpha state; primary somatosensory cortex still produces its early response to median nerve stimulation, but the later responses, which draw in temporal and parietal regions, disappear, and the late response is smaller on single trials in which ongoing frontal alpha has greater power and greater coherence over long distances (Supp et al., 2011). At the onset of propofol-induced unconsciousness, spiking is confined to brief windows of the slow oscillation that are not aligned between distant cortical sites (Lewis et al., 2012), and global coherence shows no coordinated delta activity (Cimenser et al., 2011). In two macaques, anaesthetic doses of ketamine and dexmedetomidine increased phase locking in prefrontal cortex within and across hemispheres, yet neighbouring prefrontal subregions of the same hemisphere became less aligned in phase, which the authors relate to large travelling waves, while homologous areas of the two hemispheres became more aligned (Bardon et al., 2025): more synchrony, organised differently from waking. A coherent rhythm with fragmented content is also what P8 describes: a slower reference with activity batched into synchronised bursts, although P8's distinctive prediction failed in the model (test F3, Section 4.5). The measure that DPC requires is therefore the timing coherence of content between populations, such as stimulus-locked inter-areal phase locking, and not the coherence of ongoing rhythms (prediction 1). The models in this paper do not generate the rhythms themselves (Section 10, item 18).
+**Response.** DPC distinguishes the shared rhythm from the timing of the content carried relative to it. The rhythm is the phase reference of P5; integration requires that signals between populations arrive within the window around it (P2). The two can move in opposite directions [A: on a computer bus the clock and the data travel on separate lines, and a strong clock does not rescue data that arrive outside the sampling window; in a consensus cluster, heartbeats can be perfectly regular while no entry is committed]. Recordings during propofol induction show this dissociation. As consciousness is lost, frontal cortex enters a hypersynchronous alpha state; primary somatosensory cortex still produces its early response to median nerve stimulation, but the later responses, which draw in temporal and parietal regions, disappear, and the late response is smaller on single trials in which ongoing frontal alpha has greater power and greater coherence over long distances (Supp et al., 2011). At the onset of propofol-induced unconsciousness, spiking is confined to brief windows of the slow oscillation that are not aligned between distant cortical sites (Lewis et al., 2012), and global coherence shows no coordinated delta activity (Cimenser et al., 2011). In two macaques, anaesthetic doses of ketamine and dexmedetomidine increased phase locking in prefrontal cortex within and across hemispheres, yet neighbouring prefrontal subregions of the same hemisphere became less aligned in phase, which the authors relate to large travelling waves, while homologous areas of the two hemispheres became more aligned (Bardon et al., 2025): more synchrony, organised differently from waking. In mouse cortex, different anaesthetics synchronise the spontaneous activity of layer 5 pyramidal neurons, and of no other cortical cell type, across large distances, and the change coincides with loss and recovery of consciousness (Bharioke et al., 2022). A coherent rhythm with fragmented content is also what P8 describes: a slower reference with activity batched into synchronised bursts, although P8's distinctive prediction failed in the model (test F3, Section 4.5). The measure that DPC requires is therefore the timing coherence of content between populations, such as stimulus-locked inter-areal phase locking, and not the coherence of ongoing rhythms (prediction 1). The models in this paper do not generate the rhythms themselves (Section 10, item 18).
 
 ---
 
@@ -457,21 +467,24 @@ Appendices B and C report every test; this section summarises them. The simulati
 | # | Prediction | Measurement | Result that would falsify DPC |
 |---|---|---|---|
 | 1 | LOR coincides with the collapse of the giant component of the functional network built from stimulus-locked inter-areal phase locking, the timing of content rather than of ongoing rhythms, and the collapse is sharper than the change in local power; the coherence of ongoing alpha may rise at the same time (Section 7.8) | High-density EEG, magnetoencephalography (MEG) or intracranial recordings with repeated stimuli during slow concentration ramps; stimulus-locked phase-locking network thresholded per connection, analysed separately from ongoing coherence | Gradual, linear decline of the giant component with no threshold behaviour at LOR, or a giant component that remains intact through LOR |
-| 2 | Signatures of a critical transition appear just before LOR: rising variance and autocorrelation of the order parameter (critical slowing down) | Time series of $S(t)$ during induction | No increase in variance or autocorrelation before LOR under carefully controlled slow induction. Existing evidence is mixed: human electrocorticography (ECoG) dynamics became more stable as patients became anaesthetised with propofol (Alonso et al., 2014), whereas thalamocortical recordings in mice under ketamine-xylazine showed diverging fluctuations and a hysteresis loop (Hwang et al., 2012) |
+| 2 | Signatures of a critical transition appear just before LOR: rising variance and autocorrelation of the order parameter (critical slowing down, a generic early-warning signal of transitions; Scheffer et al., 2009) | Time series of $S(t)$ during induction | No increase in variance or autocorrelation before LOR under carefully controlled slow induction. Existing evidence leans against it: human electrocorticography (ECoG) dynamics became more stable as patients became anaesthetised with propofol (Alonso et al., 2014), and in whole-hemisphere ECoG in monkeys the number of modes at the edge of instability fell smoothly during loss of consciousness, under ketamine-medetomidine and under propofol (Solovey et al., 2015); only thalamocortical recordings in mice under ketamine-xylazine showed diverging fluctuations and a hysteresis loop (Hwang et al., 2012) |
 | 3 | Inter-areal lag *variability*, not mean lag, predicts LOR across agents; for GABAergic agents the variability is expected to arise through the reference feedback of P5, which adds timing error as the giant component shrinks | Distribution of lag across trials for frontal-parietal connections | Mean amplitude or local power predicts LOR as well as or better than lag variability across propofol, sevoflurane and ketamine |
-| 4 | Induction-phase excitation scales with sensory and recurrent load | Compare beta and gamma surges at induction with and without sensory deprivation, matched for concentration | No difference in surge magnitude between high- and low-load conditions. The model's version of this account already failed (Section 5.1), and sensory deprivation may also change arousal, which must be controlled |
+| 4 | Induction-phase excitation scales with sensory and recurrent load | Compare beta and gamma surges at induction with and without sensory deprivation, matched for concentration | No difference in surge magnitude between high- and low-load conditions. The model's version of this account already failed (Section 5.1), and sensory deprivation may also change arousal, which must be controlled. Scalp beta and gamma at light anaesthesia are contaminated by muscle activity, which itself changes with arousal, so the comparison needs neuromuscular block with an isolated forearm, or muscle components removed and a muscle index reported, and preferably source-space or intracranial gamma |
 | 5 | Neural inertia ($c_{\text{off}}$ − $c_{\text{on}}$) correlates with the strength of thalamocortical reference coupling ($\lambda$) | Thalamocortical phase-locking in animal models, with optogenetic or pharmacological modulation of thalamic drive | Manipulating thalamocortical coupling changes LOR or emergence thresholds without changing hysteresis. In the percolation model $\lambda$ is calibrated, not measured, and the oscillator model shows no robust hysteresis (Section 4.3) |
 | 6 | Targeted disruption of hub connections lowers the concentration required for LOR more than random disruption of the same number of connections | Animal models with focal inactivation of hub versus non-hub regions | Equal threshold shifts for hub and non-hub disruption. Many network accounts make the same prediction, so it does not single out DPC; in the model it holds in every run at every network size tested at the reference parameters (Appendix B, test C5), but not at several settings of the sensitivity analysis |
 | 7 | Ketamine reduces coherence with external stimuli more than coherence among internally generated cortical activity | Stimulus-locked versus spontaneous inter-areal phase-locking under ketamine | Equal or greater loss of spontaneous internal coherence, while PCI remains high. The model's version of this proposal failed as first specified (test K1) and passed, with a corrected measure, a test fixed in advance on *C. elegans* (K1c, Section 5.6); the prediction is kept as an empirical test |
-| 8 | Trial-to-trial variability in the latency of responses *between* areas rises at concentrations just below loss of responsiveness, before mean latency changes appreciably, while single-neuron timing stays precise (P4b) | Intracranial recordings of responses propagating between areas at stepped effect-site concentrations, in volunteers or patients | Inter-areal latency variability unchanged until responsiveness is lost, or rising only after mean latency. Evoked-response variability in rat auditory cortex is known to depend on anaesthetic depth, being highest at medium depth (Kisley and Gerstein, 1999), but it has not been measured between areas relative to loss of responsiveness. Under propofol, intracranial responses to single pulses become more variable after loss of consciousness without a change in first-peak latency (Zelmann et al., 2023), and the median latency of the earliest response component lengthened from 22.0 ms awake to 26.4 ms under propofol anaesthesia during surgery in another study (van Blooijs et al., 2024); neither measured timing variability between areas across graded concentrations |
+| 8 | Trial-to-trial variability in the latency of responses *between* areas rises at concentrations just below loss of responsiveness, before mean latency changes appreciably, while single-neuron timing stays precise (P4b) | Intracranial recordings of responses propagating between areas at stepped effect-site concentrations, in patients with electrodes implanted for clinical reasons (for example epilepsy monitoring; Krom et al., 2020); a full ramp up and down with repeated stimulation may not be obtainable in one patient, so data would be pooled across patients with differing electrode coverage | Inter-areal latency variability unchanged until responsiveness is lost, or rising only after mean latency. Evoked-response variability in rat auditory cortex is known to depend on anaesthetic depth, being highest at medium depth (Kisley and Gerstein, 1999), but it has not been measured between areas relative to loss of responsiveness. Under propofol, intracranial responses to single pulses become more variable after loss of consciousness without a change in first-peak latency (Zelmann et al., 2023), and the median latency of the earliest response component lengthened from 22.0 ms awake to 26.4 ms under propofol anaesthesia during surgery in another study (van Blooijs et al., 2024); neither measured timing variability between areas across graded concentrations |
 | 9 | At the onset of propofol frontal alpha, phase locking between distant regions is better preserved in the alpha band than in broadband activity, and alpha onset follows a rise in timing variability (P8) | High-density EEG or intracranial recordings during slow induction | No preservation of alpha-band long-range phase locking relative to broadband, or alpha onset unrelated to timing variability. The model's version of P8's distinctive prediction failed (test F3, Section 4.5); the prediction is kept as an empirical test |
 | 10 | The stimulus intensity needed to wake a sleeper increases with the share and the spatial extent of down-states, measured directly, beyond what overall slow-wave power predicts (P7) | Intracranial or high-density EEG with graded arousing stimuli across N1-N3, measuring down-states and their extent | No relation between down-state share or extent and arousal threshold once slow-wave power is accounted for. The relation with slow-wave power itself is already reported: high delta power raises the arousal threshold in rats (Neckelmann and Ursin, 1993), and in human N2 sleep arousal is more likely during periods of weaker slow-wave activity and stronger inter-areal phase coherence (Bastuji et al., 2021) |
-| 11 | Damaged myelin lowers the anaesthetic concentration needed for loss of responsiveness (P9) | Loss-of-righting-reflex dose-response in demyelinated mice (for example after cuprizone) against controls; in multiple sclerosis, white-matter integrity on diffusion imaging against propofol effect-site concentration at LOR, controlling for age | No difference, or reduced sensitivity. Existing evidence does not settle it: induction time at a fixed concentration was unchanged in one cuprizone study, which found slower emergence (Wang et al., 2024), and longer in older cuprizone mice in another, with small groups (Tot et al., 2024) |
+| 11 | Damaged myelin lowers the anaesthetic concentration needed for loss of responsiveness (P9) | Loss-of-righting-reflex dose-response in demyelinated mice (for example after cuprizone) against controls; as a secondary, observational test in multiple sclerosis, white-matter integrity on diffusion imaging against propofol effect-site concentration at LOR under a protocolised target-controlled induction, adjusting for age, disability and medication that changes anaesthetic requirement | No difference, or reduced sensitivity. Existing evidence does not settle it: induction time at a fixed concentration was unchanged in one cuprizone study, which found slower emergence (Wang et al., 2024), and longer in older cuprizone mice in another, with small groups (Tot et al., 2024) |
 | 12 | Microglial depletion narrows neural inertia, $c_{\text{off}}$ − $c_{\text{on}}$ (P9, P5) | Slow up-and-down concentration ramps at steady state in microglia-depleted and control mice | Inertia unchanged after depletion. In one study genetic depletion of microglia did not hasten emergence (Cao et al., 2026) |
 | 13 | Extending the finding that loss of an astrocytic calcium pathway lowers NREM delta power and increases microarousals (Bojarskaite et al., 2020): suppressing cortical astrocytic signalling lowers the arousal threshold in proportion to the fall in the share of down-states (P9, P7) | Chemogenetic or genetic suppression of astrocytic calcium, with sleep recordings and graded arousing stimuli | Fewer down-states with no change in the arousal threshold. The model's version of this effect (test A1) could not have passed, so it did not test the prediction |
 | 14 | At matched depth of slow-wave activity, responsiveness returns faster and with less hysteresis on arousal from NREM sleep than on emergence from anaesthesia (P7) | Graded arousing stimuli in N3 sleep compared with stepped reduction of propofol in the same volunteers at matched slow-wave activity, measuring the time and stimulus intensity at which responsiveness returns | Equal or slower return of responsiveness from sleep at matched depth. A faster return from sleep is also expected because no drug has to clear, so the distinctive part is the smaller hysteresis at matched depth |
+| 15 | Between the concentrations of recovery and loss of responsiveness, a brief arousing stimulus (for example central thalamic stimulation) restores responsiveness that outlasts the stimulus; above the concentration of loss, responsiveness returns only while the stimulus lasts (P5, P7) | Central thalamic or cholinergic stimulation at stepped concentrations during induction and emergence in animals, recording how long responsiveness persists after the stimulus ends | Responsiveness that never outlasts the stimulus at concentrations where induction and emergence differ, or that outlasts it equally at every concentration |
 
-A falsifying result that is a null result (predictions 4, 6, 10, 11, 12 and 14) will be claimed only through an equivalence test against a smallest effect size of interest fixed before data collection (two one-sided tests; Lakens et al., 2018). The absence of an effect will thus be shown, not inferred from a non-significant difference. For prediction 1, "threshold behaviour" means that a sigmoid fits the giant component against concentration better than a straight line by the Bayesian information criterion, with the minimum slope ratio fixed before the analysis.
+**Which predictions discriminate.** Several predictions are shared with other accounts and would support DPC only weakly if confirmed. Threshold behaviour of a functional network (prediction 1) is also expected from the percolation model of Zhou et al. (2015) and from the non-linear ignition of the global neuronal workspace (Dehaene and Changeux, 2011); rising variance before a transition (prediction 2) is a generic early-warning signal of critical transitions (Scheffer et al., 2009); and the vulnerability of hubs (prediction 6) follows from percolation on any network with a heavy-tailed degree distribution (Albert et al., 2000). Three predictions are specific to DPC. That the variability of inter-areal lags, rather than mean lag or the coherence of ongoing rhythms, tracks loss of responsiveness (predictions 3 and 8) follows from the bounded-delay condition (P2) and from no account above, since Zhou et al. (2015) model transmission alone and the workspace and integrated-information accounts make no claim about lag variability. That arousal drive restores responsiveness at a fixed concentration, outlasting the stimulus only between the concentrations of recovery and loss (prediction 15), follows from P5 and P7 together. These are the tests that could refute DPC rather than one of its mechanisms.
+
+A falsifying result that is a null result (predictions 4, 6, 10, 11, 12 and 14) will be claimed only through an equivalence test against a smallest effect size of interest fixed before data collection (two one-sided tests; Lakens et al., 2018). The absence of an effect will thus be shown, not inferred from a non-significant difference. For prediction 1, "threshold behaviour" means that a sigmoid fits the giant component against concentration better than a straight line by the Bayesian information criterion, with the minimum slope ratio fixed before the analysis. Because thresholding a smoothly declining connectivity also produces a sigmoid, and percolation analysis of thresholded functional brain networks is an established method (Gallos et al., 2012), the giant component is computed at several thresholds together with the unthresholded mean connectivity, and threshold behaviour is claimed only if the collapse is sharper than thresholding alone produces.
 
 ---
 
@@ -485,23 +498,24 @@ $$
 \mathrm{PCI} = \frac{c_L \cdot \log_2 L}{L \cdot H(L)}, \qquad H(L) = -p_1\log_2 p_1 - (1-p_1)\log_2(1-p_1)
 $$
 
-where $p_1$ is the fraction of significant (value 1) elements. PCI is high in conscious states and low in unconsciousness induced by propofol or xenon (Casali et al., 2013; Sarasso et al., 2015). DPC predicts that PCI falls in step with $S$ for GABAergic agents and remains relatively preserved under ketamine (Section 7.2). PCI is supporting evidence; it does not test DPC specifically.
+where $p_1$ is the fraction of significant (value 1) elements. PCI is high in conscious states and low in unconsciousness induced by propofol or xenon (Casali et al., 2013; Sarasso et al., 2015). PCI is estimated from many repeated stimuli at a stable state (Casali et al., 2013), so it is measured at concentration plateaus, not along a ramp; the ramp measures ($S$, its variance and autocorrelation) and the plateau measure (PCI) come from separate epochs. DPC predicts that PCI falls with $S$ across plateaus for GABAergic agents and remains relatively preserved under ketamine (Section 7.2). PCI is supporting evidence; it does not test DPC specifically.
 
 ### 9.2 DPC-specific measures
 
-1. Estimate pairwise phase synchrony with a measure robust to volume conduction, such as the weighted phase lag index, in frequency bands defined in advance.
+1. Estimate pairwise phase synchrony in frequency bands defined in advance. A measure robust to volume conduction, such as the weighted phase lag index, discards coupling at zero and near-zero lag, which is the coupling P2 counts (directed phase transfer entropy on source-reconstructed high-density EEG has already shown changes in directed connectivity at propofol-induced loss of consciousness; Chen et al., 2022); it is therefore paired with a lag-sensitive measure on intracranial or source-reconstructed data, where volume conduction is tractable, and the giant component from the weighted phase lag index alone is reported as a lower bound.
 2. Construct a functional network per time window and connection, using surrogate-based significance thresholds.
 3. Compute the order parameter $S(t)$ (fraction of nodes in the giant component), its variance and lag-1 autocorrelation, and the distribution of inter-areal lag variability.
 4. Fit the model in Section 4 to $S$ as a function of effect-site concentration, separately for induction and emergence, and estimate $\pi_c$, $q^*$ and $\lambda$. These may not be separately identifiable from $S$ alone, so the fit will report their joint uncertainty (a profile likelihood or posterior), not point values only.
-5. Compare agents (propofol, sevoflurane, ketamine, dexmedetomidine as a non-GABAergic sedative) and compare with natural sleep, which differs neurophysiologically from anaesthesia (Akeju and Brown, 2017).
-6. Pre-register the hypotheses, frequency bands and thresholds before analysis.
+5. Compare agents (propofol, sevoflurane, ketamine, dexmedetomidine as a non-GABAergic sedative) and compare with natural sleep, which differs neurophysiologically from anaesthesia (Akeju and Brown, 2017). Unresponsiveness under dexmedetomidine is usually rousable, and most interviews after it report experiences, mainly dreaming (Radek et al., 2018); DPC therefore predicts [H] a giant component at or near quorum under dexmedetomidine at loss of responsiveness, with sensory broadcast reduced, which separates it from propofol at matched responsiveness.
+6. Control opioids and surgical stimulation: opioids such as remifentanil lower the hypnotic dose and change the electroencephalogram, and noxious stimulation raises arousal by itself. Use either a fixed opioid effect-site target or opioid-free volunteers, analyse stimulus-free epochs, and compare agents only at matched opioid (Kuizenga et al., 2018, found that remifentanil changed whether induction and recovery concentrations differed).
+7. Pre-register the hypotheses, frequency bands and thresholds before analysis. Appendix E does this for the predictions that existing open recordings can test (predictions 1, 2, 3 and 8, in part), with the datasets, measures and pass rules fixed before any test was run.
 
 ---
 
 ## 10. Limitations
 
 1. **Analogy risk.** Computing concepts (consensus, quorum, clock skew) do not imply that the brain implements an algorithm. The predictions in Section 8 are stated in neurophysiological terms so that they can be tested without the analogy.
-2. **Measured, calibrated and free parameters.** $W$ and the baseline jitter are measured within neurons or local circuits, not between cortical areas (Section 4.7), and $\lambda$ is calibrated to one measured inertia ratio (Appendix B): 1.08, for isoflurane in mice (Friedman et al., 2010), chosen because its authors showed that the hysteresis is not fully explained by pharmacokinetics, and because it lies between the human propofol estimates of 1.07 and 1.11. Those estimates are weaker reference points, since their authors found no consistent hysteresis (Warnaby et al., 2017) or describe the two concentrations as similar (Iwakiri et al., 2005). The other measured ratios from 1.07 to 1.63 give other values of $\lambda$, which Appendix B reports and with which the sensitivity analysis (Appendix B.6) repeats the tests. The largest measured ratio, 2.85 for halothane in mice (Friedman et al., 2010), could not be reproduced: as $\lambda$ grows, the mean ratio reaches only about 2.0 to 2.4, rising with the arousal level, before some seeds no longer recover at zero concentration (Appendix B.3). The model's neural inertia is therefore bounded, and an agent with inertia as large as halothane's lies outside it. The quorum $q^*$, the oscillator coupling and the maximal effects of each agent class are free parameters; the sensitivity analysis (Appendix B.6) reports how the results depend on them.
+2. **Measured, calibrated and free parameters.** $W$ and the baseline jitter are assumed: they are values measured within neurons or local circuits and applied between cortical areas, where they have not been measured (Section 4.7). $\lambda$ is calibrated to one measured inertia ratio (Appendix B): 1.08, for isoflurane in mice (Friedman et al., 2010), whose authors showed that the hysteresis is not fully explained by pharmacokinetics. This target was adopted after results at an earlier target, the human propofol ratio 1.11 (Iwakiri et al., 2005), had been seen; at 1.11 consistency check C5 held in only 9 of 20 seeds at 10,000 nodes, and at 1.08 in every seed (Appendix D). The choice is therefore not independent of the results. The human propofol estimates of 1.07 and 1.11 are not usable as calibration targets: their authors found no consistent hysteresis (Warnaby et al., 2017) or describe the two concentrations as similar (Iwakiri et al., 2005), and the one study designed to test human neural inertia found none for propofol (Kuizenga et al., 2018). The other measured ratios from 1.07 to 1.63 give other values of $\lambda$, which Appendix B reports and with which the sensitivity analysis (Appendix B.6) repeats the tests. The largest measured ratio, 2.85 for halothane in mice (Friedman et al., 2010), could not be reproduced: as $\lambda$ grows, the mean ratio reaches only about 2.0 to 2.4, rising with the arousal level, before some seeds no longer recover at zero concentration (Appendix B.3). The model's neural inertia is therefore bounded, and an agent with inertia as large as halothane's lies outside it. The quorum $q^*$, the oscillator coupling and the maximal effects of each agent class are free parameters; the sensitivity analysis (Appendix B.6) reports how the results depend on them.
 3. **Simplified topology.** Random-graph percolation ignores spatial embedding, modularity, directionality and synaptic dynamics. It also treats each connection as either coherent or not, although a fibre bundle between regions contains many synapses, so that synaptic failure weakens a bundle rather than removing it.
 4. **Measurement confounds.** EEG phase synchrony is affected by volume conduction, reference choice and changes in signal-to-noise ratio. These must be controlled before connectivity changes are interpreted.
 5. **Ketamine.** DPC's account of disconnected consciousness under ketamine is provisional: its first version failed its first test (K1) and passed, with a corrected measure, a test fixed in advance on *C. elegans* only (K1c; the human connectome could not be evaluated), the revised version failed its pre-specified test (K2) and is kept only as a contributing factor, and neither explains why complexity is preserved under ketamine (Section 7.2).
@@ -522,21 +536,24 @@ where $p_1$ is the fraction of significant (value 1) elements. PCI is high in co
 20. **No thalamus in the human connectome.** The 998-region structural network (Hagmann et al., 2008) is cortical, so the thalamocortical phase reference of P5 enters the models as a parameter, not through thalamic anatomy.
 21. **Many tests, some added later.** Many tests were run across organisms, network sizes and parameter settings without correction for multiple comparisons. Several analyses were added after earlier results (T1b, X1, X2 and the re-specified A1); they are labelled post hoc or re-specified, and the model-revision history in Appendix D records each change.
 22. **Consistency checks are not support.** Checks such as C7, M1 and G1 to G3 follow from the model's equations. They confirm that the code implements the model and are not counted as evidence for the hypothesis.
-23. **Concentration is relative.** Concentrations are expressed relative to each agent's EC50; no pharmacokinetic model maps them to clinical doses or effect-site concentrations.
+23. **Concentration is relative.** Concentrations are expressed relative to each agent's EC50; no pharmacokinetic model maps them to clinical doses or effect-site concentrations. For orientation only, the mean propofol effect-site concentration at loss of behavioural responsiveness was about 1.5 µg/ml in one volunteer study (Warnaby et al., 2017), so for propofol in that population one EC50 corresponds roughly to that value; the models do not use this mapping.
 24. **No quantitative comparison with rival accounts.** The paper does not fit DPC and the accounts of Section 2.3 to the same data; prediction 3 and the protocol of Section 9 are where they would be compared.
-25. **Quorum loss is guaranteed by the chosen maxima.** With transmission failure of up to 95% and added timing error of up to 40 ms, longer than a whole 25 ms cycle at 40 Hz, quorum loss in tests C1, T2a and T2b could not fail. Those results show that the mechanism operates as stated, not that it is supported; what they add is where the loss happens and that both routes reach it.
-26. **The model needs more transmission failure than is measured.** On the connectomes, quorum is lost only when 85 to 90% of transmissions fail with the direction of connections ignored, or 61 to 87% with it kept (Appendix B.5), whereas isoflurane at about twice its MAC inhibits glutamate release by about 62% in cultured neurons (Baumgart et al., 2015). Read literally, the model reaches unconsciousness only beyond measured anaesthetic effects, unless timing error contributes much more than assumed or the threshold is lower in real networks.
+25. **Quorum loss is guaranteed by the chosen maxima.** With transmission failure of up to 95% and added timing error of up to 40 ms, longer than a whole 25 ms cycle at 40 Hz, quorum loss in tests C1, T2a and T2b could not fail at the reference parameters. The one exception found is a narrower spread of natural frequencies in the phase model (0.25 instead of 0.5), with which the GABAergic-like agent abolished quorum in no seed of 5 (Appendix B.6), so in the phase model whether quorum is lost depends on the oscillator parameters as well as on the agent. Those results show that the mechanism operates as stated, not that it is supported; what they add is where the loss happens and that both routes reach it.
+26. **The model needs more transmission failure than is measured.** On the connectomes, quorum is lost only when 85 to 90% of transmissions fail with the direction of connections ignored, or 61% and 72% with it kept on the *Drosophila* and *C. elegans* wiring, the only connectomes with measured direction (Appendix B.5), whereas isoflurane at 0.7 mM, about twice its MAC, inhibited the exocytosis triggered by single action potentials by 62% in cultured rat hippocampal neurons, measured at 4 mM extracellular calcium, well above the physiological level (Baumgart et al., 2015). The inhibition at the lower concentrations at which responsiveness is lost was not reported there, so the gap between what the model needs and what has been measured is probably larger than this comparison shows. Read literally, the model reaches unconsciousness only beyond measured anaesthetic effects, unless timing error contributes much more than assumed or the threshold is lower in real networks.
 27. **Rats should stay conscious in NREM sleep, in the model.** The rat share of down-states never abolishes quorum (test O3), so the model implies that rats remain conscious during NREM sleep unless their down-states are larger or more synchronised than the share of time they occupy. The comparison also treats a share of time as a share of populations silent at once.
 28. **Pass rules, realisations and multiplicity.** Percolation checks count as holding only in every seed, the pre-specified tests at 80% of seeds, and the cross-species results are reported as counts. Seeds are realisations of one wiring diagram, not independent brains, so the counts describe the model's own variability, not generality across individuals, and none is corrected for multiple comparisons (item 21).
-29. **Results that depend on the calibration choice.** Switching the reference ratio from 1.11 to 1.08 (Appendix D) changed some outcomes: with λ calibrated to 1.11, the hub-lesion test C5 held in 16, 17 and 9 of 20 seeds at 302, 1,000 and 10,000 nodes (archived report `validation_full_20261018T123515Z`, run before the code corrections of 19 October), against every seed at the reference value. λ and the arousal level are not separately identified, since every arousal level tested reproduces every measured ratio up to 1.63, and λ was not recalibrated when the Hill coefficient was varied. Results close to such edges are fragile, and the sensitivity analysis (Appendix B.6) shows where.
+29. **Results that depend on the calibration choice.** Switching the reference ratio from 1.11 to 1.08 (Appendix D) changed some outcomes: with λ calibrated to 1.11, the hub-lesion test C5 held in 16, 17 and 9 of 20 seeds at 302, 1,000 and 10,000 nodes (archived report `validation_full_20261018T123515Z`, run before the code corrections of 19 October), against every seed at the reference value. λ and the arousal level are not separately identified, since every arousal level tested reproduces every measured ratio up to 1.63, and λ was not recalibrated when the Hill coefficient was varied. Results close to such edges are fragile, and the sensitivity analysis (Appendix B.6) shows where. The calibration also used the same ten random networks at 10,000 nodes as ten of the twenty validation networks at that size, so at that size the validation is not independent of the calibration; the tests of Appendix C.12 use calibration seeds disjoint from their test seeds.
 30. **P6 is not tested.** In the Wilson-Cowan model, each region's inhibition is balanced while it receives long-range excitation, so a region cut off from that input has a single, low-activity steady state and no second state to alternate with. In 10 realisations at each of the three global couplings, this held for all 998 regions, with excitatory activity at most 0.12 on a scale of 0 to 1; the steady state was stable in all but at most 2 regions, which by linear stability analysis would oscillate at about 10 Hz instead (post hoc diagnostic, `simulator/results/diagnostics/`). Accordingly, at the highest concentration, hub activity fell on average to 1 to 19% of its awake value, depending on the coupling (a post hoc reading of the runs in Appendices C.5 and C.6). Testing P6 would need local circuits that sustain activity on their own, which adaptation then destabilises into up and down states, as in the whole-brain model of Sacha et al. (2025). That model also bears on the clause that the default dynamics are agent-specific: in it, GABAergic and NMDA-antagonist actions both produced slow waves, each with increased adaptation, and they differed in how closely functional connectivity followed anatomical connectivity rather than in the form of the dynamics.
 31. **The broadcast measure has a floor.** Broadcast is the locking of the non-sensory populations to the stimulus over two stimulus cycles, and a coherent population rotating at its own frequency shows some locking to any rhythm over so short a window. A post hoc diagnostic repeated K1 with a phantom stimulus of zero strength (`simulator/results/diagnostics/`). On *C. elegans*, the broadcast left at the highest concentration was at about the level of locking to the phantom (median 0.093 against 0.090; with a window four times longer, 0.039 against 0.026, above it in 15 of 20 seeds but by less than half of the awake excess), while awake broadcast clearly exceeded it (0.212 against 0.093); on the human connectome, even awake broadcast barely exceeded it (0.040 against 0.029). The ratio tests built on broadcast (K1, K2b, T3 and N2) therefore compare quantities that both contain this floor. Their verdicts are reported as fixed, but they cannot be read as measures of propagation: the human T3 count is not interpretable. On *C. elegans*, with the phantom's locking subtracted from both sides of the ratio, K1's criterion holds in 16 of 20 seeds, and in 20 of 20 with the longer window; this reading was post hoc, and a test with a floor-corrected broadcast and a window of eight cycles, fixed before its run on fresh seeds, then passed on *C. elegans* (K1c: 20 of 20 seeds) and could not be evaluated on the human connectome (Appendix C.11); the same correction for T3 (T3c) was not run.
+32. **The oscillator model did not implement P2 and P3 as stated.** Until the readout of Appendix C.12, quorum on the connectomes was read as global phase coherence at least half its awake value, and timing error weakened coupling smoothly rather than excluding late signals (Section 4.7). Every connectome result before C.12 is therefore a result about agreement among coupled oscillators, not a direct test of the window and the giant component.
+33. **The fluctuation result may reflect the awake baseline.** The tenfold rise of fluctuations before collapse (T1b, T1c) is a ratio to the awake value, which is very small when awake coherence is close to 1; the susceptibility at loss is similar across conditions, and the ratio fails where awake coherence is low, as with measured conduction delays (Section 6). It is not evidence of critical slowing down until it survives the matched-coherence comparison of Appendix C.12, and recordings in monkeys found cortical dynamics becoming more stable, not less, during loss of consciousness (Solovey et al., 2015).
+34. **NREM sleep and dreaming conflict in the model.** With the human estimate of down-states, quorum is lost in every seed (O4), yet dreams are reported from NREM sleep (Siclari et al., 2017), and in the model no local islands of agreement outlasted the loss of quorum (S2). For both to hold, a giant component above $q^*$ would have to survive in a subset of regions, for example posterior cortex, while down-states silence others; the model, which silences populations at random, cannot produce this.
 
 ---
 
 ## 11. Conclusion
 
-The DPC hypothesis proposes that anaesthetic-induced unconsciousness occurs when the timing-coherent subgraph of the thalamocortical network falls below a percolation threshold, preventing distributed populations from reaching quorum on a shared state. It places molecularly distinct agents in one parameter space of two circuit-level quantities, transmission failure and timing variability. The simulations are consistent with its core: both kinds of fault abolish quorum on three real connectomes, the share of connections each needs for quorum follows from its wiring, and fluctuations rise before the collapse. They support neural inertia only in part, in the percolation model, once calibrated and below a ceiling. Six proposed mechanisms did not survive: congestion as the source of induction excitation, the feedback-connection account of ketamine, local islands of coherence, the specific mechanism of P8, inertia in the phase-oscillator model and a learned expectation of arrival times as the way constant delays are made harmless (P4b). Each is reported where it is proposed, and Appendix D records how each changed the hypothesis. The most important gap is ketamine: in the model the hypothesis explains why consciousness is lost under it and, on one connectome, why the senses are cut off, but not why complexity and dreams are preserved. The hypothesis is consistent with established findings on thalamocortical gating, cortical fragmentation and complexity, and it can fail in data. Its most specific predictions are the primacy of inter-areal lag variability over power (prediction 3), the rise in trial-to-trial latency variability between areas before loss of responsiveness (prediction 8) and the dependence of hysteresis on thalamocortical coupling (prediction 5). What would refute the core, rather than one of its mechanisms, is stated in advance: if the giant component of the stimulus-locked phase-locking network declines gradually or stays intact through loss of responsiveness (prediction 1), or if timing variability between areas does not rise before responsiveness is lost and before mean latency changes (prediction 8), DPC is wrong, whatever revisions its mechanisms have received.
+The DPC hypothesis proposes that anaesthetic-induced unconsciousness occurs when the timing-coherent subgraph of the thalamocortical network falls below a percolation threshold, preventing distributed populations from reaching quorum on a shared state. It places molecularly distinct agents in one parameter space of two circuit-level quantities, transmission failure and timing variability. The simulations show that the mechanism can operate, not that brains use it. Both kinds of fault abolish agreement on three real connectomes, but at the doses chosen they could not have failed to; the share of connections each connectome needs for quorum is predicted by its degree distribution within 2 to 5.5%, as expected for dense networks; and on those connectomes quorum is lost only when more transmissions fail than has been measured at anaesthetic concentrations. The rise of fluctuations before collapse is not established, since it may reflect the awake baseline. Neural inertia is supported only in part, in the percolation model, once calibrated and below a ceiling, and whether it exists in humans is contested. Six proposed mechanisms did not survive: congestion as the source of induction excitation, the feedback-connection account of ketamine, local islands of coherence, the specific mechanism of P8, inertia in the phase-oscillator model and a learned expectation of arrival times as the way constant delays are made harmless (P4b). Each is reported where it is proposed, and Appendix D records how each changed the hypothesis. The most important gap is ketamine: in the model the hypothesis explains why consciousness is lost under it and, on one connectome, why the senses are cut off, but not why complexity and dreams are preserved. The hypothesis is consistent with established findings on thalamocortical gating, cortical fragmentation and complexity, and it can fail in data. Its most specific predictions are the primacy of inter-areal lag variability over power (prediction 3), the rise in trial-to-trial latency variability between areas before loss of responsiveness (prediction 8) and arousal-driven recovery at a fixed concentration that outlasts the stimulus between the concentrations of recovery and loss (prediction 15). What would refute the core, rather than one of its mechanisms, is stated in advance: if the giant component of the stimulus-locked phase-locking network declines gradually or stays intact through loss of responsiveness (prediction 1), or if timing variability between areas does not rise before responsiveness is lost and before mean latency changes (prediction 8), DPC is wrong, whatever revisions its mechanisms have received.
 
 ---
 
@@ -712,19 +729,25 @@ Barabási, A.-L., & Albert, R. (1999). Emergence of scaling in random networks. 
 
 Bardon, A. G., Ballesteros, J. J., Brincat, S. L., et al. (2025). Convergent effects of different anesthetics on changes in phase alignment of cortical oscillations. *Cell Reports*, 44(5), 115685. https://doi.org/10.1016/j.celrep.2025.115685
 
-Bastuji, H., Cadic-Melchior, A., Magnin, M., et al. (2021). Intracortical Functional Connectivity Predicts Arousal to Noxious Stimuli during Sleep in Humans. *The Journal of Neuroscience*, 41(23), 5115–5123. https://doi.org/10.1523/jneurosci.2935-20.2021
+Barttfeld, P., Uhrig, L., Sitt, J. D., et al. (2015). Signature of consciousness in the dynamics of resting-state brain activity. *Proceedings of the National Academy of Sciences*, 112(3), 887–892. https://doi.org/10.1073/pnas.1418031112
+
+Bastos, A. M., Donoghue, J. A., Brincat, S. L., et al. (2021). Neural effects of propofol-induced unconsciousness and its reversal using thalamic stimulation. *eLife*, 10, e60824. https://doi.org/10.7554/eLife.60824
+
+Bastuji, H., Cadic-Melchior, A., Magnin, M., et al. (2021). Intracortical Functional Connectivity Predicts Arousal to Noxious Stimuli during Sleep in Humans. *Journal of Neuroscience*, 41(23), 5115–5123. https://doi.org/10.1523/jneurosci.2935-20.2021
 
 Baumgart, J. P., Zhou, Z.-Y., Hara, M., et al. (2015). Isoflurane inhibits synaptic vesicle exocytosis through reduced Ca2+ influx, not Ca2+-exocytosis coupling. *Proceedings of the National Academy of Sciences*, 112(38), 11959–11964. https://doi.org/10.1073/pnas.1500525112
-
-Beggs, J. M., & Plenz, D. (2003). Neuronal avalanches in neocortical circuits. *Journal of Neuroscience*, 23(35), 11167–11177. https://doi.org/10.1523/JNEUROSCI.23-35-11167.2003
 
 Beech, S., Stanton Fraser, D., & Gilchrist, I. D. (2025). Visuomotor adaptation to constant and varying delays in a target acquisition task. *Journal of Vision*, 25(6), 8. https://doi.org/10.1167/jov.25.6.8
 
 Beech, S., Stanton Fraser, D., & Gilchrist, I. D. (2026). Visuomotor adaptation and savings to constant and varying visual feedback delays in a driving simulator. *Journal of Vision*, 26(4), 7. https://doi.org/10.1167/jov.26.4.7
 
+Beggs, J. M., & Plenz, D. (2003). Neuronal avalanches in neocortical circuits. *Journal of Neuroscience*, 23(35), 11167–11177. https://doi.org/10.1523/JNEUROSCI.23-35-11167.2003
+
 Ben-Or, M. (1983). Another advantage of free choice (extended abstract): Completely asynchronous agreement protocols. In *Proceedings of the Second Annual ACM Symposium on Principles of Distributed Computing* (pp. 27–30). https://doi.org/10.1145/800221.806707
 
 Berg, S., Beckett, I. R., Costa, M., et al. (2026). Sexual dimorphism in the complete *Drosophila* male central nervous system connectome. *Cell*, 189(18), 5504–5526.e15. https://doi.org/10.1016/j.cell.2026.08.015
+
+Bharioke, A., Munz, M., Brignall, A., et al. (2022). General anesthesia globally synchronizes activity selectively in layer 5 cortical pyramidal neurons. *Neuron*, 110(12), 2024–2040.e10. https://doi.org/10.1016/j.neuron.2022.03.032
 
 Bojak, I., & Liley, D. T. J. (2005). Modeling the effects of anesthesia on the electroencephalogram. *Physical Review E*, 71(4), 041902. https://doi.org/10.1103/PhysRevE.71.041902
 
@@ -768,11 +791,19 @@ Chandra, T. D., & Toueg, S. (1996). Unreliable failure detectors for reliable di
 
 Chen, X., Sirois, J. E., Lei, Q., et al. (2005). HCN subunit-specific and cAMP-modulated effects of anesthetics on neuronal pacemaker currents. *Journal of Neuroscience*, 25(24), 5803–5814. https://doi.org/10.1523/JNEUROSCI.1153-05.2005
 
-Ching, S., Cimenser, A., Purdon, P. L., Brown, E. N., & Kopell, N. J. (2010). Thalamocortical model for a propofol-induced α-rhythm associated with loss of consciousness. *Proceedings of the National Academy of Sciences USA*, 107(52), 22665–22670. https://doi.org/10.1073/pnas.1017069108
+Chen, X., Shu, S., & Bayliss, D. A. (2009). HCN1 channel subunits are a molecular substrate for hypnotic actions of ketamine. *Journal of Neuroscience*, 29(3), 600–609. https://doi.org/10.1523/JNEUROSCI.3481-08.2009
+
+Chen, Y., Li, S., Wu, F., et al. (2022). Altered functional and directed connectivity in propofol-induced loss of consciousness: a source-space resting-state EEG study. *Clinical Neurophysiology*, 142, 209–219. https://doi.org/10.1016/j.clinph.2022.08.003
+
+Chennu, S., O'Connor, S., Adapa, R., et al. (2016). Brain connectivity dissociates responsiveness from drug exposure during propofol-induced transitions of consciousness. *PLOS Computational Biology*, 12(1), e1004669. https://doi.org/10.1371/journal.pcbi.1004669
+
+Ching, S., Cimenser, A., Purdon, P. L., Brown, E. N., & Kopell, N. J. (2010). Thalamocortical model for a propofol-induced α-rhythm associated with loss of consciousness. *Proceedings of the National Academy of Sciences*, 107(52), 22665–22670. https://doi.org/10.1073/pnas.1017069108
 
 Ching, S., Purdon, P. L., Vijayan, S., et al. (2012). A neurophysiological–metabolic model for burst suppression. *Proceedings of the National Academy of Sciences*, 109(8), 3095–3100. https://doi.org/10.1073/pnas.1121461109
 
 Cimenser, A., Purdon, P. L., Pierce, E. T., et al. (2011). Tracking brain states under general anesthesia by using global coherence analysis. *Proceedings of the National Academy of Sciences*, 108(21), 8832–8837. https://doi.org/10.1073/pnas.1017041108
+
+Claar, L. D., Rembado, I., Kuyat, J. R., et al. (2023). Cortico-thalamo-cortical interactions modulate electrically evoked EEG responses in mice. *eLife*, 12, RP84630. https://doi.org/10.7554/eLife.84630
 
 Cohen, D., van Swinderen, B., & Tsuchiya, N. (2018). Isoflurane impairs low-frequency feedback but leaves high-frequency feedforward connectivity intact in the fly brain. *eNeuro*, 5(1), ENEURO.0329-17.2018. https://doi.org/10.1523/ENEURO.0329-17.2018
 
@@ -782,7 +813,9 @@ Cook, S. J., Jarrell, T. A., Brittin, C. A., et al. (2019). Whole-animal connect
 
 Cristian, F. (1991). Understanding fault-tolerant distributed systems. *Communications of the ACM*, 34(2), 56–78. https://doi.org/10.1145/102792.102801
 
-Davis, M. H., Coleman, M. R., Absalom, A. R., et al. (2007). Dissociating speech perception and comprehension at reduced levels of awareness. *Proceedings of the National Academy of Sciences USA*, 104(41), 16032–16037. https://doi.org/10.1073/pnas.0701309104
+Dakos, V., Carpenter, S. R., Brock, W. A., et al. (2012). Methods for detecting early warnings of critical transitions in time series illustrated using simulated ecological data. *PLoS ONE*, 7(7), e41010. https://doi.org/10.1371/journal.pone.0041010
+
+Davis, M. H., Coleman, M. R., Absalom, A. R., et al. (2007). Dissociating speech perception and comprehension at reduced levels of awareness. *Proceedings of the National Academy of Sciences*, 104(41), 16032–16037. https://doi.org/10.1073/pnas.0701309104
 
 Deeprose, C., Andrade, J., Varma, S., et al. (2004). Unconscious learning during surgery with propofol anaesthesia. *British Journal of Anaesthesia*, 92(2), 171–177. https://doi.org/10.1093/bja/aeh054
 
@@ -792,7 +825,11 @@ Dickinson, R., Peterson, B. K., Banks, P., et al. (2007). Competitive inhibition
 
 Diekelmann, S., & Born, J. (2010). The memory function of sleep. *Nature Reviews Neuroscience*, 11(2), 114–126. https://doi.org/10.1038/nrn2762
 
+Dong, K., Wei, Q., Zhang, D., et al. (2023). Recovery of brain network integration and segregation during the loss and recovery of consciousness induced by sevoflurane. *IEEE Transactions on Neural Systems and Rehabilitation Engineering*, 31, 304–315. https://doi.org/10.1109/TNSRE.2022.3221965
+
 Dorkenwald, S., Matsliah, A., Sterling, A. R., et al. (2024). Neuronal wiring diagram of an adult brain. *Nature*, 634, 124–138. https://doi.org/10.1038/s41586-024-07558-y
+
+Du, W., & Huang, H. (2025). Response function as a quantitative measure of consciousness in brain dynamics. *Physical Review Research*, 7(4), 043249. https://doi.org/10.1103/6lx7-qsv7
 
 Dwork, C., Lynch, N., & Stockmeyer, L. (1988). Consensus in the presence of partial synchrony. *Journal of the ACM*, 35(2), 288–323. https://doi.org/10.1145/42282.42283
 
@@ -809,6 +846,8 @@ Emerson, D. J., Weiser, B. P., Psonis, J., et al. (2013). Direct Modulation of M
 Erdős, P., & Rényi, A. (1959). On random graphs I. *Publicationes Mathematicae Debrecen*, 6, 290–297. https://doi.org/10.5486/PMD.1959.6.3-4.12
 
 Evered, L., Silbert, B., Knopman, D. S., et al. (2018). Recommendations for the nomenclature of cognitive change associated with anaesthesia and surgery, 2018. *British Journal of Anaesthesia*, 121(5), 1005–1012. https://doi.org/10.1016/j.bja.2017.11.087
+
+Fan, L., Wen, X., Lu, F., et al. (2026). Local and interregional thalamocortical dynamics show temporally dissociable changes during propofol induced loss of consciousness. *NeuroImage*, 340, 122235. https://doi.org/10.1016/j.neuroimage.2026.122235
 
 Filatrella, G., Nielsen, A. H., & Pedersen, N. F. (2008). Analysis of a power grid using a Kuramoto-like model. *European Physical Journal B*, 61(4), 485–491. https://doi.org/10.1140/epjb/e2008-00098-8
 
@@ -838,9 +877,11 @@ Fries, P. (2015). Rhythms for cognition: communication through coherence. *Neuro
 
 Fujisaki, W., Shimojo, S., Kashino, M., et al. (2004). Recalibration of audiovisual simultaneity. *Nature Neuroscience*, 7(7), 773–778. https://doi.org/10.1038/nn1268
 
-Fujita, T., Chen, M. J., Li, B., et al. (2014). Neuronal Transgene Expression in Dominant-Negative SNARE Mice. *The Journal of Neuroscience*, 34(50), 16594–16604. https://doi.org/10.1523/jneurosci.2585-14.2014
+Fujita, T., Chen, M. J., Li, B., et al. (2014). Neuronal Transgene Expression in Dominant-Negative SNARE Mice. *Journal of Neuroscience*, 34(50), 16594–16604. https://doi.org/10.1523/jneurosci.2585-14.2014
 
 Gabernet, L., Jadhav, S. P., Feldman, D. E., Carandini, M., & Scanziani, M. (2005). Somatosensory integration controlled by dynamic thalamocortical feed-forward inhibition. *Neuron*, 48(2), 315–327. https://doi.org/10.1016/j.neuron.2005.09.022
+
+Gallos, L. K., Makse, H. A., & Sigman, M. (2012). A small world of weak ties provides optimal global integration of self-similar modules in functional brain networks. *Proceedings of the National Academy of Sciences*, 109(8), 2825–2830. https://doi.org/10.1073/pnas.1106612109
 
 Garcia-Molina, H., & Salem, K. (1987). Sagas. In *Proceedings of the 1987 ACM SIGMOD International Conference on Management of Data*, 249–259. https://doi.org/10.1145/38713.38742
 
@@ -870,9 +911,17 @@ Homayoun, H., & Moghaddam, B. (2007). NMDA receptor hypofunction produces opposi
 
 Huang, Y., Qiu, Z., Yu, X., et al. (2026). Brain-penetrant microtubule-stabilizer epothilone B delays isoflurane-induced unconsciousness in mice. *Neuropharmacology*, 287, 110834. https://doi.org/10.1016/j.neuropharm.2026.110834
 
+Huang, Z., Tarnal, V., Vlisides, P. E., et al. (2021). Anterior insula regulates brain network transitions that gate conscious access. *Cell Reports*, 35(5), 109081. https://doi.org/10.1016/j.celrep.2021.109081
+
+Huang, Z., Tarnal, V., Vlisides, P. E., et al. (2021). Asymmetric neural dynamics characterize loss and recovery of consciousness. *NeuroImage*, 236, 118042. https://doi.org/10.1016/j.neuroimage.2021.118042
+
+Huang, Z., Vlisides, P. E., Tarnal, V. C., et al. (2018). Brain imaging reveals covert consciousness during behavioral unresponsiveness induced by propofol. *Scientific Reports*, 8, 13195. https://doi.org/10.1038/s41598-018-31436-z
+
+Huang, Z., Zhang, J., Wu, J., et al. (2018). Disrupted neural variability during propofol-induced sedation and unconsciousness. *Human Brain Mapping*, 39(11), 4533–4544. https://doi.org/10.1002/hbm.24304
+
 Hudetz, A. G., & Mashour, G. A. (2016). Disconnecting consciousness: is there a common anesthetic end point? *Anesthesia & Analgesia*, 123(5), 1228–1240. https://doi.org/10.1213/ANE.0000000000001353
 
-Hudson, A. E., Calderon, D. P., Pfaff, D. W., & Proekt, A. (2014). Recovery of consciousness is mediated by a network of discrete metastable activity states. *Proceedings of the National Academy of Sciences USA*, 111(25), 9283–9288. https://doi.org/10.1073/pnas.1408296111
+Hudson, A. E., Calderon, D. P., Pfaff, D. W., & Proekt, A. (2014). Recovery of consciousness is mediated by a network of discrete metastable activity states. *Proceedings of the National Academy of Sciences*, 111(25), 9283–9288. https://doi.org/10.1073/pnas.1408296111
 
 Hwang, E., Kim, S., Han, K., et al. (2012). Characterization of Phase Transition in the Thalamocortical System during Anesthesia-Induced Loss of Consciousness. *PLoS ONE*, 7(12), e50580. https://doi.org/10.1371/journal.pone.0050580
 
@@ -896,6 +945,8 @@ Joiner, W. J., Friedman, E. B., Hung, H.-T., et al. (2013). Genetic and anatomic
 
 Jurd, R., Arras, M., Lambert, S., et al. (2003). General anesthetic actions in vivo strongly attenuated by a point mutation in the GABA_A receptor β3 subunit. *FASEB Journal*, 17(2), 250–252. https://doi.org/10.1096/fj.02-0611fje
 
+Kandeepan, S., Rudas, J., Gomez, F., et al. (2020). Modeling an auditory stimulated brain under altered states of consciousness using the generalized Ising model. *NeuroImage*, 223, 117367. https://doi.org/10.1016/j.neuroimage.2020.117367
+
 Katlowitz, K. A., Cole, E. R., Mickiewicz, E. A., et al. (2026). Plasticity and language in the anaesthetized human hippocampus. *Nature*, 654(8119), 714–723. https://doi.org/10.1038/s41586-026-10448-0 (see also the Author Corrections, *Nature* 655, E1, and 657, E15–E16).
 
 Kato, D., Wake, H., Lee, P. R., et al. (2020). Motor learning requires myelination to reduce asynchrony and spontaneity in neural activity. *Glia*, 68(1), 193–210. https://doi.org/10.1002/glia.23713
@@ -906,7 +957,7 @@ Kayser, E. B., Morgan, P. G., & Sedensky, M. M. (1999). GAS-1: a mitochondrial p
 
 Kelz, M. B., & Mashour, G. A. (2019). The biology of general anesthesia from paramecium to primate. *Current Biology*, 29(22), R1199–R1210. https://doi.org/10.1016/j.cub.2019.09.071
 
-Kelz, M. B., Sun, Y., Chen, J., et al. (2008). An essential role for orexins in emergence from general anesthesia. *Proceedings of the National Academy of Sciences USA*, 105(4), 1309–1314. https://doi.org/10.1073/pnas.0707146105
+Kelz, M. B., Sun, Y., Chen, J., et al. (2008). An essential role for orexins in emergence from general anesthesia. *Proceedings of the National Academy of Sciences*, 105(4), 1309–1314. https://doi.org/10.1073/pnas.0707146105
 
 Kesten, H. (1980). The critical probability of bond percolation on the square lattice equals 1/2. *Communications in Mathematical Physics*, 74(1), 41–59. https://doi.org/10.1007/BF01197577
 
@@ -916,7 +967,7 @@ Kim, H., Moon, J.-Y., Mashour, G. A., & Lee, U. (2018). Mechanisms of hysteresis
 
 Kim, M., Mashour, G. A., Moraes, S.-B., et al. (2016). Functional and topological conditions for explosive synchronization develop in human brain networks with the onset of anesthetic-induced unconsciousness. *Frontiers in Computational Neuroscience*, 10, 1. https://doi.org/10.3389/fncom.2016.00001
 
-Kisley, M. A., & Gerstein, G. L. (1999). Trial-to-Trial Variability and State-Dependent Modulation of Auditory-Evoked Responses in Cortex. *The Journal of Neuroscience*, 19(23), 10451–10460. https://doi.org/10.1523/jneurosci.19-23-10451.1999
+Kisley, M. A., & Gerstein, G. L. (1999). Trial-to-Trial Variability and State-Dependent Modulation of Auditory-Evoked Responses in Cortex. *Journal of Neuroscience*, 19(23), 10451–10460. https://doi.org/10.1523/jneurosci.19-23-10451.1999
 
 Koblin, D. D., Chortkoff, B. S., Laster, M. J., et al. (1994). Polyhalogenated and perfluorinated compounds that disobey the Meyer-Overton hypothesis. *Anesthesia & Analgesia*, 79(6), 1043–1048. https://doi.org/10.1213/00000539-199412000-00004
 
@@ -926,7 +977,9 @@ Kordas, B. (2026). Cellular and microcircuit mechanisms of anesthetic disruption
 
 Koyanagi, Y., Oi, Y., & Kobayashi, M. (2021). Fast-spiking Interneurons Contribute to Propofol-induced Facilitation of Firing Synchrony in Pyramidal Neurons of the Rat Insular Cortex. *Anesthesiology*, 134(2), 219–233. https://doi.org/10.1097/aln.0000000000003653
 
-Krom, A. J., Marmelshtein, A., Gelbard-Sagiv, H., et al. (2020). Anesthesia-induced loss of consciousness disrupts auditory responses beyond primary cortex. *Proceedings of the National Academy of Sciences USA*, 117(21), 11770–11780. https://doi.org/10.1073/pnas.1917251117
+Krom, A. J., Marmelshtein, A., Gelbard-Sagiv, H., et al. (2020). Anesthesia-induced loss of consciousness disrupts auditory responses beyond primary cortex. *Proceedings of the National Academy of Sciences*, 117(21), 11770–11780. https://doi.org/10.1073/pnas.1917251117
+
+Kuizenga, M. H., Colin, P. J., Reyntjens, K. M. E. M., et al. (2018). Test of neural inertia in humans during general anaesthesia. *British Journal of Anaesthesia*, 120(3), 525–536. https://doi.org/10.1016/j.bja.2017.11.072
 
 Kuramoto, Y. (1984). *Chemical Oscillations, Waves, and Turbulence*. Springer Series in Synergetics, vol. 19. Berlin: Springer. https://doi.org/10.1007/978-3-642-69689-3
 
@@ -950,6 +1003,8 @@ Lee, H. S., Ghetti, A., Pinto-Duarte, A., et al. (2014). Astrocytes contribute t
 
 Lee, H., Mashour, G. A., Noh, G.-J., et al. (2013). Reconfiguration of Network Hub Structure after Propofol-induced Unconsciousness. *Anesthesiology*, 119(6), 1347–1359. https://doi.org/10.1097/aln.0b013e3182a8ec8c
 
+Lee, H.-C., Park, Y., Yoon, S. B., et al. (2022). VitalDB, a high-fidelity multi-parameter vital signs database in surgical patients. *Scientific Data*, 9, 279. https://doi.org/10.1038/s41597-022-01411-5
+
 Lee, U., Kim, S., Noh, G., et al. (2009). The directionality and functional organization of frontoparietal connectivity during consciousness and anesthesia in humans. *Consciousness and Cognition*, 18(4), 1069–1078. https://doi.org/10.1016/j.concog.2009.04.004
 
 Lee, U., Ku, S., Noh, G., et al. (2013). Disruption of frontal–parietal communication by ketamine, propofol, and sevoflurane. *Anesthesiology*, 118(6), 1264–1275. https://doi.org/10.1097/ALN.0b013e31829103f5
@@ -960,11 +1015,13 @@ Lempel, A., & Ziv, J. (1976). On the complexity of finite sequences. *IEEE Trans
 
 Leung, A., Cohen, D., van Swinderen, B., & Tsuchiya, N. (2021). Integrated information structure collapses with anesthetic loss of conscious arousal in *Drosophila melanogaster*. *PLoS Computational Biology*, 17(2), e1008722. https://doi.org/10.1371/journal.pcbi.1008722
 
-Lewis, L. D., Weiner, V. S., Mukamel, E. A., et al. (2012). Rapid fragmentation of neuronal networks at the onset of propofol-induced unconsciousness. *Proceedings of the National Academy of Sciences USA*, 109(49), E3377–E3386. https://doi.org/10.1073/pnas.1210907109
+Lewis, L. D., Weiner, V. S., Mukamel, E. A., et al. (2012). Rapid fragmentation of neuronal networks at the onset of propofol-induced unconsciousness. *Proceedings of the National Academy of Sciences*, 109(49), E3377–E3386. https://doi.org/10.1073/pnas.1210907109
 
 Li, N., Lu, D., Yang, L., et al. (2018). Nuclear spin attenuates the anesthetic potency of xenon isotopes in mice: implications for the mechanisms of anesthesia and consciousness. *Anesthesiology*, 129(2), 271–277. https://doi.org/10.1097/aln.0000000000002226
 
 Li, N., You, Z., Ren, Y., et al. (2025). Microtubule-modulating drugs alter sensitivity to isoflurane in mice. *BMC Anesthesiology*, 25(1), 109. https://doi.org/10.1186/s12871-025-02956-9
+
+Liang, Z., Fan, L., Zhang, B., et al. (2025). The changes in neural complexity and connectivity in thalamocortical and cortico-cortical systems after propofol-induced unconsciousness in different temporal scales. *NeuroImage*, 311, 121193. https://doi.org/10.1016/j.neuroimage.2025.121193
 
 Lin, J., Cheng, X., Wang, H., et al. (2023). Activation of astrocytes in the basal forebrain in mice facilitates isoflurane-induced loss of consciousness and prolongs recovery. *BMC Anesthesiology*, 23(1), 213. https://doi.org/10.1186/s12871-023-02166-1
 
@@ -974,13 +1031,15 @@ Liu, Q., Kidd, P. B., Dobosiewicz, M., & Bargmann, C. I. (2018). *C. elegans* AW
 
 Liu, Y. U., Ying, Y., Li, Y., et al. (2019). Neuronal network activity controls microglial process surveillance in awake mice via norepinephrine signaling. *Nature Neuroscience*, 22(11), 1771–1781. https://doi.org/10.1038/s41593-019-0511-3
 
-Llinás, R., & Ribary, U. (1993). Coherent 40-Hz oscillation characterizes dream state in humans. *Proceedings of the National Academy of Sciences USA*, 90(5), 2078–2081. https://doi.org/10.1073/pnas.90.5.2078
+Llinás, R., & Ribary, U. (1993). Coherent 40-Hz oscillation characterizes dream state in humans. *Proceedings of the National Academy of Sciences*, 90(5), 2078–2081. https://doi.org/10.1073/pnas.90.5.2078
 
 Llinás, R., Ribary, U., Contreras, D., et al. (1998). The neuronal basis for consciousness. *Philosophical Transactions of the Royal Society of London. Series B: Biological Sciences*, 353(1377), 1841–1849. https://doi.org/10.1098/rstb.1998.0336
 
 Lubke, G. H., Kerssens, C., Phaf, H., et al. (1999). Dependence of Explicit and Implicit Memory on Hypnotic State in Trauma Patients. *Anesthesiology*, 90(3), 670–680. https://doi.org/10.1097/00000542-199903000-00007
 
 Luppi, A. I., Golkowski, D., Ranft, A., et al. (2025). General anaesthesia decreases the uniqueness of brain functional connectivity across individuals and species. *Nature Human Behaviour*, 9(5), 987–1004. https://doi.org/10.1038/s41562-025-02121-9
+
+Lv, P., Xiao, Y., Liu, B., et al. (2016). Dose-dependent effects of isoflurane on regional activity and neural network function: a resting-state fMRI study of 14 rhesus monkeys. *Neuroscience Letters*, 611, 116–122. https://doi.org/10.1016/j.neulet.2015.11.037
 
 Ma, C., Li, B., Silverman, D., et al. (2024). Microglia regulate sleep through calcium-dependent modulation of norepinephrine transmission. *Nature Neuroscience*, 27(2), 249–258. https://doi.org/10.1038/s41593-023-01548-5
 
@@ -999,6 +1058,8 @@ Massimini, M., Ferrarelli, F., Huber, R., et al. (2005). Breakdown of cortical e
 McCarthy, M. M., Brown, E. N., & Kopell, N. (2008). Potential network mechanisms mediating electroencephalographic beta rhythm changes during propofol-induced paradoxical excitation. *Journal of Neuroscience*, 28(50), 13488–13504. https://doi.org/10.1523/JNEUROSCI.3536-08.2008
 
 McCormick, D. A., & Bal, T. (1994). Sensory gating mechanisms of the thalamus. *Current Opinion in Neurobiology*, 4(4), 550–556. https://doi.org/10.1016/0959-4388(94)90056-6
+
+Melnik, S., Hackett, A., Porter, M. A., et al. (2011). The unreasonable effectiveness of tree-based theory for networks with clustering. *Physical Review E*, 83(3), 036112. https://doi.org/10.1103/PhysRevE.83.036112
 
 Merikle, P. M., & Daneman, M. (1996). Memory for Unconsciously Perceived Events: Evidence from Anesthetized Patients. *Consciousness and Cognition*, 5(4), 525–541. https://doi.org/10.1006/ccog.1996.0031
 
@@ -1042,7 +1103,7 @@ Park, S. H., & Lefebvre, J. (2020). Synchronization and resilience in the Kuramo
 
 Patel, A. J., Honoré, E., Lesage, F., et al. (1999). Inhalational anesthetics activate two-pore-domain background K+ channels. *Nature Neuroscience*, 2(5), 422–426. https://doi.org/10.1038/8084
 
-Pavel, M. A., Petersen, E. N., Wang, H., Lerner, R. A., & Hansen, S. B. (2020). Studies on the mechanism of general anesthesia. *Proceedings of the National Academy of Sciences USA*, 117(24), 13757–13766. https://doi.org/10.1073/pnas.2004259117
+Pavel, M. A., Petersen, E. N., Wang, H., Lerner, R. A., & Hansen, S. B. (2020). Studies on the mechanism of general anesthesia. *Proceedings of the National Academy of Sciences*, 117(24), 13757–13766. https://doi.org/10.1073/pnas.2004259117
 
 Poskanzer, K. E., & Yuste, R. (2016). Astrocytes regulate cortical state switching in vivo. *Proceedings of the National Academy of Sciences*, 113(19), E2675–E2684. https://doi.org/10.1073/pnas.1520759113
 
@@ -1050,9 +1111,11 @@ Pouille, F., & Scanziani, M. (2001). Enforcement of temporal fidelity in pyramid
 
 Proekt, A., & Hudson, A. E. (2018). A stochastic basis for neural inertia in emergence from general anaesthesia. *British Journal of Anaesthesia*, 121(1), 86–94. https://doi.org/10.1016/j.bja.2018.02.035
 
-Purdon, P. L., Pierce, E. T., Mukamel, E. A., et al. (2013). Electroencephalogram signatures of loss and recovery of consciousness from propofol. *Proceedings of the National Academy of Sciences USA*, 110(12), E1142–E1151. https://doi.org/10.1073/pnas.1221180110
+Purdon, P. L., Pierce, E. T., Mukamel, E. A., et al. (2013). Electroencephalogram signatures of loss and recovery of consciousness from propofol. *Proceedings of the National Academy of Sciences*, 110(12), E1142–E1151. https://doi.org/10.1073/pnas.1221180110
 
 Purdon, P. L., Sampson, A., Pavone, K. J., et al. (2015). Clinical electroencephalography for anesthesiologists: Part I: Background and basic signatures. *Anesthesiology*, 123(4), 937–960. https://doi.org/10.1097/aln.0000000000000841
+
+Radek, L., Kallionpää, R. E., Karvonen, M., et al. (2018). Dreaming and awareness during dexmedetomidine- and propofol-induced unresponsiveness. *British Journal of Anaesthesia*, 121(1), 260–269. https://doi.org/10.1016/j.bja.2018.03.014
 
 Rampil, I. J. (1994). Anesthetic potency is not altered after hypothermic spinal cord transection in rats. *Anesthesiology*, 80(3), 606–610. https://doi.org/10.1097/00000542-199403000-00017
 
@@ -1076,21 +1139,27 @@ Sanchez-Vives, M. V., Massimini, M., & Mattia, M. (2017). Shaping the default ac
 
 Sanders, R. D., Tononi, G., Laureys, S., & Sleigh, J. W. (2012). Unresponsiveness ≠ unconsciousness. *Anesthesiology*, 116(4), 946–959. https://doi.org/10.1097/ALN.0b013e318249d0a7
 
+Sanders, R. D., Gaskell, A., Raz, A., et al. (2017). Incidence of connected consciousness after tracheal intubation. *Anesthesiology*, 126(2), 214–222. https://doi.org/10.1097/ALN.0000000000001479
+
 Sanz Leon, P., Knock, S. A., Woodman, M. M., et al. (2013). The Virtual Brain: a simulator of primate brain network dynamics. *Frontiers in Neuroinformatics*, 7, 10. https://doi.org/10.3389/fninf.2013.00010
 
 Sarasso, S., Boly, M., Napolitani, M., et al. (2015). Consciousness and complexity during unresponsiveness induced by propofol, xenon, and ketamine. *Current Biology*, 25(23), 3099–3105. https://doi.org/10.1016/j.cub.2015.10.014
 
 Schaefer, A., Kong, R., Gordon, E. M., et al. (2018). Local-global parcellation of the human cerebral cortex from intrinsic functional connectivity MRI. *Cerebral Cortex*, 28(9), 3095–3114. https://doi.org/10.1093/cercor/bhx179
 
+Scheffer, M., Bascompte, J., Brock, W. A., et al. (2009). Early-warning signals for critical transitions. *Nature*, 461(7260), 53–59. https://doi.org/10.1038/nature08227
+
 Schnider, T. W., Minto, C. F., Shafer, S. L., et al. (1999). The influence of age on propofol pharmacodynamics. *Anesthesiology*, 90(6), 1502–1516. https://doi.org/10.1097/00000542-199906000-00003
 
-Self, M. W., Kooijmans, R. N., Supèr, H., Lamme, V. A., & Roelfsema, P. R. (2012). Different glutamate receptors convey feedforward and recurrent processing in macaque V1. *Proceedings of the National Academy of Sciences USA*, 109(27), 11031–11036. https://doi.org/10.1073/pnas.1119527109
+Self, M. W., Kooijmans, R. N., Supèr, H., Lamme, V. A., & Roelfsema, P. R. (2012). Different glutamate receptors convey feedforward and recurrent processing in macaque V1. *Proceedings of the National Academy of Sciences*, 109(27), 11031–11036. https://doi.org/10.1073/pnas.1119527109
 
 Sepúlveda, P. O., Carrasco, E., Tapia, L. F., Ramos, M., et al. (2018). Evidence of hysteresis in propofol pharmacodynamics. *Anaesthesia*, 73(1), 40–48. https://doi.org/10.1111/anae.14009
 
 Shiu, P. K., Sterne, G. R., Spiller, N., et al. (2024). A *Drosophila* computational brain model reveals sensorimotor processing. *Nature*, 634(8032), 210–219. https://doi.org/10.1038/s41586-024-07763-9
 
 Siclari, F., Baird, B., Perogamvros, L., et al. (2017). The neural correlates of dreaming. *Nature Neuroscience*, 20(6), 872–878. https://doi.org/10.1038/nn.4545
+
+Solovey, G., Alonso, L. M., Yanagawa, T., et al. (2015). Loss of consciousness is associated with stabilization of cortical activity. *Journal of Neuroscience*, 35(30), 10866–10877. https://doi.org/10.1523/JNEUROSCI.4895-14.2015
 
 Solt, K., Cotten, J. F., Cimenser, A., et al. (2011). Methylphenidate actively induces emergence from general anesthesia. *Anesthesiology*, 115(4), 791–803. https://doi.org/10.1097/ALN.0b013e31822e92e5
 
@@ -1104,6 +1173,10 @@ Steyn-Ross, M. L., Steyn-Ross, D. A., Sleigh, J. W., & Liley, D. T. J. (1999). T
 
 Stowell, R. D., Sipe, G. O., Dawes, R. P., et al. (2019). Noradrenergic signaling in the wakeful state inhibits microglial surveillance and synaptic plasticity in the mouse visual cortex. *Nature Neuroscience*, 22(11), 1782–1792. https://doi.org/10.1038/s41593-019-0514-0. Author correction: *Nature Neuroscience*, 23(1), 152. https://doi.org/10.1038/s41593-019-0558-1
 
+Strogatz, S. H., & Mirollo, R. E. (1991). Stability of incoherence in a population of coupled oscillators. *Journal of Statistical Physics*, 63(3–4), 613–635. https://doi.org/10.1007/BF01029202
+
+Struys, M. M. R. F., De Smet, T., Depoorter, B., et al. (2000). Comparison of plasma compartment versus two methods for effect compartment-controlled target-controlled infusion for propofol. *Anesthesiology*, 92(2), 399–406. https://doi.org/10.1097/00000542-200002000-00021
+
 Su, C.-W., Zheng, L., Li, Y.-J., Zhou, H.-J., Wang, J., Huang, Z.-G., & Lai, Y.-C. (2020). Hysteresis in anesthesia and recovery: experimental observation and dynamical mechanism. *Physical Review Research*, 2(2), 023289. https://doi.org/10.1103/PhysRevResearch.2.023289
 
 Supp, G. G., Siegel, M., Hipp, J. F., & Engel, A. K. (2011). Cortical hypersynchrony predicts breakdown of sensory processing during loss of consciousness. *Current Biology*, 21(23), 1988–1993. https://doi.org/10.1016/j.cub.2011.10.017
@@ -1116,11 +1189,13 @@ Tarjan, R. E. (1975). Efficiency of a good but not linear set union algorithm. *
 
 Tassi, P., & Muzet, A. (2000). Sleep inertia. *Sleep Medicine Reviews*, 4(4), 341–353. https://doi.org/10.1053/smrv.2000.0098
 
-Taylor, N. E., Van Dort, C. J., Kenny, J. D., et al. (2016). Optogenetic activation of dopamine neurons in the ventral tegmental area induces reanimation from general anesthesia. *Proceedings of the National Academy of Sciences USA*, 113(45), 12826–12831. https://doi.org/10.1073/pnas.1614340113
+Taylor, N. E., Van Dort, C. J., Kenny, J. D., et al. (2016). Optogenetic activation of dopamine neurons in the ventral tegmental area induces reanimation from general anesthesia. *Proceedings of the National Academy of Sciences*, 113(45), 12826–12831. https://doi.org/10.1073/pnas.1614340113
 
 Thrane, A. S., Rangroo Thrane, V., Zeppenfeld, D., et al. (2012). General anesthesia selectively disrupts astrocyte calcium signaling in the awake mouse cortex. *Proceedings of the National Academy of Sciences*, 109(46), 18974–18979. https://doi.org/10.1073/pnas.1209448109
 
-Toker, D., Pappas, I., Lendner, J. D., et al. (2022). Consciousness is supported by near-critical slow cortical electrodynamics. *Proceedings of the National Academy of Sciences USA*, 119(7), e2024455119. https://doi.org/10.1073/pnas.2024455119
+Tian, Y., & Sun, P. (2022). Percolation may explain efficiency, robustness, and economy of the brain. *Network Neuroscience*, 6(3), 765–790. https://doi.org/10.1162/netn_a_00246
+
+Toker, D., Pappas, I., Lendner, J. D., et al. (2022). Consciousness is supported by near-critical slow cortical electrodynamics. *Proceedings of the National Academy of Sciences*, 119(7), e2024455119. https://doi.org/10.1073/pnas.2024455119
 
 Tong, C. D., Wang, Y., Yang, Z. J., et al. (2026). Tensor decomposition reveals discrete cortical reorganization under graded propofol anesthesia. *Frontiers in Neuroscience*, 20, 1950745. https://doi.org/10.3389/fnins.2026.1950745
 
@@ -1144,9 +1219,15 @@ VanRullen, R., & Koch, C. (2003). Is perception discrete or continuous? *Trends 
 
 Varela, F., Lachaux, J.-P., Rodriguez, E., & Martinerie, J. (2001). The brainweb: phase synchronization and large-scale integration. *Nature Reviews Neuroscience*, 2(4), 229–239. https://doi.org/10.1038/35067550
 
+Velly, L. J., Rey, M. F., Bruder, N. J., et al. (2007). Differential dynamic of action on cortical and subcortical structures of anesthetic agents during induction of anesthesia. *Anesthesiology*, 107(2), 202–212. https://doi.org/10.1097/01.anes.0000270734.99298.b4
+
 Veselis, R. A., Reinsel, R. A., Feshchenko, V. A., & Wroński, M. (1997). The comparative amnestic effects of midazolam, propofol, thiopental, and fentanyl at equisedative concentrations. *Anesthesiology*, 87(4), 749–764. https://doi.org/10.1097/00000542-199710000-00007
 
 Vijayan, S., Ching, S., Purdon, P. L., et al. (2013). Thalamocortical Mechanisms for the Anteriorization of Alpha Rhythms during Propofol-Induced Unconsciousness. *Journal of Neuroscience*, 33(27), 11070–11075. https://doi.org/10.1523/jneurosci.5670-12.2013
+
+Vinck, M., Oostenveld, R., van Wingerden, M., et al. (2011). An improved index of phase-synchronization for electrophysiological data in the presence of volume-conduction, noise and sample-size bias. *NeuroImage*, 55(4), 1548–1565. https://doi.org/10.1016/j.neuroimage.2011.01.055
+
+Vlajkovic, G. P., & Sindjelic, R. P. (2007). Emergence delirium in children: many questions, few answers. *Anesthesia & Analgesia*, 104(1), 84–91. https://doi.org/10.1213/01.ane.0000250914.91881.a8
 
 Vogels, T. P., Sprekeler, H., Zenke, F., et al. (2011). Inhibitory Plasticity Balances Excitation and Inhibition in Sensory Pathways and Memory Networks. *Science*, 334(6062), 1569–1573. https://doi.org/10.1126/science.1211095
 
@@ -1172,6 +1253,8 @@ Xie, L., Kang, H., Xu, Q., et al. (2013). Sleep Drives Metabolite Clearance from
 
 Yamamoto, K., & Kawabata, H. (2011). Temporal recalibration in vocalization induced by adaptation of delayed auditory feedback. *PLoS ONE*, 6(12), e29414. https://doi.org/10.1371/journal.pone.0029414
 
+Yanagawa, T., Chao, Z. C., Hasegawa, N., & Fujii, N. (2013). Large-scale information flow in conscious and unconscious states: an ECoG study in monkeys. *PLoS ONE*, 8(11), e80845. https://doi.org/10.1371/journal.pone.0080845
+
 Yap, J. Y. Y., Keatch, C., Lambert, E., et al. (2020). Critical Review of Transcutaneous Vagus Nerve Stimulation: Challenges for Translation to Clinical Practice. *Frontiers in Neuroscience*, 14, 284. https://doi.org/10.3389/fnins.2020.00284
 
 Yeh, Y. C. (1996). Triple-triple redundant 777 primary flight computer. In *1996 IEEE Aerospace Applications Conference Proceedings* (Vol. 1, pp. 293–307). https://doi.org/10.1109/AERO.1996.495891
@@ -1182,9 +1265,15 @@ Yokawa, K., Kagenishi, T., Pavlovič, A., et al. (2018). Anaesthetics stop diver
 
 Zalucki, O. H., Menon, H., Kottler, B., et al. (2015). Syntaxin1A-mediated resistance and hypersensitivity to isoflurane in *Drosophila melanogaster*. *Anesthesiology*, 122(5), 1060–1074. https://doi.org/10.1097/ALN.0000000000000629
 
+Zamani Esfahlani, F., Jo, Y., Faskowitz, J., et al. (2020). High-amplitude cofluctuations in cortical activity drive functional connectivity. *Proceedings of the National Academy of Sciences*, 117(45), 28393–28401. https://doi.org/10.1073/pnas.2005531117
+
 Zelmann, R., Paulk, A. C., Tian, F., et al. (2023). Differential cortical network engagement during states of un/consciousness in humans. *Neuron*, 111(21), 3479–3495.e6. https://doi.org/10.1016/j.neuron.2023.08.007
 
-Zhao, Y., Ou, M., Liu, J., et al. (2024). Astrocytes Modulate a Specific Paraventricular Thalamus→Prefrontal Cortex Projection to Enhance Consciousness Recovery from Anesthesia. *The Journal of Neuroscience*, 44(34), e1808232024. https://doi.org/10.1523/jneurosci.1808-23.2024
+Zhang, Y., Wang, Y., Cheng, H., et al. (2023). EEG spectral slope: a reliable indicator for continuous evaluation of consciousness levels during propofol anesthesia. *NeuroImage*, 283, 120426. https://doi.org/10.1016/j.neuroimage.2023.120426
+
+Zhang, Z., Ai, L., Zheng, X., et al. (2026). Wide-field Ca2+ imaging reveals cortical dynamics across propofol anesthesia and emergence in adult mice. *Anesthesia & Analgesia*. Advance online publication. https://doi.org/10.1213/ANE.0000000000008228
+
+Zhao, Y., Ou, M., Liu, J., et al. (2024). Astrocytes Modulate a Specific Paraventricular Thalamus→Prefrontal Cortex Projection to Enhance Consciousness Recovery from Anesthesia. *Journal of Neuroscience*, 44(34), e1808232024. https://doi.org/10.1523/jneurosci.1808-23.2024
 
 Zhou, B., Li, Q., Su, M., et al. (2025). Astrocyte morphological remodeling regulates consciousness state transitions induced by inhaled general anesthesia. *Molecular Psychiatry*, 30(9), 4006–4022. https://doi.org/10.1038/s41380-025-02978-2
 
@@ -2969,6 +3058,8 @@ The phase-oscillator model (`simulator/phase_dynamics.py`), a Kuramoto-Sakaguchi
 | FitzHugh-Nagumo a, b, ε | `[0.7, 0.8, 0.08]` | standard model values | FitzHugh (1961) |
 | Plant junction conductance | `[0.5, 1.0, 2.0, 4.0]` | free | reported across the range |
 
+**Numerics.** Phases are integrated with the Euler-Maruyama scheme at a time step of 0.05 model time units, with independent noise $\sqrt{2D\,\Delta t}\,\xi_i$ on each population at each step. A sweep starts from identical phases (all zero), raises the concentration step by step and then lowers it again, each concentration starting from the phases the previous one ended with. At each concentration the first 400 steps (20 time units) are discarded and the next 838 steps, two cycles of the sensory stimulus of angular frequency 0.3, are measured; tests K1c and its diagnostics measure over eight cycles (3,351 steps). Timing error is converted to a phase error with standard deviation $2\pi f \sigma$, with $f$ = 40 Hz and $\sigma$ in seconds, and follows an Ornstein-Uhlenbeck process with correlation time $\tau$ = 1 time unit, so its persistence per step is $e^{-\Delta t/\tau}$. Model time is dimensionless: natural frequencies, coupling and the stimulus are not mapped to seconds, so the phase error has a physical scale and the time course does not. The integration window $W$ in the table above is used by the percolation model and by the readout of Appendix C.12; the oscillator dynamics themselves do not use it (Section 4.7).
+
 ### C.2 Oscillator feedback calibration
 
 The attempt to calibrate the oscillator model's feedback to the measured inertia ratio is reported in full. Source: `simulator/results/calibration_phase_feedback_full_20261019T114211Z.md`.
@@ -3530,6 +3621,297 @@ Source: `simulator/results/disconnection_full_20261020T163516Z.md`.
 
 ---
 
+### C.12 Pre-specified test of the connectome results with a DPC readout
+
+The tests below, their conditions, seeds and pass rule were written into this paper and committed before the study
+that evaluates them was run (`simulator/dpc_readout_study.py`, with `simulator/dpc_readout.py` and
+`simulator/connectome_inertia.py`). Before that, the code was checked with unit tests and with one shortened run
+(`--quick`: one seed per organism and condition, a quarter of the settling time and about an eighth of the
+measurement time). Its outcomes were computed and read while the code was checked; with one seed per condition and
+shortened integration they are not part of the results.
+
+**Why this study.** A hostile review found, and we confirmed, that the phase-oscillator model behind every connectome
+result in this appendix implements neither P2 nor P3. A timing error weakens a connection's coupling smoothly (by
+the factor $e^{-s^2/2}$, Section 4.5), the integration window $W$ is never used, and quorum is defined as global
+coherence at least half its awake value (`InductionEmergenceRecord.is_conscious` in `simulator/phase_dynamics.py`).
+The same review found three further problems. The shared reference of P5 pulls every population towards the phase of
+the global mean field with no transmission failure, no timing error and no connections, so neither fault reaches the
+reference, and the model is effectively mean-field, which may be why the rewired null models matched the real
+wiring. The awake network is close to full synchrony (global coherence 0.93, 0.88 and 0.96 on *C. elegans*,
+*Drosophila* and the human connectome). And the percolation model's feedback $\lambda$ was calibrated and its inertia
+tested only on random graphs of mean degree 8. The results of Appendices C.3 to C.11 therefore show that oscillator
+synchrony is lost under the two agents, which any coupled-oscillator model would show; they do not test whether
+timing-coherent connections stop forming a quorum. This study reads the same simulations as P2 and P3 are worded,
+adds the missing conditions, and repeats the main tests on fresh seeds.
+
+#### The DPC readout
+
+The dynamics are unchanged: the readout only looks at quantities the model already computes. A unit test checks that
+every measurement of a sweep is identical, to the last bit, with and without it, and the reference model's dynamics
+were checked to be identical, to the last bit, to those of the code that produced Appendices C.3 to C.11.
+
+- *Timing error (P2).* At a sampled moment, a connection $j \to i$ that transmits ($m_{ji} = 1$) carries a signal
+  whose timing error relative to the shared rhythm is, in radians of the reference cycle,
+  $\delta_{ji} = \operatorname{wrap}(\theta_j - \psi) - \alpha_{ji}$, where $\theta_j$ is the phase of the sending
+  population, $\psi$ the phase of the network's mean rhythm, $\alpha_{ji}$ the connection's phase error in that same
+  integration step (conduction lag, zero here, plus its current jitter draw, the same $\alpha_{ji}$ that enters the
+  coupling term), and $\operatorname{wrap}$ maps an angle to $[-\pi, \pi)$. A population can lead or lag the rhythm by
+  at most half a cycle, so its offset is wrapped; the delay error is not, so a signal a whole cycle late is late, as
+  in the percolation model and as P2 states ("signals outside the window are not integrated").
+- *Counting connection.* The connection counts in that cycle when it transmits and $|\delta_{ji}| \le W/2$, with $W$ =
+  3 ms converted to phase at the reference rate in force ($\pi f W$ either side; 0.377 rad at 40 Hz).
+- *Quorum (P3).* In each sampled cycle the counting connections are taken as undirected links, as in the percolation
+  model, and the share of populations in their largest connected component is computed; a population with no
+  counting connection is a component of one. Quorum holds in the cycle when that share is at least $q^*$ = 0.5.
+- *Cycles.* The model's time is dimensionless: only timing errors are converted from milliseconds to phase, so the
+  model does not fix how many time units one 25 ms cycle lasts. One cycle is sampled per jitter correlation time
+  $\tau$, the time over which a connection's timing error renews, so that successive cycles see largely fresh errors;
+  if one time unit is read as one reference cycle, which puts the natural-frequency spread of 0.5 at about 3 Hz, this
+  is also one sample per cycle. The measurement window of 838 steps of 0.05 gives 42 cycles at each concentration
+  (168 with the eight-cycle window of K1d and K1e).
+- *Quorum at a concentration.* Quorum holds at a concentration when it holds in at least half its cycles. The DPC loss
+  concentration is the last concentration of induction at which it holds before it is first lost, and the DPC
+  recovery concentration the highest concentration of emergence at which it has returned, as for the coherence
+  criterion.
+- *Static baseline.* With awake coherence near 0.96 the populations sit close to the rhythm, so the readout could
+  largely reproduce the static percolation draw. Two baselines are therefore recorded at every concentration: the
+  analytic prediction of Section 4.1, $\pi(c) = (1 - p(c))\operatorname{erf}(W / (2\sqrt 2\,\sigma_{\text{eff}}))$,
+  evaluated for each transmitting connection with its own timing error and summed over all connections; and a
+  *static reading*, the same giant-component readout with $\delta_{ji} = -\alpha_{ji}$, that is, static bond
+  percolation on the model's own timing draws, ignoring how far each population has drifted from the rhythm. Tests
+  T0a-D and T0b-D ask where the oscillator readout departs from the static one.
+- *Secondary readings, reported without a verdict.* Timing measured at the receiver, with everything wrapped,
+  $|\operatorname{wrap}(\theta_j - \theta_i - \alpha_{ji})| \le \pi f W$: the quantity whose sine the coupling term
+  takes (communication through coherence); because $\alpha_{ji}$ is wrapped, an error far beyond a cycle leaves a
+  chance floor of $W f$ (12%) of transmitting connections counting. And the largest strongly connected component of
+  the directed counting connections, reported only for *C. elegans* and *Drosophila*: the human connectome is
+  structurally symmetric (its 35,730 arcs are its 17,865 undirected links in both directions, since diffusion imaging
+  gives no direction), so it enters no directed analysis. P2's wording ("relative to a shared phase reference") and
+  Section 4.1 favour the shared rhythm, which is therefore primary. The coherence criterion is also reported for every
+  run, for comparison.
+- *Coupling left at each concentration.* The synaptic effective coupling
+  $K_{\text{eff}} = K \sum_{\text{transmitting}} |w_{ji}|\, e^{-s_{ji}^2/2} / \sum_{\text{all}} |w_{ji}|$, with $s_{ji}$
+  the connection's phase-error SD (the mean-field factor by which Gaussian timing error weakens sine coupling; a fixed
+  lag only shifts the phase and is ignored), and the coherence-dependent strength of the reference, $\lambda_{\text{osc}}
+  (1 - A(c))$. They are compared with the critical coupling of the all-to-all Kuramoto model with Gaussian natural
+  frequencies of SD $\sigma$ and phase noise of intensity $D$ (Strogatz and Mirollo, 1991),
+  $K_c = 2 / \int g(\omega)\, D / (D^2 + \omega^2)\, d\omega = 2\sigma\sqrt{2\pi} / (\pi \operatorname{erfcx}(D / (\sigma\sqrt 2)))$,
+  which without noise is Kuramoto's $\sigma\sqrt{8/\pi}$ (Kuramoto, 1984): 0.798 without noise and 0.863 with the
+  model's $D$ = 0.05 for $\sigma$ = 0.5. The formula assumes all-to-all coupling, infinitely many oscillators and
+  unimodal frequencies; the connectomes are sparse and finite, so $K_c$ is a reference value, not the model's own
+  threshold.
+
+#### New conditions
+
+- *Reference carried by the connections (referee point 3).* Each population's reference is the mean phase of the
+  signals arriving from its transmitting inputs, $R_i e^{i\psi_i} = \sum_j w_{ji} m_{ji} e^{i(\theta_j - \alpha_{ji})} / s_i$,
+  with the same failures $m_{ji}$ and phase errors $\alpha_{ji}$ as the synaptic term in the same step and the same
+  intact in-strength $s_i$, so that failures weaken the reference as they weaken coupling. Its pull keeps the
+  reference model's form, $\lambda_{\text{osc}}[R_i + A(c)(1 - R_i)]\sin(\psi_i - \theta_i)$, so the arousal share is kept;
+  a population with no transmitting input receives none. The global reference is kept as the comparison condition,
+  and every earlier study keeps it by default.
+- *Weaker coupling (referee point 4).* Target, fixed before any run: awake global coherence between 0.5 and 0.7. For
+  each connectome, the GABAergic-like condition is held at zero concentration only, with the synaptic coupling $K$ =
+  0.25, 0.5, 0.75, 1, 1.25, 1.5, 2, 2.5 and 3, on 4 calibration seeds (from the base seed plus 5600); the chosen $K$ is
+  the one whose mean awake coherence lies in the target range and closest to 0.6. If none does, the connectome is
+  reported as not calibrated and its weaker-coupling tests are not run.
+
+#### Seeds
+
+Every test uses seeds that no earlier run used, from the base seed plus 5000: 20 for *C. elegans*, 6 for
+*Drosophila* and 20 for the human connectome in the phase model, and 20 for each connectome in the percolation
+model. Calibrations use separate fresh blocks: the phase-model feedback scan and the percolation-model calibration
+from the base seed plus 5500 (10 seeds each), the weaker coupling from the base seed plus 5600 (4 seeds). Every
+calibrated value is tested on the first block only, so no seed both calibrates and tests a value. Checking the earlier
+studies for this found two overlaps. The percolation feedback was calibrated (`calibrate_feedback.py`) on the base
+seed plus 0 to 9 at 10,000 nodes, and the validation study (`validation_study.py`) uses the base seed plus 0 to 19 at
+every size, including 10,000 nodes, with the same graph builder: 10 of its 20 seeds at that size are the calibration
+networks themselves. The oscillator calibration (`calibrate_phase_feedback.py`) used the base seed plus 0 to 3 on the
+human connectome, which are also the first four human seeds of the cross-species study. Neither overlap changes a
+verdict reported above, but the validation at 10,000 nodes is not independent of the calibration.
+
+#### Pass rule
+
+One rule for every test: a test passes for an organism when the lower bound of the Wilson 95% interval (Wilson,
+1927) for the share of seeds in which it holds lies above one half. We prefer it to the 80% rule of the earlier
+studies because it is a statement about the model's realisations (most of them, with 95% confidence) and because it
+is stricter where seeds are few: 15 of 20, 9 of 10 and 6 of 6 seeds pass; 14 of 20, 8 of 10 and 5 of 6 do not. With 20
+seeds it is slightly weaker than the 80% rule (15 rather than 16 seeds). Seeds are realisations of one wiring
+diagram, not independent brains (Section 10, item 28), and no correction for multiple comparisons is made; this study
+has about 30 tests per connectome.
+
+Every other parameter keeps its reference value (Appendix C.1); concentrations run from 0 to 3 times the EC50 in
+steps of 0.05 (0.1 for *Drosophila*) in the phase model and 0.01 in the percolation model. A seed in which DPC quorum
+does not hold even at zero concentration counts as failing every test that needs a loss.
+
+#### Tests: agents, null model and the wired reference
+
+Conditions: the GABAergic-like and the NMDA-antagonist-like agent on the three connectomes, each with the global
+reference and with the reference carried by the connections; and all four on degree-preserving rewired copies of
+the *C. elegans* and human connectomes (Maslov and Sneppen, 2002), one rewiring per seed. The fly's null model is not
+run, as before, for cost.
+
+- T2a-D, T2b-D: the GABAergic-like (T2a-D) and NMDA-antagonist-like (T2b-D) agent abolishes DPC quorum within the
+  concentration range (a DPC loss concentration exists).
+- T2a-DN, T2b-DN (null model): the same on the rewired connectomes.
+- W2a, W2b: the same with the reference carried by the connections.
+- WNa, WNb (wiring, paired by seed): with the reference carried by the connections, the DPC loss concentration on the
+  connectome and on its rewired copy differ by more than one concentration step (a seed in which only one of them
+  loses quorum counts as differing). GNa, GNb: the same comparison with the global reference.
+
+#### Tests: where the readout departs from static percolation, and what kind of transition the loss is
+
+- T0a-D, T0b-D: under each agent (global reference), DPC quorum is lost at a lower concentration than the static
+  reading on the same timing draws loses it, or the static reading never loses it. A pass means that the populations'
+  drift from the rhythm, not the timing draws alone, decides where quorum is lost. Reported alongside, without a
+  verdict: the share of counting connections over the analytic $\pi(c)$ at the DPC loss.
+- SP1 (paired by seed, per connectome): at their DPC losses the two agents leave more similar shares of counting
+  connections than effective couplings $K_{\text{eff}}$, compared as absolute log ratios. This is what a percolation
+  transition predicts: the same share of counting connections, however it is reached.
+- SP2 (paired by seed, per connectome): at their coherence-criterion losses the two agents leave more similar
+  effective couplings than shares of counting connections. This is what a synchronisation transition predicts.
+- Reported without a verdict: $K_{\text{eff}} / K_c$ at both losses on every connectome, which shows whether the
+  coherence loss happens near a common effective coupling across connectomes.
+
+#### Tests: fluctuations at the threshold (T1d, T1e, T1f)
+
+Condition: the GABAergic-like agent with the global reference. The threshold is the last concentration with DPC
+quorum. T1b compared the susceptibility $N\,\mathrm{var}(R)$ there with its awake value, but $N\,\mathrm{var}(R)$ rises
+whenever coherence falls, even for independent phases, so a rise from the awake level does not show collective
+fluctuations. T1d compares it instead with what independent phases with the same mean coherence and the same spread
+around the rhythm would give,
+$\chi_{\text{ind}} = \tfrac{1}{2}\bigl(1 + \langle\cos 2(\theta - \psi)\rangle\bigr) - \langle R\rangle^2$, the
+variance of one population's projection on the mean rhythm; the ratio $\chi / \chi_{\text{ind}}$ is about 1 plus
+$N - 1$ times the mean correlation between populations' fluctuations, and equals 1 for independent phases. The
+approximation holds while $\langle R\rangle$ is well above chance ($1/\sqrt N$).
+
+- T1d: at the threshold, $\chi / \chi_{\text{ind}} \ge 2$.
+- T1e: at the threshold, the autocorrelation of global coherence $R$ at a lag of one sampled cycle is higher than at
+  zero concentration (critical slowing down; Scheffer et al., 2009).
+- T1f (finite size): for the same seed, $\chi / \chi_{\text{ind}}$ at the threshold is larger on the human connectome
+  (998 populations) than on *C. elegans* (300), and larger on *Drosophila* (138,639) than on the human connectome;
+  evaluated for each pair of neighbouring sizes, under the larger connectome.
+
+A seed without a DPC threshold, or with an undefined quantity, counts as failing. T1b is reported again on these seeds
+without a verdict.
+
+#### Tests: weaker coupling (T2a-M, T2b-M)
+
+On each calibrated connectome, at its calibrated $K$: the GABAergic-like (T2a-M) and NMDA-antagonist-like (T2b-M)
+agent abolishes DPC quorum within the concentration range. Awake global coherence is reported for every seed.
+
+#### Tests: sensory disconnection with its control (K1d, K1e)
+
+Conditions: those of K1c (Appendix C.11): the NMDA-antagonist-like agent adds its timing error only on connections
+leaving the sensory populations, a sensory stimulus is applied, broadcast is measured over eight stimulus cycles, and
+each seed is run with the stimulus and with a phantom of zero strength. The control repeats both with the agent's
+timing error on as many connections drawn at random for each seed (460 of 5,764 in *C. elegans*, 267 of 35,730 in the
+human connectome), from a random stream of their own. The awake gate and the evaluability rule are K1c's: a seed is
+applicable only if its awake locking to the stimulus is at least twice its awake locking to the phantom, and a test is
+judged for an organism only if at least half its seeds are applicable.
+
+- K1d: in an applicable seed, DPC quorum holds at the highest concentration (three times the EC50) and the broadcast
+  above the floor there is at most half the awake broadcast above the floor.
+- K1e (control, paired by seed; applicable when both the sensory and the random runs pass the gate): K1d holds with
+  the error on the sensory pathways and does not hold with it on as many random connections. Without K1e, a pass of
+  K1 or K1c could come from construction alone: faults on a minority of connections leave quorum intact, and the
+  stimulus may stop spreading for reasons unrelated to where they fall.
+
+#### Tests: neural inertia in the phase model (I1, I2)
+
+The reference term $\lambda_{\text{osc}} R \sin(\psi - \theta_i)$ is all-to-all Kuramoto coupling of strength
+$\lambda_{\text{osc}}$, so its locking threshold is $K_c$ = 0.863 above. The calibration of Appendix C.2 stopped at
+0.75, below it. Conditions: the GABAergic-like agent with $\lambda_{\text{osc}}$ = 0, 0.5, 0.75, 1, 1.25 and 1.5 times
+$K_c$ (0, 0.431, 0.647, 0.863, 1.078 and 1.294), on *C. elegans* and the human connectome, 10 seeds each from the
+calibration block.
+
+- I1 (at each scanned $\lambda_{\text{osc}}$): DPC quorum returns on emergence more than one concentration step below the
+  concentration at which it was lost. Inertia in the DPC readout is supported if I1 passes at at least one scanned
+  value; with six values per connectome, one pass could arise by chance.
+- Calibration rule: for each connectome, among the scanned values at which every calibration seed loses DPC quorum
+  and regains it above zero concentration, the value whose mean ratio of loss to recovery concentration is closest
+  to the reference ratio of 1.08 (Friedman et al., 2010). If no value qualifies, the connectome is reported as not
+  calibrated and I2 is not run for it.
+- I2 (held-out, 20 seeds from the test block at the calibrated value): the seed's ratio of DPC loss to DPC recovery
+  concentration lies within the measured range that the percolation model reproduces, 1.07 to 1.63.
+
+#### Tests: neural inertia in the percolation model on the connectome graphs (PI1 to PI4)
+
+The percolation model, with every reference parameter unchanged (arousal level 0.5, the GABAergic-like agent, $q^*$ =
+0.5, $W$ = 3 ms, baseline jitter 3 ms), runs on the undirected graphs of the three connectomes
+(`percolation_thresholds.undirected_graph`); each seed varies only the percolation draws. Calibration: on each of 10
+calibration seeds, $\lambda$ is scanned from 0 to 30 ms in steps of 0.1 ms; for each measured ratio (1.07, 1.08,
+1.11, 1.63), the chosen $\lambda$ is the scanned value at which every calibration seed loses quorum and regains it,
+with the mean ratio closest to the target; the target counts as reproduced when that mean lies within 0.01 of it, as
+in `calibrate_feedback.py`. Held-out tests, 20 seeds from the test block, at $\lambda$ = 0 and at each reproduced
+target's $\lambda$:
+
+- PI1: at the $\lambda$ calibrated to 1.08, quorum is lost and regained at a strictly lower concentration.
+- PI2 (C3's form): the hysteresis width never shrinks along the series of calibrated $\lambda$ and is larger at its end
+  than without feedback; never recovering counts as unbounded inertia.
+- PI3 (C2's form, a consistency check): without feedback the hysteresis width is exactly zero.
+- PI4: at the $\lambda$ calibrated to 1.08, the seed's ratio lies within 1.07 to 1.63.
+
+PI1 and PI4 are not run for a connectome on which 1.08 is not reproduced; PI2 needs at least one reproduced target.
+
+#### What we expect, stated before the run
+
+Before the referee's latest points, we ran the readout once on one seed outside every block (seed 99, not derived
+from the base seed) with shortened integration and a coarse grid of 0.25, to check that it works; the figures below
+come from that probe and are a single realisation. No other run informed these expectations.
+
+- T2a-D should pass on all three connectomes: up to 95% transmission failure removes counting connections however
+  well the remaining ones are timed (in the probe, DPC quorum was lost at 1.5 to 1.75 times the EC50, one or two
+  probe steps later than coherence). As limitation 25 says of T2a, this cannot fail by construction; what it adds is
+  where the loss happens. T2a-DN and W2a should pass for the same reason.
+- T2b-D may fail on the human connectome. Its connections are dense (a mean undirected degree of about 36), and at
+  three times the EC50 about 2.4% of them still counted in the probe, enough for an undirected giant component of 65%
+  of the populations. On *C. elegans* (mean undirected degree 23) the giant component fell to about 20% in the probe,
+  so T2b-D should pass there. The fly is not predicted. A failure would mean that timing faults alone do not abolish
+  quorum in a densely wired network as DPC states it, which bears on P4(b) and on assigning ketamine to timing faults.
+- T0a-D and T0b-D are uncertain. With the populations close to the rhythm while awake, the oscillator readout should
+  follow the static reading at low concentrations; whether it departs before the loss depends on how far the
+  populations drift as coupling weakens. If both fail, the DPC readout of the phase model is static percolation on
+  its timing draws, and the oscillators add nothing to the quorum result.
+- SP1 should pass and SP2 may pass: the DPC readout counts connections, so its loss should sit at a common share of
+  counting connections, while the coherence criterion is a synchronisation measure. If SP2 fails as well, the
+  coherence loss is not set by the effective coupling either, and the two agents differ in more than coupling.
+- WNa and WNb are the informative tests of the wired reference: if the global reference is why the null models matched
+  the real wiring, GNa and GNb should fail and WNa or WNb pass. If all four fail, the match does not come from the
+  reference.
+- T1e should pass if the threshold behaves as a generic critical transition (in the probe, the lag autocorrelation
+  was 0.93 at the threshold against about 0 awake on *C. elegans*). T1d is uncertain: in the probe the ratio at the
+  *C. elegans* threshold was 2.2, just above the bar. T1f is uncertain, and its comparison is confounded: the three
+  connectomes differ in wiring and density as well as size.
+- T2a-M and T2b-M are uncertain. A weaker coupling leaves the populations further from the rhythm while awake, so
+  fewer connections count; DPC quorum may already fail at zero concentration, which counts as failing.
+- K1d should pass on *C. elegans*, where the sensory outputs are 8% of the connections, and is likely not evaluable on
+  the human connectome, as K1c was. K1e is the informative test: if the broadcast collapse under K1 comes from the
+  agent's uniform transmission failure and arousal suppression rather than from timing faults on the sensory
+  pathways, K1e will fail, and the disconnection account of ketamine (Section 7.4) will lose its model support.
+- I1 should fail at every value. For a unimodal distribution of natural frequencies, the onset of synchrony in the
+  Kuramoto model is continuous, without the bistability that inertia needs (Kuramoto, 1984); above $K_c$ the
+  reference alone can hold the populations in step, so the coherence criterion may never register a loss while DPC
+  quorum is lost to transmission failure, the disagreement that a unit test
+  (`test_in_the_model_a_strong_reference_keeps_coherence_after_dpc_quorum_is_lost_Regression`) shows on a small
+  network. If I1 fails, the calibration will pick the value whose ratio is nearest 1.08 from below, and I2 will fail;
+  that would extend limitation 9 to the DPC readout. A pass of I1 and I2 would be the first phase-model support for P5.
+- PI1 to PI4 are uncertain. The percolation model reproduces the measured ratios on random graphs, and its inertia
+  comes from the self-consistency of the giant component with the reference, which does not depend on the graph's
+  degree distribution; but the connectome graphs are denser than mean degree 8, so the transition is sharper and the
+  calibrated $\lambda$ may differ, or no $\lambda$ may let every seed recover. A failure of PI4 on held-out seeds would
+  show that the calibration does not generalise across seeds on a fixed wiring diagram.
+
+#### Commands
+
+From `simulator/`: the unit tests, `../.venv/bin/python -m unittest discover -s tests -t .`; a check that the code
+runs end to end in seconds, `../.venv/bin/python dpc_readout_study.py --smoke` (*C. elegans* only, one seed, two
+concentrations, the shortest integration); a shortened run of every organism, `../.venv/bin/python
+dpc_readout_study.py --quick`; the full study, `../.venv/bin/python dpc_readout_study.py`. The report is written to
+`simulator/results/dpc_readout_full_<start time>.md` and `.json`; smoke and quick reports (`_quick_`) are ignored by
+git and are not results.
+
+
 ## Appendix D: Model revision history
 
 The hypothesis and its models changed while this paper was written. Each change is listed here in the order it happened, with the result that prompted it. No failed test was removed: every one is still reported in Appendices B and C, and every superseded report is kept in `simulator/results/archive/` and can be opened in the explainer's results archive.
@@ -3552,3 +3934,326 @@ The hypothesis and its models changed while this paper was written. Each change 
 | Verdict comparisons (20 October 2026) | Comparing two concentrations, gains or widths with a plain greater-than is exact | Two verdicts were decided by floating-point rounding: test F3 called two equal one-step gains unequal in every *Drosophila* seed (6 of 6, correctly 0 of 6), and test T1 counted 3 of 7 runs lying exactly on its window edge as outside (*C. elegans* 5 of 20, correctly 7; human 4 of 20, correctly 5) | Not applicable | One comparison rule for every verdict on grid values, equal within 10⁻⁹ counting as equal, with regression tests built from these values; the species verdicts were recomputed from the stored runs without rerunning any simulation; no other report contains such a tie | None; the recomputed report records the run it was computed from |
 | Test labels (20 October 2026) | Test identifiers may reuse other labels | Tests P1 to P3b shared their names with postulates P1 to P3, although they do not test those postulates, and the congestion study's G1 and G2 shared theirs with the glial checks | Not applicable | Shown in this paper and the explainer as T1 to T3b and B1 and B2; the reports keep their identifiers (Appendix C.9) | None |
 | Constant delays (20 October 2026) | A constant delay is harmless because the brain learns when its inputs arrive (P4b) | In the models constant offsets are not harmless: fixed timing offsets abolish quorum earlier than jitter of the same size (S4), and measured conduction delays lower the loss concentration (D1). With a learned expectation of arrival phase, coherence fell even at zero concentration and, without conduction delays, quorum was lost below 0.13 times the EC50 with every agent (L1, L3 and L4 held in no seed); with conduction delays, the learning first raised awake coherence from 0.41 to 0.62 in every seed | Adapting delays can stop phase models from becoming fully in-phase (Park and Lefebvre, 2020) and can cancel the coupling itself (Pajevic et al., 2014) | None: a receiver that sees only the arrival phase cannot separate a constant delay from the phase relation that coupling maintains, so P4b's claim about constant delays is untested in the models; prediction 8 tests its claim about variability in data | L1 to L4, fixed before the run (Appendix C.10) |
+
+---
+
+## Appendix E. Pre-specified tests of the predictions on open data
+
+### E.1 Purpose and what was seen before the tests were fixed
+
+Every result in Appendices B to D comes from simulation. This appendix fixes, before any analysis, how the predictions
+of Section 8 that open data can reach will be tested on recordings made by others, and what result would count
+against DPC. The tests, their measures, thresholds and pass rules were written and committed before any of the
+datasets was analysed.
+
+Before the tests were fixed we read the datasets' documentation and file layouts, the concentration schedules and
+loss and return of responsiveness tables of the Michigan dataset (E.2), the condition markers of one Neurotycho session
+and its electrode map, the stimulation and channel tables of one PRIOS patient and the event table of one TMS-EEG
+participant, and we loaded the files of one Michigan subject (sub-02) and of 16 channels of one Neurotycho session to
+check that they parse, reporting only their sizes, the share of censored volumes and the number of bipolar
+derivations. While checking the Neurotycho file format, the first samples and the standard deviation of one raw ECoG
+channel were printed. No measure on which a test depends (giant component, coupling, lag, power, latency or any
+indicator built from them) was computed on real data and read. Before the authors ruled that no pipeline check may
+use real recordings, one dry run of the fMRI pipeline was completed on sub-02's files with the BOLD replaced by
+phase-randomised surrogates, which destroy all coupling; its output also held the concentrations at sub-02's real loss
+and return of responsiveness, and it was deleted without being opened. Two later dry runs, with placeholder event
+times, were stopped before finishing, and their outputs were deleted without being opened. The dry-run option was
+then removed from the code, which is proved on synthetic data only (E.11).
+
+Three published results on the same data were known to us when the tests were fixed, and each is a prior against
+which a result must be read. On the Michigan dataset, functional connectivity fell gradually during induction while
+recovery was abrupt (Huang et al., 2021). On the Neurotycho recordings, cortical dynamics became more stable, not less,
+as consciousness was lost under every agent (Solovey et al., 2015), which argues against the critical slowing down of
+prediction 2. On the PRIOS recordings, the median latency of the earliest response component lengthened from 22.0 ms
+awake to 26.4 ms under propofol (van Blooijs et al., 2024), so a change in mean latency is already known.
+
+### E.2 Datasets checked
+
+Each dataset was opened on 20 October 2026: its licence was read where it is published, its files listed and, where
+noted, one sample downloaded and read. Sizes are those reported by the archive.
+
+| Dataset | Licence and access | Size | What it contains | Use here |
+|---|---|---|---|---|
+| Michigan Human Anesthesia fMRI Dataset-1, OpenNeuro ds006623 v1.0.0 (Huang et al., 2021) | CC0, open | 34.1 GB; 0.54 GB used | 26 volunteers, 4 imagery runs and 2 rest runs (TR 0.8 s), XCP-D parcellated series; effect-site and plasma propofol concentration at every volume; loss of responsiveness (LOR) volume for 26, return (ROR) volume for 20 (6 marked N/A); two stepped protocols, 0.4 to 2.4 µg/ml (14 subjects) and 1.0 to 3.0 µg/ml (12), in steps of 0.4 µg/ml; LOR at 0.8 to 3.0 µg/ml | H1, H2a, H4 |
+| Neurotycho "Anesthesia and Sleep" task 78 (Yanagawa et al., 2013) | Copyright waived on neurotycho.org (CC0 wording), open | 32.6 GB used (23 anaesthesia sessions, 5 electrode maps) | 4 macaques, 128-channel subdural ECoG at 1 kHz; ketamine-medetomidine (11 sessions), propofol, ketamine, medetomidine (4 each), sleep (7, not used); markers for awake eyes open and closed, injection, start and end of the anaesthetised condition, recovery; one injection per session, no concentrations, no stimuli | H2b, H3 |
+| PRIOS, OpenNeuro ds004370 v1.0.2 (van Blooijs et al., 2024) | CC0, open | 29.6 GB | 7 patients in `participants.tsv` (the README says 6); ECoG at 2048 Hz; single-pulse stimulation awake (clinical session) and under propofol (operating room, on a later day); stimulated pair, current and notes per pulse; no concentrations; co-medication in the operating room not documented in the files checked | H5a (secondary) |
+| Allen Institute cortical stimulation, DANDI 000458 (Claar et al., 2023) | CC BY 4.0, open | 361.5 GB, 24 sessions | Mice; 30-channel EEG; Neuropixels LFP and sorted units where probes were used (the 18 larger sessions, by file size); single biphasic pulses to secondary motor cortex at 20, 50 and 100 µA, awake and under isoflurane (1 to 1.5% maintenance), induction epoch marked | Not pre-specified (E.9) |
+| TMS-EEG under propofol sedation, OpenNeuro ds005620 v1.0.0 (Bajwa et al.) | CC0 in `dataset_description.json`, CC BY 4.0 in the README; treated as CC BY 4.0 | 83.0 GB | 21 participants (1 excluded by the authors); 64-channel EEG at 5 kHz; TMS awake and in up to three sedated runs; about 185 pulses per run in the participant checked; no concentrations in the files checked | Not pre-specified (E.9) |
+| MGH propofol EEG, DANDI 001285 | CC BY 4.0, open | 1.19 GB | One NWB file holding one 64 × 2,316,950 array at 250 Hz (2.6 h) and nothing else: no channel names, no stimulus or response events, no concentrations, no LOR or ROR times | Unusable |
+| VitalDB (Lee et al., 2022) | CC BY-NC-SA 4.0 and a data use agreement (no disclosure to others, report misuse within 24 hours, no re-identification) | 6,388 cases | 3,344 cases with raw two-channel frontal EEG and propofol effect-site concentration, of which 3,342 also received remifentanil; no LOR markers | Not used |
+| Cambridge propofol EEG (Chennu et al., 2016) | CC BY 2.0 UK as stated on the repository page | 3.44 GB | 20 volunteers; 91-channel resting EEG, preprocessed into 10 s epochs, at baseline, mild and moderate sedation and recovery, with plasma concentration and a two-choice task | Not used |
+| Propofol fMRI with a story, OpenNeuro ds003171 v2.0.1 (Kandeepan et al., 2020) | CC0, open | 4.8 GB | 17 volunteers; auditory and rest runs awake, light, deep and recovery; no concentrations in the files checked | Not used |
+
+DANDI 001285 lacks everything a test needs. VitalDB records two frontal channels, which cannot form a network, nearly
+every case also received an opioid, there is no LOR marker, and its agreement binds each user, so the authors would
+have to accept it themselves. The Cambridge and Kandeepan datasets have four levels without a marked LOR; four points
+cannot separate a threshold from a smooth decline.
+
+### E.3 Which predictions open data can test
+
+| Prediction | Testable now? | Dataset and test | What limits it |
+|---|---|---|---|
+| 1. Giant component collapses at LOR, sharper than local power | Partly | Michigan fMRI, H1 | BOLD at 0.8 s resolves no millisecond timing and no stimulus-locked phase locking; it tests the shape of the collapse of an ongoing coupling network against concentration, not the network of content timing that prediction 1 names |
+| 2. Critical slowing down before LOR | Partly | Michigan fMRI, H2a (slow stepped induction); Neurotycho ECoG, H2b (single injection) | fMRI order parameter from co-fluctuations; Neurotycho inductions are fast, not the slow induction the prediction requires, and the anaesthetised marker follows LOR |
+| 3. Lag variability, not mean lag, predicts LOR across agents | Partly | Neurotycho ECoG, H3 | Ongoing activity, not responses across trials; awake and anaesthetised states, not the moment of LOR; propofol, ketamine, medetomidine and their combination, no sevoflurane; 4 monkeys |
+| 4. Induction excitation scales with sensory load | No | None | No open dataset varies sensory load at induction |
+| 5. Inertia tracks thalamocortical coupling | No | None | Needs manipulation of thalamic drive in animals |
+| 6. Hub disruption lowers the LOR concentration more | No | None | Needs focal inactivation |
+| 7. Ketamine spares internal more than stimulus coherence | No | None | No open recording delivers stimuli under ketamine; Neurotycho's ketamine sessions have none |
+| 8. Inter-areal latency variability rises before mean latency | Partly | PRIOS, H5a (secondary) | One deep propofol state against wakefulness, on different days; "just below loss of responsiveness" cannot be reached; mean latency is already known to change |
+| 9. Alpha-band phase locking preserved at alpha onset | Possible, not pre-specified | Neurotycho propofol inductions | Four sessions in two monkeys; left exploratory |
+| 10. Arousal threshold follows down-states | No | None | No open sleep recording with graded arousing stimuli was found |
+| 11 to 13. Myelin, microglia, astrocytes | No | None | Need animal manipulations |
+| 14. Sleep against anaesthesia at matched depth | No | None | Neurotycho has sleep and anaesthesia in the same monkeys but no graded arousal and no concentrations |
+
+Prediction 1 in the form stated, a stimulus-locked network during a slow ramp with documented LOR, and predictions 4
+to 7 and 10 to 14 cannot be tested with any open dataset we found. The 2013 propofol EEG study with stimuli every 4 s
+(Purdon et al., 2013) would serve prediction 1, but its public deposit (DANDI 001285) contains none of the events.
+
+### E.4 Rules common to every test
+
+- **Family and correction.** The primary tests are H1, H2a, H2b, H3 and H4. Their one-sided p-values are corrected
+  together with Holm's method at a family-wise α of 0.05. Secondary analyses (E.9) are reported without a verdict.
+- **Three outcomes.** A test *supports DPC* if its corrected p-value is below 0.05 and its effect estimate is at least
+  the smallest effect size of interest (SESOI) stated with it. It *counts against DPC* if two one-sided tests (Lakens
+  et al., 2018) show the effect to lie within ± SESOI, or if the estimate is at or beyond −SESOI. Otherwise it is
+  *inconclusive*. Absence of an effect is therefore claimed only through equivalence, as Section 8 requires.
+- **Seed and resampling.** Every random step uses seed 20261021 (`analysis/open_data/settings.py`).
+- **Exclusions.** A subject or session is excluded from a test only by a rule stated below; the exclusion and its
+  reason are written into the result file and listed in the group report.
+- **Provenance.** Every result file records the commit, the SHA-256 of every analysis module, every setting and the
+  software versions. Any change to the code or settings after the commit of this appendix makes the affected test
+  exploratory, and it will be reported as such alongside the result of the committed version.
+- **No peeking.** Group verdicts are computed once, by `run.py group`, after every per-subject file exists.
+
+### E.5 H1: is the collapse of the giant component a threshold? (prediction 1, Michigan fMRI)
+
+**Data.** Imagery runs 1 to 4 of every subject in the XCP-D output without global signal regression, band-pass
+filtered, in the 156-region parcellation (`4S156Parcels`). Run 1 precedes the infusion (concentration zero
+throughout) and is the awake reference; run 2 is the stepped induction. Run 2 has under a minute at zero
+concentration (28 volumes in sub-02), too little for one window.
+
+**Preprocessing.** Task-evoked activity is regressed out with the dataset's four instruction regressors
+(`Ideal_task{run}_{action,navi,squeeze,tennis}.xmat.1D`). Volumes with framewise displacement above 0.5 mm are
+censored; a window with more than 20% censored volumes is dropped.
+
+**Network and order parameter.** Windows of 75 volumes (60 s), stepped by 25 volumes. In each window the Pearson
+correlation of every pair of regions is an edge if it exceeds the 99th percentile of correlations between
+independently phase-randomised copies of the same window (20 surrogates, pooled over pairs). $S$ is the share of
+regions in the largest connected component. Each window is assigned its mean effect-site concentration. The mean
+correlation and the mean standard deviation of the regional signals (local amplitude) are kept for each window.
+
+**Shape.** A decreasing four-parameter logistic and a straight line are fitted to $S$ against concentration; the
+steepness $k$ of the logistic (its 10 to 90% width is $2\ln 9/k$) is bounded to widths between 0.05 and 20 µg/ml.
+
+**Thresholding control.** Thresholding a network whose coupling declines smoothly already yields a sigmoid giant
+component, so the observed steepness is compared with the steepness the same pipeline produces from surrogate data
+whose coupling declines smoothly. Each surrogate window mixes a common-phase surrogate of a randomly chosen awake
+window (which keeps its correlations) with an independent surrogate (which removes them) in proportions that scale
+every correlation by a factor $f$. In null A, $f$ makes mean coupling fall on a straight line in concentration from its
+awake level to its level in the top 20% of concentrations. Each null is realised 200 times and fitted like the data.
+In null B (secondary), $f$ follows the observed mean coupling of each window exactly, which asks whether the network
+falls more abruptly than its mean coupling.
+
+**Statistic.** For each subject, $x = \log(k_{\text{observed}} / \text{median } k_{\text{null A}})$. Group test: one-sided
+Wilcoxon signed-rank test of $x > 0$. Effect: the median of $x$. SESOI: $\log 1.5$ (a collapse at least 1.5 times as
+steep as the smooth-decline null).
+
+**Pass rule.** Supports DPC as in E.4, and only if the median of $x$ is also positive with the edge test at α of 0.001
+and of 0.05 (null A recomputed at each). Counts against DPC as in E.4, or if the giant component stays intact through
+LOR: the median over subjects of mean $S$ after LOR divided by mean awake $S$ is at least 0.9 (the falsifier stated
+in Section 8). **Measurement gate:** if BOLD coupling does not fall with concentration (median over subjects of deep
+over awake mean coupling at least 0.9), the fMRI network does not register the drug and H1 is reported as not
+evaluable rather than as evidence either way.
+
+**Secondary, reported without verdict.** The sigmoid against line comparison (number of subjects with a Bayesian
+information criterion lower by at least 10 for the sigmoid); steepness relative to null B; the ratio of the steepness
+of $S$ to that of local amplitude (prediction 1's "sharper than local power"; SESOI 1.5); and the distance between the
+sigmoid midpoint and the concentration at LOR, tested for equivalence within ±0.4 µg/ml (one concentration step).
+
+### E.6 H2a and H2b: critical slowing down before LOR (prediction 2)
+
+**H2a, Michigan fMRI.** The order parameter is computed at every volume from edge co-fluctuations (Zamani Esfahlani
+et al., 2020): each region's residual signal is standardised on the awake run, the product $z_i z_j$ of every pair is
+an edge if it exceeds the 99th percentile of the same products between independent surrogates of the awake run, and
+$S(t)$ is the giant component. The segment runs from the first volume with non-zero concentration in run 2 to the LOR
+volume. Censored volumes are interpolated; a subject with more than 20% of that segment censored is excluded.
+
+**H2b, Neurotycho ECoG.** For each anaesthesia session, from the injection marker to the start of the anaesthetised
+condition. Bipolar derivations, filtering and the long-range pairs are as in E.7; in consecutive 2 s windows the
+gamma-band (30 to 45 Hz) phase-locking value of every long-range pair is an edge if it exceeds the 99th percentile of
+the same pairs with one member circularly shifted by at least 0.5 s (20 shifts), and $S(t)$ is the giant component
+over all derivations. The start of the anaesthetised condition was marked after LOC was established, so the segment
+can include a few minutes after LOC; this biases against finding a rise before LOC only if the rise is confined to
+the last minutes.
+
+**Indicators (both).** Following Dakos et al. (2012): Gaussian detrending with a bandwidth of 10% of the segment,
+variance and lag-1 autocorrelation in a rolling window of half the segment, and Kendall's $\tau$ of each against time.
+Per subject or session, a one-sided p-value against 1,000 phase-randomised surrogates of the same segment is reported.
+
+**Statistic and pass rule.** For each indicator, a one-sided Wilcoxon signed-rank test of $\tau > 0$ across subjects
+(H2a) or sessions (H2b). Both indicators must rise: the test's p-value is the larger of the two, and its effect is the
+smaller of the two median $\tau$. SESOI: $\tau = 0.2$. Counts against DPC if both indicators are shown to lie within
+±0.2, or if either median is at or below −0.2. A failure of H2b is weaker evidence than a failure of H2a, because the
+Neurotycho inductions are not slow; Section 8 states the falsifier for "carefully controlled slow induction".
+
+### E.7 H3: does lag variability, rather than mean lag or power, track loss of responsiveness across agents? (prediction 3, Neurotycho ECoG)
+
+**Sessions.** The 23 anaesthesia sessions of task 78. Task 75 holds three recordings from two of the same days and monkeys and is not used. All channels
+present in every recording of the session are used. A session lacking the awake eyes-closed or anaesthetised markers
+is excluded.
+
+**Epochs.** Awake blocks come from the awake eyes-closed condition and anaesthetised blocks from the anaesthetised
+condition. The monkeys wore an eye mask from the eyes-closed condition until recovery, so eye closure is matched.
+
+**Preprocessing.** Notch filters at 50, 100 and 150 Hz (quality 30). Bipolar derivations between each electrode and
+its nearest neighbour on the session's electrode map (the map of the same monkey by the same experimenter). Pairs of
+derivations that share no electrode and are further apart than the median distance between derivations are
+long-range pairs; only these enter the coupling measures, which limits volume conduction without discarding coupling
+near zero lag. Fourth-order Butterworth band-pass filtering, applied forwards and backwards, with 2 s margins, and the
+analytic signal.
+
+**Measures.** In 30 s blocks, divided into 1 s windows, for every long-range pair: the circular mean phase difference in
+each window; across the 30 windows, the *lag variability* (circular standard deviation, in ms at the band's centre
+frequency) and the absolute *mean lag* (ms). Per block, these are averaged over pairs; *local power* is the mean log
+power of the derivations. The phase-locking value (lag-sensitive, includes zero lag) and the weighted phase lag index
+(Vinck et al., 2011; blind to zero lag) are computed alongside. Each measure is standardised against the session's
+awake blocks.
+
+**Muscle.** A block is dropped if its 70 to 150 Hz power exceeds the median of blocks in the same state by more than
+five median absolute deviations (minimum deviation 0.05 in log power). The reference is the same state because
+ketamine raises high-frequency power across the cortex. The rule removes bursts, not tonic muscle activity; the beta
+band (13 to 30 Hz), which muscle contaminates less, is analysed as a secondary band for that reason.
+
+**Contrast.** For each measure, the direction of its change from awake to anaesthetised is learned on the other agents
+and applied to the held-out agent, and the area under the ROC curve (AUC) separating that agent's awake from
+anaesthetised blocks is computed; the four agent AUCs are averaged. A measure that changes in opposite directions
+under different agents, as power does between propofol and ketamine, cannot predict LOR across agents. The
+statistic is $D = \text{AUC}_{\text{lag variability}} - \max(\text{AUC}_{\text{mean lag}}, \text{AUC}_{\text{power}})$.
+
+**Test and pass rule.** Primary band gamma (30 to 45 Hz), the band of the model's 40 Hz reference. A bootstrap over
+sessions, resampled within agent (2,000 resamples), gives a one-sided p-value (share of resamples with $D \le 0$) and a
+95% interval. SESOI: 0.05 in AUC. Supports DPC as in E.4. Counts against DPC if mean lag or power predicts as well as
+or better than lag variability, that is if the share of resamples with $D \ge 0.05$ is below 0.05 (the falsifier stated
+in Section 8). Theta, alpha and beta bands, and the phase-locking value and weighted phase lag index, are reported
+without verdict. Monkey and agent are partly confounded (two monkeys received only the combination), which the
+report states.
+
+**Signal-to-noise.** Lower power makes phase estimates noisier, which by itself raises lag variability. The gamma
+power falls under propofol and rises under ketamine, so a rise in lag variability under both agents is not explained
+by signal-to-noise alone; under propofol alone it could be, and the per-agent AUCs are reported so that this can be
+seen.
+
+### E.8 H4: hysteresis between induction and emergence (Michigan fMRI)
+
+**Data.** As H1; the induction curve uses runs 1 and 2, the emergence curve runs 3 and 4 (run 3 alone for sub-29,
+which lacks run 4).
+
+**Measure.** The sigmoid midpoint of $S$ against concentration on induction ($c_{50,\text{ind}}$) and on emergence
+($c_{50,\text{em}}$); network hysteresis $H = c_{50,\text{ind}} / c_{50,\text{em}}$. Behavioural hysteresis is the
+concentration at LOR divided by that at ROR, for the 20 subjects with an ROR volume.
+
+**Pharmacokinetic sensitivity.** A wrong effect-site model creates hysteresis by itself. The effect-site series is
+therefore also recomputed from the dataset's plasma series with a first-order effect compartment at five equilibration
+rate constants, 0.2, 0.26, 0.456, 0.8 and 1.21 per minute, starting each run from the dataset's effect-site value.
+0.2 and 1.21 per minute correspond to the equilibration half-lives of 3.5 min and 34 s compared by Struys et al.
+(2000), 0.456 per minute is the value of Schnider et al. (1999), and 0.26 and 0.8 fill the range between them.
+The pharmacokinetic model behind the dataset's own series is not stated in the files checked.
+
+**Statistic and pass rule.** One-sided Wilcoxon signed-rank test of $\log H > 0$; SESOI $\log 1.05$. Supports DPC only
+if the largest p-value over the six effect-site series, after Holm correction, is below 0.05 and the smallest median
+$\log H$ is at least $\log 1.05$. Counts against DPC if, with the dataset's own effect-site series, $\log H$ is shown to
+lie within $\pm\log 1.05$ or its median is at or below $-\log 1.05$. Secondary: the Spearman correlation between network
+and behavioural hysteresis across subjects. The paper's own models disagree on hysteresis (Section 10, limitation 9),
+so a failure here bears on P5's percolation form, not on P1 to P3.
+
+Emergence follows the end of the infusion, so its concentration falls continuously while induction rose in held
+steps; time at each concentration differs between the two curves, which the effect-site sensitivity analysis only
+partly addresses.
+
+### E.9 Secondary and deferred analyses
+
+**H5a, PRIOS (prediction 8, partial).** For each patient, the awake and propofol recordings; both polarities of a
+stimulated pair pooled; pulses whose notes report a deviation from the requested current excluded; response
+electrodes at least 20 mm (in the dataset's MNI coordinates) from both stimulated electrodes and marked good. Trials
+from -500 to 120 ms around the pulse, baseline subtracted (median from -500 to -10 ms); a connection responds if the
+mean response from 9 to 100 ms exceeds 3.4 baseline standard deviations in both states. Trial counts are equalised
+by random subsampling (at least 6). Mean latency is that of the largest negative deflection of the mean response;
+single-trial latency is the shift, within ±20 ms and refined by parabolic interpolation, that best aligns each trial
+with the mean response, and its spread is the scaled median absolute deviation. Per connection,
+$r = \log(\text{SD}_{\text{prop}}/\text{SD}_{\text{awake}}) - \log(\text{latency}_{\text{prop}}/\text{latency}_{\text{awake}})$,
+positive when variability rises more than mean latency; per patient, the median $r$. One-sided Wilcoxon test over
+patients, SESOI $\log 1.2$, reported without verdict because 7 patients, one deep state and two different days make it
+a weak test. Confounds: the propofol recordings were made in the operating room at electrode removal, with unknown
+co-medication; lower response amplitude under propofol makes single-trial latencies noisier.
+
+**Not pre-specified.** DANDI 000458 could test the second half of prediction 8, that single-neuron timing stays
+precise while timing between areas varies, but its units table has not been inspected, so no analysis of it is fixed
+here. The TMS-EEG dataset needs source reconstruction to separate areas. Prediction 9 on the four Neurotycho propofol
+inductions is left exploratory. Any of these, if run, will be labelled exploratory unless a separate prespecification
+is committed first.
+
+### E.10 Confounds and how they are handled
+
+| Confound | Where | Handling |
+|---|---|---|
+| Thresholding a smooth decline | H1, H4 | Null A and null B surrogates through the identical pipeline (E.5); three edge thresholds |
+| Volume conduction | H2b, H3 | Bipolar derivations; only long-range pairs sharing no electrode; wPLI reported beside the lag-sensitive measures |
+| Signal-to-noise | H3 | Cross-agent design (power falls under propofol, rises under ketamine); per-agent AUCs reported |
+| Muscle | H3 | Within-state outlier blocks dropped; beta band as secondary |
+| Eye closure | H3 | Awake reference is the eyes-closed condition, matched to the eye mask under anaesthesia |
+| Head motion | H1, H2a, H4 | Framewise displacement censoring at 0.5 mm; windows over 20% censored dropped |
+| Task-evoked co-activation | H1, H2a, H4 | Instruction regressors removed before any coupling |
+| Pharmacokinetic lag | H4 | Effect-site recomputed at five equilibration constants |
+| Opioids | All | None in the Michigan or Neurotycho protocols as documented; PRIOS co-medication unknown, stated |
+| Fast induction | H2b | Stated as weaker than H2a; the prediction's falsifier requires slow induction |
+| Prior results on the same data | H1, H2b, H5a | Stated in E.1 |
+
+### E.11 Commands, downloads and run times
+
+From the repository root, with the repository's Python 3.13 environment (NumPy 2.5.4, SciPy 1.18.1; nothing else is
+needed). `-I` isolates the interpreter so that no file in the data folders can be imported.
+
+```
+# 1. Downloads: each command lists files and sizes and writes nothing; add --execute to download.
+.venv/bin/python -I analysis/open_data/download.py michigan      # 434 files, 0.54 GB
+.venv/bin/python -I analysis/open_data/download.py neurotycho    # 28 archives, 32.6 GB (about twice that on disk after extraction)
+.venv/bin/python -I analysis/open_data/download.py prios         # 114 files, 29.6 GB
+
+# 2. Loader checks: no statistic is computed.
+SUBJECTS=$(tail -n +2 data_external/ds006623/derivatives/LOR_ROR_Timing.csv | cut -d, -f1 | sed 's/^/--subject /')
+.venv/bin/python -I analysis/open_data/run.py michigan --root data_external/ds006623 $SUBJECTS --out unused --check-only
+for e in data_external/neurotycho/*_mat_ECoG128; do .venv/bin/python -I analysis/open_data/run.py neurotycho --experiment "$e" --out unused --check-only; done
+
+# 3. Confirmatory runs.
+OUT=analysis/open_data/results/$(date -u +%Y-%m-%d)
+.venv/bin/python -I analysis/open_data/run.py michigan --root data_external/ds006623 $SUBJECTS --out $OUT
+for e in data_external/neurotycho/*_mat_ECoG128; do .venv/bin/python -I analysis/open_data/run.py neurotycho --experiment "$e" --out $OUT; done
+for s in data_external/ds004370/sub-*/ses-1; do .venv/bin/python -I analysis/open_data/run.py prios --session-dir "$s" --out $OUT; done
+.venv/bin/python -I analysis/open_data/run.py group --inputs $OUT --out $OUT/verdicts.json
+
+# 4. Secondary bands for H3 (reported without verdict).
+for b in theta alpha beta; do for e in data_external/neurotycho/*_mat_ECoG128; do
+  .venv/bin/python -I analysis/open_data/run.py neurotycho --experiment "$e" --band $b --out $OUT; done; done
+
+# Tests of the analysis code (synthetic data only).
+.venv/bin/python -I analysis/open_data/run_tests.py
+```
+
+Run times on the machine that wrote the code (Apple M2 Pro, one core per process), measured on synthetic data of the
+real size, never on real recordings: Michigan, 1,123 s (19 minutes) for one subject of 156 regions with runs of
+1,145, 2,270, 2,270 and 1,145 volumes at the full settings, measured while other work ran on the machine, so about
+8 hours for 26 subjects; Neurotycho, about 3.4 s per 30 s block and 1.1 s per 2 s window of the induction on noise
+at full montage size (127 derivations, 3,903 long-range pairs), so about 8 minutes per session and 3 hours for 23;
+PRIOS, not measured. Downloads depend on the connection.
+
+### E.12 What open data cannot test
+
+No open dataset combines repeated stimuli, a slow concentration ramp, documented loss and return of responsiveness
+and recordings dense enough for a network of phase locking between areas. Prediction 1 in its stated form, the
+stimulus-locked part of predictions 3 and 8, prediction 7 and every prediction that needs an intervention or a graded
+arousal stimulus (4, 5, 6, 10 to 14) therefore remain untested by this appendix. A pass of every test above would
+show that functional networks of ongoing activity behave as DPC predicts at the resolution of fMRI and ECoG; it would
+not show that the timing of content between areas fails as P2 to P4b propose.
+
+**Datasets.** Huang, Z., et al. (2025). Michigan Human Anesthesia fMRI Dataset-1. OpenNeuro ds006623 v1.0.0, https://doi.org/10.18112/openneuro.ds006623.v1.0.0. van Blooijs, D., Blok, S., Huiskamp, G. J. M., & Leijten, F. S. S. (2023). PRIOS. OpenNeuro ds004370 v1.0.2, https://doi.org/10.18112/openneuro.ds004370.v1.0.2. Neurotycho Anesthesia and Sleep task, RIKEN Brain Science Institute, https://neurotycho.org/anesthesia-and-sleep-task. Already in the reference list: Huang et al. (2021), Lakens et al. (2018), Purdon et al. (2013), Solovey et al. (2015), van Blooijs et al. (2024). The Michigan dataset is cited, as its authors ask, with Huang et al. (2018), Huang et al. (2021, *Cell Reports*) and Huang et al. (2021, *NeuroImage*); Neurotycho with Yanagawa et al. (2013). All three are released under CC0; only derived results are published here.

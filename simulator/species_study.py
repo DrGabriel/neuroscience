@@ -71,58 +71,63 @@ class Condition:
     rewired: bool = False
 
 
-def build_conditions(integration: dynamics.IntegrationSettings) -> tuple[Condition, ...]:
-    base = cal.base_sweep_design(integration)
-    every_organism = tuple(cal.ORGANISMS)
+EVERY_ORGANISM = tuple(cal.ORGANISMS)
+WITH_TRACT_LENGTHS = tuple(organism for organism, spec in cal.ORGANISMS.items() if spec.has_tract_lengths)
+WITH_CONNECTION_SIGNS = tuple(organism for organism, spec in cal.ORGANISMS.items() if spec.has_connection_signs)
+
+
+def agent_conditions(base: dynamics.SweepDesign) -> tuple[Condition, ...]:
+    nmda = replace(base, agent=cal.NMDA_ANTAGONIST_AGENT)
+    return (
+        Condition(ConditionName.GABAERGIC, base, EVERY_ORGANISM),
+        Condition(ConditionName.NMDA_ANTAGONIST, nmda, EVERY_ORGANISM),
+        Condition(ConditionName.NMDA_FIXED_OFFSETS, replace(nmda, jitter_dynamics=dynamics.JitterDynamics.FIXED), EVERY_ORGANISM),
+    )
+
+
+def reference_conditions(base: dynamics.SweepDesign) -> tuple[Condition, ...]:
     without_feedback = replace(cal.POPULATION_DYNAMICS, reference_feedback=0.0)
     with_fallback = replace(cal.POPULATION_DYNAMICS, fallback_frequency_hz=cal.ALPHA_FALLBACK_FREQUENCY_HZ)
-    with_tract_lengths = tuple(organism for organism in cal.ORGANISMS if cal.ORGANISMS[organism].has_tract_lengths)
-    with_connection_signs = tuple(organism for organism in cal.ORGANISMS if cal.ORGANISMS[organism].has_connection_signs)
     return (
-        Condition(ConditionName.GABAERGIC, base, every_organism),
-        Condition(ConditionName.NMDA_ANTAGONIST, replace(base, agent=cal.NMDA_ANTAGONIST_AGENT), every_organism),
-        Condition(
-            ConditionName.NMDA_FIXED_OFFSETS,
-            replace(base, agent=cal.NMDA_ANTAGONIST_AGENT, jitter_dynamics=dynamics.JitterDynamics.FIXED),
-            every_organism,
-        ),
-        Condition(ConditionName.NO_REFERENCE_FEEDBACK, replace(base, dynamics=without_feedback), every_organism),
-        Condition(ConditionName.ADAPTIVE_RATE, replace(base, dynamics=with_fallback), every_organism),
-        Condition(
-            ConditionName.NMDA_ADAPTIVE_RATE,
-            replace(base, agent=cal.NMDA_ANTAGONIST_AGENT, dynamics=with_fallback),
-            every_organism,
-        ),
-        Condition(ConditionName.SIGNED, replace(base, sign_rule=connectomes.SIGN_RULE_GABA), with_connection_signs),
-        Condition(
-            ConditionName.SIGNED_WITH_GLUTAMATE,
-            replace(base, sign_rule=connectomes.SIGN_RULE_GABA_AND_GLUTAMATE),
-            with_connection_signs,
-        ),
-        Condition(ConditionName.SENSORY_STIMULUS, replace(base, stimulus=cal.SENSORY_STIMULUS), every_organism),
-        Condition(
-            ConditionName.NMDA_CONDUCTION_LENGTH_JITTER,
-            replace(base, agent=cal.NMDA_ANTAGONIST_AGENT, jitter_scaling=dynamics.JitterScaling.CONDUCTION_LENGTH),
-            with_tract_lengths,
-        ),
-        Condition(
-            ConditionName.CONDUCTION_DELAYS,
-            replace(base, conduction_velocity_m_per_s=cal.CORTICOCORTICAL_CONDUCTION_VELOCITY_M_PER_S),
-            with_tract_lengths,
-        ),
-        Condition(ConditionName.NULL_REWIRED, base, cal.NULL_MODEL_ORGANISMS, rewired=True),
-        Condition(ConditionName.NULL_REWIRED_STIMULUS, replace(base, stimulus=cal.SENSORY_STIMULUS), cal.NULL_MODEL_ORGANISMS, rewired=True),
-        Condition(
-            ConditionName.KETAMINE_PATHWAYS,
-            replace(
-                base,
-                agent=cal.NMDA_ANTAGONIST_AGENT,
-                jitter_scaling=dynamics.JitterScaling.SENSORY_PATHWAYS,
-                stimulus=cal.SENSORY_STIMULUS,
-            ),
-            every_organism,
-        ),
+        Condition(ConditionName.NO_REFERENCE_FEEDBACK, replace(base, dynamics=without_feedback), EVERY_ORGANISM),
+        Condition(ConditionName.ADAPTIVE_RATE, replace(base, dynamics=with_fallback), EVERY_ORGANISM),
+        Condition(ConditionName.NMDA_ADAPTIVE_RATE, replace(base, agent=cal.NMDA_ANTAGONIST_AGENT, dynamics=with_fallback), EVERY_ORGANISM),
     )
+
+
+def signed_conditions(base: dynamics.SweepDesign) -> tuple[Condition, ...]:
+    return (
+        Condition(ConditionName.SIGNED, replace(base, sign_rule=connectomes.SIGN_RULE_GABA), WITH_CONNECTION_SIGNS),
+        Condition(ConditionName.SIGNED_WITH_GLUTAMATE, replace(base, sign_rule=connectomes.SIGN_RULE_GABA_AND_GLUTAMATE), WITH_CONNECTION_SIGNS),
+    )
+
+
+def stimulus_and_tract_conditions(base: dynamics.SweepDesign) -> tuple[Condition, ...]:
+    length_jitter = replace(base, agent=cal.NMDA_ANTAGONIST_AGENT, jitter_scaling=dynamics.JitterScaling.CONDUCTION_LENGTH)
+    delays = replace(base, conduction_velocity_m_per_s=cal.CORTICOCORTICAL_CONDUCTION_VELOCITY_M_PER_S)
+    return (
+        Condition(ConditionName.SENSORY_STIMULUS, replace(base, stimulus=cal.SENSORY_STIMULUS), EVERY_ORGANISM),
+        Condition(ConditionName.NMDA_CONDUCTION_LENGTH_JITTER, length_jitter, WITH_TRACT_LENGTHS),
+        Condition(ConditionName.CONDUCTION_DELAYS, delays, WITH_TRACT_LENGTHS),
+    )
+
+
+def null_and_pathway_conditions(base: dynamics.SweepDesign) -> tuple[Condition, ...]:
+    with_stimulus = replace(base, stimulus=cal.SENSORY_STIMULUS)
+    ketamine_pathways = replace(with_stimulus, agent=cal.NMDA_ANTAGONIST_AGENT, jitter_scaling=dynamics.JitterScaling.SENSORY_PATHWAYS)
+    return (
+        Condition(ConditionName.NULL_REWIRED, base, cal.NULL_MODEL_ORGANISMS, rewired=True),
+        Condition(ConditionName.NULL_REWIRED_STIMULUS, with_stimulus, cal.NULL_MODEL_ORGANISMS, rewired=True),
+        Condition(ConditionName.KETAMINE_PATHWAYS, ketamine_pathways, EVERY_ORGANISM),
+    )
+
+
+CONDITION_GROUPS = (agent_conditions, reference_conditions, signed_conditions, stimulus_and_tract_conditions, null_and_pathway_conditions)
+
+
+def build_conditions(integration: dynamics.IntegrationSettings) -> tuple[Condition, ...]:
+    base = cal.base_sweep_design(integration)
+    return tuple(condition for group in CONDITION_GROUPS for condition in group(base))
 
 
 # ---------------------------------------------------------------------------
@@ -189,14 +194,22 @@ def design_for(task: RunTask) -> dynamics.SweepDesign:
     return design
 
 
+def connectome_for(task: RunTask) -> connectomes.Connectome:
+    """The organism's connectome, or its rewired copy for this seed when the condition is a null model."""
+    connectome = load_connectome(task.organism)
+    return connectome.rewired(task.seed) if task.condition.rewired else connectome
+
+
 def run_task(task: RunTask, design: dynamics.SweepDesign | None = None) -> RunSummary:
     """One sweep. design replaces design_for(task) when a caller, such as the convergence study, has already
     adjusted the organism's numerical settings and must not have them reapplied."""
     started = time.perf_counter()
-    connectome = load_connectome(task.organism)
-    if task.condition.rewired:
-        connectome = connectome.rewired(task.seed)
-    record = dynamics.run_induction_emergence(connectome, design or design_for(task))
+    record = dynamics.run_induction_emergence(connectome_for(task), design or design_for(task))
+    return summarise(task, record, time.perf_counter() - started)
+
+
+def summarise(task: RunTask, record: dynamics.InductionEmergenceRecord, seconds: float) -> RunSummary:
+    """The quantities every study reads from one sweep."""
     unconscious = record.first_unconscious
     awake = record.induction[0]
     return RunSummary(
@@ -222,7 +235,7 @@ def run_task(task: RunTask, design: dynamics.SweepDesign | None = None) -> RunSu
         emergence_coherence=tuple(point.global_coherence for point in reversed(record.emergence)),
         induction_susceptibility=tuple(point.susceptibility for point in record.induction),
         induction_broadcast_ratio=tuple(dynamics.broadcast_ratio(point) for point in record.induction),
-        seconds=time.perf_counter() - started,
+        seconds=seconds,
         awake_broadcast_entrainment=awake.broadcast_entrainment,
         deepest_broadcast_entrainment=record.induction[-1].broadcast_entrainment,
         deepest_sensory_entrainment=record.induction[-1].sensory_entrainment,
@@ -438,20 +451,30 @@ def run_plant_task(conductance_and_seed: tuple[float, int]) -> PlantSummary:
     return PlantSummary(conductance, seed, plant_tissue.block_open_fraction(sweep, cal.PROPAGATION_FAILURE_FRACTION))
 
 
-def plant_claims(summaries: Sequence[PlantSummary]) -> dict[str, bool]:
-    by_conductance = {
+def blocks_by_conductance(summaries: Sequence[PlantSummary]) -> dict[float, list[float | None]]:
+    return {
         conductance: [s.block_open_fraction for s in summaries if s.junction_conductance == conductance]
         for conductance in cal.PLANT_JUNCTION_CONDUCTANCES
         if any(s.junction_conductance == conductance for s in summaries)
     }
-    blocks = [value for values in by_conductance.values() for value in values]
+
+
+def never_below_bond_threshold(blocks: Sequence[float | None]) -> bool:
+    return None not in blocks and all(value >= plant_tissue.SQUARE_LATTICE_BOND_THRESHOLD for value in blocks)
+
+
+def block_falls_with_conductance(by_conductance: dict[float, list[float | None]]) -> bool:
     means = [statistics.fmean(values) for values in by_conductance.values() if None not in values]
+    return len(means) == len(by_conductance) and all(earlier > later for earlier, later in zip(means, means[1:]))
+
+
+def plant_claims(summaries: Sequence[PlantSummary]) -> dict[str, bool]:
+    by_conductance = blocks_by_conductance(summaries)
+    blocks = [value for values in by_conductance.values() for value in values]
     return {
         "Propagation is blocked in every run": None not in blocks,
-        "Block never occurs below the bond-percolation threshold (1/2)": None not in blocks
-        and all(value >= plant_tissue.SQUARE_LATTICE_BOND_THRESHOLD for value in blocks),
-        "Block point falls as junction conductance rises": len(means) == len(by_conductance)
-        and all(earlier > later for earlier, later in zip(means, means[1:])),
+        "Block never occurs below the bond-percolation threshold (1/2)": never_below_bond_threshold(blocks),
+        "Block point falls as junction conductance rises": block_falls_with_conductance(by_conductance),
     }
 
 

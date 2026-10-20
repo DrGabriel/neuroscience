@@ -45,12 +45,23 @@ def file_sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def is_simulator_source(path: Path) -> bool:
+    """In the simulator directory or one of its packages."""
+    return SIMULATOR_DIRECTORY in path.parents
+
+
+def source_name(path: Path) -> str:
+    """A module's name in reports: its path from the simulator directory, which is its file name at the top level."""
+    return path.relative_to(SIMULATOR_DIRECTORY).as_posix()
+
+
 def loaded_sources() -> tuple[Path, ...]:
-    """Every simulator module imported by the running study, so the hashes cover all code that ran."""
+    """Every simulator module imported by the running study, including those of its packages, so the hashes cover
+    all code that ran."""
     paths = {
         Path(module.__file__).resolve()
         for module in list(sys.modules.values())
-        if getattr(module, "__file__", None) and Path(module.__file__).resolve().parent == SIMULATOR_DIRECTORY
+        if getattr(module, "__file__", None) and is_simulator_source(Path(module.__file__).resolve())
     }
     return tuple(sorted(paths))
 
@@ -72,7 +83,7 @@ def source_record(source_files: Sequence[Path], captured: str) -> dict[str, obje
     return {
         "git_commit": command_output(["git", "-C", str(repository), "rev-parse", "HEAD"]),
         "git_working_tree_dirty": bool(command_output(["git", "-C", str(repository), "status", "--porcelain", "--", "*.py"])),
-        "sha256": {path.name: file_sha256(path) for path in source_files},
+        "sha256": {source_name(path): file_sha256(path) for path in source_files},
         "captured": captured,
     }
 
@@ -86,7 +97,7 @@ def record_launch() -> None:
 def collect(source_files: Sequence[Path], packages: Sequence[str] = ()) -> dict[str, object]:
     hardware = {key: command_output(["sysctl", "-n", key]) for key in SYSCTL_KEYS}
     memory_bytes = hardware["hw.memsize"]
-    launched = dict(_LAUNCH) if {path.name for path in source_files} <= set(_LAUNCH.get("sha256", {})) else None
+    launched = dict(_LAUNCH) if {source_name(path) for path in source_files} <= set(_LAUNCH.get("sha256", {})) else None
     return {
         "hardware": hardware,
         "memory_gibibytes": int(memory_bytes) / BYTES_PER_GIBIBYTE if memory_bytes.isdigit() else memory_bytes,

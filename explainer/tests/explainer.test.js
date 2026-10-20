@@ -357,3 +357,103 @@ test("every report in the results archive has a study name in every language_reg
   }
 });
 
+
+// ---- The paper's verdicts, read by each study's pass rule (paper, Section 6 and Section 10, items 25 and 28) ----
+
+const realIndex = () => new OutcomeIndex(data.outcomes, data.publicLabels);
+const paperVerdict = (reference) => realIndex().find(reference).paper.verdict;
+const { PaperVerdict, verdictText } = globalThis.DPC;
+
+test("a passed pre-specified test is not shown as held in some runs_Regression", () => {
+  // T1c held in 16/20, 6/6 and 20/20 runs: the share-of-runs mark said "some", the same as the failed K2a.
+  assert.equal(paperVerdict("prespecified:P1c"), PaperVerdict.PASSED);
+  assert.equal(paperVerdict("prespecified:K2a"), PaperVerdict.FAILED);
+  assert.notEqual(paperVerdict("prespecified:P1c"), paperVerdict("prespecified:K2a"));
+});
+
+test("checks that could not fail at the chosen maxima say so_Regression", () => {
+  for (const reference of ["validation:C1", "species:P2a", "species:P2b"]) assert.equal(paperVerdict(reference), PaperVerdict.COULD_NOT_FAIL, reference);
+});
+
+test("C4, C5 and C6 are consistency checks, as the paper's Section 6 now classes them_Regression", () => {
+  for (const reference of ["validation:C4", "validation:C5", "validation:C6", "validation:C2", "glia:M1"]) assert.equal(paperVerdict(reference), PaperVerdict.CONSISTENCY, reference);
+  assert.ok(realIndex().find("validation:C4").paper.note, "C4 keeps its note about the one run that missed the rule");
+});
+
+test("a percolation test holds only in every run at every size", () => {
+  const base = { report: "validation_full_x.json", study: "validation", label: "full", section: "claims", identifier: "C9", statement: "s", kind: "test" };
+  const index = new OutcomeIndex([{ ...base, group: "N = 302", holding: 19, applicable: 20 }, { ...base, group: "N = 1,000", holding: 20, applicable: 20 }]);
+  assert.equal(index.find("validation:C9").paper.verdict, PaperVerdict.FAILED);
+});
+
+test("the pre-specified studies P4b and K1c appear in the ledger with the paper's verdicts_Regression", () => {
+  for (const identifier of ["L1", "L3", "L4"]) assert.equal(paperVerdict(`learned_timing:${identifier}`), PaperVerdict.FAILED, identifier);
+  assert.equal(paperVerdict("learned_timing:L2"), PaperVerdict.PASSED);
+  const k1c = realIndex().find("disconnection:K1c");
+  assert.equal(k1c.paper.verdict, PaperVerdict.MIXED);
+  assert.deepEqual(k1c.groups.map((group) => group.groupVerdict), ["passes", "not evaluable"]);
+  assert.match(verdictText(k1c), /C\. elegans: Passed; Human: Not evaluable/);
+});
+
+test("an observation whose desired outcome is no run says what was expected_Regression", () => {
+  const rat = realIndex().find("validation:O3");
+  assert.equal(rat.paper.verdict, PaperVerdict.OBSERVATION);
+  assert.equal(rat.holding, 0);
+  assert.equal(rat.paper.metExpectation, true);
+  assert.match(verdictText(rat), /expected in no run/);
+});
+
+test("studies without a pass rule are reported as counts unless the paper states a verdict", () => {
+  assert.equal(paperVerdict("species:P3"), PaperVerdict.COUNTS);
+  assert.equal(paperVerdict("species:K1"), PaperVerdict.FAILED);
+  assert.equal(paperVerdict("congestion:W1"), PaperVerdict.FAILED);
+  assert.equal(paperVerdict("congestion:confirmatory:W1"), PaperVerdict.FAILED);
+});
+
+test("every exported outcome gets a paper verdict with a label and a tooltip in every language", () => {
+  const { registry } = globalThis.DPC;
+  for (const entry of realIndex().entries.values()) {
+    assert.ok(Object.values(PaperVerdict).includes(entry.paper.verdict), `${entry.study}:${entry.identifier}`);
+  }
+  for (const [code, locale] of registry) {
+    for (const key of ["paperPassed", "paperFailed", "tipCouldNotFail", "tipConsistency", "ruleReported"]) assert.ok(key in locale.messages, `${code}: ${key}`);
+  }
+});
+
+// ---- Other behaviour fixed after the hostile review ----
+
+test("the species chart has a text description for screen readers_Regression", () => {
+  const rows = data.thresholds.organisms.map((row) => ({ label: row.organism, formula: row.quorum_threshold_formula, measured: row.quorum_threshold_measured_mean, directed: row.quorum_threshold_directed_mean }));
+  const text = globalThis.DPC.describeThresholds(rows);
+  for (const row of rows) assert.ok(text.includes(row.label), row.label);
+  assert.ok(text.includes(globalThis.DPC.fixed(rows[0].measured, 3)));
+});
+
+test("averaged sweep ratios summarise only sweeps that lost and regained quorum", () => {
+  const { ratioSummary } = globalThis.DPC;
+  const summary = ratioSummary([{ lostAt: 1.4, regainedAt: 1.35 }, { lostAt: 1.4, regainedAt: 1.4 }, { lostAt: 1.4, regainedAt: null }, { lostAt: null, regainedAt: null }]);
+  assert.equal(summary.count, 2);
+  assert.equal(summary.sweeps, 4);
+  assert.ok(Math.abs(summary.low - 1) < TOLERANCE && Math.abs(summary.high - 1.4 / 1.35) < TOLERANCE);
+  assert.equal(ratioSummary([{ lostAt: null, regainedAt: null }]), null);
+});
+
+test("an off-screen sweep matches the dose plan and reads the same transitions as the visible one", () => {
+  const { sweepPoints } = globalThis.DPC;
+  const plan = new SweepPlan({ maxConcentration: 2.5, step: 0.5, cyclesPerStep: 2 });
+  const points = sweepPoints(new IntegrationCycles(new Network(data.network), 3), models[FaultKind.OMISSION], plan);
+  assert.deepEqual(points.map((point) => point.concentration), Array.from(plan.steps()).map((step) => step.concentration));
+  assert.ok(points[0].share > 0.5 && points[Math.floor(points.length / 2)].share < 0.5);
+});
+
+test("no user-facing text in any language uses an em dash_Regression", () => {
+  for (const [code, locale] of globalThis.DPC.registry) {
+    for (const [key, text] of [...Object.entries(locale.messages), ...Object.entries(locale.content), ["notice", locale.notice ?? ""]]) assert.ok(!text.includes("—"), `${code}: ${key}`);
+  }
+});
+
+test("every language says the predictions in plain words first, one lead per prediction", () => {
+  for (const [code, locale] of globalThis.DPC.registry) {
+    for (const prediction of data.predictions["en-GB"]) assert.ok(`predictionLead${prediction.number}` in locale.messages, `${code}: ${prediction.number}`);
+  }
+});

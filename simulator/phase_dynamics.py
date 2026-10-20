@@ -43,6 +43,9 @@ from dpc_simulator import AnaestheticAgent, ConcentrationGrid
 
 MILLISECONDS_PER_SECOND = 1000.0
 FULL_CYCLE_RADIANS = 2 * np.pi
+# For n uniformly random phases the resultant length |mean e^{iθ}| is Rayleigh-distributed with mean square 1 / n,
+# so its mean is sqrt(RAYLEIGH_MEAN_SQUARED / n).
+RAYLEIGH_MEAN_SQUARED = np.pi / 4
 
 
 # ---------------------------------------------------------------------------
@@ -93,6 +96,9 @@ class JitterScaling(Enum):
     FEEDBACK_CONNECTIONS = "feedback connections"
     # Control for K2: as many connections as are feedback, drawn at random for each seed.
     MATCHED_RANDOM_CONNECTIONS = "random connections, as many as feedback"
+    # Control for the sensory-pathway condition: as many connections as leave the sensory populations, drawn at
+    # random for each seed, so that a result specific to the sensory pathways cannot arise from the count alone.
+    MATCHED_RANDOM_SENSORY_OUTPUTS = "random connections, as many as leave the sensory populations"
 
 
 class JitterDynamics(Enum):
@@ -106,6 +112,17 @@ class JitterDynamics(Enum):
     FLUCTUATING = "fluctuating"
     # Drawn once per connection: a systematic timing offset, the "clock skew" of the consensus analogy.
     FIXED = "fixed"
+
+
+class ReferenceWiring(Enum):
+    """Where each population's phase reference comes from (P5)."""
+
+    # The reference model: every population is pulled towards the phase of the global mean field, a reference
+    # that no transmission failure or timing error can reach.
+    GLOBAL_MEAN_FIELD = "global mean field"
+    # Each population is pulled towards the mean arriving phase of its transmitting inputs, carried by the same
+    # connections, with the same failures and timing errors, as the synaptic term.
+    TRANSMITTING_INPUTS = "mean phase of transmitting inputs"
 
 
 @dataclass(frozen=True)
@@ -134,6 +151,7 @@ class SweepDesign:
     # When set, connections are signed by this rule (connectomes.FLYWIRE_INHIBITORY_TRANSMITTERS):
     # inhibitory connections (sign -1) push phases apart instead of together.
     sign_rule: str | None = None
+    reference_wiring: ReferenceWiring = ReferenceWiring.GLOBAL_MEAN_FIELD
 
 
 # ---------------------------------------------------------------------------
@@ -163,8 +181,8 @@ class ChanceCoherence:
 
     @classmethod
     def of(cls, node_count: int, module_sizes: np.ndarray) -> ChanceCoherence:
-        local = float((module_sizes * np.sqrt(np.pi / (4 * module_sizes))).sum() / module_sizes.sum())
-        return cls(float(np.sqrt(np.pi / (4 * node_count))), local)
+        local = float((module_sizes * np.sqrt(RAYLEIGH_MEAN_SQUARED / module_sizes)).sum() / module_sizes.sum())
+        return cls(float(np.sqrt(RAYLEIGH_MEAN_SQUARED / node_count)), local)
 
 
 @dataclass(frozen=True)
@@ -288,19 +306,29 @@ def conduction_delays_ms(connectome: Connectome, design: SweepDesign) -> np.ndar
 MATCHED_RANDOM_STREAM = 2
 
 
+def sensory_outputs(connectome: Connectome) -> np.ndarray:
+    """Mask of the connections that leave a sensory population."""
+    return np.isin(connectome.sources, connectome.sensory_nodes)
+
+
+def matched_random_connections(connectome: Connectome, count: int, seed: int) -> np.ndarray:
+    """count connections drawn at random, from a stream of their own so the seed's other draws are unchanged."""
+    return connectome.random_connections(count, np.random.default_rng([seed, MATCHED_RANDOM_STREAM]))
+
+
 def jitter_weights(connectome: Connectome, scaling: JitterScaling, seed: int) -> tuple[np.ndarray, np.ndarray]:
     """Per-connection multipliers for the baseline jitter and for the agent's added jitter."""
     uniform = np.ones(connectome.edge_count)
     if scaling is JitterScaling.UNIFORM:
         return uniform, uniform
     if scaling is JitterScaling.SENSORY_PATHWAYS:
-        return uniform, np.isin(connectome.sources, connectome.sensory_nodes).astype(float)
+        return uniform, sensory_outputs(connectome).astype(float)
     if scaling is JitterScaling.FEEDBACK_CONNECTIONS:
         return uniform, connectome.feedback_connections().astype(float)
     if scaling is JitterScaling.MATCHED_RANDOM_CONNECTIONS:
-        count = int(connectome.feedback_connections().sum())
-        rng = np.random.default_rng([seed, MATCHED_RANDOM_STREAM])
-        return uniform, connectome.random_connections(count, rng).astype(float)
+        return uniform, matched_random_connections(connectome, int(connectome.feedback_connections().sum()), seed).astype(float)
+    if scaling is JitterScaling.MATCHED_RANDOM_SENSORY_OUTPUTS:
+        return uniform, matched_random_connections(connectome, int(sensory_outputs(connectome).sum()), seed).astype(float)
     if connectome.lengths_mm is None:
         raise ValueError(f"{connectome.name} has no tract lengths for {scaling.value} jitter")
     lengths = connectome.lengths_mm.astype(float)
@@ -375,24 +403,51 @@ class ConnectionTiming:
     expectation: ArrivalExpectation | None = None
 
 
+@dataclass(frozen=True)
+class SynapticInputs:
+    """The connections that transmit at one concentration, with what shapes the timing of their signals."""
+
+    connectivity: ImpairedConnectivity
+    timing: ConnectionTiming
+
+
 class SynapticDrive:
     """Input from connected populations, normalised by each population's intact in-strength."""
 
-    def __init__(self, connectome: Connectome, coupling: float, connectivity: ImpairedConnectivity, timing: ConnectionTiming) -> None:
+    def __init__(self, connectome: Connectome, coupling: float, inputs: SynapticInputs) -> None:
+        connectivity, timing = inputs.connectivity, inputs.timing
         # Normalised by the total strength of all intact inputs, excitatory and inhibitory alike.
         in_strength = np.bincount(connectome.targets, weights=connectome.weights, minlength=connectome.node_count)
         self._gain = np.divide(coupling, in_strength, out=np.zeros_like(in_strength), where=in_strength > 0)
+        self._in_strength = in_strength
         self._connectivity = connectivity
         # Converted once here rather than at every step; float32 to float64 is exact.
         self._weights = connectivity.weights.astype(np.float64)
         self._jitter, self._expectation = timing.jitter, timing.expectation
         self._fluctuates = bool(np.any(connectivity.jitter_sd > 0))
         self._has_lags = bool(np.any(connectivity.fixed_lags != 0))
+        self._latest_phase_errors: np.ndarray | None = None
+
+    @property
+    def connectivity(self) -> ImpairedConnectivity:
+        return self._connectivity
+
+    @property
+    def intact_in_strength(self) -> np.ndarray:
+        """Total weight of each population's inputs with every connection intact, the synaptic term's normalisation."""
+        return self._in_strength
+
+    @property
+    def latest_phase_errors(self) -> np.ndarray:
+        """α of each transmitting connection in the latest step. Valid only until the next step: correlated jitter
+        is updated in place."""
+        errors = self._latest_phase_errors
+        return np.zeros(self._connectivity.sources.size) if errors is None else errors
 
     def __call__(self, phases: np.ndarray, mean_field: complex, time: float) -> np.ndarray:
         c = self._connectivity
         phase_differences = phases[c.sources] - phases[c.targets]
-        phase_errors = self._phase_errors()
+        phase_errors = self._latest_phase_errors = self._phase_errors()
         if phase_errors is not None:
             phase_differences = phase_differences - phase_errors
         if self._expectation is not None:
@@ -424,6 +479,34 @@ class PhaseReferenceDrive:
         coherence = np.abs(mean_field)
         strength = self._feedback * (coherence + self._arousal * (1 - coherence))
         return strength * np.sin(np.angle(mean_field) - phases)
+
+
+class WiredReferenceDrive:
+    """P5 with a reference that travels on the connections: each population's reference is the mean phase of the
+    signals arriving from its transmitting inputs, R_i e^{iψ_i} = Σ_j w_ji m_ji e^{i(θ_j − α_ji)} / s_i, with the
+    same failures m_ji and phase errors α_ji as the synaptic term in the same step and the same intact in-strength
+    s_i, so failures weaken it as they weaken coupling. Its pull is λ [R_i + A (1 − R_i)] sin(ψ_i − θ_i), the
+    reference model's form with local quantities; a population with no transmitting input receives none.
+    Must be called after the synaptic drive in each step, whose phase errors it reads."""
+
+    def __init__(self, feedback: float, arousal: float, synaptic: SynapticDrive) -> None:
+        self._feedback = feedback
+        self._arousal = arousal
+        self._synaptic = synaptic
+        connectivity = synaptic.connectivity
+        in_strength = synaptic.intact_in_strength
+        self._weights = connectivity.weights.astype(np.float64) / in_strength[connectivity.targets]
+
+    def __call__(self, phases: np.ndarray, mean_field: complex, time: float) -> np.ndarray:
+        c = self._synaptic.connectivity
+        arriving = self._weights * np.exp(1j * (phases[c.sources] - self._synaptic.latest_phase_errors))
+        local = np.bincount(c.targets, weights=arriving.real, minlength=phases.size) + 1j * np.bincount(
+            c.targets, weights=arriving.imag, minlength=phases.size
+        )
+        coherence = np.abs(local)
+        strength = self._feedback * (coherence + self._arousal * (1 - coherence))
+        pull = strength * np.sin(np.angle(local) - phases)
+        return np.where(coherence > 0, pull, 0.0)
 
 
 class SensoryDrive:
@@ -494,6 +577,13 @@ def phase_locking_value(relative_phasors: list[complex]) -> float | None:
 # ---------------------------------------------------------------------------
 
 
+class StepObserver(Protocol):
+    """An extra measurement taken at each step of the measurement window. It sees the phases the step started from
+    and their mean field, the same values the step's drives acted on, and must change neither."""
+
+    def observe(self, phases: np.ndarray, mean_field: complex) -> None: ...
+
+
 class PhaseNetwork:
     """One realisation of the network: quenched draws shared by every concentration in a sweep."""
 
@@ -517,27 +607,53 @@ class PhaseNetwork:
         """Relax at a fixed concentration, then measure. Phases carry over between concentrations."""
         drives = self._drives_at(concentration)
         recorder = ObservableRecorder(self._connectome, self._is_sensory, self._design.stimulus)
+        observers = self._step_observers(concentration, drives)
         integration = self._design.integration
         for step in range(integration.relaxation_steps + integration.measurement_steps):
             mean_field = np.exp(1j * phases).mean()
-            phases = self._euler_maruyama_step(phases, mean_field, drives)
+            stepped = self._euler_maruyama_step(phases, mean_field, drives)
             if step >= integration.relaxation_steps:
-                recorder.record(phases, mean_field, self._time)
+                recorder.record(stepped, mean_field, self._time)
+                for observer in observers:
+                    observer.observe(phases, mean_field)
+            phases = stepped
         return phases, recorder.measurement(concentration)
 
+    def induction_emergence(self) -> InductionEmergenceRecord:
+        """Start fully synchronised (awake), raise the concentration step by step, then lower it again."""
+        ascending = self._design.grid.ascending()
+        induction, phases = follow_concentrations(self, np.zeros(self._connectome.node_count), ascending)
+        emergence, _ = follow_concentrations(self, phases, list(reversed(ascending)))
+        return InductionEmergenceRecord(
+            awake_coherence=induction[0].global_coherence,
+            quorum_fraction=self._design.quorum_fraction,
+            chance=self.chance,
+            induction=tuple(induction),
+            emergence=tuple(emergence),
+        )
+
+    def _step_observers(self, concentration: float, drives: Sequence[PhaseDrive]) -> Sequence[StepObserver]:
+        """Extra measurements taken during the measurement window; the reference model takes none."""
+        return ()
+
     def _drives_at(self, concentration: float) -> list[PhaseDrive]:
-        dynamics = self._design.dynamics
-        drives: list[PhaseDrive] = [
-            self._synaptic_drive(self._impairment.at(concentration)),
-            PhaseReferenceDrive(dynamics.reference_feedback, self._arousal_at(concentration)),
-        ]
+        synaptic = self._synaptic_drive(self._impairment.at(concentration))
+        drives: list[PhaseDrive] = [synaptic, self._reference_drive(concentration, synaptic)]
         if self._design.stimulus is not None:
             drives.append(SensoryDrive(self._is_sensory, self._design.stimulus))
         return drives
 
     def _synaptic_drive(self, connectivity: ImpairedConnectivity) -> SynapticDrive:
         jitter = TimingJitter.for_design(connectivity.jitter_sd, self._design, self._rng)
-        return SynapticDrive(self._connectome, self._design.dynamics.synaptic_coupling, connectivity, ConnectionTiming(jitter, self._expectation))
+        inputs = SynapticInputs(connectivity, ConnectionTiming(jitter, self._expectation))
+        return SynapticDrive(self._connectome, self._design.dynamics.synaptic_coupling, inputs)
+
+    def _reference_drive(self, concentration: float, synaptic: SynapticDrive) -> PhaseDrive:
+        """The reference model's global reference, or one carried by the transmitting connections (P5)."""
+        feedback, arousal = self._design.dynamics.reference_feedback, self._arousal_at(concentration)
+        if self._design.reference_wiring is ReferenceWiring.TRANSMITTING_INPUTS:
+            return WiredReferenceDrive(feedback, arousal, synaptic)
+        return PhaseReferenceDrive(feedback, arousal)
 
     def _arousal_at(self, concentration: float) -> float:
         return dpc.sustained_arousal(self._design.dynamics.arousal_level, self._design.agent, concentration)
@@ -552,17 +668,7 @@ class PhaseNetwork:
 
 def run_induction_emergence(connectome: Connectome, design: SweepDesign) -> InductionEmergenceRecord:
     """Start fully synchronised (awake), raise the concentration step by step, then lower it again."""
-    network = PhaseNetwork(connectome, design)
-    ascending = design.grid.ascending()
-    induction, phases = follow_concentrations(network, np.zeros(connectome.node_count), ascending)
-    emergence, _ = follow_concentrations(network, phases, list(reversed(ascending)))
-    return InductionEmergenceRecord(
-        awake_coherence=induction[0].global_coherence,
-        quorum_fraction=design.quorum_fraction,
-        chance=network.chance,
-        induction=tuple(induction),
-        emergence=tuple(emergence),
-    )
+    return PhaseNetwork(connectome, design).induction_emergence()
 
 
 def follow_concentrations(

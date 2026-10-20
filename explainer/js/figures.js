@@ -5,20 +5,18 @@
   const {
     FaultKind, Network, OrbitProjector, Turn, QuorumPainter, BroadcastPainter, FaultPlacementPainter, PlantTissue, PlantView,
     CycleConditions, FaultPlacement, agentJitterMasks,
-    ArrivalView, PhaseDialView, RasterView, StripView, ThresholdView, FlyMapView, SpeciesCurvesView, namedNeuropils, RandomSource, RangeControl, ChoiceGroup,
+    ArrivalView, PhaseDialView, RasterView, StripView, ThresholdView, describeThresholds, FlyMapView, SpeciesCurvesView, namedNeuropils, RandomSource, RangeControl, ChoiceGroup,
     Scene, NetworkPane, NetworkScene, DosedScene, DoseInstrument, DrugLayer, SweepPanel, NetworkViewKind, alternativeViews, conditionsWith,
-    DECIMALS, withinWindow, wrapPhase, phaseOf, percent, fixed, formatConcentration, make, t, count, quorumState, ThresholdBar,
+    DECIMALS, withinWindow, wrapPhase, phaseOf, percent, fixed, formatConcentration, speakConcentration, prefillStrip, make, t, count, quorumState, ThresholdBar,
+    OrientationMarkers, SensoryRings, REGION_WORDS, organismName,
   } = root.DPC;
 
   const quorumWord = (holds) => t(quorumState(holds));
   const ms = (value) => `${fixed(value, DECIMALS.ms)} ms`;
+  const speakMs = (value) => t("speakMs", { value: fixed(value, DECIMALS.ms) });
 
   // The waking worm, holding quorum.
   class HeroScene extends NetworkScene {
-    readings() {
-      return { giant: percent(this.pane.outcome.giantShare) };
-    }
-
     describe() {
       return t("describeHero", { giant: percent(this.pane.outcome.giantShare) });
     }
@@ -32,7 +30,7 @@
       super(scope, context);
       this.random = new RandomSource(context.seed);
       this.view = new ArrivalView(this.element("canvas"));
-      this.jitter = this.track(new RangeControl(scope, "jitter", { owner: this.owner, format: ms, onChange: () => this.step() }));
+      this.jitter = this.track(new RangeControl(scope, "jitter", { owner: this.owner, format: ms, speak: speakMs, onChange: () => this.step() }));
     }
 
     legend() {
@@ -71,7 +69,7 @@
       this.random = new RandomSource(context.seed + 1);
       this.view = new PhaseDialView(this.element("canvas"));
       this.frequency = this.track(new ChoiceGroup(scope, "frequency", { owner: this.owner, values: RhythmScene.FREQUENCIES, onChange: () => this.step() }));
-      this.jitter = this.track(new RangeControl(scope, "jitter", { owner: this.owner, format: ms, onChange: () => this.step() }));
+      this.jitter = this.track(new RangeControl(scope, "jitter", { owner: this.owner, format: ms, speak: speakMs, onChange: () => this.step() }));
       // The window is held at the share of the cycle that half of 3 ms takes at 40 Hz.
       this.windowHalfPhase = phaseOf(context.data.model.integrationWindowMs / 2, RhythmScene.REFERENCE_HZ);
     }
@@ -102,12 +100,21 @@
   class StreamingScene extends Scene {
     static POLLING_FROM = 0.25;
     static BACKOFF_FROM = 0.5;
+    static STAGE_MESSAGE = Object.freeze(["stageStreaming", "stagePolling", "stageBackoff"]);
 
     constructor(scope, context) {
       super(scope, context);
       this.random = new RandomSource(context.seed + 2);
       this.view = new RasterView(this.element("canvas"));
-      this.depth = this.track(new RangeControl(scope, "depth", { owner: this.owner, onChange: () => this.step() }));
+      this.depth = this.track(new RangeControl(scope, "depth", { owner: this.owner, speak: (depth) => t(StreamingScene.stageMessage(depth)), onChange: () => this.step() }));
+      // The named stops under the slider sit where each stage begins.
+      this.element("[data-stops]").style.setProperty("--polling-from", String(StreamingScene.POLLING_FROM));
+      this.element("[data-stops]").style.setProperty("--backoff-from", String(StreamingScene.BACKOFF_FROM));
+    }
+
+    static stageMessage(depth) {
+      if (depth < StreamingScene.POLLING_FROM) return StreamingScene.STAGE_MESSAGE[0];
+      return StreamingScene.STAGE_MESSAGE[depth <= StreamingScene.BACKOFF_FROM ? 1 : 2];
     }
 
     legend() {
@@ -138,7 +145,7 @@
         kind,
         pane: new NetworkPane({ canvas: this.element(`[data-pane="${kind}"] canvas`), network: context.network, seed: context.seed }),
       }));
-      this.dose = this.track(new RangeControl(scope, "dose", { owner: this.owner, format: formatConcentration, onChange: () => this.step() }));
+      this.dose = this.track(new RangeControl(scope, "dose", { owner: this.owner, format: formatConcentration, speak: speakConcentration, onChange: () => this.step() }));
       this.instrument = new DoseInstrument(scope, this.dose.input);
       this.drug = new DrugLayer(this.panes.map(({ pane }) => pane.view), context);
     }
@@ -167,12 +174,9 @@
       for (const { pane } of this.panes) pane.showVerdict();
     }
 
+    // One reading per pane, the same in both so they compare: the share of connections that count.
     readings() {
-      return Object.fromEntries(this.panes.flatMap(({ kind, pane }) => [
-        [`failure-${kind}`, fixed(pane.outcome.failureProbability, DECIMALS.share)],
-        [`jitter-${kind}`, ms(pane.outcome.jitterMs)],
-        [`giant-${kind}`, percent(pane.outcome.giantShare)],
-      ]));
+      return Object.fromEntries(this.panes.map(({ kind, pane }) => [`counting-${kind}`, percent(pane.outcome.expectedCoherence)]));
     }
 
     describe() {
@@ -214,15 +218,6 @@
       this.connections.show({ share: this.pane.outcome.expectedCoherence, threshold: this.measuredThreshold });
     }
 
-    readings() {
-      const outcome = this.pane.outcome;
-      return {
-        giant: percent(outcome.giantShare),
-        coherence: fixed(outcome.expectedCoherence, DECIMALS.threshold),
-        threshold: fixed(this.measuredThreshold, DECIMALS.threshold),
-      };
-    }
-
     describe() {
       const outcome = this.pane.outcome;
       return t("describeQuorum", { dose: formatConcentration(this.dose.value), giant: percent(outcome.giantShare), state: quorumWord(this.holdsQuorum()), coherence: percent(outcome.expectedCoherence), threshold: percent(this.measuredThreshold) });
@@ -241,7 +236,7 @@
       const reference = context.models.reference.feedbackJitterMs;
       this.feedback.value = String(context.data.inertia.targets.reduce((best, target) => (Math.abs(target.feedbackMs - reference) < Math.abs(best - reference) ? target.feedbackMs : best), 0));
       this.feedback.selectedOptions[0].defaultSelected = true;
-      this.sweep = new SweepPanel(this, { model: () => this.model(), controls: [this.feedback], cycles: this.pane.cycles });
+      this.sweep = new SweepPanel(this, { model: () => this.model(), comparison: () => this.model(0), controls: [this.feedback], cycles: this.pane.cycles });
       // A sweep's readings belong to the setting it ran with.
       this.feedback.addEventListener("change", () => {
         this.sweep.clear();
@@ -249,8 +244,8 @@
       });
     }
 
-    model() {
-      return this.context.models.create(FaultKind.OMISSION, { feedbackJitterMs: Number(this.feedback.value) });
+    model(feedbackJitterMs = Number(this.feedback.value)) {
+      return this.context.models.create(FaultKind.OMISSION, { feedbackJitterMs });
     }
 
     // While a sweep runs, it advances the pane's cycles itself, so the network shows the dose being swept.
@@ -272,7 +267,7 @@
     }
 
     readings() {
-      return { ...this.sweep.readings(), ratio: this.sweep.ratioReading() };
+      return { ...this.sweep.readings(), ratio: this.sweep.ratioReading(), ratioMean: this.sweep.spreadReading("chosen"), ratioNoFeedback: this.sweep.spreadReading("comparison") };
     }
 
     describe() {
@@ -287,7 +282,7 @@
     }
 
     readings() {
-      return { reach: percent(this.pane.outcome.reachShare), giant: percent(this.pane.outcome.giantShare) };
+      return { reach: percent(this.pane.outcome.reachShare) };
     }
 
     describe() {
@@ -327,10 +322,7 @@
 
     readings() {
       const exposed = this.exposedCount();
-      return {
-        giant: percent(this.pane.outcome.giantShare),
-        exposed: t("countAndShare", { count: count(exposed), share: percent(exposed / this.context.network.connectionCount) }),
-      };
+      return { exposed: t("countAndShare", { count: count(exposed), share: percent(exposed / this.context.network.connectionCount) }) };
     }
 
     describe() {
@@ -345,15 +337,21 @@
 
     constructor(scope, context) {
       super(scope, context, { painterFor: (outcome) => new QuorumPainter(outcome, context.network, { showLate: false, showSilenced: true }) });
-      this.silenced = this.track(new RangeControl(scope, "silenced", { owner: this.owner, format: percent, onChange: () => this.step() }));
+      this.silenced = this.track(new RangeControl(scope, "silenced", { owner: this.owner, format: percent, speak: (share) => t("speakSilenced", { share: percent(share) }), onChange: () => this.restartStrip() }));
       this.strip = new StripView(this.element("[data-strip]"), { capacity: SleepScene.STRIP_CAPACITY, threshold: context.models.reference.quorumFraction });
       for (const button of scope.querySelectorAll("[data-preset]")) {
         button.addEventListener("click", () => {
           this.silenced.value = context.data.sleep[SleepScene.Preset[button.dataset.preset]];
-          this.strip.clear();
-          this.step();
+          this.restartStrip();
         });
       }
+      prefillStrip(this, this.strip);
+    }
+
+    // A new setting starts a new history: the strip is refilled at that setting, then the figure moves on.
+    restartStrip() {
+      prefillStrip(this, this.strip);
+      this.step();
     }
 
     model() {
@@ -369,17 +367,13 @@
     }
 
     clear() {
-      this.strip.clear();
+      prefillStrip(this, this.strip);
     }
 
     tick() {
       super.tick();
       this.strip.push(this.pane.outcome.giantShare);
       this.strip.draw();
-    }
-
-    readings() {
-      return { giant: percent(this.pane.outcome.giantShare) };
     }
 
     describe() {
@@ -395,7 +389,7 @@
         this.sweep?.clear();
         this.showReadings();
       };
-      this.myelin = this.track(new RangeControl(scope, "myelin", { owner: this.owner, format: percent, onChange }));
+      this.myelin = this.track(new RangeControl(scope, "myelin", { owner: this.owner, format: percent, speak: (share) => t("speakMyelin", { share: percent(share) }), onChange }));
       this.microglia = this.track(new RangeControl(scope, "microglia", { owner: this.owner, format: (value) => fixed(value, DECIMALS.share), onChange }));
       this.sweep = new SweepPanel(this, { model: () => this.model(), controls: [this.myelin.input, this.microglia.input] });
     }
@@ -428,12 +422,13 @@
   // Near the threshold the giant component swings from cycle to cycle: the fluctuations of P1b.
   class EdgeScene extends DosedScene {
     static STRIP_CAPACITY = 120;
-    static SPREAD_WINDOW = 40;
 
     constructor(scope, context) {
       super(scope, context);
       this.strip = new StripView(this.element("[data-strip]"), { capacity: EdgeScene.STRIP_CAPACITY, threshold: context.models.reference.quorumFraction });
-      this.dose.input.addEventListener("input", () => this.strip.clear());
+      // After the slider's own step: the history is replaced by one run wholly at the new dose.
+      this.dose.input.addEventListener("input", () => prefillStrip(this, this.strip));
+      prefillStrip(this, this.strip);
     }
 
     tick() {
@@ -447,11 +442,12 @@
     }
 
     clear() {
-      this.strip.clear();
+      prefillStrip(this, this.strip);
     }
 
+    // Over every cycle the strip shows, so the reading and the chart describe the same window.
     readings() {
-      return { spread: fixed(this.strip.spread(EdgeScene.SPREAD_WINDOW), DECIMALS.threshold) };
+      return { spread: fixed(this.strip.spread(EdgeScene.STRIP_CAPACITY), DECIMALS.threshold) };
     }
 
     describe() {
@@ -459,16 +455,23 @@
     }
   }
 
+  // The reports name organisms in English; the page shows them in the reader's language.
+  const ORGANISM_KEY = Object.freeze({ "C. elegans": "celegans", Drosophila: "drosophila", Human: "human" });
+  const localOrganism = (name) => (name in ORGANISM_KEY ? organismName(ORGANISM_KEY[name]) : name);
+  // Diffusion imaging records no direction, so a directed threshold on the human map is not a result (paper, Section 6).
+  const WITHOUT_DIRECTION = Object.freeze(new Set(["Human"]));
+  const directedOf = (row) => (WITHOUT_DIRECTION.has(row.organism) ? null : row.quorum_threshold_directed_mean);
+
   // Quorum thresholds across species: the generating-function formula against measurement.
   class SpeciesScene extends Scene {
     constructor(scope, context) {
       super(scope, context);
       this.view = new ThresholdView(this.element("canvas"));
       const organisms = context.data.thresholds.organisms;
-      this.rows = organisms.map((row) => ({ label: row.organism, formula: row.quorum_threshold_formula, measured: row.quorum_threshold_measured_mean, directed: row.quorum_threshold_directed_mean }));
+      this.rows = organisms.map((row) => ({ label: localOrganism(row.organism), formula: row.quorum_threshold_formula, measured: row.quorum_threshold_measured_mean, directed: directedOf(row) }));
       const cells = (row) => [
-        row.organism, count(row.node_count), fixed(row.mean_degree, 1), fixed(row.quorum_threshold_formula, DECIMALS.threshold),
-        fixed(row.quorum_threshold_measured_mean, DECIMALS.threshold), fixed(row.quorum_threshold_directed_mean, DECIMALS.threshold), ms(row.critical_jitter_ms_measured),
+        localOrganism(row.organism), count(row.node_count), fixed(row.mean_degree, 1), fixed(row.quorum_threshold_formula, DECIMALS.threshold),
+        fixed(row.quorum_threshold_measured_mean, DECIMALS.threshold), directedOf(row) === null ? t("notMeasured") : fixed(row.quorum_threshold_directed_mean, DECIMALS.threshold), ms(row.critical_jitter_ms_measured),
       ];
       this.element("tbody").append(...organisms.map((row) => make("tr", {}, cells(row).map((value) => make("td", { textContent: value })))));
       // The source report is fixed: written once and marked for the results archive to turn into a link.
@@ -484,7 +487,9 @@
       return this.view.legend();
     }
 
-
+    describe() {
+      return describeThresholds(this.rows);
+    }
   }
 
   // The study's own induction curves for worm, fly and human: a reported result, nothing is simulated here.
@@ -534,10 +539,12 @@
     constructor(scope, context) {
       const network = new Network(context.data.human);
       const projector = new OrbitProjector(context.data.human.coordinates);
-      super(scope, { ...context, network }, { projector });
+      super(scope, { ...context, network }, { projector, painterFor: (outcome) => new QuorumPainter(outcome, network, { words: REGION_WORDS }) });
       this.projector = projector;
       projector.attach(this.element("[data-network]"), () => this.render());
-      this.painters = { quorum: this.pane.painter, broadcast: new BroadcastPainter(this.pane.outcome, network) };
+      this.painters = { quorum: this.pane.painter, broadcast: new BroadcastPainter(this.pane.outcome, network, { words: REGION_WORDS }) };
+      // Drawn over the regions: the hearing areas ringed, and Front, Back, Left and Right turning with the brain.
+      this.pane.view.overlays.push(new SensoryRings(network), new OrientationMarkers(projector));
       this.stimulus = this.element("[data-stimulus]");
       this.stimulus.addEventListener("change", () => {
         this.render();
@@ -557,7 +564,7 @@
     }
 
     legend() {
-      return (this.stimulus.checked ? this.painters.broadcast : this.painters.quorum).legend();
+      return [...(this.stimulus.checked ? this.painters.broadcast : this.painters.quorum).legend(), ...SensoryRings.legend()];
     }
 
     clear() {
@@ -575,7 +582,7 @@
     }
 
     readings() {
-      return { giant: percent(this.pane.outcome.giantShare), reach: percent(this.pane.outcome.reachShare) };
+      return { reach: percent(this.pane.outcome.reachShare) };
     }
 
     describe() {
@@ -586,8 +593,10 @@
   // P4 in plants: an action potential crossing excitable tissue until the agent closes enough junctions.
   class PlantScene extends Scene {
     static ANIMATED = true;
-    // One full run of the study's tissue plays over this many integration cycles of playback time.
+    // One full run of the study's tissue plays over this many integration cycles of playback time, and once it is
+    // over the stimulus repeats after this many more, while the figure is on screen.
     static RUN_IN_CYCLES = 4;
+    static REPEAT_AFTER_CYCLES = 3;
 
     constructor(scope, context) {
       super(scope, context);
@@ -596,7 +605,8 @@
       this.view = new PlantView(this.element("canvas"));
       this.conductance = this.element("[data-conductance]");
       for (const value of plant.junctionConductances) this.conductance.append(new Option(String(value), String(value)));
-      this.dose = this.track(new RangeControl(scope, "dose", { owner: this.owner, format: formatConcentration, onChange: () => this.restart() }));
+      this.dose = this.track(new RangeControl(scope, "dose", { owner: this.owner, format: formatConcentration, speak: speakConcentration, onChange: () => this.restart() }));
+      this.reducedMotion = root.matchMedia?.("(prefers-reduced-motion: reduce)") ?? { matches: false };
       this.instrument = new DoseInstrument(scope, this.dose.input);
       this.drug = new DrugLayer([this.view], context);
       this.conductance.addEventListener("change", () => this.restart());
@@ -611,6 +621,7 @@
     }
 
     restart() {
+      this.finishedForMs = 0;
       this.tissue.start({ concentration: this.dose.value, conductance: Number(this.conductance.value) });
       this.drug.show(this.tissue.agent, this.dose);
       this.showReadings();
@@ -619,13 +630,20 @@
 
     advanceModel(dtMs, cycleMs) {
       if (this.tissue.finished) {
-        this.render();
+        this.repeatWhenDue(dtMs, cycleMs);
         return;
       }
       this.pendingSteps += (dtMs * this.tissue.spec.durationSteps) / (PlantScene.RUN_IN_CYCLES * cycleMs);
       for (; this.pendingSteps >= 1 && !this.tissue.finished; this.pendingSteps -= 1) this.tissue.step();
       this.showReadings();
       this.render();
+    }
+
+    // Playback only advances figures on screen, so the stimulus repeats only while the reader can see it.
+    repeatWhenDue(dtMs, cycleMs) {
+      this.finishedForMs += dtMs;
+      if (!this.reducedMotion.matches && this.finishedForMs >= PlantScene.REPEAT_AFTER_CYCLES * cycleMs) this.restart();
+      else this.render();
     }
 
     render() {

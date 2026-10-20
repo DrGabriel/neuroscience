@@ -45,6 +45,9 @@ Run = TypeVar("Run")
 Task = TypeVar("Task")
 Result = TypeVar("Result")
 SECONDS_PER_MINUTE = 60
+PERCENT = 100
+# How much of an unreproducible task description a warning quotes.
+DESCRIPTION_PREVIEW_CHARS = 80
 
 
 @dataclass(frozen=True)
@@ -68,7 +71,7 @@ def code_fingerprint() -> str:
     """
     digest = hashlib.sha256(sys.version.encode())
     for path in provenance.loaded_sources():
-        digest.update(path.name.encode())
+        digest.update(provenance.source_name(path).encode())
         digest.update(path.read_bytes())
     return digest.hexdigest()
 
@@ -91,7 +94,7 @@ class Checkpoint:
         """None when the task's description is not reproducible, so its result is never reused."""
         description = repr(task)
         if " at 0x" in description or "..." in description:
-            print(f"[{self.path.stem}] task cannot be resumed (its description is not reproducible): {description[:80]}", file=sys.stderr)
+            print(f"[{self.path.stem}] task cannot be resumed (its description is not reproducible): {description[:DESCRIPTION_PREVIEW_CHARS]}", file=sys.stderr)
             return None
         return hashlib.sha256(f"{self._fingerprint}|{work.__module__}.{work.__qualname__}|{description}".encode()).hexdigest()
 
@@ -114,6 +117,13 @@ class Checkpoint:
         with self.path.open("ab") as handle:
             pickle.dump((key, result), handle)
 
+    def write_summary(self, run: ParallelRun[object], completed: list[object], total: int) -> None:
+        """The partial results so far as Markdown, replaced by the final report when the run ends."""
+        stamp = datetime.now(timezone.utc).isoformat(timespec="seconds")
+        header = f"## Live results: {run.label}\n\n{len(completed)}/{total} tasks completed, updated {stamp}. Partial results; the final report replaces this file.\n\n"
+        self.directory.mkdir(parents=True, exist_ok=True)
+        self.summary_path.write_text(header + run.live_markdown(completed))
+
     def clear(self) -> None:
         self.path.unlink(missing_ok=True)
         self.summary_path.unlink(missing_ok=True)
@@ -124,6 +134,36 @@ class Checkpoint:
 _CHECKPOINTS_THIS_PROCESS: list[Checkpoint] = []
 
 
+@dataclass
+class _Batch(Generic[Task, Result]):
+    """The tasks of one parallel run, their checkpoint keys, the results known so far and the tasks still to run."""
+
+    checkpoint: Checkpoint
+    tasks: Sequence[Task]
+    keys: list[str | None]
+    results: list[Result | None]
+    pending: list[int]
+
+    @classmethod
+    def resume(cls, checkpoint: Checkpoint, work: Callable[[Task], Result], tasks: Sequence[Task]) -> "_Batch[Task, Result]":
+        """Reuses every result an earlier, interrupted run of identical code saved."""
+        keys = [checkpoint.key(work, task) for task in tasks]
+        saved = checkpoint.load()
+        results = [saved.get(key) if key is not None else None for key in keys]
+        return cls(checkpoint, tasks, keys, results, [index for index, result in enumerate(results) if result is None])
+
+    @property
+    def reused(self) -> int:
+        return len(self.tasks) - len(self.pending)
+
+    def record(self, index: int, result: Result) -> None:
+        self.results[index] = result
+        self.checkpoint.save(self.keys[index], result)
+
+    def completed(self) -> list[Result]:
+        return [result for result in self.results if result is not None]
+
+
 def run_in_parallel(work: Callable[[Task], Result], tasks: Sequence[Task], run: ParallelRun[Result]) -> list[Result]:
     """Run tasks across processes and return results in task order, saving each result as it completes.
 
@@ -132,47 +172,50 @@ def run_in_parallel(work: Callable[[Task], Result], tasks: Sequence[Task], run: 
     """
     checkpoint = Checkpoint(run.label)
     _CHECKPOINTS_THIS_PROCESS.append(checkpoint)
-    keys = [checkpoint.key(work, task) for task in tasks]
-    saved = checkpoint.load()
-    results: list[Result | None] = [saved.get(key) if key is not None else None for key in keys]
-    pending = [index for index, result in enumerate(results) if result is None]
-    reused = len(tasks) - len(pending)
-    if reused:
-        print(f"[{run.label}] resuming: {reused}/{len(tasks)} tasks already completed", file=sys.stderr, flush=True)
+    batch = _Batch.resume(checkpoint, work, tasks)
+    if batch.reused:
+        print(f"[{run.label}] resuming: {batch.reused}/{len(tasks)} tasks already completed", file=sys.stderr, flush=True)
+    _run_pending(work, batch, run)
+    return batch.results  # type: ignore[return-value]
+
+
+def _run_pending(work: Callable[[Task], Result], batch: _Batch[Task, Result], run: ParallelRun[Result]) -> None:
     started = time.monotonic()
     last_summary = 0.0
     with ProcessPoolExecutor(max_workers=run.workers) as executor:
-        futures = {executor.submit(work, tasks[index]): index for index in pending}
+        futures = {executor.submit(work, batch.tasks[index]): index for index in batch.pending}
         for done, future in enumerate(as_completed(futures), start=1):
-            index = futures[future]
-            results[index] = future.result()
-            checkpoint.save(keys[index], results[index])
+            batch.record(futures[future], future.result())
             elapsed = time.monotonic() - started
-            report_progress(run.label, reused + done, len(tasks), elapsed, done)
-            if run.live_markdown and (done == len(pending) or elapsed - last_summary >= LIVE_REPORT_INTERVAL_SECONDS):
-                write_live_summary(checkpoint, run, [r for r in results if r is not None], len(tasks))
+            report_progress(Progress(run.label, batch.reused + done, len(batch.tasks), elapsed, computed=done))
+            if _summary_due(run, finished=done == len(batch.pending), since_last=elapsed - last_summary):
+                batch.checkpoint.write_summary(run, batch.completed(), len(batch.tasks))
                 last_summary = elapsed
-    return results  # type: ignore[return-value]
 
 
-def write_live_summary(checkpoint: Checkpoint, run: ParallelRun[Result], completed: list[Result], total: int) -> None:
-    stamp = datetime.now(timezone.utc).isoformat(timespec="seconds")
-    header = f"## Live results: {run.label}\n\n{len(completed)}/{total} tasks completed, updated {stamp}. Partial results; the final report replaces this file.\n\n"
-    checkpoint.directory.mkdir(parents=True, exist_ok=True)
-    checkpoint.summary_path.write_text(header + run.live_markdown(completed))
+def _summary_due(run: ParallelRun[Result], *, finished: bool, since_last: float) -> bool:
+    return run.live_markdown is not None and (finished or since_last >= LIVE_REPORT_INTERVAL_SECONDS)
 
 
-def report_progress(label: str, done: int, total: int, elapsed_seconds: float, computed: int | None = None) -> None:
-    """One line on standard error per completed task: count, percentage, elapsed and estimated remaining time.
+@dataclass(frozen=True)
+class Progress:
+    """How far a batch has got. computed is how many of the done tasks ran in this process, which sets the pace
+    estimate when earlier ones were reused from a checkpoint."""
 
-    computed is how many of the done tasks ran in this process, which sets the pace estimate when
-    earlier ones were reused from a checkpoint.
-    """
-    pace = elapsed_seconds / (computed or done)
-    remaining_seconds = pace * (total - done)
+    label: str
+    done: int
+    total: int
+    elapsed_seconds: float
+    computed: int | None = None
+
+
+def report_progress(progress: Progress) -> None:
+    """One line on standard error per completed task: count, percentage, elapsed and estimated remaining time."""
+    pace = progress.elapsed_seconds / (progress.computed or progress.done)
+    remaining_seconds = pace * (progress.total - progress.done)
     print(
-        f"[{label}] {done}/{total} ({100 * done / total:.0f}%) · "
-        f"{elapsed_seconds / SECONDS_PER_MINUTE:.1f} min elapsed · about {remaining_seconds / SECONDS_PER_MINUTE:.1f} min left",
+        f"[{progress.label}] {progress.done}/{progress.total} ({PERCENT * progress.done / progress.total:.0f}%) · "
+        f"{progress.elapsed_seconds / SECONDS_PER_MINUTE:.1f} min elapsed · about {remaining_seconds / SECONDS_PER_MINUTE:.1f} min left",
         file=sys.stderr,
         flush=True,
     )
@@ -250,7 +293,7 @@ class CheckOutcome:
         if self.runs_applicable == 0:
             return NOT_APPLICABLE
         low, high = wilson_interval(self.runs_holding, self.runs_applicable)
-        return f"{self.runs_holding}/{self.runs_applicable} ({100 * low:.0f}–{100 * high:.0f}%)"
+        return f"{self.runs_holding}/{self.runs_applicable} ({PERCENT * low:.0f}–{PERCENT * high:.0f}%)"
 
 
 def outcome_sections(sections: Sequence[tuple[str, Sequence[CheckOutcome]]], group_names: Sequence[str]) -> str:
@@ -264,6 +307,7 @@ def wilson_interval(successes: int, trials: int) -> tuple[float, float]:
     share = successes / trials
     denominator = 1 + z**2 / trials
     centre = (share + z**2 / (2 * trials)) / denominator
+    # The 2 and 4 belong to the published formula.
     half_width = z * math.sqrt(share * (1 - share) / trials + z**2 / (4 * trials**2)) / denominator
     return max(0.0, centre - half_width), min(1.0, centre + half_width)
 

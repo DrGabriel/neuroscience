@@ -3,7 +3,7 @@
 (function (root) {
   "use strict";
 
-  const { Token, Swatch, LegendGroup, labelled, palette, Surface, scale, polyline, make, t, count, organismName, drawShareAxes, AxisTitle } = root.DPC;
+  const { Token, Swatch, LegendGroup, labelled, palette, Surface, scale, polyline, make, t, count, organismName, drawShareAxes, AxisTitle, dashedRule, DASH, fixed } = root.DPC;
 
   const SIDE = Object.freeze({ LEFT: "_L", RIGHT: "_R" });
   const UNASSIGNED = "UNASGD";
@@ -54,8 +54,13 @@
     static MIN_RADIUS = 2.5;
     static HIT_SLACK_PX = 4;
     static LABEL_GAP_PX = 3;
-    static FONT_PX = 10;
+    static FONT_PX = 12;
     static HOVER_RING_PX = 3;
+    // The key under the map lists this many neuropils, largest first, so their names need no pointer.
+    static KEY_SIZE = 10;
+    // On a canvas narrower than this, only the largest neuropils are labelled, so labels do not run into each other.
+    static NARROW_PX = 520;
+    static NARROW_LABELS = 16;
 
     constructor(canvas, fly) {
       this.surface = new Surface(canvas);
@@ -70,7 +75,14 @@
       canvas.addEventListener("pointermove", (event) => this._hover(event.offsetX, event.offsetY));
       canvas.addEventListener("pointerleave", () => this._hover(null, null));
       this.readout = make("p", { className: "fly-readout mono", textContent: t("flyHoverHint") });
-      canvas.after(this.readout);
+      this.bySize = fly.neuropils.map((_, node) => node).filter((node) => fly.neuropils[node] !== UNASSIGNED).sort((a, b) => fly.neuronCounts[b] - fly.neuronCounts[a]);
+      canvas.after(this.readout, this._key());
+    }
+
+    // The largest neuropils in words: name, size and strongest output, readable without pointing at the map.
+    _key() {
+      const items = this.bySize.slice(0, FlyMapView.KEY_SIZE).map((node) => make("li", { textContent: this._describe(node) }));
+      return make("div", { className: "fly-key" }, [make("p", { className: "fly-key-title", textContent: t("flyKeyTitle", { count: FlyMapView.KEY_SIZE }) }), make("ol", {}, items)]);
     }
 
     legend() {
@@ -105,6 +117,7 @@
 
     _drawNeuropils(context, width) {
       const colours = { sensory: palette.get(Token.INK), other: palette.get(Token.MUTED), ring: palette.get(Token.PAPER) };
+      const labelled = new Set(width < FlyMapView.NARROW_PX ? this.bySize.slice(0, FlyMapView.NARROW_LABELS) : this.bySize);
       context.font = `${FlyMapView.FONT_PX}px ${palette.get(Token.FONT_DATA)}`;
       context.textBaseline = "middle";
       this.fly.neuropils.forEach((name, node) => {
@@ -118,7 +131,7 @@
         context.strokeStyle = colours.ring;
         context.lineWidth = node === this.hovered ? FlyMapView.HOVER_RING_PX : 1;
         context.stroke();
-        if (name === UNASSIGNED) return;
+        if (!labelled.has(node) && node !== this.hovered) return;
         context.fillStyle = colours.other;
         context.textAlign = onLeft ? "right" : "left";
         context.fillText(name, x + (radius + FlyMapView.LABEL_GAP_PX) * (onLeft ? -1 : 1), y);
@@ -162,19 +175,25 @@
     static LABEL_GAP_PX = 18;
     static LABEL_OFFSET_PX = 6;
 
+    // Coherence relative to awake, so half the awake coherence is a fixed line: the phase model's quorum line.
+    static HALF_AWAKE = 0.5;
+
     constructor(canvas, speciesCurves) {
       this.surface = new Surface(canvas);
       this.curves = speciesCurves.curves;
     }
 
     legend() {
-      return labelled(this.curves.map((curve) => ({
-        group: LegendGroup.CHART,
-        swatch: CURVE_STYLE[curve.organism].swatch,
-        token: Token.INK,
-        message: "speciesCurveEntry",
-        params: { organism: organismName(curve.organism), seeds: curve.seeds },
-      })));
+      return labelled([
+        ...this.curves.map((curve) => ({
+          group: LegendGroup.CHART,
+          swatch: CURVE_STYLE[curve.organism].swatch,
+          token: Token.INK,
+          message: "speciesCurveEntry",
+          params: { organism: organismName(curve.organism), seeds: curve.seeds },
+        })),
+        { group: LegendGroup.CHART, swatch: Swatch.DOTTED, token: Token.QUORUM, message: "legendHalfAwake", params: { share: fixed(SpeciesCurvesView.HALF_AWAKE, 1) } },
+      ]);
     }
 
     draw() {
@@ -184,6 +203,7 @@
       const px = scale([0, maxConcentration], [margin.left, width - margin.right]);
       const py = scale([0, 1], [height - margin.bottom, margin.top]);
       drawShareAxes(context, { px, py, margin, width, height, maxConcentration, shareTitle: AxisTitle.COHERENCE });
+      dashedRule(context, { x0: margin.left, x1: width - margin.right, y: py(SpeciesCurvesView.HALF_AWAKE), colour: palette.get(Token.QUORUM), dash: DASH.threshold });
       context.strokeStyle = context.fillStyle = palette.get(Token.INK);
       context.lineWidth = 2;
       const ends = this.curves.map((curve) => {

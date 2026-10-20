@@ -3,13 +3,17 @@
   "use strict";
 
   const {
-    FaultKind, IntegrationCycles, CycleConditions, transitionPoints, NetworkView, IslandsView, MatrixView, CycleBar, RingProjector,
+    FaultKind, IntegrationCycles, CycleConditions, transitionPoints, sweepPoints, ratioSummary, NetworkView, IslandsView, MatrixView, CycleBar, RingProjector,
     QuorumPainter, QuorumVerdict, RangeControl, ChoiceGroup, SweepRunner, SweepPlan, TraceView, DoseCurveView, DrugCloud, required, fixed, percent, t, make, renderLegend,
   } = root.DPC;
 
   const DECIMALS = Object.freeze({ share: 2, concentration: 2, ms: 1, ratio: 2, threshold: 3 });
   const SWEEP_PLAN = new SweepPlan({ maxConcentration: 2.5, step: 0.05, cyclesPerStep: 6 });
   const formatConcentration = (value) => fixed(value, DECIMALS.concentration);
+  // What a screen reader hears for a dose slider: the number with its unit in words.
+  const speakConcentration = (value) => t("speakDose", { value: formatConcentration(value) });
+  const PHONE_QUERY = "(max-width: 760px)";
+  const nextTask = () => new Promise((resolve) => root.setTimeout(resolve, 0));
 
   class Scene {
     // Scenes whose figure changes between cycles (signals in flight) set this, and are redrawn every frame.
@@ -239,16 +243,37 @@
     }
   }
 
+  // On phones a dosed figure's slider and dose curve move to just under the network, above the verdict, so the reader
+  // can move the dose and watch the network at once; on wider screens they go back to the panel beside it.
+  class PhoneDoseLayout {
+    constructor({ nodes, anchor }) {
+      this.anchor = anchor;
+      this.moves = nodes.filter(Boolean).map((node) => ({ node, home: node.parentNode.insertBefore(document.createComment("dose control"), node) }));
+      const query = root.matchMedia?.(PHONE_QUERY);
+      if (!query) return;
+      query.addEventListener("change", () => this.place(query.matches));
+      this.place(query.matches);
+    }
+
+    place(phone) {
+      for (const { node, home } of this.moves) {
+        if (phone) this.anchor.before(node);
+        else home.after(node);
+      }
+    }
+  }
+
   // A network scene with a dose slider and, where the figure offers one, a choice of fault.
   class DosedScene extends NetworkScene {
     constructor(scope, context, paneOptions) {
       super(scope, context, paneOptions);
-      this.dose = this.track(new RangeControl(scope, "dose", { owner: this.owner, format: formatConcentration, onChange: () => this.step() }));
+      this.dose = this.track(new RangeControl(scope, "dose", { owner: this.owner, format: formatConcentration, speak: speakConcentration, onChange: () => this.step() }));
       this.fault = scope.querySelector('[data-choice="fault"]')
         ? this.track(new ChoiceGroup(scope, "fault", { owner: this.owner, values: FaultKind, onChange: () => this.step() }))
         : { value: FaultKind.OMISSION };
       this.instrument = new DoseInstrument(scope, this.dose.input);
       this.drug = new DrugLayer([this.pane.view], context);
+      new PhoneDoseLayout({ nodes: [this.dose.input.closest(".control"), this.instrument.element], anchor: this.pane.verdict.element });
     }
 
     tick() {
@@ -275,6 +300,7 @@
   class DoseInstrument {
     constructor(scope, input) {
       const canvas = scope.querySelector("[data-dose-curve]");
+      this.element = canvas?.closest(".dose-instrument") ?? null;
       this.view = canvas ? new DoseCurveView(canvas, { maxConcentration: Number(input.max) }) : null;
     }
 
@@ -291,16 +317,45 @@
   // Where a sweep stands: not started, under way, or over. Readings show each transition the moment it is found.
   const SweepState = Object.freeze({ IDLE: "IDLE", RUNNING: "RUNNING", DONE: "DONE" });
 
+  // Loss-to-recovery ratios over several sweeps on fresh seeds, run off screen one sweep per task so the page keeps
+  // responding: one visible sweep on a 300-cell network says little, because its ratio moves from seed to seed.
+  class SweepSpread {
+    static SWEEPS = 8;
+
+    constructor({ network, seed }) {
+      Object.assign(this, { network, seed });
+    }
+
+    async measure(model) {
+      const transitions = [];
+      for (let k = 1; k <= SweepSpread.SWEEPS; k++) {
+        await nextTask();
+        const points = sweepPoints(new IntegrationCycles(this.network, this.seed + k), model, SWEEP_PLAN);
+        transitions.push(transitionPoints(points, (share) => model.holdsQuorum(share)));
+      }
+      return ratioSummary(transitions);
+    }
+  }
+
   // A dose sweep with its trace and readings, for any scene that supplies a model.
   class SweepPanel {
     // cycles: pass a pane's own cycles so that the pane shows the network at each dose as the sweep reaches it.
-    constructor(scene, { model, controls = [], cycles = null }) {
-      Object.assign(this, { scene, model, controls });
+    // comparison: a second model whose averaged ratio is shown beside the chosen one's (no feedback, for inertia).
+    constructor(scene, { model, controls = [], cycles = null, comparison = null }) {
+      Object.assign(this, { scene, model, controls, comparison });
       this.runner = new SweepRunner(scene.element("[data-sweep]"), SWEEP_PLAN);
       this.trace = new TraceView(scene.element("[data-trace]"), { maxConcentration: SWEEP_PLAN.maxConcentration, quorumFraction: scene.context.models.reference.quorumFraction });
       this.cycles = cycles ?? new IntegrationCycles(scene.context.network, scene.context.seed);
+      this.spread = comparison ? new SweepSpread(scene.context) : null;
       this.clear();
       this.runner.button.addEventListener("click", () => this.run());
+    }
+
+    // The averaged ratios, for the chosen model and its comparison, measured while the sweep's button stays busy.
+    async _measureSpread() {
+      this.spreads.chosen = await this.spread.measure(this.model());
+      this.scene.showReadings();
+      this.spreads.comparison = await this.spread.measure(this.comparison());
     }
 
     async run() {
@@ -309,6 +364,7 @@
       const result = await this.runner.run({
         cycles: this.cycles,
         model: this.model,
+        finish: this.spread ? () => this._measureSpread() : null,
         controls: [...this.controls, this.scene.resetButton].filter(Boolean),
         onStep: (points, concentration) => {
           this.points = points.slice();
@@ -331,6 +387,7 @@
     clear() {
       this.points = [];
       this.result = null;
+      this.spreads = { chosen: null, comparison: null };
       this.state = SweepState.IDLE;
     }
 
@@ -360,6 +417,14 @@
       return this._reading(ratio, { pending: "notYet", missing: "ratioUndefined", decimals: DECIMALS.ratio });
     }
 
+    // An averaged ratio: mean and range over the sweeps that lost and regained quorum.
+    spreadReading(which) {
+      const summary = this.spreads[which];
+      if (summary) return t("ratioSweeps", { mean: fixed(summary.mean, DECIMALS.ratio), low: fixed(summary.low, DECIMALS.ratio), high: fixed(summary.high, DECIMALS.ratio), count: summary.count });
+      if (this.state === SweepState.IDLE) return t("runTheSweep");
+      return t(this.state === SweepState.DONE ? "ratioUndefined" : "notYet");
+    }
+
     summary() {
       if (this.state !== SweepState.DONE) return t("sweepNotRun");
       const { lostAt = null, regainedAt = null } = this.result;
@@ -377,7 +442,19 @@
 
   const conditionsWith = (silencedShare) => new CycleConditions({ silencedShare });
 
+  // Fills a strip chart with real history: the scene's model runs off screen for as many cycles as the strip holds,
+  // so the strip never starts empty or mixes cycles from before a change.
+  function prefillStrip(scene, strip) {
+    strip.clear();
+    for (let n = 0; n < strip.capacity; n++) {
+      scene.pane.run(scene.model(), scene.concentration(), scene.conditions());
+      strip.push(scene.pane.outcome.giantShare);
+    }
+    strip.draw();
+  }
+
   root.DPC = Object.assign(root.DPC || {}, {
     DECIMALS, Scene, NetworkPane, NetworkScene, DosedScene, DoseInstrument, DrugLayer, SweepPanel, NetworkViewKind, alternativeViews, conditionsWith, formatConcentration,
+    speakConcentration, prefillStrip, PHONE_QUERY,
   });
 })(globalThis);

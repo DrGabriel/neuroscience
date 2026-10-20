@@ -4,7 +4,7 @@
 
   const { Token, Swatch, LegendGroup, labelled, palette, Surface, SweepDirection, scale, polyline, dot, diamond, hexagon, triangle, square, arrowhead, dashedRule, wrapPhase, fixed, make, t, percent } = root.DPC;
 
-  const quorumLineEntry = (quorumFraction) => ({ group: LegendGroup.CHART, swatch: Swatch.DOTTED, token: Token.QUORUM, message: "legendQuorumLine", params: { quorum: fixed(quorumFraction, 1) } });
+  const quorumLineEntry = (quorumFraction) => ({ group: LegendGroup.CHART, swatch: Swatch.DOTTED, token: Token.QUORUM, message: "legendQuorumLine", params: { quorum: percent(quorumFraction) } });
   const TIMING_LEGEND = Object.freeze([
     { group: LegendGroup.CHART, swatch: Swatch.BAND, token: Token.HELD_SOFT, message: "legendWindow" },
     { group: LegendGroup.SIGNALS, swatch: Swatch.DIAMOND, token: Token.HELD, message: "legendOnTime" },
@@ -98,7 +98,7 @@
   // The titles of every chart, as message keys.
   const AxisTitle = Object.freeze({
     CONCENTRATION: "axisConcentration", AGREEING_GROUP: "axisAgreeingGroup", AGREEING_SHORT: "axisAgreeingShort", COHERENCE: "axisCoherence", RECENT_CYCLES: "axisRecentCycles",
-    ARRIVAL_MS: "axisArrivalMs", QUORUM_THRESHOLD: "axisQuorumThreshold", DOSE: "axisDose",
+    ARRIVAL_MS: "axisArrivalMs", QUORUM_THRESHOLD: "axisQuorumThreshold", DOSE: "axisDose", EFFECT: "axisEffect", RASTER_TIME: "axisRasterTime", CELLS: "axisCells",
   });
 
   function shareLabels(context, { shares, x, py }) {
@@ -319,11 +319,20 @@
     }
   }
 
+  // The thresholds chart in words, for screen readers: each organism's formula, measured and one-way values.
+  const THRESHOLD_DECIMALS = 3;
+  function describeThresholds(rows) {
+    const value = (share) => fixed(share, THRESHOLD_DECIMALS);
+    const text = rows.map((row) => t("describeSpeciesRow", { organism: row.label, formula: value(row.formula), measured: value(row.measured), directed: value(row.directed) }));
+    return t("describeSpecies", { rows: text.join("; ") });
+  }
+
   // Formula against measurement, per organism: hollow formula, filled measured, and the stricter directed value.
   class ThresholdView {
     static MARGIN = Object.freeze({ left: 96, right: 16, top: 10, bottom: 44 });
     static HEADROOM = 1.15;
     static TICK = 0.02;
+    static MIN_LABEL_GAP_PX = 44;
     static MARK_RADIUS = 5;
 
     constructor(canvas) {
@@ -341,7 +350,7 @@
     draw(rows) {
       const { context, width, height } = this.surface.begin();
       const margin = ThresholdView.MARGIN;
-      const maximum = Math.max(...rows.flatMap((row) => [row.formula, row.measured, row.directed])) * ThresholdView.HEADROOM;
+      const maximum = Math.max(...rows.flatMap((row) => [row.formula, row.measured, row.directed].filter((value) => value !== null))) * ThresholdView.HEADROOM;
       const px = scale([0, maximum], [margin.left, width - margin.right]);
       const band = (height - margin.top - margin.bottom) / rows.length;
       // Told apart by shape: hollow triangle for the formula, filled square measured, hollow square directed.
@@ -362,12 +371,14 @@
         context.moveTo(margin.left, y);
         context.lineTo(width - margin.right, y);
         context.stroke();
-        for (const mark of marks) this._drawMark(context, { x: px(row[mark.key]), y, mark });
+        for (const mark of marks) if (row[mark.key] !== null) this._drawMark(context, { x: px(row[mark.key]), y, mark });
       });
       useAxisFont(context);
       context.textAlign = "center";
       context.textBaseline = "top";
-      for (let value = 0; value <= maximum; value += ThresholdView.TICK) context.fillText(fixed(value, 2), px(value), height - margin.bottom + AXIS.labelGapPx);
+      // Every tick that leaves room for its label: 0.02 apart on a wide chart, a multiple of that on a narrow one.
+      const step = ThresholdView.TICK * Math.ceil(ThresholdView.MIN_LABEL_GAP_PX / (px(ThresholdView.TICK) - px(0)));
+      for (let k = 0; k * step <= maximum; k++) context.fillText(fixed(k * step, 2), px(k * step), height - margin.bottom + AXIS.labelGapPx);
       axisTitles(context, { margin, width, height }, { x: AxisTitle.QUORUM_THRESHOLD });
     }
 
@@ -383,7 +394,7 @@
   // (exponential backoff), as in burst suppression.
   const RASTER = Object.freeze({
     cells: 24, spikesPerBurst: 3, streamingSpikesPerCell: 14, pollingBursts: 4, burstWidth: 0.012,
-    firstGap: 0.12, firstGapGrowth: 3, backoffFactor: 2, pollingDepth: 0.5, insetPx: 10, topPx: 8,
+    firstGap: 0.12, firstGapGrowth: 3, backoffFactor: 2, pollingDepth: 0.5, insetPx: 10, topPx: 8, axisLeftPx: 24, axisBottomPx: 24,
   });
 
   function burstTimes(depth) {
@@ -420,8 +431,10 @@
 
     draw(raster) {
       const { context, width, height } = this.surface.begin();
-      const left = RASTER.insetPx, right = width - RASTER.insetPx;
-      const rowHeight = (height - 2 * RASTER.topPx) / raster.length;
+      const left = RASTER.axisLeftPx, right = width - RASTER.insetPx;
+      const rowHeight = (height - RASTER.topPx - RASTER.axisBottomPx) / raster.length;
+      const margin = { left: RASTER.axisLeftPx, right: RASTER.insetPx, top: RASTER.topPx, bottom: RASTER.axisBottomPx };
+      axisTitles(context, { margin, width, height }, { x: AxisTitle.RASTER_TIME, y: AxisTitle.CELLS });
       context.strokeStyle = palette.get(Token.INK);
       context.lineWidth = LINE_WIDTH.raster;
       context.beginPath();
@@ -440,7 +453,7 @@
   // The anaesthetic's dose-response: the model's Hill curve of drug effect against concentration, with the current
   // dose marked and the half-effect concentration dashed. Drawn from the agent's own parameters.
   class DoseCurveView {
-    static MARGIN = Object.freeze({ left: 4, right: 4, top: 14, bottom: 20 });
+    static MARGIN = Object.freeze({ left: 20, right: 4, top: 14, bottom: 20 });
     static SAMPLES = 120;
     static MARKER_RADIUS = 4;
 
@@ -488,11 +501,11 @@
       context.textAlign = "left";
       context.textBaseline = "top";
       context.fillText(halfEffectLabel, px(half) + AXIS.labelGapPx, 0);
-      axisTitles(context, { margin, width, height }, { x: AxisTitle.DOSE });
+      axisTitles(context, { margin, width, height }, { x: AxisTitle.DOSE, y: AxisTitle.EFFECT });
       context.lineWidth = LINE_WIDTH.rule;
       hexagon(context, { x: px(concentration), y: py(agent.effectFraction(concentration)), radius: DoseCurveView.MARKER_RADIUS + 1, fill: palette.get(Token.DRUG), edge: palette.get(Token.DRUG_EDGE) });
     }
   }
 
-  root.DPC = Object.assign(root.DPC || {}, { DASH, ChartHover, closest, drawShareAxes, AxisTitle, DoseCurveView, TraceView, StripView, ArrivalView, PhaseDialView, ThresholdView, RasterView });
+  root.DPC = Object.assign(root.DPC || {}, { DASH, describeThresholds, ChartHover, closest, drawShareAxes, AxisTitle, DoseCurveView, TraceView, StripView, ArrivalView, PhaseDialView, ThresholdView, RasterView });
 })(globalThis);

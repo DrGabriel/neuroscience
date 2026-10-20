@@ -40,3 +40,6 @@ tools/pdf/node_modules/
 
 # Crossref answers cached by tools/audit/reference_check.py
 tools/audit/crossref_cache/
+
+# Open datasets downloaded for the pre-specified open-data tests (analysis/open_data/); never committed
+data_external/
