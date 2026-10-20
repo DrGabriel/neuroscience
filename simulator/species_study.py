@@ -162,6 +162,10 @@ class RunSummary:
     induction_susceptibility: tuple[float, ...]
     induction_broadcast_ratio: tuple[float | None, ...]
     seconds: float
+    # Absolute locking values, needed to subtract a chance floor (K1c); absent from reports written before 20 October 2026.
+    awake_broadcast_entrainment: float | None = None
+    deepest_broadcast_entrainment: float | None = None
+    deepest_sensory_entrainment: float | None = None
 
 
 @lru_cache(maxsize=None)
@@ -219,6 +223,9 @@ def run_task(task: RunTask, design: dynamics.SweepDesign | None = None) -> RunSu
         induction_susceptibility=tuple(point.susceptibility for point in record.induction),
         induction_broadcast_ratio=tuple(dynamics.broadcast_ratio(point) for point in record.induction),
         seconds=time.perf_counter() - started,
+        awake_broadcast_entrainment=awake.broadcast_entrainment,
+        deepest_broadcast_entrainment=record.induction[-1].broadcast_entrainment,
+        deepest_sensory_entrainment=record.induction[-1].sensory_entrainment,
     )
 
 

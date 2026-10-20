@@ -50,6 +50,7 @@ globalThis.DPC.registerLocale("es-ES", {
     study_calibration_phase_feedback: "Calibración de la retroalimentación (modelo de osciladores)",
     study_prespecified: "Pruebas especificadas de antemano (K2, T1c)",
     study_learned_timing: "Pruebas especificadas de antemano de tiempos de llegada aprendidos (L1–L4)",
+    study_disconnection: "Prueba especificada de antemano de desconexión sensorial, sin el suelo (K1c)",
     study_convergence: "Convergencia numérica",
     run_full: "Ejecución completa",
     run_confirmatory: "Ejecución confirmatoria, semillas nuevas",

@@ -60,17 +60,21 @@ def tasks_for(plan: StudyPlan, design: StudyDesign) -> list[species.RunTask]:
     ]
 
 
-def outcome_cell(outcome: reporting.CheckOutcome) -> str:
-    return f"{outcome.cell()}, {'passes' if passes(outcome) else 'fails'}"
+Verdict = Callable[[reporting.CheckOutcome], str]
 
 
-def outcome_table(outcomes: Sequence[reporting.CheckOutcome], organisms: Sequence[str]) -> list[str]:
+def pass_or_fail(outcome: reporting.CheckOutcome) -> str:
+    return "passes" if passes(outcome) else "fails"
+
+
+def outcome_table(outcomes: Sequence[reporting.CheckOutcome], organisms: Sequence[str], verdict: Verdict = pass_or_fail) -> list[str]:
     names = [cal.ORGANISMS[o].display_name for o in organisms]
     rows = []
     for identifier in dict.fromkeys(o.identifier for o in outcomes):
         by_group = {o.group: o for o in outcomes if o.identifier == identifier}
         statement = next(iter(by_group.values())).statement
-        rows.append([identifier, statement, *[outcome_cell(by_group[n]) if n in by_group else "not run" for n in names]])
+        cells = [f"{by_group[n].cell()}, {verdict(by_group[n])}" if n in by_group else "not run" for n in names]
+        rows.append([identifier, statement, *cells])
     return reporting.markdown_table(["ID", "Statement", *names], rows)
 
 

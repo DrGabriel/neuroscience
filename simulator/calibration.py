@@ -146,7 +146,14 @@ CONCENTRATION_GRID = dpc.ConcentrationGrid(maximum=3.0, step=0.05)
 STIMULUS_ANGULAR_FREQUENCY = 0.3
 MEASURED_STIMULUS_CYCLES = 2
 FULL_TIME_STEP = 0.05
-FULL_MEASUREMENT_STEPS = round(MEASURED_STIMULUS_CYCLES * 2 * math.pi / STIMULUS_ANGULAR_FREQUENCY / FULL_TIME_STEP)
+
+
+def measurement_steps_for(stimulus_cycles: int) -> int:
+    """Integration steps that cover a whole number of stimulus cycles, so that entrainment is not biased by a part cycle."""
+    return round(stimulus_cycles * 2 * math.pi / STIMULUS_ANGULAR_FREQUENCY / FULL_TIME_STEP)
+
+
+FULL_MEASUREMENT_STEPS = measurement_steps_for(MEASURED_STIMULUS_CYCLES)
 FULL_INTEGRATION = dynamics.IntegrationSettings(time_step=FULL_TIME_STEP, relaxation_steps=400, measurement_steps=FULL_MEASUREMENT_STEPS)
 QUICK_INTEGRATION = dynamics.IntegrationSettings(time_step=0.05, relaxation_steps=100, measurement_steps=100)
 
