@@ -16,6 +16,7 @@ import json
 import sys
 import types
 from dataclasses import dataclass, replace
+from enum import StrEnum
 from datetime import datetime, timezone
 
 import numpy as np
@@ -31,10 +32,13 @@ import species_study as study  # noqa: E402
 ORGANISMS = ("celegans", "human")
 SPECIES_REPORT = SIMULATOR / "results" / "species_full_20261020T103719Z.json"
 COMPARED_FIELDS = ("deepest_coherence_fraction", "awake_broadcast_ratio", "deepest_broadcast_ratio")
-AS_IN_STUDY = "reference as in the study"
-NO_REFERENCE = "no reference (feedback 0)"
-CORE_REFERENCE = "reference formed by non-sensory populations only"
-VARIANTS = (AS_IN_STUDY, NO_REFERENCE, CORE_REFERENCE)
+
+
+class Variant(StrEnum):
+    AS_IN_STUDY = "reference as in the study"
+    NO_REFERENCE = "no reference (feedback 0)"
+    CORE_REFERENCE = "reference formed by non-sensory populations only"
+
 ORIGINAL_DRIVES_AT = dynamics.PhaseNetwork._drives_at
 
 
@@ -56,19 +60,19 @@ def drives_with_core_reference(self: dynamics.PhaseNetwork, concentration: float
 
 @dataclass(frozen=True)
 class LeakTask:
-    variant: str
+    variant: Variant
     organism: str
     seed: int
 
 
 def design_for_variant(task: LeakTask, design: dynamics.SweepDesign) -> dynamics.SweepDesign:
-    if task.variant == NO_REFERENCE:
+    if task.variant is Variant.NO_REFERENCE:
         return replace(design, dynamics=replace(design.dynamics, reference_feedback=0.0))
     return design
 
 
 def run_leak_task(task: LeakTask) -> tuple[LeakTask, dict[str, float | None]]:
-    dynamics.PhaseNetwork._drives_at = drives_with_core_reference if task.variant == CORE_REFERENCE else ORIGINAL_DRIVES_AT
+    dynamics.PhaseNetwork._drives_at = drives_with_core_reference if task.variant is Variant.CORE_REFERENCE else ORIGINAL_DRIVES_AT
     condition = next(c for c in study.build_conditions(cal.FULL_INTEGRATION) if c.name == study.ConditionName.KETAMINE_PATHWAYS)
     run = study.RunTask(task.organism, condition, task.seed)
     summary = study.run_task(run, design_for_variant(task, study.design_for(run)))
@@ -118,18 +122,18 @@ def main() -> int:
     provenance.record_launch()
     started = datetime.now(timezone.utc)
     seeds = {o: [cal.BASE_SEED + i for i in range(cal.ORGANISMS[o].full_study_seeds)] for o in ORGANISMS}
-    tasks = [LeakTask(variant, organism, seed) for variant in VARIANTS for organism in ORGANISMS for seed in seeds[organism]]
-    values: dict[str, dict[tuple[str, int], dict[str, float | None]]] = {variant: {} for variant in VARIANTS}
+    tasks = [LeakTask(variant, organism, seed) for variant in Variant for organism in ORGANISMS for seed in seeds[organism]]
+    values: dict[str, dict[tuple[str, int], dict[str, float | None]]] = {variant: {} for variant in Variant}
     for task, result in reporting.run_in_parallel(run_leak_task, tasks, reporting.ParallelRun("diagnostic: reference leak")):
         values[task.variant][(task.organism, task.seed)] = result
     body = {
         "species_report": SPECIES_REPORT.name,
-        "checks": {"largest difference from the species report, reference as in the study": largest_difference(values[AS_IN_STUDY], stored_values())},
+        "checks": {"largest difference from the species report, reference as in the study": largest_difference(values[Variant.AS_IN_STUDY], stored_values())},
         "summaries": {
             variant: {organism: summary_of([v for (o, _), v in values[variant].items() if o == organism]) for organism in ORGANISMS}
-            for variant in VARIANTS
+            for variant in Variant
         },
-        "runs": {variant: [{"organism": o, "seed": s, **v} for (o, s), v in sorted(values[variant].items())] for variant in VARIANTS},
+        "runs": {variant: [{"organism": o, "seed": s, **v} for (o, s), v in sorted(values[variant].items())] for variant in Variant},
     }
     write_report("reference_leak", started, body, to_markdown)
     return 0

@@ -46,7 +46,7 @@ import dpc_simulator as dpc
 import provenance
 import reporting
 
-REPORTED_PACKAGES = ("numpy", "scipy", "pyarrow")
+REPORTED_PACKAGES = (*provenance.NUMERICAL_PACKAGES, "pyarrow")
 OCCUPATION_RESOLUTION = 1e-4
 FIXED_POINT_ITERATIONS = 2000
 BISECTION_STEPS = 60
@@ -242,7 +242,7 @@ def main(arguments: Sequence[str]) -> int:
         thresholds.append(threshold_for(organism, seeds))
         reporting.report_progress("percolation thresholds", done, len(cal.ORGANISMS), (datetime.now(timezone.utc) - started).total_seconds())
     document = {
-        "label": "quick" if quick else "full",
+        "label": reporting.RunLabel.QUICK if quick else reporting.RunLabel.FULL,
         "started_utc": started.isoformat(),
         "finished_utc": datetime.now(timezone.utc).isoformat(),
         "provenance": provenance.collect(provenance.loaded_sources(), REPORTED_PACKAGES),

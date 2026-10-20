@@ -31,7 +31,7 @@ from species_study import ConditionName
 import species_study
 import validation_study
 
-REPORTED_PACKAGES = ("numpy", "scipy")
+REPORTED_PACKAGES = provenance.NUMERICAL_PACKAGES
 
 PERCOLATION_NODE_COUNT = 10_000
 FULL_PERCOLATION_SEEDS, QUICK_PERCOLATION_SEEDS = 10, 2
@@ -228,7 +228,7 @@ def main(arguments: Sequence[str]) -> int:
     reference_labels = {label(v) for v in variations(PERCOLATION_RANGES) if v.is_reference}
     reference_holds = all(o.holds for o in percolation if o.group in reference_labels)
     document = {
-        "label": "quick" if quick else "full",
+        "label": reporting.RunLabel.QUICK if quick else reporting.RunLabel.FULL,
         "started_utc": started.isoformat(),
         "finished_utc": datetime.now(timezone.utc).isoformat(),
         "provenance": provenance.collect(provenance.loaded_sources(), REPORTED_PACKAGES),

@@ -50,10 +50,10 @@ def main(arguments: Sequence[str]) -> None:
         mean = f"{statistics.fmean(defined):.3f}" if defined else "n/a"
         rows.append([f"{feedback:g}", mean, ", ".join("n/a" if r is None else f"{r:.3f}" for r in ratios)])
     document = {
-        "label": "full",
+        "label": reporting.RunLabel.FULL,
         "started_utc": started,
         "finished_utc": datetime.now(timezone.utc).isoformat(),
-        "provenance": provenance.collect(provenance.loaded_sources(), ("numpy", "scipy")),
+        "provenance": provenance.collect(provenance.loaded_sources(), provenance.NUMERICAL_PACKAGES),
         "design": {"organism": CALIBRATION_ORGANISM, "seeds": list(CALIBRATION_SEEDS), "target_ratio": cal.INERTIA_TARGET_RATIO},
         "ratios": [{"feedback": f, "ratio": r} for f, r in results],
     }

@@ -290,8 +290,8 @@ def parse_design(arguments: Sequence[str]) -> StudyDesign:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--quick", action="store_true", help="small smoke run instead of the full study")
     if parser.parse_args(arguments).quick:
-        return StudyDesign("quick", QUICK_NODE_COUNTS, QUICK_SEEDS_PER_SIZE)
-    return StudyDesign("full", FULL_NODE_COUNTS, FULL_SEEDS_PER_SIZE)
+        return StudyDesign(reporting.RunLabel.QUICK, QUICK_NODE_COUNTS, QUICK_SEEDS_PER_SIZE)
+    return StudyDesign(reporting.RunLabel.FULL, FULL_NODE_COUNTS, FULL_SEEDS_PER_SIZE)
 
 
 def main(arguments: Sequence[str]) -> int:

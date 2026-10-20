@@ -14,6 +14,8 @@ from pathlib import Path
 from typing import Sequence
 
 SIMULATOR_DIRECTORY = Path(__file__).resolve().parent
+# Third-party packages whose versions every phase-model or Wilson-Cowan report records; studies add their own.
+NUMERICAL_PACKAGES = ("numpy", "scipy")
 BYTES_PER_GIBIBYTE = 1024**3
 HASH_CHUNK_BYTES = 1 << 20
 SYSCTL_KEYS = (

@@ -108,7 +108,7 @@ def main() -> None:
             source = f"{target.source}{' (reference target)' if target is REFERENCE_TARGET else ''}"
             rows.append([f"{arousal_level:g}", f"{target.ratio:.2f}", f"{result.feedback_ms:.2f}", model_ratio, "yes" if reproduces(result, target) else "no", source])
     document = {
-        "label": "full",
+        "label": reporting.RunLabel.FULL,
         "started_utc": started,
         "finished_utc": datetime.now(timezone.utc).isoformat(),
         "provenance": provenance.collect(provenance.loaded_sources()),

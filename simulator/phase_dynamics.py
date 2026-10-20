@@ -367,19 +367,25 @@ class ArrivalExpectation:
         self._offsets[edges] -= self._rate * mismatch_sines
 
 
+@dataclass(frozen=True)
+class ConnectionTiming:
+    """What shapes the timing of each connection's signal: its jitter and, under P4b, its learned arrival offset."""
+
+    jitter: TimingJitter
+    expectation: ArrivalExpectation | None = None
+
+
 class SynapticDrive:
     """Input from connected populations, normalised by each population's intact in-strength."""
 
-    def __init__(
-        self, connectome: Connectome, coupling: float, connectivity: ImpairedConnectivity, timing: tuple[TimingJitter, ArrivalExpectation | None]
-    ) -> None:
+    def __init__(self, connectome: Connectome, coupling: float, connectivity: ImpairedConnectivity, timing: ConnectionTiming) -> None:
         # Normalised by the total strength of all intact inputs, excitatory and inhibitory alike.
         in_strength = np.bincount(connectome.targets, weights=connectome.weights, minlength=connectome.node_count)
         self._gain = np.divide(coupling, in_strength, out=np.zeros_like(in_strength), where=in_strength > 0)
         self._connectivity = connectivity
         # Converted once here rather than at every step; float32 to float64 is exact.
         self._weights = connectivity.weights.astype(np.float64)
-        self._jitter, self._expectation = timing
+        self._jitter, self._expectation = timing.jitter, timing.expectation
         self._fluctuates = bool(np.any(connectivity.jitter_sd > 0))
         self._has_lags = bool(np.any(connectivity.fixed_lags != 0))
 
@@ -531,7 +537,7 @@ class PhaseNetwork:
 
     def _synaptic_drive(self, connectivity: ImpairedConnectivity) -> SynapticDrive:
         jitter = TimingJitter.for_design(connectivity.jitter_sd, self._design, self._rng)
-        return SynapticDrive(self._connectome, self._design.dynamics.synaptic_coupling, connectivity, (jitter, self._expectation))
+        return SynapticDrive(self._connectome, self._design.dynamics.synaptic_coupling, connectivity, ConnectionTiming(jitter, self._expectation))
 
     def _arousal_at(self, concentration: float) -> float:
         return dpc.sustained_arousal(self._design.dynamics.arousal_level, self._design.agent, concentration)

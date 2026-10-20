@@ -9,6 +9,7 @@ import unittest
 from dataclasses import replace
 
 import calibration as cal
+import prespecified_runs
 import prespecified_study as prereg
 import reporting
 import species_study as species
@@ -72,19 +73,19 @@ class PassRuleTests(unittest.TestCase):
         return reporting.CheckOutcome("K2a", "statement", "C. elegans", holding, applicable)
 
     def test_passes_at_exactly_the_pass_share(self) -> None:
-        self.assertTrue(prereg.passes(self.outcome(16, 20)))
+        self.assertTrue(prespecified_runs.passes(self.outcome(16, 20)))
 
     def test_fails_just_below_the_pass_share(self) -> None:
-        self.assertFalse(prereg.passes(self.outcome(15, 20)))
+        self.assertFalse(prespecified_runs.passes(self.outcome(15, 20)))
 
     def test_fails_when_no_run_applies(self) -> None:
-        self.assertFalse(prereg.passes(self.outcome(0, 0)))
+        self.assertFalse(prespecified_runs.passes(self.outcome(0, 0)))
 
 
 class DesignTests(unittest.TestCase):
     def test_seeds_are_fresh_and_feedback_conditions_skip_the_undirected_human_connectome(self) -> None:
-        design = prereg.StudyDesign("test", cal.QUICK_INTEGRATION, {o: 1 for o in cal.ORGANISMS})
-        tasks = prereg.tasks_for(design)
+        design = prespecified_runs.StudyDesign("test", cal.QUICK_INTEGRATION, {o: 1 for o in cal.ORGANISMS})
+        tasks = prespecified_runs.tasks_for(prereg.PLAN, design)
         self.assertTrue(all(t.seed == cal.BASE_SEED + prereg.SEED_OFFSET for t in tasks))
         human = {t.condition.name for t in tasks if t.organism == "human"}
         self.assertEqual(human, {species.ConditionName.GABAERGIC})
@@ -93,8 +94,8 @@ class DesignTests(unittest.TestCase):
         runs = [run(FEEDBACK), run(RANDOM, loss_concentration=None), run(species.ConditionName.GABAERGIC)]
         outcomes = prereg.evaluate(runs, ["celegans"])
         self.assertEqual({o.identifier for o in outcomes}, {"K2a", "K2b", "K2c", "P1c"})
-        self.assertTrue(all(prereg.passes(o) for o in outcomes))
-        table = "\n".join(prereg.outcome_table(outcomes, ["celegans"]))
+        self.assertTrue(all(prespecified_runs.passes(o) for o in outcomes))
+        table = "\n".join(prespecified_runs.outcome_table(outcomes, ["celegans"]))
         self.assertIn("1/1", table)
         self.assertIn("passes", table)
 

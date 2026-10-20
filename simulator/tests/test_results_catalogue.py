@@ -91,6 +91,21 @@ class CatalogueTests(unittest.TestCase):
             self.assertFalse(stale.exists())
             self.assertTrue((explainer / "current" / "species_full_20260101T000000Z.js").exists())
 
+    def test_a_local_smoke_run_is_not_listed_but_an_archived_check_is_regression(self) -> None:
+        # Quick runs in results/ are git-ignored; listing one would publish an untracked file in the explainer.
+        with tempfile.TemporaryDirectory() as directory:
+            results, explainer = Path(directory) / "results", Path(directory) / "explainer"
+            (results / "archive" / "checks").mkdir(parents=True)
+            report = json.dumps({"started_utc": "2026-01-01T00:00:00+00:00"})
+            (results / "glia_quick_20260101T000000Z.json").write_text(report)
+            (results / "archive" / "checks" / "sensitivity_quick_20260101T000000Z.json").write_text(report)
+            with mock.patch.object(catalogue.reporting, "RESULTS_DIRECTORY", results), \
+                    mock.patch.object(catalogue, "ARCHIVE", results / "archive"), \
+                    mock.patch.object(catalogue, "EXPLAINER_DATA", explainer), \
+                    mock.patch.object(catalogue, "CATALOGUE_FILE", explainer / "catalogue.js"):
+                entries = catalogue.write_catalogue()
+            self.assertEqual([e.identifier for e in entries], ["checks/sensitivity_quick_20260101T000000Z"])
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -2,7 +2,7 @@
 
 The tests, their conditions, the seeds and the pass rule were written into the paper (Appendix C.7)
 before this study was first run. Seeds start at BASE_SEED + SEED_OFFSET, which no earlier run used.
-A test passes for an organism when it holds in at least PASS_SHARE of that organism's seeds.
+A test passes for an organism when it holds in at least prespecified_runs.PASS_SHARE of that organism's seeds.
 
 Usage:
     ../.venv/bin/python prespecified_study.py            # full study
@@ -14,24 +14,21 @@ result, not a software error: the report is written either way.
 
 from __future__ import annotations
 
-import argparse
 import sys
 from dataclasses import asdict, dataclass, replace
 from datetime import datetime, timezone
 from enum import StrEnum
-from fractions import Fraction
-from functools import partial
 from typing import Sequence
 
 import calibration as cal
 import comparisons
 import phase_dynamics as dynamics
+import prespecified_runs
 import provenance
 import reporting
 import species_study as species
 
 SEED_OFFSET = 2000
-PASS_SHARE = Fraction(4, 5)
 # Diffusion imaging gives no direction, so the human connectome has no feedback connections to test.
 DIRECTED_ORGANISMS = ("celegans", "drosophila")
 FULL_SEEDS = {"celegans": 20, "drosophila": 6, "human": 20}
@@ -122,42 +119,19 @@ def evaluate(runs: Sequence[species.RunSummary], organisms: Sequence[str]) -> li
     return species.evaluate(RUN_TESTS, runs, organisms) + reporting.evaluate(PAIRED_TESTS, groups)
 
 
-def passes(outcome: reporting.CheckOutcome) -> bool:
-    return comparisons.at_least_share(outcome.runs_holding, outcome.runs_applicable, PASS_SHARE)
-
-
 # ---------------------------------------------------------------------------
 # Study
 # ---------------------------------------------------------------------------
 
 
-@dataclass(frozen=True)
-class StudyDesign:
-    label: str
-    integration: dynamics.IntegrationSettings
-    seeds_per_organism: dict[str, int]
-
-
-def tasks_for(design: StudyDesign) -> list[species.RunTask]:
-    return [
-        species.RunTask(organism, condition, cal.BASE_SEED + SEED_OFFSET + index)
-        for condition in build_conditions(design.integration)
-        for organism in condition.organisms
-        for index in range(design.seeds_per_organism[organism])
-    ]
-
-
-def outcomes_markdown(runs: list[species.RunSummary], organisms: Sequence[str]) -> str:
-    return "\n".join(outcome_table(evaluate(runs, organisms), organisms))
-
-
-def run_study(design: StudyDesign) -> list[species.RunSummary]:
-    tasks = tasks_for(design)
-    runs: list[species.RunSummary] = []
-    for organism, spec in cal.ORGANISMS.items():
-        live = reporting.ParallelRun(f"prespecified: {spec.display_name}", spec.worker_processes, partial(outcomes_markdown, organisms=[organism]))
-        runs.extend(reporting.run_in_parallel(species.run_task, [t for t in tasks if t.organism == organism], live))
-    return runs
+PLAN = prespecified_runs.StudyPlan(
+    name="prespecified",
+    conditions=build_conditions,
+    organisms=tuple(cal.ORGANISMS),
+    seed_offset=SEED_OFFSET,
+    full_seeds=FULL_SEEDS,
+    outcomes=evaluate,
+)
 
 
 def feedback_shares() -> dict[str, float]:
@@ -165,23 +139,18 @@ def feedback_shares() -> dict[str, float]:
     return {o: float(species.load_connectome(o).feedback_connections().mean()) for o in DIRECTED_ORGANISMS}
 
 
-def assemble_report(design: StudyDesign, started: str, runs: Sequence[species.RunSummary]) -> dict[str, object]:
-    outcomes = evaluate(runs, list(cal.ORGANISMS))
+def assemble_report(design: prespecified_runs.StudyDesign, started: str, results: Sequence[species.RunSummary]) -> dict[str, object]:
+    outcomes = evaluate(results, PLAN.organisms)
     return {
         "label": design.label,
         "started_utc": started,
         "finished_utc": datetime.now(timezone.utc).isoformat(),
         "provenance": provenance.collect(provenance.loaded_sources(), species.REPORTED_PACKAGES),
         "calibration": cal.as_record(),
-        "design": {
-            "integration": asdict(design.integration),
-            "seeds_per_organism": design.seeds_per_organism,
-            "first_seed": cal.BASE_SEED + SEED_OFFSET,
-            "pass_share": float(PASS_SHARE),
-        },
+        "design": prespecified_runs.design_record(PLAN, design),
         "feedback_shares": feedback_shares(),
-        "tests": [asdict(o) | {"passes": passes(o)} for o in outcomes],
-        "runs": [asdict(run) for run in runs],
+        "tests": [asdict(o) | {"passes": prespecified_runs.passes(o)} for o in outcomes],
+        "runs": [asdict(run) for run in results],
     }
 
 
@@ -201,20 +170,6 @@ QUANTITIES: tuple[tuple[str, str, str], ...] = (
 )
 
 
-def outcome_cell(outcome: reporting.CheckOutcome) -> str:
-    return f"{outcome.cell()}, {'passes' if passes(outcome) else 'fails'}"
-
-
-def outcome_table(outcomes: Sequence[reporting.CheckOutcome], organisms: Sequence[str]) -> list[str]:
-    names = [cal.ORGANISMS[o].display_name for o in organisms]
-    rows = []
-    for identifier in dict.fromkeys(o.identifier for o in outcomes):
-        by_group = {o.group: o for o in outcomes if o.identifier == identifier}
-        statement = next(iter(by_group.values())).statement
-        rows.append([identifier, statement, *[outcome_cell(by_group[n]) if n in by_group else "not run" for n in names]])
-    return reporting.markdown_table(["ID", "Statement", *names], rows)
-
-
 def to_markdown(report: dict[str, object]) -> str:
     organisms = [o for o in cal.ORGANISMS if any(run["organism"] == o for run in report["runs"])]
     names = [cal.ORGANISMS[o].display_name for o in organisms]
@@ -222,9 +177,9 @@ def to_markdown(report: dict[str, object]) -> str:
     shares = [[cal.ORGANISMS[o].display_name, f"{100 * share:.1f}%"] for o, share in report["feedback_shares"].items()]
     return "\n".join([
         *reporting.run_metadata_section(report, provenance.markdown_rows(report["provenance"])),
-        f"### Pre-specified tests (seeds in which the test holds; passes at {float(100 * PASS_SHARE):.0f}% or more)",
+        f"### Pre-specified tests (seeds in which the test holds; passes at {float(100 * prespecified_runs.PASS_SHARE):.0f}% or more)",
         "",
-        *outcome_table(outcomes, organisms),
+        *prespecified_runs.outcome_table(outcomes, organisms),
         "",
         "### Feedback connections (share of all connections)",
         "",
@@ -237,19 +192,11 @@ def to_markdown(report: dict[str, object]) -> str:
     ])
 
 
-def parse_design(arguments: Sequence[str]) -> StudyDesign:
-    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--quick", action="store_true", help="short smoke run instead of the full study")
-    if parser.parse_args(arguments).quick:
-        return StudyDesign("quick", cal.QUICK_INTEGRATION, {o: 1 for o in cal.ORGANISMS})
-    return StudyDesign("full", cal.FULL_INTEGRATION, FULL_SEEDS)
-
-
 def main(arguments: Sequence[str]) -> int:
     provenance.record_launch()
-    design = parse_design(arguments)
+    design = prespecified_runs.parse_design(PLAN, arguments, __doc__)
     started = datetime.now(timezone.utc).isoformat()
-    report = assemble_report(design, started, run_study(design))
+    report = assemble_report(design, started, prespecified_runs.run_study(PLAN, design))
     reporting.publish("prespecified", report, to_markdown(report))
     return 0 if all(test["passes"] for test in report["tests"]) else 1
 

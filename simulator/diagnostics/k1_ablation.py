@@ -20,12 +20,10 @@ import types
 from dataclasses import dataclass, replace
 from datetime import datetime, timezone
 from multiprocessing import Pool
-from pathlib import Path
 
 import numpy as np
 
-SIMULATOR = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(SIMULATOR))
+from diagnostic_run import SIMULATOR, write_report
 
 import calibration as cal  # noqa: E402
 import connectomes  # noqa: E402
@@ -39,7 +37,6 @@ WORKER_PROCESSES = 4
 OLD_CODE_COMMIT = "4fc14f4"
 OVERNIGHT_REPORT = SIMULATOR / "results" / "species_full_20261019T025707Z.json"
 RERUN_CHECKPOINT = SIMULATOR / "results" / "live" / "species_c_elegans.pickle"
-OUTPUT_DIRECTORY = SIMULATOR / "results" / "diagnostics"
 COMPARED_FIELDS = ("deepest_coherence_fraction", "awake_broadcast_ratio", "deepest_broadcast_ratio")
 REPRODUCTION_TOLERANCE = 1e-9
 
@@ -52,10 +49,12 @@ class Change(enum.Enum):
     GAP_JUNCTIONS = "gap junctions as listed and mirrored, so most count twice per direction"
 
 
+NOTHING_UNDONE = "none undone (must match the rerun)"
+ALL_UNDONE = "all undone (must match the overnight run)"
 VARIANTS: dict[str, frozenset[Change]] = {
-    "none undone (must match the rerun)": frozenset(),
+    NOTHING_UNDONE: frozenset(),
     **{f"undo: {change.value}": frozenset({change}) for change in Change},
-    "all undone (must match the overnight run)": frozenset(Change),
+    ALL_UNDONE: frozenset(Change),
 }
 
 
@@ -249,24 +248,15 @@ def main() -> int:
         for done, (variant, seed, result) in enumerate(pool.imap_unordered(run_ablation_task, tasks), start=1):
             values[variant][seed] = result
             print(f"{done}/{len(tasks)}", flush=True)
-    names = list(VARIANTS)
-    checks["largest difference from the rerun, nothing undone"] = largest_difference(values[names[0]], rerun)
-    checks["largest difference from the overnight run, all undone"] = largest_difference(values[names[-1]], overnight)
-    document = {
-        "label": "diagnostic",
-        "started_utc": started.isoformat(),
-        "finished_utc": datetime.now(timezone.utc).isoformat(),
-        "provenance": provenance.collect(provenance.loaded_sources(), ("numpy", "scipy")),
+    checks["largest difference from the rerun, nothing undone"] = largest_difference(values[NOTHING_UNDONE], rerun)
+    checks["largest difference from the overnight run, all undone"] = largest_difference(values[ALL_UNDONE], overnight)
+    body = {
         "old_code_commit": OLD_CODE_COMMIT,
         "checks": checks,
         "summaries": {variant: variant_summary(values[variant]) for variant in VARIANTS},
         "runs": {variant: {str(seed): v for seed, v in sorted(values[variant].items())} for variant in VARIANTS},
     }
-    OUTPUT_DIRECTORY.mkdir(parents=True, exist_ok=True)
-    stem = f"k1_ablation_{started.strftime('%Y%m%dT%H%M%SZ')}"
-    (OUTPUT_DIRECTORY / f"{stem}.json").write_text(json.dumps(document, indent=2))
-    (OUTPUT_DIRECTORY / f"{stem}.md").write_text(to_markdown(document))
-    print(to_markdown(document))
+    write_report("k1_ablation", started, body, to_markdown)
     return 0
 
 

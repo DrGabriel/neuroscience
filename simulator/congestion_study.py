@@ -35,7 +35,7 @@ import excitatory_inhibitory as ei
 import provenance
 import reporting
 
-REPORTED_PACKAGES = ("numpy", "scipy")
+REPORTED_PACKAGES = provenance.NUMERICAL_PACKAGES
 
 ORGANISM = "human"
 # Free: the strength of long-range coupling is not reported in the text of Abeysuriya et al.
@@ -181,8 +181,8 @@ CONFIRMATORY = tuple(
 class AnalysisMode(Enum):
     """Exploratory runs test congestion (W1-W4); confirmatory runs test the synchrony surge (X1, X2)."""
 
-    EXPLORATORY = "full"
-    CONFIRMATORY = "confirmatory"
+    EXPLORATORY = reporting.RunLabel.FULL
+    CONFIRMATORY = reporting.RunLabel.CONFIRMATORY
 
 
 @dataclass(frozen=True)
@@ -280,7 +280,7 @@ def main(arguments: Sequence[str]) -> int:
     runs = reporting.run_in_parallel(run_pair, paired_tasks(design, seeds, seed_offset), live)
     analysis = analyse(runs, mode)
     document = {
-        "label": "quick" if options.quick else mode.value,
+        "label": reporting.RunLabel.QUICK if options.quick else mode.value,
         "started_utc": started.isoformat(),
         "finished_utc": datetime.now(timezone.utc).isoformat(),
         "provenance": provenance.collect(provenance.loaded_sources(), REPORTED_PACKAGES),

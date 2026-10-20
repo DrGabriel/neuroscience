@@ -84,12 +84,12 @@ class LausanneLabel(IntEnum):
 
 # Reports whose test outcomes the explainer shows: (study, run label, required).
 OUTCOME_REPORTS: tuple[tuple[str, str, bool], ...] = (
-    ("validation", "full", True),
-    ("glia", "full", True),
-    ("congestion", "full", True),
-    ("congestion", "confirmatory", True),
-    ("species", "full", False),
-    ("prespecified", "full", False),
+    ("validation", reporting.RunLabel.FULL, True),
+    ("glia", reporting.RunLabel.FULL, True),
+    ("congestion", reporting.RunLabel.FULL, True),
+    ("congestion", reporting.RunLabel.CONFIRMATORY, True),
+    ("species", reporting.RunLabel.FULL, False),
+    ("prespecified", reporting.RunLabel.FULL, False),
 )
 # The predictions table of Section 8, read from each language version of the paper.
 PREDICTION_SOURCES: tuple[tuple[str, str, str], ...] = (
@@ -198,7 +198,7 @@ def relative_mean(runs: list[dict], field: str) -> list[float]:
 
 def species_curves_record() -> dict[str, object]:
     """Mean global coherence relative to awake during induction and emergence per organism, from the cross-species report."""
-    report, document = latest_document("species", "full", required=True)
+    report, document = latest_document("species", reporting.RunLabel.FULL, required=True)
     curves = []
     for organism in cal.ORGANISMS:
         runs = [run for run in document["runs"] if run["organism"] == organism and run["condition"] == SPECIES_CURVE_CONDITION]
@@ -386,7 +386,7 @@ def predictions_record() -> dict[str, list[dict[str, str]]]:
 
 def inertia_record() -> dict[str, object]:
     """Measured loss-to-recovery ratios the model reproduces, and the λ each calibrates to at the reference arousal level."""
-    report, document = latest_document("calibration_feedback", "full", required=True)
+    report, document = latest_document("calibration_feedback", reporting.RunLabel.FULL, required=True)
     rows = [row for row in document["calibrations"] if row["calibration"]["arousal_level"] == dpc.REFERENCE_AROUSAL_LEVEL and row["reproduced"]]
     return {
         "report": report,
@@ -395,7 +395,7 @@ def inertia_record() -> dict[str, object]:
 
 
 def plant_claims_record() -> dict[str, object] | None:
-    found = latest_document("species", "full", required=False)
+    found = latest_document("species", reporting.RunLabel.FULL, required=False)
     if found is None:
         return None
     report, document = found
@@ -403,12 +403,12 @@ def plant_claims_record() -> dict[str, object] | None:
 
 
 def thresholds_record() -> dict[str, object]:
-    report, document = latest_document("percolation", "full", required=True)
+    report, document = latest_document("percolation", reporting.RunLabel.FULL, required=True)
     return {"report": report, "organisms": document["thresholds"]}
 
 
 def validation_record() -> dict[str, object]:
-    report, document = latest_document("validation", "full", required=True)
+    report, document = latest_document("validation", reporting.RunLabel.FULL, required=True)
     return {"report": report, "statistics": document["statistics"]}
 
 

@@ -4,8 +4,7 @@ P4b proposes that the brain integrates inputs against learned expectations of wh
 delay is harmless and only variability matters. The models have no such learning, and in them constant offsets are
 as harmful as jitter (Section 3.3). Here each connection learns its expected arrival offset
 (phase_dynamics.ArrivalExpectation). The tests, conditions, seeds and pass rule were written into the paper
-(Appendix C.10) before this study was first run. A test passes for an organism when it holds in at least PASS_SHARE
-of that organism's seeds.
+(Appendix C.10) before this study was first run; the pass rule is prespecified_runs.PASS_SHARE.
 
 Usage:
     ../.venv/bin/python learned_timing_study.py            # full study
@@ -17,66 +16,55 @@ error: the report is written either way.
 
 from __future__ import annotations
 
-import argparse
 import sys
 from dataclasses import asdict, dataclass, replace
 from datetime import datetime, timezone
-from enum import StrEnum
-from functools import partial
 from typing import Sequence
 
 import calibration as cal
 import comparisons
 import phase_dynamics as dynamics
-import prespecified_study as prespecified
+import prespecified_runs
 import provenance
 import reporting
 import species_study as species
 
 SEED_OFFSET = 3000
-# The fly connectome has 2.5 million connections; its runs would take most of a day.
+# The fly connectome has 2.7 million directed connections; its runs would take most of a day.
 ORGANISMS = ("celegans", "human")
 WITH_TRACT_LENGTHS = ("human",)
 FULL_SEEDS = {"celegans": 20, "human": 20}
 AWAKE_COHERENCE_KEPT = 0.9
+LEARNED_SUFFIX = ", learned arrival times"
+
+Baseline = species.ConditionName
 
 
-class ConditionName(StrEnum):
-    FIXED_OFFSETS = "NMDA-antagonist-like, fixed timing offsets"
-    FIXED_OFFSETS_LEARNED = "NMDA-antagonist-like, fixed timing offsets, learned arrival times"
-    JITTER = "NMDA-antagonist-like"
-    JITTER_LEARNED = "NMDA-antagonist-like, learned arrival times"
-    GABAERGIC = "GABAergic-like"
-    GABAERGIC_LEARNED = "GABAergic-like, learned arrival times"
-    DELAYS = "GABAergic-like, conduction delays"
-    DELAYS_LEARNED = "GABAergic-like, conduction delays, learned arrival times"
+def learned(name: str) -> str:
+    """The name of a condition run with learned arrival times."""
+    return f"{name}{LEARNED_SUFFIX}"
+
+
+def baseline_designs(integration: dynamics.IntegrationSettings) -> dict[str, tuple[dynamics.SweepDesign, tuple[str, ...]]]:
+    """The species-study conditions this study repeats with learning, with the organisms each is run on."""
+    base = cal.base_sweep_design(integration)
+    return {
+        Baseline.NMDA_FIXED_OFFSETS: (replace(base, agent=cal.NMDA_ANTAGONIST_AGENT, jitter_dynamics=dynamics.JitterDynamics.FIXED), ORGANISMS),
+        Baseline.NMDA_ANTAGONIST: (replace(base, agent=cal.NMDA_ANTAGONIST_AGENT), ORGANISMS),
+        Baseline.GABAERGIC: (base, ORGANISMS),
+        Baseline.CONDUCTION_DELAYS: (replace(base, conduction_velocity_m_per_s=cal.CORTICOCORTICAL_CONDUCTION_VELOCITY_M_PER_S), WITH_TRACT_LENGTHS),
+    }
+
+
+def with_learning(design: dynamics.SweepDesign) -> dynamics.SweepDesign:
+    return replace(design, dynamics=replace(design.dynamics, arrival_learning_time=cal.ARRIVAL_LEARNING_TIME))
 
 
 def build_conditions(integration: dynamics.IntegrationSettings) -> tuple[species.Condition, ...]:
-    base = cal.base_sweep_design(integration)
-    learning = replace(cal.POPULATION_DYNAMICS, arrival_learning_time=cal.ARRIVAL_LEARNING_TIME)
-    fixed = replace(base, agent=cal.NMDA_ANTAGONIST_AGENT, jitter_dynamics=dynamics.JitterDynamics.FIXED)
-    jitter = replace(base, agent=cal.NMDA_ANTAGONIST_AGENT)
-    delays = replace(base, conduction_velocity_m_per_s=cal.CORTICOCORTICAL_CONDUCTION_VELOCITY_M_PER_S)
-    designs = {
-        ConditionName.FIXED_OFFSETS: (fixed, ORGANISMS),
-        ConditionName.JITTER: (jitter, ORGANISMS),
-        ConditionName.GABAERGIC: (base, ORGANISMS),
-        ConditionName.DELAYS: (delays, WITH_TRACT_LENGTHS),
-    }
-    learned_name = {
-        ConditionName.FIXED_OFFSETS: ConditionName.FIXED_OFFSETS_LEARNED,
-        ConditionName.JITTER: ConditionName.JITTER_LEARNED,
-        ConditionName.GABAERGIC: ConditionName.GABAERGIC_LEARNED,
-        ConditionName.DELAYS: ConditionName.DELAYS_LEARNED,
-    }
     return tuple(
         condition
-        for name, (design, organisms) in designs.items()
-        for condition in (
-            species.Condition(name, design, organisms),
-            species.Condition(learned_name[name], replace(design, dynamics=learning), organisms),
-        )
+        for name, (design, organisms) in baseline_designs(integration).items()
+        for condition in (species.Condition(name, design, organisms), species.Condition(learned(name), with_learning(design), organisms))
     )
 
 
@@ -92,9 +80,14 @@ class LearningPair:
     learned: species.RunSummary
     comparison: species.RunSummary
 
+    @property
+    def concentration_step(self) -> float:
+        return cal.ORGANISMS[self.learned.organism].grid_step(cal.CONCENTRATION_GRID.step)
 
-def concentration_step(organism: str) -> float:
-    return cal.ORGANISMS[organism].concentration_step or cal.CONCENTRATION_GRID.step
+    def loss_shift(self) -> float | None:
+        """Loss concentration with learning minus without; None unless quorum is lost in both."""
+        learned_loss, comparison_loss = self.learned.loss_concentration, self.comparison.loss_concentration
+        return None if learned_loss is None or comparison_loss is None else learned_loss - comparison_loss
 
 
 def quorum_never_lost(run: species.RunSummary) -> bool:
@@ -103,53 +96,49 @@ def quorum_never_lost(run: species.RunSummary) -> bool:
 
 def loss_not_delayed_by_more_than_a_step(pair: LearningPair) -> bool:
     """L2: with learning, quorum is still lost, at most one concentration step later than without."""
-    learned, comparison = pair.learned.loss_concentration, pair.comparison.loss_concentration
-    if learned is None or comparison is None:
-        return False
-    return comparisons.at_most(learned - comparison, concentration_step(pair.learned.organism))
+    shift = pair.loss_shift()
+    return shift is not None and comparisons.at_most(shift, pair.concentration_step)
 
 
 def loss_not_lowered_by_more_than_a_step(pair: LearningPair) -> bool:
     """L3: with learning, quorum is lost at most one concentration step earlier than without delays."""
-    learned, comparison = pair.learned.loss_concentration, pair.comparison.loss_concentration
-    if learned is None or comparison is None:
-        return False
-    return comparisons.at_most(comparison - learned, concentration_step(pair.learned.organism))
+    shift = pair.loss_shift()
+    return shift is not None and comparisons.at_most(-shift, pair.concentration_step)
 
 
 def awake_state_and_loss_kept(pair: LearningPair) -> bool:
     """L4: learning keeps at least 90% of the awake coherence and moves the loss by at most one step either way."""
-    learned, comparison = pair.learned, pair.comparison
-    if learned.loss_concentration is None or comparison.loss_concentration is None:
-        return False
-    keeps_awake = comparisons.at_most(AWAKE_COHERENCE_KEPT * comparison.induction_coherence[0], learned.induction_coherence[0])
-    shift = abs(learned.loss_concentration - comparison.loss_concentration)
-    return keeps_awake and comparisons.at_most(shift, concentration_step(learned.organism))
+    shift = pair.loss_shift()
+    awake_kept = AWAKE_COHERENCE_KEPT * pair.comparison.induction_coherence[0]
+    keeps_awake = comparisons.at_most(awake_kept, pair.learned.induction_coherence[0])
+    return keeps_awake and shift is not None and comparisons.at_most(abs(shift), pair.concentration_step)
 
 
 @dataclass(frozen=True)
 class PairedTest:
-    check: reporting.Check
+    """A test comparing each seed's run in a condition with learning against the same seed in another condition."""
+
+    check: reporting.Check[LearningPair]
     learned: str
     comparison: str
 
 
 RUN_TESTS = (
-    species.Pillar("L1", "With learned arrival times, fixed timing offsets never abolish quorum", ConditionName.FIXED_OFFSETS_LEARNED, quorum_never_lost),
+    species.Pillar("L1", "With learned arrival times, fixed timing offsets never abolish quorum", learned(Baseline.NMDA_FIXED_OFFSETS), quorum_never_lost),
 )
 
 PAIRED_TESTS = (
     PairedTest(
         reporting.Check("L2", "With learned arrival times, timing jitter of the same size still abolishes quorum, at most one step later", loss_not_delayed_by_more_than_a_step),
-        ConditionName.JITTER_LEARNED, ConditionName.JITTER,
+        learned(Baseline.NMDA_ANTAGONIST), Baseline.NMDA_ANTAGONIST,
     ),
     PairedTest(
         reporting.Check("L3", "With learned arrival times, conduction delays no longer lower the loss concentration by more than one step", loss_not_lowered_by_more_than_a_step),
-        ConditionName.DELAYS_LEARNED, ConditionName.GABAERGIC,
+        learned(Baseline.CONDUCTION_DELAYS), Baseline.GABAERGIC,
     ),
     PairedTest(
         reporting.Check("L4", "Learning keeps the awake state (at least 90% of its coherence) and moves the GABAergic-like loss by at most one step", awake_state_and_loss_kept),
-        ConditionName.GABAERGIC_LEARNED, ConditionName.GABAERGIC,
+        learned(Baseline.GABAERGIC), Baseline.GABAERGIC,
     ),
 )
 
@@ -177,59 +166,32 @@ def evaluate(runs: Sequence[species.RunSummary], organisms: Sequence[str]) -> li
 # ---------------------------------------------------------------------------
 
 
-@dataclass(frozen=True)
-class StudyDesign:
-    label: str
-    integration: dynamics.IntegrationSettings
-    seeds_per_organism: dict[str, int]
+PLAN = prespecified_runs.StudyPlan(
+    name="learned timing",
+    conditions=build_conditions,
+    organisms=ORGANISMS,
+    seed_offset=SEED_OFFSET,
+    full_seeds=FULL_SEEDS,
+    outcomes=evaluate,
+)
 
 
-def tasks_for(design: StudyDesign) -> list[species.RunTask]:
-    return [
-        species.RunTask(organism, condition, cal.BASE_SEED + SEED_OFFSET + index)
-        for condition in build_conditions(design.integration)
-        for organism in condition.organisms
-        for index in range(design.seeds_per_organism[organism])
-    ]
-
-
-def outcomes_markdown(runs: list[species.RunSummary], organisms: Sequence[str]) -> str:
-    return "\n".join(prespecified.outcome_table(evaluate(runs, organisms), organisms))
-
-
-def run_study(design: StudyDesign) -> list[species.RunSummary]:
-    tasks = tasks_for(design)
-    runs: list[species.RunSummary] = []
-    for organism in ORGANISMS:
-        spec = cal.ORGANISMS[organism]
-        live = reporting.ParallelRun(f"learned timing: {spec.display_name}", spec.worker_processes, partial(outcomes_markdown, organisms=[organism]))
-        runs.extend(reporting.run_in_parallel(species.run_task, [t for t in tasks if t.organism == organism], live))
-    return runs
-
-
-def assemble_report(design: StudyDesign, started: str, runs: Sequence[species.RunSummary]) -> dict[str, object]:
-    outcomes = evaluate(runs, ORGANISMS)
+def assemble_report(design: prespecified_runs.StudyDesign, started: str, results: Sequence[species.RunSummary]) -> dict[str, object]:
+    outcomes = evaluate(results, ORGANISMS)
     return {
         "label": design.label,
         "started_utc": started,
         "finished_utc": datetime.now(timezone.utc).isoformat(),
         "provenance": provenance.collect(provenance.loaded_sources(), species.REPORTED_PACKAGES),
         "calibration": cal.as_record(),
-        "design": {
-            "integration": asdict(design.integration),
-            "seeds_per_organism": design.seeds_per_organism,
-            "first_seed": cal.BASE_SEED + SEED_OFFSET,
-            "pass_share": float(prespecified.PASS_SHARE),
-            "arrival_learning_time": cal.ARRIVAL_LEARNING_TIME,
-        },
-        "tests": [asdict(o) | {"passes": prespecified.passes(o)} for o in outcomes],
-        "runs": [asdict(run) for run in runs],
+        "design": prespecified_runs.design_record(PLAN, design) | {"arrival_learning_time": cal.ARRIVAL_LEARNING_TIME},
+        "tests": [asdict(o) | {"passes": prespecified_runs.passes(o)} for o in outcomes],
+        "runs": [asdict(run) for run in results],
     }
 
 
-QUANTITIES: tuple[tuple[str, str, str], ...] = tuple(
-    ("Loss concentration", name, "loss_concentration") for name in ConditionName
-)
+def quantities() -> tuple[tuple[str, str, str], ...]:
+    return tuple(("Loss concentration", condition.name, "loss_concentration") for condition in build_conditions(cal.QUICK_INTEGRATION))
 
 
 def to_markdown(report: dict[str, object]) -> str:
@@ -238,30 +200,22 @@ def to_markdown(report: dict[str, object]) -> str:
     outcomes = [reporting.CheckOutcome(**{k: v for k, v in t.items() if k != "passes"}) for t in report["tests"]]
     return "\n".join([
         *reporting.run_metadata_section(report, provenance.markdown_rows(report["provenance"])),
-        f"### Pre-specified tests of learned arrival times (seeds in which the test holds; passes at {float(100 * prespecified.PASS_SHARE):.0f}% or more)",
+        f"### Pre-specified tests of learned arrival times (seeds in which the test holds; passes at {float(100 * prespecified_runs.PASS_SHARE):.0f}% or more)",
         "",
-        *prespecified.outcome_table(outcomes, organisms),
+        *prespecified_runs.outcome_table(outcomes, organisms),
         "",
         "### Measurements (mean ± SD across seeds; concentrations relative to EC50)",
         "",
-        *reporting.markdown_table(["Quantity", "Condition", *names], species.measurement_rows_for(QUANTITIES, report["runs"], organisms)),
+        *reporting.markdown_table(["Quantity", "Condition", *names], species.measurement_rows_for(quantities(), report["runs"], organisms)),
         "",
     ])
 
 
-def parse_design(arguments: Sequence[str]) -> StudyDesign:
-    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--quick", action="store_true", help="short smoke run instead of the full study")
-    if parser.parse_args(arguments).quick:
-        return StudyDesign("quick", cal.QUICK_INTEGRATION, {o: 1 for o in ORGANISMS})
-    return StudyDesign("full", cal.FULL_INTEGRATION, FULL_SEEDS)
-
-
 def main(arguments: Sequence[str]) -> int:
     provenance.record_launch()
-    design = parse_design(arguments)
+    design = prespecified_runs.parse_design(PLAN, arguments, __doc__)
     started = datetime.now(timezone.utc).isoformat()
-    report = assemble_report(design, started, run_study(design))
+    report = assemble_report(design, started, prespecified_runs.run_study(PLAN, design))
     reporting.publish("learned_timing", report, to_markdown(report))
     return 0 if all(test["passes"] for test in report["tests"]) else 1
 

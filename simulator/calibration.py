@@ -38,6 +38,10 @@ class OrganismSpec:
     # Whether the dataset gives transmitter identity, so connections can be signed.
     has_connection_signs: bool = False
 
+    def grid_step(self, study_step: float) -> float:
+        """Concentration step used for this organism: its own coarser step if it has one, else the study's."""
+        return study_step if self.concentration_step is None else self.concentration_step
+
 
 # Numerical: the fly connectome has 2.7 million connections, about 80 ms per integration step on
 # the machine used, so it is run on a coarser concentration grid with a shorter settling period.

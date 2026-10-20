@@ -31,7 +31,7 @@ CONDITIONS = (ConditionName.GABAERGIC, ConditionName.SENSORY_STIMULUS)
 # A Drosophila run takes about 25 minutes at the reference settings and twice that with either change.
 FULL_SEEDS = {"human": 5, "drosophila": 2}
 QUICK_SEEDS = {"human": 1}
-REPORTED_PACKAGES = ("numpy", "scipy", "pyarrow")
+REPORTED_PACKAGES = (*provenance.NUMERICAL_PACKAGES, "pyarrow")
 
 
 def longer(settings: dynamics.IntegrationSettings) -> dynamics.IntegrationSettings:
@@ -126,7 +126,7 @@ def main(arguments: Sequence[str]) -> int:
         live = reporting.ParallelRun(f"convergence: {cal.ORGANISMS[organism].display_name}", cal.ORGANISMS[organism].worker_processes, live_markdown=lambda done, o=organism: "\n".join(table(done, o)))
         runs.extend(reporting.run_in_parallel(run, [t for t in tasks if t.organism == organism], live))
     document = {
-        "label": "quick" if quick else "full",
+        "label": reporting.RunLabel.QUICK if quick else reporting.RunLabel.FULL,
         "started_utc": started.isoformat(),
         "finished_utc": datetime.now(timezone.utc).isoformat(),
         "provenance": provenance.collect(provenance.loaded_sources(), REPORTED_PACKAGES),

@@ -15,11 +15,22 @@ import sys
 import time
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from dataclasses import dataclass
+from enum import StrEnum
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Callable, Generic, Sequence, TypeVar
 
 import provenance
+
+
+class RunLabel(StrEnum):
+    """How a report was produced; the middle part of every report's file name (kind_label_timestamp)."""
+
+    FULL = "full"
+    # A short smoke run of the code; such reports are git-ignored in results/ and are not results.
+    QUICK = "quick"
+    CONFIRMATORY = "confirmatory"
+    DIAGNOSTIC = "diagnostic"
 
 RESULTS_DIRECTORY = Path(__file__).resolve().parent / "results"
 LIVE_SUBDIRECTORY = "live"
@@ -284,16 +295,25 @@ def run_metadata_section(document: dict[str, object], provenance_rows: Sequence[
     return ["### Run metadata", "", *markdown_table(["Field", "Value"], rows), *provenance_rows, ""]
 
 
+DIAGNOSTICS_SUBDIRECTORY = "diagnostics"
+
+
+def report_directory(label: str) -> Path:
+    """Post hoc diagnostics are kept apart from study reports; RESULTS_DIRECTORY is read at call time so tests can redirect it."""
+    return RESULTS_DIRECTORY / DIAGNOSTICS_SUBDIRECTORY if label == RunLabel.DIAGNOSTIC else RESULTS_DIRECTORY
+
+
 def publish(kind: str, document: dict[str, object], markdown: str) -> tuple[Path, Path]:
     """Write the JSON and Markdown reports, named by study kind, label and start time, and print the summary."""
-    RESULTS_DIRECTORY.mkdir(exist_ok=True)
+    directory = report_directory(str(document["label"]))
+    directory.mkdir(parents=True, exist_ok=True)
     started = datetime.fromisoformat(str(document["started_utc"]))
-    stem = RESULTS_DIRECTORY / f"{kind}_{document['label']}_{started.strftime(TIMESTAMP_FORMAT)}"
+    stem = directory / f"{kind}_{document['label']}_{started.strftime(TIMESTAMP_FORMAT)}"
     json_path, markdown_path = stem.with_suffix(".json"), stem.with_suffix(".md")
     json_path.write_text(json.dumps(document, indent=2, default=str, ensure_ascii=False))
     markdown_path.write_text(markdown)
     print(markdown)
-    print(f"Reports written to {json_path.name} and {markdown_path.name} in {RESULTS_DIRECTORY.name}/")
+    print(f"Reports written to {json_path.name} and {markdown_path.name} in {directory.name}/")
     clear_checkpoints()
     return json_path, markdown_path
 

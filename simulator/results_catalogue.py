@@ -174,10 +174,18 @@ def remove_stale_wrappers(written: set[Path]) -> None:
         stale.unlink()
 
 
+def is_local_smoke_run(report_set: str, path: Path) -> bool:
+    """A quick run among the current reports is a git-ignored smoke run of the code, not a result; quick checks that
+    were archived on purpose are listed."""
+    return report_set == CURRENT_SET and ReportName.of(path).label == reporting.RunLabel.QUICK
+
+
 def write_catalogue() -> list[CatalogueEntry]:
     entries, written = [], set()
     for report_set, note, directory in report_sets():
         for path in sorted(directory.glob("*.json")):
+            if is_local_smoke_run(report_set, path):
+                continue
             report = Report.read(path, report_set, note)
             entry = entry_for(report)
             target = script_path(report_set, path.stem)

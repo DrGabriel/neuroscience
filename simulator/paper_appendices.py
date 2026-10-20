@@ -25,25 +25,25 @@ SEPARATOR = "\n---\n\n"
 REPORT_HEADING_LEVEL = "#### "
 
 
-def latest_report_path(kind: str, label: str = "full") -> Path:
+def latest_report_path(kind: str, label: str = reporting.RunLabel.FULL) -> Path:
     paths = sorted(reporting.RESULTS_DIRECTORY.glob(f"{kind}_{label}_*.md"))
     if not paths:
         raise FileNotFoundError(f"No {label} {kind} report in {reporting.RESULTS_DIRECTORY}")
     return paths[-1]
 
 
-def latest_report(kind: str, label: str = "full") -> str:
+def latest_report(kind: str, label: str = reporting.RunLabel.FULL) -> str:
     return latest_report_path(kind, label).read_text().replace("### ", REPORT_HEADING_LEVEL).strip()
 
 
-def report_name(kind: str, label: str = "full") -> str:
+def report_name(kind: str, label: str = reporting.RunLabel.FULL) -> str:
     return latest_report_path(kind, label).name
 
 
 NOT_YET_RUN = "Results: not yet run."
 
 
-def report_section(kind: str, label: str = "full") -> str:
+def report_section(kind: str, label: str = reporting.RunLabel.FULL) -> str:
     """The latest report with its source line, or a notice when the study has not been run."""
     try:
         return f"Source: `simulator/results/{report_name(kind, label)}`.\n\n{public_labels.relabel_table_cells(latest_report(kind, label), kind)}"
@@ -128,7 +128,7 @@ RUN_NOTES = """A first launch of the study was stopped after its *C. elegans* ru
 
 # The model-revision history (Appendix D). Each entry records what was assumed, what the simulations showed, what
 # the literature said, what replaced the assumption and which new test followed. Failed tests stay in the reports.
-LEARNED_TIMING_TESTS = r"""The tests below, their conditions and their pass rule were written into this paper and committed before the study that evaluates them was run (`simulator/learned_timing_study.py`). Before that, the code was checked with one shortened run whose test outcomes were not computed or read. The study uses seeds that no earlier run used (from the base seed plus 3000): 20 for *C. elegans* and 20 for the human connectome. *Drosophila* is not run: with 2.5 million connections its runs would take most of a day. A test passes for an organism when it holds in at least 80% of that organism's seeds.
+LEARNED_TIMING_TESTS = r"""The tests below, their conditions and their pass rule were written into this paper and committed before the study that evaluates them was run (`simulator/learned_timing_study.py`). Before that, the code was checked with one shortened run whose test outcomes were not computed or read. The study uses seeds that no earlier run used (from the base seed plus 3000): 20 for *C. elegans* and 20 for the human connectome. *Drosophila* is not run: with 2.7 million directed connections its runs would take most of a day. A test passes for an organism when it holds in at least 80% of that organism's seeds.
 
 **Learned arrival times.** P4b proposes that the brain integrates inputs against learned expectations of when they arrive, so that a constant delay is harmless and only variability matters (Section 3.3). The models have no such learning, and in them constant offsets are as harmful as jitter. Here each connection *j*→*i* carries a learned expected arrival offset $\hat c_{ji}$, which enters the coupling as $\sin(\theta_j - \theta_i - \alpha_{ji} + \hat c_{ji})$ and moves as $\tau_L \, d\hat c_{ji}/dt = -\sin(\theta_j - \theta_i - \alpha_{ji} + \hat c_{ji})$, where $\alpha_{ji}$ is the connection's phase error (fixed lag plus jitter). The rule is driven only by what the receiving population can observe, the phase of the arriving signal relative to its own. It is adapted from the delay plasticity of Park and Lefebvre (2020), in which conduction delays change with the phase difference of the populations they connect; applying it to the receiver's expectation instead of the delay is our step. The learning time $\tau_L$ is ten jitter correlation times, so that the learning averages timing variability rather than tracking it, and about a sixth of the time held at each concentration, so that it settles within one concentration step; it is a free parameter and is not varied. The learned offsets start at zero in the awake state and carry over from one concentration to the next. Each test compares conditions with and without learning on the same seed; a concentration step is 0.05 times the EC50.
 
@@ -255,7 +255,7 @@ The GABAergic-like and sensory-stimulus conditions are repeated with twice the s
 
 ### C.6 Synchrony surge (confirmatory run on fresh seeds)
 
-{report_section("congestion", "confirmatory")}
+{report_section("congestion", reporting.RunLabel.CONFIRMATORY)}
 
 ### C.7 Pre-specified tests on fresh seeds: K2 and T1c
 

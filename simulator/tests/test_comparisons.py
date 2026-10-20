@@ -9,7 +9,7 @@ from fractions import Fraction
 from pathlib import Path
 
 import comparisons
-import prespecified_study
+import prespecified_runs
 import reporting
 import species_study as species
 from tests.test_prespecified_study import run
@@ -58,9 +58,9 @@ class VerdictRoundingRegressionTests(unittest.TestCase):
     def test_pass_rule_is_exact_at_the_threshold(self) -> None:
         def outcome(holding: int, applicable: int) -> reporting.CheckOutcome:
             return reporting.CheckOutcome("T1c", "s", "C. elegans", holding, applicable)
-        self.assertTrue(prespecified_study.passes(outcome(16, 20)))
-        self.assertFalse(prespecified_study.passes(outcome(4, 6)))
-        self.assertFalse(prespecified_study.passes(outcome(0, 0)))
+        self.assertTrue(prespecified_runs.passes(outcome(16, 20)))
+        self.assertFalse(prespecified_runs.passes(outcome(4, 6)))
+        self.assertFalse(prespecified_runs.passes(outcome(0, 0)))
 
     def test_a_check_defined_in_no_run_does_not_hold_Regression(self) -> None:
         self.assertFalse(reporting.CheckOutcome("N1", "s", "Drosophila", 0, 0).holds)

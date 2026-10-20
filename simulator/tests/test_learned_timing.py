@@ -43,10 +43,8 @@ class LearnedTimingVerdictTests(unittest.TestCase):
 
     def test_every_condition_has_a_learned_twin_on_the_same_organisms(self) -> None:
         conditions = {c.name: c for c in study.build_conditions(cal.QUICK_INTEGRATION)}
-        for name, condition in conditions.items():
-            if name.endswith("learned arrival times"):
-                continue
-            twin = conditions[f"{name}, learned arrival times"]
+        for name in study.baseline_designs(cal.QUICK_INTEGRATION):
+            condition, twin = conditions[name], conditions[study.learned(name)]
             self.assertEqual(twin.organisms, condition.organisms)
             self.assertIsNone(condition.design.dynamics.arrival_learning_time)
             self.assertEqual(twin.design.dynamics.arrival_learning_time, cal.ARRIVAL_LEARNING_TIME)

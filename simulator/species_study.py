@@ -34,7 +34,7 @@ import plant_tissue
 import provenance
 import reporting
 
-REPORTED_PACKAGES = ("numpy", "scipy", "pyarrow", "matplotlib")
+REPORTED_PACKAGES = (*provenance.NUMERICAL_PACKAGES, "pyarrow", "matplotlib")
 
 
 # ---------------------------------------------------------------------------
@@ -179,8 +179,7 @@ def design_for(task: RunTask) -> dynamics.SweepDesign:
     """The condition's design with the task's seed and any organism-specific numerical resolution."""
     spec = cal.ORGANISMS[task.organism]
     design = replace(task.condition.design, seed=task.seed)
-    if spec.concentration_step is not None:
-        design = replace(design, grid=replace(design.grid, step=spec.concentration_step))
+    design = replace(design, grid=replace(design.grid, step=spec.grid_step(design.grid.step)))
     if spec.relaxation_steps is not None and design.integration.relaxation_steps > spec.relaxation_steps:
         design = replace(design, integration=replace(design.integration, relaxation_steps=spec.relaxation_steps))
     return design
@@ -636,9 +635,9 @@ def parse_arguments(arguments: Sequence[str]) -> argparse.Namespace:
 
 def design_from(options: argparse.Namespace) -> StudyDesign:
     if options.quick:
-        return StudyDesign("quick", cal.QUICK_INTEGRATION, {o: 1 for o in cal.ORGANISMS}, plant_seeds=1)
+        return StudyDesign(reporting.RunLabel.QUICK, cal.QUICK_INTEGRATION, {o: 1 for o in cal.ORGANISMS}, plant_seeds=1)
     seeds = {organism: spec.full_study_seeds for organism, spec in cal.ORGANISMS.items()}
-    return StudyDesign("full", cal.FULL_INTEGRATION, seeds, cal.PLANT_SEEDS)
+    return StudyDesign(reporting.RunLabel.FULL, cal.FULL_INTEGRATION, seeds, cal.PLANT_SEEDS)
 
 
 def results_from_report(stored: dict[str, object]) -> SpeciesResults:
