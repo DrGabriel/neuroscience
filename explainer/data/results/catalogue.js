@@ -161,24 +161,24 @@ globalThis.DPC_RESULTS_CATALOGUE = Object.freeze([
   "script": "data/results/current/prespecified_full_20261019T202442Z.js"
  },
  {
-  "identifier": "current/sensitivity_full_20261019T114501Z",
+  "identifier": "current/sensitivity_full_20261020T110144Z",
   "kind": "sensitivity",
   "label": "full",
   "report_set": "current",
   "set_note": "",
-  "started_utc": "2026-10-19T11:45:01.242397+00:00",
+  "started_utc": "2026-10-20T11:01:44.960633+00:00",
   "machine": "Mac14,9 · Apple M2 Pro",
-  "git_commit": "d8b06eb7b3df89d97b0e5aa7570ac537e4627cfe",
-  "working_tree_dirty": true,
+  "git_commit": "7ce71a8c1e3d7b2becfe0d5eeb5a91593a3f3702",
+  "working_tree_dirty": false,
   "checks": {
    "checks": 225,
    "holding_in_every_run": 184,
    "holding_in_none": 27
   },
   "has_curves": false,
-  "json_link": "../simulator/results/sensitivity_full_20261019T114501Z.json",
-  "markdown_link": "../simulator/results/sensitivity_full_20261019T114501Z.md",
-  "script": "data/results/current/sensitivity_full_20261019T114501Z.js"
+  "json_link": "../simulator/results/sensitivity_full_20261020T110144Z.json",
+  "markdown_link": "../simulator/results/sensitivity_full_20261020T110144Z.md",
+  "script": "data/results/current/sensitivity_full_20261020T110144Z.js"
  },
  {
   "identifier": "current/species_full_20261020T103719Z",
@@ -239,6 +239,26 @@ globalThis.DPC_RESULTS_CATALOGUE = Object.freeze([
   "json_link": "../simulator/results/archive/checks_2026-10-19/percolation_quick_20261019T133355Z.json",
   "markdown_link": "../simulator/results/archive/checks_2026-10-19/percolation_quick_20261019T133355Z.md",
   "script": "data/results/checks_2026-10-19/percolation_quick_20261019T133355Z.js"
+ },
+ {
+  "identifier": "checks_2026-10-20/sensitivity_quick_20261020T105432Z",
+  "kind": "sensitivity",
+  "label": "quick",
+  "report_set": "checks_2026-10-20",
+  "set_note": "Code checks, 20 October 2026",
+  "started_utc": "2026-10-20T10:54:32.098918+00:00",
+  "machine": "Mac14,9 · Apple M2 Pro",
+  "git_commit": "ca2968fa252b68b06ddf08bfc97ee530bb2939ef",
+  "working_tree_dirty": true,
+  "checks": {
+   "checks": 225,
+   "holding_in_every_run": 186,
+   "holding_in_none": 36
+  },
+  "has_curves": false,
+  "json_link": "../simulator/results/archive/checks_2026-10-20/sensitivity_quick_20261020T105432Z.json",
+  "markdown_link": "../simulator/results/archive/checks_2026-10-20/sensitivity_quick_20261020T105432Z.md",
+  "script": "data/results/checks_2026-10-20/sensitivity_quick_20261020T105432Z.js"
  },
  {
   "identifier": "draft_v1_2026-10-17/calibration_feedback_full_20261017T213546Z",
@@ -859,6 +879,26 @@ globalThis.DPC_RESULTS_CATALOGUE = Object.freeze([
   "json_link": "../simulator/results/archive/superseded_2026-10-20/sensitivity_full_20261018T212118Z.json",
   "markdown_link": "../simulator/results/archive/superseded_2026-10-20/sensitivity_full_20261018T212118Z.md",
   "script": "data/results/superseded_2026-10-20/sensitivity_full_20261018T212118Z.js"
+ },
+ {
+  "identifier": "superseded_2026-10-20/sensitivity_full_20261019T114501Z",
+  "kind": "sensitivity",
+  "label": "full",
+  "report_set": "superseded_2026-10-20",
+  "set_note": "Superseded by the corrected runs of 19-20 October 2026",
+  "started_utc": "2026-10-19T11:45:01.242397+00:00",
+  "machine": "Mac14,9 · Apple M2 Pro",
+  "git_commit": "d8b06eb7b3df89d97b0e5aa7570ac537e4627cfe",
+  "working_tree_dirty": true,
+  "checks": {
+   "checks": 225,
+   "holding_in_every_run": 184,
+   "holding_in_none": 27
+  },
+  "has_curves": false,
+  "json_link": "../simulator/results/archive/superseded_2026-10-20/sensitivity_full_20261019T114501Z.json",
+  "markdown_link": "../simulator/results/archive/superseded_2026-10-20/sensitivity_full_20261019T114501Z.md",
+  "script": "data/results/superseded_2026-10-20/sensitivity_full_20261019T114501Z.js"
  },
  {
   "identifier": "superseded_2026-10-20/species_full_20261019T025707Z",

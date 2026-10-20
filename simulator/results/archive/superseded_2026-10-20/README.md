@@ -6,7 +6,8 @@ These reports were produced by code that the hostile review and the second code 
 |---|---|---|
 | `validation_full_20261018T210913Z` | `validation_full_20261019T113035Z` | Rerun after the code fixes |
 | `calibration_phase_feedback_full_20261018T211914Z` | `calibration_phase_feedback_full_20261019T114211Z` | Rerun after the phase-model fixes |
-| `sensitivity_full_20261018T212118Z` | `sensitivity_full_20261019T114501Z` | Rerun after the phase-model fixes |
+| `sensitivity_full_20261018T212118Z` | `sensitivity_full_20261020T110144Z` | Rerun after the phase-model fixes |
+| `sensitivity_full_20261019T114501Z` | `sensitivity_full_20261020T110144Z` | Identical verdicts and oscillator runs; the successor also stores each seed's percolation measurements, so that every C5 to C7 margin can be checked for rounding |
 | `species_full_20261019T025707Z` | `species_full_20261020T103719Z` | Run on the uncorrected phase model and worm graph |
 | `species_full_20261019T123532Z` | `species_full_20261020T103719Z` | The same runs, unchanged; the successor recomputes their verdicts with the corrected grid comparisons (T1 and F3) |
 | `preregistered_full_20261018T174910Z` | `prespecified_full_20261019T202442Z` | Rerun after the fixes; the study was renamed from "pre-registered" to "pre-specified" |

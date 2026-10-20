@@ -34,11 +34,12 @@ def public_label(identifier: str, study: str | None = None) -> str:
     return labels_for(study).get(identifier, identifier)
 
 
-def relabel_table_rows(markdown: str, study: str | None = None) -> str:
-    """A report's Markdown with the identifier cell that opens each table row shown by its public label."""
+def relabel_table_cells(markdown: str, study: str | None = None) -> str:
+    """A report's Markdown with every table cell that is exactly a test identifier, in a row or a header, shown by its
+    public label; identifiers inside longer cells or prose are left as written."""
     labels = labels_for(study)
-    row_identifier = re.compile(r"^\| (" + "|".join(sorted(map(re.escape, labels), key=len, reverse=True)) + r") \|", re.MULTILINE)
-    return row_identifier.sub(lambda match: f"| {labels[match.group(1)]} |", markdown)
+    identifier_cell = re.compile(r"(?<=\| )(" + "|".join(sorted(map(re.escape, labels), key=len, reverse=True)) + r")(?= \|)")
+    return identifier_cell.sub(lambda match: labels[match.group(1)], markdown)
 
 
 def correspondence_rows() -> list[tuple[str, str, str]]:

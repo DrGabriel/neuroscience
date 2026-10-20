@@ -46,7 +46,7 @@ NOT_YET_RUN = "Results: not yet run."
 def report_section(kind: str, label: str = "full") -> str:
     """The latest report with its source line, or a notice when the study has not been run."""
     try:
-        return f"Source: `simulator/results/{report_name(kind, label)}`.\n\n{public_labels.relabel_table_rows(latest_report(kind, label), kind)}"
+        return f"Source: `simulator/results/{report_name(kind, label)}`.\n\n{public_labels.relabel_table_cells(latest_report(kind, label), kind)}"
     except FileNotFoundError:
         return NOT_YET_RUN
 

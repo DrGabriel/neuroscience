@@ -80,18 +80,24 @@ class PublicLabelTests(unittest.TestCase):
             self.assertRegex(identifier, r"^P\d")
             self.assertNotRegex(label, r"^P\d")
 
-    def test_only_the_identifier_cell_of_a_table_row_is_relabelled(self) -> None:
+    def test_only_cells_that_are_an_identifier_are_relabelled(self) -> None:
         report = "| P3 | Stimulated area keeps processing (P3) | 17/20 |\n| K1 | Ketamine | 12/20 |\nPostulate P3 in prose."
-        relabelled = appendices.public_labels.relabel_table_rows(report)
+        relabelled = appendices.public_labels.relabel_table_cells(report)
         self.assertEqual(relabelled, "| T3 | Stimulated area keeps processing (P3) | 17/20 |\n| K1 | Ketamine | 12/20 |\nPostulate P3 in prose.")
+
+    def test_identifier_cells_in_a_table_header_are_relabelled_Regression(self) -> None:
+        # The sensitivity report's phase-model table names its columns by test, so B.6 printed P2a, P2b and P3.
+        header = "| Variation | P2a | P2b | P3 |\n|---|---|---|---|\n| Coupling K = 2 | 5/5 | 5/5 | 3/5 |"
+        relabelled = appendices.public_labels.relabel_table_cells(header)
+        self.assertEqual(relabelled, "| Variation | T2a | T2b | T3 |\n|---|---|---|---|\n| Coupling K = 2 | 5/5 | 5/5 | 3/5 |")
 
     def test_congestion_batching_tests_do_not_share_labels_with_the_glial_checks_Regression(self) -> None:
         labels = appendices.public_labels
         self.assertEqual(labels.public_label("G1", "congestion"), "B1")
         self.assertEqual(labels.public_label("G2", "congestion"), "B2")
         self.assertEqual(labels.public_label("G1", "glia"), "G1")
-        self.assertEqual(labels.relabel_table_rows("| G1 | Batching |\n| W1 | Hub |", "congestion"), "| B1 | Batching |\n| W1 | Hub |")
-        self.assertEqual(labels.relabel_table_rows("| G1 | Microglia |", "glia"), "| G1 | Microglia |")
+        self.assertEqual(labels.relabel_table_cells("| G1 | Batching |\n| W1 | Hub |", "congestion"), "| B1 | Batching |\n| W1 | Hub |")
+        self.assertEqual(labels.relabel_table_cells("| G1 | Microglia |", "glia"), "| G1 | Microglia |")
 
     def test_every_public_label_is_unique_and_names_no_postulate(self) -> None:
         public = [label for _, _, label in appendices.public_labels.correspondence_rows()]
