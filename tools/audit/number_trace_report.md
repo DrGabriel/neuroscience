@@ -1,13 +1,14 @@
 # Number trace
 
-Unmatched numbers in sentences without a citation: 4.
-Numbers in sentences that cite literature (checked against their sources): 95.
+Unmatched numbers in sentences without a citation: 5.
+Numbers in sentences that cite literature (checked against their sources): 96.
 
 ## Unmatched
 
 | Line | Number | Sentence |
 |---|---|---|
 | 212 | 1.1575 | In the phase model, fixed timing offsets abolish quorum (S4) one or two concentration steps earlier than fluctuating jitter of the same size in 20 of 20 *C. elegans* and 18 of 20 human seeds, and at the same step in all 6 *Drosophila* seeds; with measured conduction delays, quorum on the human conne |
+| 336 | −0.0075 | At the reference strength, hysteresis averaged −0.0075 ± 0.029, 0.000 and 0.005 ± 0.032 EC50 on the *C. elegans*, *Drosophila* and human connectomes, and it was strictly positive in only 2 of 20, 0 of 6 and 5 of 20 seeds (test S3, Appendix C.3). |
 | 383 | 3.4 | / The quorum threshold of a connectome is predictable from its wiring / Held / The generating-function formula lies 2 to 5% below the measured threshold on all three connectomes with direction ignored (Appendix B.5); with direction kept, quorum needs 1.3 to 3.4 times as many timing-coherent connecti |
 | 397 | 0.837 | With twice the simulated time, the broadcast after loss fell to 0.30 and 0.43 of the awake value in the two seeds checked, which meets the post hoc criterion T3b but not T3, because the sensory neurons' entrainment also fell slightly (from 0.837 to 0.826 and 0.836). |
 | 397 | 0.836 | With twice the simulated time, the broadcast after loss fell to 0.30 and 0.43 of the awake value in the two seeds checked, which meets the post hoc criterion T3b but not T3, because the sensory neurons' entrainment also fell slightly (from 0.837 to 0.826 and 0.836). |
@@ -16,8 +17,8 @@ Numbers in sentences that cite literature (checked against their sources): 95.
 
 | Line | Number | Sentence |
 |---|---|---|
-| 19 | 2 | Simulations of a percolation model on networks of up to one million nodes and of a phase-oscillator model on the *C. elegans*, *Drosophila* and human connectomes, with an excitatory-inhibitory population model for one further test, show that the model is internally consistent and produces its centra |
-| 19 | 5% | Simulations of a percolation model on networks of up to one million nodes and of a phase-oscillator model on the *C. elegans*, *Drosophila* and human connectomes, with an excitatory-inhibitory population model for one further test, show that the model is internally consistent and produces its centra |
+| 19 | 2 | Simulations of a percolation model on networks of up to one million nodes and of a phase-oscillator model on the *C. elegans*, *Drosophila* and human connectomes, with an excitatory-inhibitory population model for further tests, show that the model is internally consistent and produces its central c |
+| 19 | 5% | Simulations of a percolation model on networks of up to one million nodes and of a phase-oscillator model on the *C. elegans*, *Drosophila* and human connectomes, with an excitatory-inhibitory population model for further tests, show that the model is internally consistent and produces its central c |
 | 27 | 170 | More than 170 years after the first public demonstration of ether anaesthesia, no consensus exists on how anaesthetics produce unconsciousness (Franks, 2008; |
 | 72 | 7 | In syncope, when the circulation stops abruptly and completely, the resulting global fall in cerebral blood flow can abolish consciousness in as little as roughly 7 s (Wieling et al., 2009). |
 | 84 | 1899 | The Meyer-Overton correlation, which relates anaesthetic potency to lipid solubility (Meyer, 1899; |
@@ -99,8 +100,9 @@ Numbers in sentences that cite literature (checked against their sources): 95.
 | 510 | 1.07 | The arousal level itself is a free parameter, because the measured inertia ratios from 1.07 to 1.63 are reproduced at every level tested (the halothane ratio of 2.85 at none, limitation 2), and the arousal systems are represented by a single number rather than by their own dynamics (Kelz et al., 200 |
 | 510 | 1.63 | The arousal level itself is a free parameter, because the measured inertia ratios from 1.07 to 1.63 are reproduced at every level tested (the halothane ratio of 2.85 at none, limitation 2), and the arousal systems are represented by a single number rather than by their own dynamics (Kelz et al., 200 |
 | 510 | 2.85 | The arousal level itself is a free parameter, because the measured inertia ratios from 1.07 to 1.63 are reproduced at every level tested (the halothane ratio of 2.85 at none, limitation 2), and the arousal systems are represented by a single number rather than by their own dynamics (Kelz et al., 200 |
-| 517 | 35 | **One fly, one sex, few seeds.** The *Drosophila* results rest on a single adult female brain (Dorkenwald et al., 2024) and, because each run takes about 35 minutes, on 6 seeds per condition in both the cross-species study and the pre-specified tests, on a coarser concentration grid (Section 4.5), s |
-| 517 | 6 | **One fly, one sex, few seeds.** The *Drosophila* results rest on a single adult female brain (Dorkenwald et al., 2024) and, because each run takes about 35 minutes, on 6 seeds per condition in both the cross-species study and the pre-specified tests, on a coarser concentration grid (Section 4.5), s |
+| 517 | 30 | **One fly, one sex, few seeds.** The *Drosophila* results rest on a single adult female brain (Dorkenwald et al., 2024) and, because each run takes 30 to 60 minutes, on 6 seeds per condition in both the cross-species study and the pre-specified tests, on a coarser concentration grid (Section 4.5), s |
+| 517 | 60 | **One fly, one sex, few seeds.** The *Drosophila* results rest on a single adult female brain (Dorkenwald et al., 2024) and, because each run takes 30 to 60 minutes, on 6 seeds per condition in both the cross-species study and the pre-specified tests, on a coarser concentration grid (Section 4.5), s |
+| 517 | 6 | **One fly, one sex, few seeds.** The *Drosophila* results rest on a single adult female brain (Dorkenwald et al., 2024) and, because each run takes 30 to 60 minutes, on 6 seeds per condition in both the cross-species study and the pre-specified tests, on a coarser concentration grid (Section 4.5), s |
 | 518 | 2.35 | The ageing evidence is only suggestive: the propofol concentration at which half of volunteers lose consciousness falls with age, from 2.35 µg/ml at 25 years to 1.25 µg/ml at 75 (Schnider et al., 1999), but loss of neurons and receptor changes are equally possible causes. |
 | 518 | 25 | The ageing evidence is only suggestive: the propofol concentration at which half of volunteers lose consciousness falls with age, from 2.35 µg/ml at 25 years to 1.25 µg/ml at 75 (Schnider et al., 1999), but loss of neurons and receptor changes are equally possible causes. |
 | 518 | 1.25 | The ageing evidence is only suggestive: the propofol concentration at which half of volunteers lose consciousness falls with age, from 2.35 µg/ml at 25 years to 1.25 µg/ml at 75 (Schnider et al., 1999), but loss of neurons and receptor changes are equally possible causes. |
