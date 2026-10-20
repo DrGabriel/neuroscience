@@ -1,0 +1,189 @@
+{
+  "label": "full",
+  "started_utc": "2026-10-20T01:13:39.951591+00:00",
+  "finished_utc": "2026-10-20T01:14:31.518881+00:00",
+  "provenance": {
+    "hardware": {
+      "hw.model": "Mac14,9",
+      "machdep.cpu.brand_string": "Apple M2 Pro",
+      "hw.memsize": "34359738368",
+      "hw.ncpu": "10",
+      "hw.perflevel0.physicalcpu": "6",
+      "hw.perflevel1.physicalcpu": "4"
+    },
+    "memory_gibibytes": 32.0,
+    "operating_system": {
+      "product_version": "26.7.1",
+      "build_version": "25G241",
+      "platform": "macOS-26.7.1-arm64-arm-64bit-Mach-O",
+      "machine": "arm64"
+    },
+    "python": {
+      "implementation": "CPython",
+      "version": "3.13.2",
+      "packages": {
+        "numpy": "2.5.4",
+        "scipy": "1.18.1",
+        "pyarrow": "26.0.0"
+      }
+    },
+    "source": {
+      "git_commit": "38e86cbaa5c084c7a9d05a0da2bf4d08648ada80",
+      "git_working_tree_dirty": false,
+      "sha256": {
+        "calibration.py": "f0760a3875a9007af2640417c43eb9c99b6a2898e63ac5ce1a5b6c915a502f8d",
+        "connectomes.py": "b13446025b96ad86be7f4121b4c2b227dc58a4f38dc1c4db866c8b3bff86f3d1",
+        "dpc_simulator.py": "07f3b3f1828859c628f596f543d65e33c45403483d5696bd355d8f48fd856fdf",
+        "percolation_thresholds.py": "68e2a92cf39b833e3f277c3039404d0a04c51c36d22ce28bf36e63b3633a7bd7",
+        "phase_dynamics.py": "7470f3f061d933b64e51bb060752914bbcfa166b3653d1dc89beeb4fc032241a",
+        "plant_tissue.py": "1b04ef76f1fa0860e6a7daca5ea54dab72234bd9e11855efa616f248ad91c935",
+        "provenance.py": "f320d7cc34706f1a0a92ea109c270872557e999139b9832304eef1fc5032b122",
+        "reporting.py": "de80a53d63e90383ed325db5098aea06b71b3f846d8368ddeb12347ce3c4470b"
+      },
+      "captured": "at launch"
+    }
+  },
+  "seeds": [
+    20261017,
+    20261018,
+    20261019,
+    20261020,
+    20261021,
+    20261022,
+    20261023,
+    20261024,
+    20261025,
+    20261026
+  ],
+  "thresholds": [
+    {
+      "organism": "C. elegans",
+      "node_count": 300,
+      "undirected_edge_count": 3465,
+      "mean_degree": 23.1,
+      "mean_square_degree": 730.6533333333333,
+      "onset_threshold_formula": 0.03264771560212187,
+      "quorum_threshold_formula": 0.056796874983220336,
+      "quorum_threshold_measured_mean": 0.057940000000000005,
+      "quorum_threshold_measured_sd": 0.005418117754349752,
+      "critical_failure_formula": 0.8516762121272038,
+      "critical_failure_measured": 0.8486909663271311,
+      "critical_jitter_ms_formula": 21.05424178935948,
+      "critical_jitter_ms_measured": 20.63814230124685,
+      "quorum_threshold_directed_mean": 0.10576171875,
+      "quorum_threshold_directed_sd": 0.007909617516862207,
+      "critical_failure_directed": 0.723805601248805,
+      "critical_jitter_ms_directed": 11.28301193166363,
+      "quorum_threshold_measured_by_seed": [
+        0.0604,
+        0.054200000000000005,
+        0.0648,
+        0.0495,
+        0.060500000000000005,
+        0.0606,
+        0.062400000000000004,
+        0.051000000000000004,
+        0.0533,
+        0.0627
+      ],
+      "quorum_threshold_directed_by_seed": [
+        0.116851806640625,
+        0.1098785400390625,
+        0.1140289306640625,
+        0.09124755859375,
+        0.110809326171875,
+        0.099212646484375,
+        0.105255126953125,
+        0.10870361328125,
+        0.1038055419921875,
+        0.0978240966796875
+      ]
+    },
+    {
+      "organism": "Drosophila",
+      "node_count": 138639,
+      "undirected_edge_count": 2511789,
+      "mean_degree": 36.234955531993165,
+      "mean_square_degree": 6918.3734591276625,
+      "onset_threshold_formula": 0.00526507211574741,
+      "quorum_threshold_formula": 0.04149845262796953,
+      "quorum_threshold_measured_mean": 0.04378,
+      "quorum_threshold_measured_sd": 0.00016193277068654748,
+      "critical_failure_formula": 0.8916277051077426,
+      "critical_failure_measured": 0.8856694944045875,
+      "critical_jitter_ms_formula": 28.82726722977641,
+      "critical_jitter_ms_measured": 27.323571407315505,
+      "quorum_threshold_directed_mean": 0.15025787353515624,
+      "quorum_threshold_directed_sd": 0.0005655618014368849,
+      "critical_failure_directed": 0.6076048732077213,
+      "critical_jitter_ms_directed": 7.917762330896851,
+      "quorum_threshold_measured_by_seed": [
+        0.0438,
+        0.0438,
+        0.0438,
+        0.0438,
+        0.043500000000000004,
+        0.0438,
+        0.0436,
+        0.0439,
+        0.0441,
+        0.0437
+      ],
+      "quorum_threshold_directed_by_seed": [
+        0.1509552001953125,
+        0.1502227783203125,
+        0.1510467529296875,
+        0.1500091552734375,
+        0.1506195068359375,
+        0.1500244140625,
+        0.1503143310546875,
+        0.1502227783203125,
+        0.1490325927734375,
+        0.1501312255859375
+      ]
+    },
+    {
+      "organism": "Human",
+      "node_count": 998,
+      "undirected_edge_count": 17865,
+      "mean_degree": 35.80160320641283,
+      "mean_square_degree": 1536.2945891783568,
+      "onset_threshold_formula": 0.02385989374233719,
+      "quorum_threshold_formula": 0.036811005408128705,
+      "quorum_threshold_measured_mean": 0.03808,
+      "quorum_threshold_measured_sd": 0.002187743637225858,
+      "critical_failure_formula": 0.9038688702652622,
+      "critical_failure_measured": 0.9005549188425467,
+      "critical_jitter_ms_formula": 32.501206806800745,
+      "critical_jitter_ms_measured": 31.417339755127255,
+      "quorum_threshold_directed_mean": 0.04952545166015625,
+      "quorum_threshold_directed_sd": 0.0015462582567660622,
+      "critical_failure_directed": 0.870665373957359,
+      "critical_jitter_ms_directed": 24.150365814190987,
+      "quorum_threshold_measured_by_seed": [
+        0.0358,
+        0.0408,
+        0.0368,
+        0.0358,
+        0.0407,
+        0.0392,
+        0.0366,
+        0.0408,
+        0.0357,
+        0.0386
+      ],
+      "quorum_threshold_directed_by_seed": [
+        0.0474853515625,
+        0.0496063232421875,
+        0.0499267578125,
+        0.050048828125,
+        0.0514373779296875,
+        0.04852294921875,
+        0.0503997802734375,
+        0.050323486328125,
+        0.0509490966796875,
+        0.0465545654296875
+      ]
+    }
+  ]
+}
