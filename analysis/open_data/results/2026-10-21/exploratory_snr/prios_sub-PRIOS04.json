@@ -1,0 +1,5699 @@
+{
+ "provenance": {
+  "started_utc": "2026-10-21T20:33:28Z",
+  "git_commit": "f69789978f08ca8e5ac9efdb6dd1c3cdb21e007f",
+  "python": "3.13.2",
+  "numpy": "2.5.4",
+  "scipy": "1.18.1",
+  "machine": "arm64",
+  "module_sha256": {
+   "__init__.py": "134fe679aeadf533c15ad8a250d2d2b06044944ce83aefc2c668bf464f8e557b",
+   "catalogues.py": "80777e433a1413e5001211bb567bb5b386fd95ce08e71a9e1ed1575196c31d80",
+   "classification.py": "a5902680913b413379d273ba5bc3f3010d6137416c2695930bea44bf6c0f15bd",
+   "constants.py": "2ab75c3630c9b93dda56d6bce5ccd6a33e5d9cdd2395ded7673e8353158467ad",
+   "deviations.py": "5e919a65631ecf60917483ac8eac8719f0375bf2b95916fbeda057aa86082de5",
+   "download.py": "7fb7fc439dcfe7fcbb8c81801109f7f78107b9d0144554f05f5ce2dfb9748a47",
+   "early_warning.py": "1d7320de71ff0a64e5eb4b6f5386c70023483d45e747c68c0a5fb72da2da6f70",
+   "evoked_latency.py": "9d7a751c5761918701a5def3b2cfcc1b7afd8ebd4279f0ebc1374c169a7a8753",
+   "exploratory_group.py": "eb24636a0c4575babcd6d5b15c75cfb01a28e63f88d6b0447cce3f1533ba2242",
+   "group.py": "cefea31da91d9cfbbfb2cd4b46aec73b654c99ea178d5ac1352ce3d3a0af5dd7",
+   "hysteresis.py": "5d05d31eb0a1f905903fc173034408bcf4bf2b6240797a7769909486b057ae58",
+   "launch_reseeded.py": "02081728aaa149ffc81af2f2a6c8c9fff7ecc3c897d928b9930ac1f6a8d8ae04",
+   "loaders/__init__.py": "55f72d3b6251a4bb939058c387625d2e844032821a90d6dd69ca04c16df29af7",
+   "loaders/michigan.py": "68768eebe54855a30d632ac6f035bd57e752a722173862ed1f8f9766b02650c9",
+   "loaders/neurotycho.py": "3a0165f681ccdefca715c0aa095e5e8f662c67d1b7441b1836db6310fd735e9c",
+   "loaders/prios.py": "de644898753e712933a2166f4fb221e759df7c833a666c56d935a297d53162b2",
+   "monkey_bootstrap.py": "b69321c41dbafcedfac045daf0b0c5ef224e4b46a0f1891a09453e08d65573ab",
+   "montage.py": "7e1d192ab576ffac25840b1d152f7234a3d3655f0edfae866d33c93fa47b03cc",
+   "network.py": "83c26414dba64fa9c076d265e9bde50cc61101f3a9829b4fbe8d242dda10630a",
+   "outputs.py": "19769c7759d5b7452b4685918e0b9985fed7eabfab2e511bedab180f0ffe6d10",
+   "phase.py": "6bb08e9df9fcc0bb73b0804d18ef04803a01c8c449aa844ea678c5bd6142a19a",
+   "pipeline_michigan.py": "1e37b9e24fcd9d080e077de50256997522e4271509b83a29df7dad4cf30c6e5c",
+   "pipeline_neurotycho.py": "9f1f4b14b3e1331b2fa204af7ef5a624104973299b3259e5cbc13fa4b84f8cb4",
+   "pipeline_prios.py": "0ce65d7b21bf85946b935f3c92058ad4aea8e1f44b35ade52b7b8a8c10aa5afc",
+   "reseeded.py": "d0026164fccd96a500570b3b72195dae698655cda89830934526fb9247828842",
+   "round3_settings.py": "f5cc207f2b0efd5d38a6ddf814eb9b2cd0db3b48087e477d7a5767258cf86d9f",
+   "run.py": "d961f62cda18e19cda742ee80c39d26bca35ddf459d1201dc72f327c29009a34",
+   "run_tests.py": "4d91414a9e299c412b3d3eb696a65de40a369b12798a8a57b0efa14fa2c559f7",
+   "settings.py": "d8ad26558ad6512d160d7e234f5f79212d4efb0d09c0de29fdb72109041f3ed3",
+   "snr_control.py": "c5435d58efb671e1bb51f2b9aab08e82c21614285b1387eb99437efc281d1bc9",
+   "snr_matching.py": "78d4b90bdbf1982f9734113d54841eed1fdc5c424ea00a87d9a358d4688e9adb",
+   "snr_simulation.py": "a85ca9649ecd734ea689b3ef7f11f0e619542db4aff198ac6db60e6c550ced0e",
+   "specs.py": "db294aa2a3bbdb78eb13f0352235728ccb6ff986043f3aac483dd9e496b2005c",
+   "stats.py": "eb1c6d2778133b10c44fff3814ebaa75fbec1462a4da556a527124a87306940b",
+   "threshold_shape.py": "ceb0676de75698dbd126bab6d81ecbac9c8e0cac4b5eeb5871cefe88f819c86a",
+   "transfer.py": "ecc6449b491442885f0a510f46965095c08437cc46635885f36118a47df8769a",
+   "verdicts.py": "c29a189ab8094e77251dcfa15cc7784699a4d7938abecd779245bca3d0aacc89"
+  },
+  "settings": {
+   "GAMMA": {
+    "name": "gamma",
+    "low_hz": 30.0,
+    "high_hz": 45.0
+   },
+   "FMRI": {
+    "tr_seconds": 0.8,
+    "window_trs": 75,
+    "step_trs": 25,
+    "edge_alpha": 0.01,
+    "edge_alpha_sensitivity": [
+     0.001,
+     0.05
+    ],
+    "surrogates_per_window": 20,
+    "cofluctuation_volumes_per_surrogate": 20,
+    "awake_max_concentration": 0.0,
+    "framewise_displacement_limit_mm": 0.5,
+    "max_censored_share": 0.2
+   },
+   "SHAPE": {
+    "null_realisations": 200,
+    "min_width_ug_per_ml": 0.05,
+    "max_width_ug_per_ml": 20.0,
+    "bic_margin": 10.0,
+    "smallest_steepness_ratio": 1.5,
+    "smallest_local_slope_ratio": 1.5,
+    "lor_coincidence_ug_per_ml": 0.4,
+    "deep_top_share": 0.2,
+    "intact_share": 0.9,
+    "coupling_fall_gate": 0.9
+   },
+   "WARNING": {
+    "rolling_share": 0.5,
+    "detrend_bandwidth_share": 0.1,
+    "surrogates": 1000,
+    "smallest_kendall_tau": 0.2,
+    "min_points": 40
+   },
+   "ECOG": {
+    "sampling_hz": 1000.0,
+    "filter_order": 4,
+    "filter_margin_seconds": 2.0,
+    "line_noise_hz": [
+     50.0,
+     100.0,
+     150.0
+    ],
+    "notch_quality": 30.0,
+    "long_range_quantile": 0.5,
+    "window_seconds": 1.0,
+    "block_seconds": 30.0,
+    "order_parameter_window_seconds": 2.0,
+    "edge_alpha": 0.01,
+    "surrogates_per_window": 20,
+    "min_shift_seconds": 1.0,
+    "muscle_band": [
+     70.0,
+     150.0
+    ],
+    "muscle_mad_limit": 5.0,
+    "muscle_mad_floor": 0.05
+   },
+   "LAG": {
+    "bootstrap_resamples": 2000,
+    "smallest_auc_difference": 0.05,
+    "confidence": 0.95
+   },
+   "HYSTERESIS": {
+    "smallest_ratio": 1.05,
+    "ke0_per_minute": [
+     0.2,
+     0.26,
+     0.456,
+     0.8,
+     1.21
+    ]
+   },
+   "EVOKED": {
+    "artefact_end_ms": 9.0,
+    "response_end_ms": 100.0,
+    "baseline_ms": [
+     -500.0,
+     -10.0
+    ],
+    "max_shift_ms": 20.0,
+    "response_z": 3.4,
+    "smallest_log_ratio": 0.18232155679395462,
+    "unit_window_ms": [
+     2.0,
+     50.0
+    ],
+    "min_distance_mm": 20.0,
+    "min_trials": 6
+   },
+   "FAMILY": {
+    "alpha": 0.05,
+    "primary_tests": [
+     "H1",
+     "H2a",
+     "H2b",
+     "H3",
+     "H4"
+    ]
+   }
+  },
+  "arguments": {
+   "session_dir": "data_external/ds004370/sub-PRIOS04/ses-1",
+   "out": "analysis/open_data/results/2026-10-21/exploratory_snr"
+  }
+ },
+ "runs": {
+  "SPESclin": "sub-PRIOS04_ses-1_task-SPESclin_run-020955",
+  "SPESprop": "sub-PRIOS04_ses-1_task-SPESprop_run-080800"
+ },
+ "H5a_snr_control": {
+  "connections": [
+   {
+    "response": "C01",
+    "site": "C20-C21",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 10.25390520000002,
+     "latency_sd_ms": 2.3829303542758518
+    },
+    "propofol": {
+     "mean_latency_ms": 24.414060000000006,
+     "latency_sd_ms": 8.722676736979361
+    },
+    "relative_change": 0.4300946167421078,
+    "snr": {
+     "awake": {
+      "amplitude": 137.96875,
+      "noise_sd": 30.97695120269521,
+      "snr": 4.45391636824465
+     },
+     "propofol": {
+      "amplitude": 102.646484375,
+      "noise_sd": 48.11130393882196,
+      "snr": 2.133521147244827
+     }
+    },
+    "log_snr_ratio": -0.7360100562905703,
+    "degraded_state": "awake",
+    "noise_scale": 1.832492828353468,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 9.765624000000003,
+      "latency_sd_ms": 1.983772277098711
+     },
+     "propofol": {
+      "mean_latency_ms": 24.414060000000006,
+      "latency_sd_ms": 8.722676736979361
+     }
+    },
+    "matched_relative_change": 0.564635201605628
+   },
+   {
+    "response": "C01",
+    "site": "IH01-IH02",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 1.0692458219983003
+    },
+    "propofol": {
+     "mean_latency_ms": 61.52343119999995,
+     "latency_sd_ms": 4.308359061788705
+    },
+    "relative_change": 1.8705276148834227,
+    "snr": {
+     "awake": {
+      "amplitude": 45.882161458333336,
+      "noise_sd": 36.87001368175406,
+      "snr": 1.2444302802371656
+     },
+     "propofol": {
+      "amplitude": 25.227864583333332,
+      "noise_sd": 133.2075519645749,
+      "snr": 0.1893876451542508
+     }
+    },
+    "log_snr_ratio": -1.8826371508037507,
+    "degraded_state": "awake",
+    "noise_scale": 6.494270348373234,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 72.26561759999998,
+      "latency_sd_ms": 11.097128310211977
+     },
+     "propofol": {
+      "mean_latency_ms": 61.52343119999995,
+      "latency_sd_ms": 4.308359061788705
+     }
+    },
+    "matched_relative_change": -0.7851988937454941
+   },
+   {
+    "response": "C02",
+    "site": "C20-C21",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 10.25390520000002,
+     "latency_sd_ms": 1.9743036100950357
+    },
+    "propofol": {
+     "mean_latency_ms": 26.855466000000035,
+     "latency_sd_ms": 3.0367169516695283
+    },
+    "relative_change": -0.532249499456616,
+    "snr": {
+     "awake": {
+      "amplitude": 206.4794921875,
+      "noise_sd": 36.10650109714081,
+      "snr": 5.718623680316968
+     },
+     "propofol": {
+      "amplitude": 241.1865234375,
+      "noise_sd": 46.64389960133728,
+      "snr": 5.1708053035639665
+     }
+    },
+    "log_snr_ratio": -0.10069972000715183,
+    "degraded_state": "awake",
+    "noise_scale": 0.472348636738768,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 10.25390520000002,
+      "latency_sd_ms": 1.9925708062899221
+     },
+     "propofol": {
+      "mean_latency_ms": 26.855466000000035,
+      "latency_sd_ms": 3.0367169516695283
+     }
+    },
+    "matched_relative_change": -0.5414594332232449
+   },
+   {
+    "response": "C02",
+    "site": "IH15-IH16",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 77.6367108,
+     "latency_sd_ms": 3.3738080472619534
+    },
+    "propofol": {
+     "mean_latency_ms": 92.28514679999995,
+     "latency_sd_ms": 5.474928449032737
+    },
+    "relative_change": 0.3112943033447183,
+    "snr": {
+     "awake": {
+      "amplitude": 86.82454427083333,
+      "noise_sd": 28.28629476696102,
+      "snr": 3.06949160312952
+     },
+     "propofol": {
+      "amplitude": 294.6451822916667,
+      "noise_sd": 70.11145195725308,
+      "snr": 4.202525751018703
+     }
+    },
+    "log_snr_ratio": 0.3141737675302664,
+    "degraded_state": "propofol",
+    "noise_scale": 0.9351526376695386,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 77.6367108,
+      "latency_sd_ms": 3.3738080472619534
+     },
+     "propofol": {
+      "mean_latency_ms": 88.8671784,
+      "latency_sd_ms": 14.540601198699973
+     }
+    },
+    "matched_relative_change": 1.3258002435468792
+   },
+   {
+    "response": "C03",
+    "site": "C20-C21",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 10.25390520000002,
+     "latency_sd_ms": 0.3392644263929724
+    },
+    "propofol": {
+     "mean_latency_ms": 8.789061600000025,
+     "latency_sd_ms": 4.587250185786333
+    },
+    "relative_change": 2.7584068931107404,
+    "snr": {
+     "awake": {
+      "amplitude": 436.5234375,
+      "noise_sd": 49.80855932067894,
+      "snr": 8.7640245663313
+     },
+     "propofol": {
+      "amplitude": 253.1005859375,
+      "noise_sd": 66.0264798223067,
+      "snr": 3.83331939880265
+     }
+    },
+    "log_snr_ratio": -0.8269241132255313,
+    "degraded_state": "awake",
+    "noise_scale": 2.055980561403149,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 10.25390520000002,
+      "latency_sd_ms": 0.7192008099161213
+     },
+     "propofol": {
+      "mean_latency_ms": 8.789061600000025,
+      "latency_sd_ms": 4.587250185786333
+     }
+    },
+    "matched_relative_change": 2.0070461060013707
+   },
+   {
+    "response": "C04",
+    "site": "IH01-IH02",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 68.84764920000003,
+     "latency_sd_ms": 2.7054693455219887
+    },
+    "propofol": {
+     "mean_latency_ms": 61.52343119999995,
+     "latency_sd_ms": 3.925035982956511
+    },
+    "relative_change": 0.4845780946446792,
+    "snr": {
+     "awake": {
+      "amplitude": 99.609375,
+      "noise_sd": 53.70448976401674,
+      "snr": 1.8547681104074207
+     },
+     "propofol": {
+      "amplitude": 65.6494140625,
+      "noise_sd": 159.72451335609225,
+      "snr": 0.41101652265573163
+     }
+    },
+    "log_snr_ratio": -1.5068815445637536,
+    "degraded_state": "awake",
+    "noise_scale": 4.400441687261116,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 93.74999040000006,
+      "latency_sd_ms": 4.161212293339577
+     },
+     "propofol": {
+      "mean_latency_ms": 61.52343119999995,
+      "latency_sd_ms": 3.925035982956511
+     }
+    },
+    "matched_relative_change": 0.3627825354131366
+   },
+   {
+    "response": "C04",
+    "site": "IH02-IH03",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 97.16795880000001,
+     "latency_sd_ms": 1.0333856833173063
+    },
+    "propofol": {
+     "mean_latency_ms": 63.96483719999998,
+     "latency_sd_ms": 9.036552421815845
+    },
+    "relative_change": 2.5865447511049493,
+    "snr": {
+     "awake": {
+      "amplitude": 94.76725260416667,
+      "noise_sd": 47.068668420770074,
+      "snr": 2.013382910198253
+     },
+     "propofol": {
+      "amplitude": 150.27669270833334,
+      "noise_sd": 145.6377580184421,
+      "snr": 1.031852554948723
+     }
+    },
+    "log_snr_ratio": -0.6684605635057639,
+    "degraded_state": "awake",
+    "noise_scale": 1.6755008917174454,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 11.271438437412604
+     },
+     "propofol": {
+      "mean_latency_ms": 63.96483719999998,
+      "latency_sd_ms": 9.036552421815845
+     }
+    },
+    "matched_relative_change": 0.21701443413157334
+   },
+   {
+    "response": "C04",
+    "site": "IH06-IH07",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 57.128900399999964,
+     "latency_sd_ms": 1.8165749486841576
+    },
+    "propofol": {
+     "mean_latency_ms": 8.789061600000025,
+     "latency_sd_ms": 10.143268370170619
+    },
+    "relative_change": 3.5916596158339873,
+    "snr": {
+     "awake": {
+      "amplitude": 1.58203125,
+      "noise_sd": 62.00614525829323,
+      "snr": 0.025514104181285253
+     },
+     "propofol": {
+      "amplitude": 213.1640625,
+      "noise_sd": 77.53224258187953,
+      "snr": 2.7493602068182623
+     }
+    },
+    "log_snr_ratio": 4.679892107120292,
+    "degraded_state": "propofol",
+    "noise_scale": 107.75380546772828,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 57.128900399999964,
+      "latency_sd_ms": 1.8165749486841576
+     },
+     "propofol": {
+      "mean_latency_ms": 57.128900399999964,
+      "latency_sd_ms": 8.741205530115558
+     }
+    },
+    "matched_relative_change": 1.5710952808934469
+   },
+   {
+    "response": "C05",
+    "site": "IH02-IH03",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 83.98436640000006,
+     "latency_sd_ms": 1.6454917345660804
+    },
+    "propofol": {
+     "mean_latency_ms": 23.925778800000046,
+     "latency_sd_ms": 11.094634609819487
+    },
+    "relative_change": 3.164096535340662,
+    "snr": {
+     "awake": {
+      "amplitude": 89.70540364583333,
+      "noise_sd": 36.80121597471651,
+      "snr": 2.4375662942078735
+     },
+     "propofol": {
+      "amplitude": 141.24348958333334,
+      "noise_sd": 137.28240080592425,
+      "snr": 1.0288535803144123
+     }
+    },
+    "log_snr_ratio": -0.8625549675997551,
+    "degraded_state": "awake",
+    "noise_scale": 2.147821705176971,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 53.710932000000014,
+      "latency_sd_ms": 2.610648166586786
+     },
+     "propofol": {
+      "mean_latency_ms": 23.925778800000046,
+      "latency_sd_ms": 11.094634609819487
+     }
+    },
+    "matched_relative_change": 2.2555231604633104
+   },
+   {
+    "response": "C05",
+    "site": "IH06-IH07",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 6.1407493429004285
+    },
+    "propofol": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 9.412380050285632
+    },
+    "relative_change": 0.4270790718531661,
+    "snr": {
+     "awake": {
+      "amplitude": 47.51953125,
+      "noise_sd": 45.9576074290152,
+      "snr": 1.03398618658287
+     },
+     "propofol": {
+      "amplitude": 209.052734375,
+      "noise_sd": 85.69786170179009,
+      "snr": 2.4394159926937036
+     }
+    },
+    "log_snr_ratio": 0.858337246607491,
+    "degraded_state": "propofol",
+    "noise_scale": 2.136817241228764,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 6.1407493429004285
+     },
+     "propofol": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 7.743866423915474
+     }
+    },
+    "matched_relative_change": 0.23195432331756177
+   },
+   {
+    "response": "C06",
+    "site": "IH02-IH03",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 89.84374080000003,
+     "latency_sd_ms": 1.6576731497588126
+    },
+    "propofol": {
+     "mean_latency_ms": 85.44921000000005,
+     "latency_sd_ms": 11.781248427426583
+    },
+    "relative_change": 2.01124403282132,
+    "snr": {
+     "awake": {
+      "amplitude": 91.650390625,
+      "noise_sd": 52.19145119760722,
+      "snr": 1.7560421969872686
+     },
+     "propofol": {
+      "amplitude": 92.71647135416667,
+      "noise_sd": 134.3168362223729,
+      "snr": 0.6902818288592407
+     }
+    },
+    "log_snr_ratio": -0.9337178422599542,
+    "degraded_state": "awake",
+    "noise_scale": 2.3391621736763217,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 49.80468239999999,
+      "latency_sd_ms": 0.8076897164044462
+     },
+     "propofol": {
+      "mean_latency_ms": 85.44921000000005,
+      "latency_sd_ms": 11.781248427426583
+     }
+    },
+    "matched_relative_change": 2.140273299092366
+   },
+   {
+    "response": "C06",
+    "site": "IH06-IH07",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 95.70311520000001,
+     "latency_sd_ms": 1.5887407292799085
+    },
+    "propofol": {
+     "mean_latency_ms": 87.4023348,
+     "latency_sd_ms": 1.7393402742751984
+    },
+    "relative_change": 0.18129303372874164,
+    "snr": {
+     "awake": {
+      "amplitude": 266.943359375,
+      "noise_sd": 48.27208689305057,
+      "snr": 5.529973459950623
+     },
+     "propofol": {
+      "amplitude": 109.2529296875,
+      "noise_sd": 76.8632659408113,
+      "snr": 1.421393280004917
+     }
+    },
+    "log_snr_ratio": -1.3585454425674048,
+    "degraded_state": "awake",
+    "noise_scale": 3.7598171653363153,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 76.66014839999997,
+      "latency_sd_ms": 2.6932608164142327
+     },
+     "propofol": {
+      "mean_latency_ms": 87.4023348,
+      "latency_sd_ms": 1.7393402742751984
+     }
+    },
+    "matched_relative_change": -0.5683867707817224
+   },
+   {
+    "response": "C06",
+    "site": "IH15-IH16",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 19.531247999999948,
+     "latency_sd_ms": 0.7771470285648143
+    },
+    "propofol": {
+     "mean_latency_ms": 8.789061600000025,
+     "latency_sd_ms": 10.032341283328247
+    },
+    "relative_change": 3.356447419563521,
+    "snr": {
+     "awake": {
+      "amplitude": 110.36783854166667,
+      "noise_sd": 30.58704342669465,
+      "snr": 3.608319934751975
+     },
+     "propofol": {
+      "amplitude": 282.4462890625,
+      "noise_sd": 85.0640531637745,
+      "snr": 3.320395379217399
+     }
+    },
+    "log_snr_ratio": -0.0831584060173872,
+    "degraded_state": "awake",
+    "noise_scale": 0.4253788672972272,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 19.531247999999948,
+      "latency_sd_ms": 0.7679398111973574
+     },
+     "propofol": {
+      "mean_latency_ms": 8.789061600000025,
+      "latency_sd_ms": 10.032341283328247
+     }
+    },
+    "matched_relative_change": 3.3683656187425948
+   },
+   {
+    "response": "C07",
+    "site": "C12-C13",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 98.6328024,
+     "latency_sd_ms": 1.590895288945801
+    },
+    "propofol": {
+     "mean_latency_ms": 67.38280560000004,
+     "latency_sd_ms": 13.219136904224504
+    },
+    "relative_change": 2.498382624838846,
+    "snr": {
+     "awake": {
+      "amplitude": 64.86002604166667,
+      "noise_sd": 32.86812174692875,
+      "snr": 1.973341420025843
+     },
+     "propofol": {
+      "amplitude": 127.6611328125,
+      "noise_sd": 115.06177776852584,
+      "snr": 1.1095007854764833
+     }
+    },
+    "log_snr_ratio": -0.5758180868598458,
+    "degraded_state": "awake",
+    "noise_scale": 1.4708380235701637,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 97.65623999999997,
+      "latency_sd_ms": 3.152927026892142
+     },
+     "propofol": {
+      "mean_latency_ms": 67.38280560000004,
+      "latency_sd_ms": 13.219136904224504
+     }
+    },
+    "matched_relative_change": 1.8043979902883227
+   },
+   {
+    "response": "C07",
+    "site": "C20-C21",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 86.42577239999997,
+     "latency_sd_ms": 2.1020198562154606
+    },
+    "propofol": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 12.061618572527918
+    },
+    "relative_change": 1.6100734270654287,
+    "snr": {
+     "awake": {
+      "amplitude": 55.205078125,
+      "noise_sd": 37.31931615766392,
+      "snr": 1.479262853900474
+     },
+     "propofol": {
+      "amplitude": 161.62109375,
+      "noise_sd": 109.81219412298591,
+      "snr": 1.4717955054152718
+     }
+    },
+    "log_snr_ratio": -0.0050608043038335195,
+    "degraded_state": "awake",
+    "noise_scale": 0.10086131739970765,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 86.42577239999997,
+      "latency_sd_ms": 1.913642484364746
+     },
+     "propofol": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 12.061618572527918
+     }
+    },
+    "matched_relative_change": 1.703963660014454
+   },
+   {
+    "response": "C07",
+    "site": "IH02-IH03",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 97.65623999999997,
+     "latency_sd_ms": 0.2698824585228255
+    },
+    "propofol": {
+     "mean_latency_ms": 24.414060000000006,
+     "latency_sd_ms": 8.769426256039399
+    },
+    "relative_change": 4.867334497735309,
+    "snr": {
+     "awake": {
+      "amplitude": 58.194986979166664,
+      "noise_sd": 43.58707248960051,
+      "snr": 1.335143281142625
+     },
+     "propofol": {
+      "amplitude": 78.3203125,
+      "noise_sd": 151.02049573578563,
+      "snr": 0.5186071739363343
+     }
+    },
+    "log_snr_ratio": -0.9456471854901178,
+    "degraded_state": "awake",
+    "noise_scale": 2.3723284231314175,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 70.80077399999999,
+      "latency_sd_ms": 5.550165474098248
+     },
+     "propofol": {
+      "mean_latency_ms": 24.414060000000006,
+      "latency_sd_ms": 8.769426256039399
+     }
+    },
+    "matched_relative_change": 1.5221543775655682
+   },
+   {
+    "response": "C07",
+    "site": "IH15-IH16",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 3.281318195784098
+    },
+    "propofol": {
+     "mean_latency_ms": 92.28514679999995,
+     "latency_sd_ms": 9.33986046856906
+    },
+    "relative_change": 1.1175050463670564,
+    "snr": {
+     "awake": {
+      "amplitude": 93.25358072916667,
+      "noise_sd": 23.67510368119032,
+      "snr": 3.9388879552513174
+     },
+     "propofol": {
+      "amplitude": 212.82552083333334,
+      "noise_sd": 103.38501247525997,
+      "snr": 2.0585722798482275
+     }
+    },
+    "log_snr_ratio": -0.6488857641272234,
+    "degraded_state": "awake",
+    "noise_scale": 1.6312966768577937,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 8.352113820381659
+     },
+     "propofol": {
+      "mean_latency_ms": 92.28514679999995,
+      "latency_sd_ms": 9.33986046856906
+     }
+    },
+    "matched_relative_change": 0.18323561801925478
+   },
+   {
+    "response": "C08",
+    "site": "IH15-IH16",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 0.5033652037485282
+    },
+    "propofol": {
+     "mean_latency_ms": 92.77342800000002,
+     "latency_sd_ms": 9.742348524996407
+    },
+    "relative_change": 3.0291034382735997,
+    "snr": {
+     "awake": {
+      "amplitude": 135.62825520833334,
+      "noise_sd": 25.19026772839875,
+      "snr": 5.384152986013329
+     },
+     "propofol": {
+      "amplitude": 174.755859375,
+      "noise_sd": 115.0563054293824,
+      "snr": 1.518872509618859
+     }
+    },
+    "log_snr_ratio": -1.2654917172512279,
+    "degraded_state": "awake",
+    "noise_scale": 3.400861326229097,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 13.286957748611723
+     },
+     "propofol": {
+      "mean_latency_ms": 92.77342800000002,
+      "latency_sd_ms": 9.742348524996407
+     }
+    },
+    "matched_relative_change": -0.24411881656636317
+   },
+   {
+    "response": "C09",
+    "site": "C12-C13",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 9.765624000000003,
+     "latency_sd_ms": 0.8881217116724516
+    },
+    "propofol": {
+     "mean_latency_ms": 20.507810399999983,
+     "latency_sd_ms": 19.864258155335698
+    },
+    "relative_change": 2.365631182220578,
+    "snr": {
+     "awake": {
+      "amplitude": 177.880859375,
+      "noise_sd": 45.15918768613117,
+      "snr": 3.9389738498247824
+     },
+     "propofol": {
+      "amplitude": 176.64388020833334,
+      "noise_sd": 64.90300927653797,
+      "snr": 2.721659321768752
+     }
+    },
+    "log_snr_ratio": -0.3696785061072897,
+    "degraded_state": "awake",
+    "noise_scale": 1.0462257341183254,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 10.25390520000002,
+      "latency_sd_ms": 1.7831235172510345
+     },
+     "propofol": {
+      "mean_latency_ms": 20.507810399999983,
+      "latency_sd_ms": 19.864258155335698
+     }
+    },
+    "matched_relative_change": 1.717408252261894
+   },
+   {
+    "response": "C09",
+    "site": "IH01-IH02",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 78.61327320000004,
+     "latency_sd_ms": 1.876155989242596
+    },
+    "propofol": {
+     "mean_latency_ms": 61.52343119999995,
+     "latency_sd_ms": 6.523259743412877
+    },
+    "relative_change": 1.491271672635646,
+    "snr": {
+     "awake": {
+      "amplitude": 89.85188802083333,
+      "noise_sd": 39.893428727764416,
+      "snr": 2.2522979569890818
+     },
+     "propofol": {
+      "amplitude": 72.314453125,
+      "noise_sd": 131.01340938512772,
+      "snr": 0.5519622263429849
+     }
+    },
+    "log_snr_ratio": -1.4062266748317551,
+    "degraded_state": "awake",
+    "noise_scale": 3.9560988592154387,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 63.476556000000016,
+      "latency_sd_ms": 5.696269887413979
+     },
+     "propofol": {
+      "mean_latency_ms": 61.52343119999995,
+      "latency_sd_ms": 6.523259743412877
+     }
+    },
+    "matched_relative_change": 0.16681520024335544
+   },
+   {
+    "response": "C09",
+    "site": "IH02-IH03",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 2.0093269423402065
+    },
+    "propofol": {
+     "mean_latency_ms": 24.414060000000006,
+     "latency_sd_ms": 5.17414069843851
+    },
+    "relative_change": 2.3470564389289934,
+    "snr": {
+     "awake": {
+      "amplitude": 3.8248697916666665,
+      "noise_sd": 31.550565014467,
+      "snr": 0.12122983502554818
+     },
+     "propofol": {
+      "amplitude": 49.8779296875,
+      "noise_sd": 133.0725896440457,
+      "snr": 0.3748174573059552
+     }
+    },
+    "log_snr_ratio": 1.1287509200177972,
+    "degraded_state": "propofol",
+    "noise_scale": 2.9256074506457783,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 2.0093269423402065
+     },
+     "propofol": {
+      "mean_latency_ms": 13.183592400000009,
+      "latency_sd_ms": 6.631154715966735
+     }
+    },
+    "matched_relative_change": 3.2113482559368283
+   },
+   {
+    "response": "C09",
+    "site": "IH15-IH16",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 24.414060000000006,
+     "latency_sd_ms": 3.79975797803101
+    },
+    "propofol": {
+     "mean_latency_ms": 8.789061600000025,
+     "latency_sd_ms": 8.037495156841642
+    },
+    "relative_change": 1.7708313598130814,
+    "snr": {
+     "awake": {
+      "amplitude": 108.65071614583333,
+      "noise_sd": 41.30689879612092,
+      "snr": 2.6303285725249506
+     },
+     "propofol": {
+      "amplitude": 302.5390625,
+      "noise_sd": 66.71618480517878,
+      "snr": 4.5347176758302234
+     }
+    },
+    "log_snr_ratio": 0.5446540562212524,
+    "degraded_state": "propofol",
+    "noise_scale": 1.4043564081387958,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 24.414060000000006,
+      "latency_sd_ms": 3.79975797803101
+     },
+     "propofol": {
+      "mean_latency_ms": 8.789061600000025,
+      "latency_sd_ms": 7.7427422519716504
+     }
+    },
+    "matched_relative_change": 1.7334697937937258
+   },
+   {
+    "response": "C10",
+    "site": "C12-C13",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 9.765624000000003,
+     "latency_sd_ms": 1.9972951946034956
+    },
+    "propofol": {
+     "mean_latency_ms": 9.277342799999985,
+     "latency_sd_ms": 11.316589250016236
+    },
+    "relative_change": 1.7857691562198055,
+    "snr": {
+     "awake": {
+      "amplitude": 398.5758463541667,
+      "noise_sd": 35.69450309341068,
+      "snr": 11.166308865852935
+     },
+     "propofol": {
+      "amplitude": 84.5458984375,
+      "noise_sd": 83.82522185603332,
+      "snr": 1.0085973715966348
+     }
+    },
+    "log_snr_ratio": -2.4043404831203863,
+    "degraded_state": "awake",
+    "noise_scale": 11.025871262209328,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 9.765624000000003,
+      "latency_sd_ms": 1.7962297675545882
+     },
+     "propofol": {
+      "mean_latency_ms": 9.277342799999985,
+      "latency_sd_ms": 11.316589250016236
+     }
+    },
+    "matched_relative_change": 1.8918731241254798
+   },
+   {
+    "response": "C10",
+    "site": "C20-C21",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 9.765624000000003,
+     "latency_sd_ms": 0.8023581598182085
+    },
+    "propofol": {
+     "mean_latency_ms": 29.29687199999995,
+     "latency_sd_ms": 1.9136037811701745
+    },
+    "relative_change": -0.22942384046013387,
+    "snr": {
+     "awake": {
+      "amplitude": 350.5908203125,
+      "noise_sd": 39.9666035590093,
+      "snr": 8.772094426159201
+     },
+     "propofol": {
+      "amplitude": 232.5830078125,
+      "noise_sd": 64.90856674029834,
+      "snr": 3.583240541161131
+     }
+    },
+    "log_snr_ratio": -0.8953080249133868,
+    "degraded_state": "awake",
+    "noise_scale": 2.2345342701157223,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 9.765624000000003,
+      "latency_sd_ms": 2.709519218042801
+     },
+     "propofol": {
+      "mean_latency_ms": 29.29687199999995,
+      "latency_sd_ms": 1.9136037811701745
+     }
+    },
+    "matched_relative_change": -1.44639523678616
+   },
+   {
+    "response": "C10",
+    "site": "IH01-IH02",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 0.229636910435497
+    },
+    "propofol": {
+     "mean_latency_ms": 61.52343119999995,
+     "latency_sd_ms": 4.126214245366833
+    },
+    "relative_change": 3.3655402787946835,
+    "snr": {
+     "awake": {
+      "amplitude": 161.865234375,
+      "noise_sd": 39.47521868176085,
+      "snr": 4.100426540506748
+     },
+     "propofol": {
+      "amplitude": 26.228841145833332,
+      "noise_sd": 133.52509903358262,
+      "snr": 0.19643378912032539
+     }
+    },
+    "log_snr_ratio": -3.038520858064191,
+    "degraded_state": "awake",
+    "noise_scale": 20.850377664062638,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 92.77342800000002,
+      "latency_sd_ms": 0.0
+     },
+     "propofol": {
+      "mean_latency_ms": 61.52343119999995,
+      "latency_sd_ms": 4.126214245366833
+     }
+    },
+    "matched_relative_change": null
+   },
+   {
+    "response": "C10",
+    "site": "IH02-IH03",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 0.8676169898258779
+    },
+    "propofol": {
+     "mean_latency_ms": 23.925778800000046,
+     "latency_sd_ms": 9.088509316820684
+    },
+    "relative_change": 3.7704015017883985,
+    "snr": {
+     "awake": {
+      "amplitude": 135.23763020833334,
+      "noise_sd": 33.38648356738185,
+      "snr": 4.05067008435889
+     },
+     "propofol": {
+      "amplitude": 27.718098958333332,
+      "noise_sd": 134.64211919492445,
+      "snr": 0.20586499324334914
+     }
+    },
+    "log_snr_ratio": -2.979417018008902,
+    "degraded_state": "awake",
+    "noise_scale": 19.650914690262503,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 90.82030319999996,
+      "latency_sd_ms": 9.484407822039346
+     },
+     "propofol": {
+      "mean_latency_ms": 23.925778800000046,
+      "latency_sd_ms": 9.088509316820684
+     }
+    },
+    "matched_relative_change": 1.2912881104577993
+   },
+   {
+    "response": "C11",
+    "site": "C20-C21",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 9.765624000000003,
+     "latency_sd_ms": 0.6891240399539652
+    },
+    "propofol": {
+     "mean_latency_ms": 8.789061600000025,
+     "latency_sd_ms": 0.6297093366315679
+    },
+    "relative_change": 0.015197574382084647,
+    "snr": {
+     "awake": {
+      "amplitude": 828.4033203125,
+      "noise_sd": 49.662064050246215,
+      "snr": 16.680807295370418
+     },
+     "propofol": {
+      "amplitude": 756.7333984375,
+      "noise_sd": 86.70310231348245,
+      "snr": 8.727869917519975
+     }
+    },
+    "log_snr_ratio": -0.6477374503848922,
+    "degraded_state": "awake",
+    "noise_scale": 1.6287204323366749,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 9.765624000000003,
+      "latency_sd_ms": 0.6831744183065617
+     },
+     "propofol": {
+      "mean_latency_ms": 8.789061600000025,
+      "latency_sd_ms": 0.6297093366315679
+     }
+    },
+    "matched_relative_change": 0.023868660310594883
+   },
+   {
+    "response": "C11",
+    "site": "IH01-IH02",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 66.89452439999997,
+     "latency_sd_ms": 2.5583951671702403
+    },
+    "propofol": {
+     "mean_latency_ms": 61.52343119999995,
+     "latency_sd_ms": 2.5050970155923844
+    },
+    "relative_change": 0.06264630735191487,
+    "snr": {
+     "awake": {
+      "amplitude": 136.05143229166666,
+      "noise_sd": 49.72075511413905,
+      "snr": 2.7363106609975403
+     },
+     "propofol": {
+      "amplitude": 24.12109375,
+      "noise_sd": 137.10754295826655,
+      "snr": 0.17592827666193459
+     }
+    },
+    "log_snr_ratio": -2.744289424969402,
+    "degraded_state": "awake",
+    "noise_scale": 15.52137775898961,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 8.789061600000025,
+      "latency_sd_ms": 7.74928899379169
+     },
+     "propofol": {
+      "mean_latency_ms": 61.52343119999995,
+      "latency_sd_ms": 2.5050970155923844
+     }
+    },
+    "matched_relative_change": -3.0751837829091038
+   },
+   {
+    "response": "C11",
+    "site": "IH02-IH03",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 1.885223247126178
+    },
+    "propofol": {
+     "mean_latency_ms": 23.925778800000046,
+     "latency_sd_ms": 10.904693127258598
+    },
+    "relative_change": 3.1765326922588244,
+    "snr": {
+     "awake": {
+      "amplitude": 186.26302083333334,
+      "noise_sd": 51.070199163834545,
+      "snr": 3.647195896687159
+     },
+     "propofol": {
+      "amplitude": 37.703450520833336,
+      "noise_sd": 134.87326898344557,
+      "snr": 0.2795472431639592
+     }
+    },
+    "log_snr_ratio": -2.568542598108365,
+    "degraded_state": "awake",
+    "noise_scale": 13.008416116397974,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 66.89452439999997,
+      "latency_sd_ms": 4.391514319394791
+     },
+     "propofol": {
+      "mean_latency_ms": 23.925778800000046,
+      "latency_sd_ms": 10.904693127258598
+     }
+    },
+    "matched_relative_change": 1.9376797713444134
+   },
+   {
+    "response": "C12",
+    "site": "IH02-IH03",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 0.6241076030376199
+    },
+    "propofol": {
+     "mean_latency_ms": 85.44921000000005,
+     "latency_sd_ms": 8.946365298525597
+    },
+    "relative_change": 2.8110998277361783,
+    "snr": {
+     "awake": {
+      "amplitude": 223.23404947916666,
+      "noise_sd": 66.58328390986246,
+      "snr": 3.352704107856428
+     },
+     "propofol": {
+      "amplitude": 79.84212239583333,
+      "noise_sd": 151.52222979699178,
+      "snr": 0.5269333912443418
+     }
+    },
+    "log_snr_ratio": -1.850448347358927,
+    "degraded_state": "awake",
+    "noise_scale": 6.283596860887752,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 1.43410778510761
+     },
+     "propofol": {
+      "mean_latency_ms": 85.44921000000005,
+      "latency_sd_ms": 8.946365298525597
+     }
+    },
+    "matched_relative_change": 1.979124439717617
+   },
+   {
+    "response": "C12",
+    "site": "IH06-IH07",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 4.5487171216141595
+    },
+    "propofol": {
+     "mean_latency_ms": 55.66405679999997,
+     "latency_sd_ms": 8.326443075407166
+    },
+    "relative_change": 1.1815986519694657,
+    "snr": {
+     "awake": {
+      "amplitude": 50.126953125,
+      "noise_sd": 74.81162710356006,
+      "snr": 0.6700422790645949
+     },
+     "propofol": {
+      "amplitude": 263.45703125,
+      "noise_sd": 75.50401319699765,
+      "snr": 3.4893116285436885
+     }
+    },
+    "log_snr_ratio": 1.6501189411613466,
+    "degraded_state": "propofol",
+    "noise_scale": 5.110683839308054,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 4.5487171216141595
+     },
+     "propofol": {
+      "mean_latency_ms": 56.6406192,
+      "latency_sd_ms": 11.786353780383063
+     }
+    },
+    "matched_relative_change": 1.511712948988901
+   },
+   {
+    "response": "C12",
+    "site": "IH15-IH16",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 24.902341199999967,
+     "latency_sd_ms": 1.0736401068856478
+    },
+    "propofol": {
+     "mean_latency_ms": 34.66796519999997,
+     "latency_sd_ms": 6.862872650579821
+    },
+    "relative_change": 1.5242170195769469,
+    "snr": {
+     "awake": {
+      "amplitude": 186.865234375,
+      "noise_sd": 55.86874233742422,
+      "snr": 3.3447188276838387
+     },
+     "propofol": {
+      "amplitude": 231.23372395833334,
+      "noise_sd": 73.8232775908896,
+      "snr": 3.1322603317584137
+     }
+    },
+    "log_snr_ratio": -0.06562773790530821,
+    "degraded_state": "awake",
+    "noise_scale": 0.37451175243216567,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 24.902341199999967,
+      "latency_sd_ms": 1.011347507937942
+     },
+     "propofol": {
+      "mean_latency_ms": 34.66796519999997,
+      "latency_sd_ms": 6.862872650579821
+     }
+    },
+    "matched_relative_change": 1.5839882555774198
+   },
+   {
+    "response": "C13",
+    "site": "IH01-IH02",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 76.66014839999997,
+     "latency_sd_ms": 1.5097939385201977
+    },
+    "propofol": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 6.9763088086974125
+    },
+    "relative_change": 1.273586602276701,
+    "snr": {
+     "awake": {
+      "amplitude": 163.14290364583334,
+      "noise_sd": 58.79991214431803,
+      "snr": 2.774543323218183
+     },
+     "propofol": {
+      "amplitude": 32.161458333333336,
+      "noise_sd": 155.52864904862219,
+      "snr": 0.2067880003463468
+     }
+    },
+    "log_snr_ratio": -2.596547328881815,
+    "degraded_state": "awake",
+    "noise_scale": 13.380015207258175,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 78.61327320000004,
+      "latency_sd_ms": 15.419297755576387
+     },
+     "propofol": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 6.9763088086974125
+     }
+    },
+    "matched_relative_change": -1.024901487083853
+   },
+   {
+    "response": "C13",
+    "site": "IH02-IH03",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 0.6777601727727853
+    },
+    "propofol": {
+     "mean_latency_ms": 84.47264760000002,
+     "latency_sd_ms": 8.97806769792256
+    },
+    "relative_change": 2.7436608463906906,
+    "snr": {
+     "awake": {
+      "amplitude": 169.29524739583334,
+      "noise_sd": 42.501458687185036,
+      "snr": 3.9832808714134544
+     },
+     "propofol": {
+      "amplitude": 113.76953125,
+      "noise_sd": 156.98359375808275,
+      "snr": 0.7247224281622885
+     }
+    },
+    "log_snr_ratio": -1.7040723744095996,
+    "degraded_state": "awake",
+    "noise_scale": 5.404548702980535,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 93.74999040000006,
+      "latency_sd_ms": 0.9530770880362822
+     },
+     "propofol": {
+      "mean_latency_ms": 84.47264760000002,
+      "latency_sd_ms": 8.97806769792256
+     }
+    },
+    "matched_relative_change": 2.3470479470245125
+   },
+   {
+    "response": "C13",
+    "site": "IH15-IH16",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 33.203121599999974,
+     "latency_sd_ms": 2.2544311578719474
+    },
+    "propofol": {
+     "mean_latency_ms": 28.80859079999999,
+     "latency_sd_ms": 6.246971316169827
+    },
+    "relative_change": 1.1611693351721841,
+    "snr": {
+     "awake": {
+      "amplitude": 68.52213541666667,
+      "noise_sd": 43.58642585494273,
+      "snr": 1.5720980574252847
+     },
+     "propofol": {
+      "amplitude": 253.70279947916666,
+      "noise_sd": 72.59057972393815,
+      "snr": 3.494982412924624
+     }
+    },
+    "log_snr_ratio": 0.7989172740471462,
+    "degraded_state": "propofol",
+    "noise_scale": 1.9855272537414346,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 33.203121599999974,
+      "latency_sd_ms": 2.2544311578719474
+     },
+     "propofol": {
+      "mean_latency_ms": 34.66796519999997,
+      "latency_sd_ms": 1.7270024931359282
+     }
+    },
+    "matched_relative_change": -0.30968261206157427
+   },
+   {
+    "response": "C14",
+    "site": "IH02-IH03",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 91.79686559999999,
+     "latency_sd_ms": 2.1649132557200845
+    },
+    "propofol": {
+     "mean_latency_ms": 43.94530800000001,
+     "latency_sd_ms": 11.254494933909717
+    },
+    "relative_change": 2.3850195970224872,
+    "snr": {
+     "awake": {
+      "amplitude": 124.8779296875,
+      "noise_sd": 50.16958556287459,
+      "snr": 2.4891162302107888
+     },
+     "propofol": {
+      "amplitude": 70.166015625,
+      "noise_sd": 150.56076277476845,
+      "snr": 0.46603121777461326
+     }
+    },
+    "log_snr_ratio": -1.6754303760163463,
+    "degraded_state": "awake",
+    "noise_scale": 5.246644450643824,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 92.28514679999995,
+      "latency_sd_ms": 4.747188712398103
+     },
+     "propofol": {
+      "mean_latency_ms": 43.94530800000001,
+      "latency_sd_ms": 11.254494933909717
+     }
+    },
+    "matched_relative_change": 1.6051523504492131
+   },
+   {
+    "response": "C14",
+    "site": "IH15-IH16",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 15.624998400000038,
+     "latency_sd_ms": 2.833132600460819
+    },
+    "propofol": {
+     "mean_latency_ms": 18.066404399999954,
+     "latency_sd_ms": 19.298904599593385
+    },
+    "relative_change": 1.7734833025356644,
+    "snr": {
+     "awake": {
+      "amplitude": 62.7685546875,
+      "noise_sd": 38.55572811880637,
+      "snr": 1.6279955729038174
+     },
+     "propofol": {
+      "amplitude": 237.255859375,
+      "noise_sd": 120.57625529276373,
+      "snr": 1.9676830964681542
+     }
+    },
+    "log_snr_ratio": 0.18950720921612332,
+    "degraded_state": "propofol",
+    "noise_scale": 0.6788549909025077,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 15.624998400000038,
+      "latency_sd_ms": 2.833132600460819
+     },
+     "propofol": {
+      "mean_latency_ms": 34.66796519999997,
+      "latency_sd_ms": 9.395890707009796
+     }
+    },
+    "matched_relative_change": 0.40194543520162995
+   },
+   {
+    "response": "C15",
+    "site": "IH06-IH07",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 0.6475974300270758
+    },
+    "propofol": {
+     "mean_latency_ms": 53.710932000000014,
+     "latency_sd_ms": 4.359267594489166
+    },
+    "relative_change": 2.51951569922807,
+    "snr": {
+     "awake": {
+      "amplitude": 304.7998046875,
+      "noise_sd": 37.8998349574146,
+      "snr": 8.042246226929016
+     },
+     "propofol": {
+      "amplitude": 336.62109375,
+      "noise_sd": 151.31532383497293,
+      "snr": 2.2246332044804973
+     }
+    },
+    "log_snr_ratio": -1.2851163755202206,
+    "degraded_state": "awake",
+    "noise_scale": 3.4740273284910455,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 97.65623999999997,
+      "latency_sd_ms": 0.9676896127372303
+     },
+     "propofol": {
+      "mean_latency_ms": 53.710932000000014,
+      "latency_sd_ms": 4.359267594489166
+     }
+    },
+    "matched_relative_change": 2.102984952213374
+   },
+   {
+    "response": "C15",
+    "site": "IH15-IH16",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 19.042966799999988,
+     "latency_sd_ms": 1.1799432909915943
+    },
+    "propofol": {
+     "mean_latency_ms": 27.343747199999996,
+     "latency_sd_ms": 1.0064818965661533
+    },
+    "relative_change": -0.5207954440320387,
+    "snr": {
+     "awake": {
+      "amplitude": 305.5989583333333,
+      "noise_sd": 43.30778480389899,
+      "snr": 7.056444002322195
+     },
+     "propofol": {
+      "amplitude": 82.74739583333333,
+      "noise_sd": 114.20854722293072,
+      "snr": 0.7245289240201399
+     }
+    },
+    "log_snr_ratio": -2.27617483750912,
+    "degraded_state": "awake",
+    "noise_scale": 9.687880323210637,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 16.60156079999996,
+      "latency_sd_ms": 15.976348503756197
+     },
+     "propofol": {
+      "mean_latency_ms": 27.343747199999996,
+      "latency_sd_ms": 1.0064818965661533
+     }
+    },
+    "matched_relative_change": -3.263639596786157
+   },
+   {
+    "response": "C16",
+    "site": "C12-C13",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 1.209796766267121
+    },
+    "propofol": {
+     "mean_latency_ms": 24.902341199999967,
+     "latency_sd_ms": 0.5952789199199406
+    },
+    "relative_change": 0.6722027522771366,
+    "snr": {
+     "awake": {
+      "amplitude": 120.23111979166667,
+      "noise_sd": 37.35273332971054,
+      "snr": 3.218803794902856
+     },
+     "propofol": {
+      "amplitude": 75.4150390625,
+      "noise_sd": 140.79633640375488,
+      "snr": 0.5356321122322099
+     }
+    },
+    "log_snr_ratio": -1.7933175096081717,
+    "degraded_state": "awake",
+    "noise_scale": 5.9255678097815645,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 47.851557600000035,
+      "latency_sd_ms": 3.5533479039089952
+     },
+     "propofol": {
+      "mean_latency_ms": 24.902341199999967,
+      "latency_sd_ms": 0.5952789199199406
+     }
+    },
+    "matched_relative_change": -1.133473594953717
+   },
+   {
+    "response": "C16",
+    "site": "IH02-IH03",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 93.26170919999998,
+     "latency_sd_ms": 1.5492934604203747
+    },
+    "propofol": {
+     "mean_latency_ms": 43.45702680000005,
+     "latency_sd_ms": 10.684971288552747
+    },
+    "relative_change": 2.69467626498091,
+    "snr": {
+     "awake": {
+      "amplitude": 49.723307291666664,
+      "noise_sd": 35.19733293424867,
+      "snr": 1.4127009959690306
+     },
+     "propofol": {
+      "amplitude": 8.219401041666666,
+      "noise_sd": 222.13134804757559,
+      "snr": 0.03700243623383699
+     }
+    },
+    "log_snr_ratio": -3.642274996294014,
+    "degraded_state": "awake",
+    "noise_scale": 38.16549557087352,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 88.37889720000004,
+      "latency_sd_ms": 13.56803033693937
+     },
+     "propofol": {
+      "mean_latency_ms": 43.45702680000005,
+      "latency_sd_ms": 10.684971288552747
+     }
+    },
+    "matched_relative_change": 0.4709825482560858
+   },
+   {
+    "response": "C16",
+    "site": "IH06-IH07",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 0.7253472133406615
+    },
+    "propofol": {
+     "mean_latency_ms": 53.710932000000014,
+     "latency_sd_ms": 2.707002334777367
+    },
+    "relative_change": 1.9296723101954094,
+    "snr": {
+     "awake": {
+      "amplitude": 158.9111328125,
+      "noise_sd": 41.698404598617664,
+      "snr": 3.810964336457324
+     },
+     "propofol": {
+      "amplitude": 366.2939453125,
+      "noise_sd": 142.65206756068338,
+      "snr": 2.5677436827663267
+     }
+    },
+    "log_snr_ratio": -0.39485469495494685,
+    "degraded_state": "awake",
+    "noise_scale": 1.0967024163628065,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 96.67967760000005,
+      "latency_sd_ms": 0.8544051470675065
+     },
+     "propofol": {
+      "mean_latency_ms": 53.710932000000014,
+      "latency_sd_ms": 2.707002334777367
+     }
+    },
+    "matched_relative_change": 1.7409783246350226
+   },
+   {
+    "response": "C17",
+    "site": "C12-C13",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 2.480617896373343
+    },
+    "propofol": {
+     "mean_latency_ms": 20.507810399999983,
+     "latency_sd_ms": 7.636500002925419
+    },
+    "relative_change": 2.699968063262677,
+    "snr": {
+     "awake": {
+      "amplitude": 89.31477864583333,
+      "noise_sd": 48.73098589552974,
+      "snr": 1.832812880849728
+     },
+     "propofol": {
+      "amplitude": 253.77604166666666,
+      "noise_sd": 84.98538287597484,
+      "snr": 2.986114000769049
+     }
+    },
+    "log_snr_ratio": 0.48812099671555736,
+    "degraded_state": "propofol",
+    "noise_scale": 1.28625891206481,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 2.480617896373343
+     },
+     "propofol": {
+      "mean_latency_ms": 22.46093520000005,
+      "latency_sd_ms": 0.11111564852173055
+     }
+    },
+    "matched_relative_change": -1.6211268398289393
+   },
+   {
+    "response": "C17",
+    "site": "C20-C21",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 3.3642392430592474
+    },
+    "propofol": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 5.681993046048971
+    },
+    "relative_change": 0.5241002013667263,
+    "snr": {
+     "awake": {
+      "amplitude": 194.9609375,
+      "noise_sd": 29.933250188212206,
+      "snr": 6.513189722938144
+     },
+     "propofol": {
+      "amplitude": 143.9501953125,
+      "noise_sd": 59.556483537384764,
+      "snr": 2.417036513281374
+     }
+    },
+    "log_snr_ratio": -0.9912871005570079,
+    "degraded_state": "awake",
+    "noise_scale": 2.5022812151885883,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 3.1821898474105743
+     },
+     "propofol": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 5.681993046048971
+     }
+    },
+    "matched_relative_change": 0.5797324685194677
+   },
+   {
+    "response": "C18",
+    "site": "C20-C21",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 9.765624000000003,
+     "latency_sd_ms": 1.5277768493465664
+    },
+    "propofol": {
+     "mean_latency_ms": 8.789061600000025,
+     "latency_sd_ms": 1.4522856269027398
+    },
+    "relative_change": 0.05468548638220009,
+    "snr": {
+     "awake": {
+      "amplitude": 279.2236328125,
+      "noise_sd": 35.84732261408149,
+      "snr": 7.7892465169160445
+     },
+     "propofol": {
+      "amplitude": 198.33984375,
+      "noise_sd": 60.26191292337636,
+      "snr": 3.2912968428697433
+     }
+    },
+    "log_snr_ratio": -0.861462466529602,
+    "degraded_state": "awake",
+    "noise_scale": 2.1449677731801176,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 9.765624000000003,
+      "latency_sd_ms": 4.891944005222335
+     },
+     "propofol": {
+      "mean_latency_ms": 8.789061600000025,
+      "latency_sd_ms": 1.4522856269027398
+     }
+    },
+    "matched_relative_change": -1.1090906461081622
+   },
+   {
+    "response": "C18",
+    "site": "IH02-IH03",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 88.8671784,
+     "latency_sd_ms": 1.3536227632529991
+    },
+    "propofol": {
+     "mean_latency_ms": 23.925778800000046,
+     "latency_sd_ms": 14.842134732999682
+    },
+    "relative_change": 3.7068719397401404,
+    "snr": {
+     "awake": {
+      "amplitude": 101.88802083333333,
+      "noise_sd": 43.71049036634302,
+      "snr": 2.3309740975083377
+     },
+     "propofol": {
+      "amplitude": 53.9306640625,
+      "noise_sd": 151.2758146512369,
+      "snr": 0.3565055272505785
+     }
+    },
+    "log_snr_ratio": -1.8776917828506232,
+    "degraded_state": "awake",
+    "noise_scale": 6.461471530195656,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 95.70311520000001,
+      "latency_sd_ms": 26.82727320513826
+     },
+     "propofol": {
+      "mean_latency_ms": 23.925778800000046,
+      "latency_sd_ms": 14.842134732999682
+     }
+    },
+    "matched_relative_change": 0.7943454114831074
+   },
+   {
+    "response": "C18",
+    "site": "IH06-IH07",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 79.58983559999996,
+     "latency_sd_ms": 11.037380936402554
+    },
+    "propofol": {
+     "mean_latency_ms": 87.89061599999997,
+     "latency_sd_ms": 18.493999872431548
+    },
+    "relative_change": 0.41695191949116994,
+    "snr": {
+     "awake": {
+      "amplitude": 0.634765625,
+      "noise_sd": 34.60936244946973,
+      "snr": 0.018340864438828333
+     },
+     "propofol": {
+      "amplitude": 82.7685546875,
+      "noise_sd": 59.99224775014367,
+      "snr": 1.379654168522162
+     }
+    },
+    "log_snr_ratio": 4.320456544438319,
+    "degraded_state": "propofol",
+    "noise_scale": 75.21631587901076,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 79.58983559999996,
+      "latency_sd_ms": 11.037380936402554
+     },
+     "propofol": {
+      "mean_latency_ms": 27.832028399999956,
+      "latency_sd_ms": 6.991978688380828
+     }
+    },
+    "matched_relative_change": 0.5941747446373491
+   },
+   {
+    "response": "C19",
+    "site": "IH01-IH02",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 1.628502734170485
+    },
+    "propofol": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 3.1540739462093508
+    },
+    "relative_change": 0.6610339087984118,
+    "snr": {
+     "awake": {
+      "amplitude": 125.2197265625,
+      "noise_sd": 45.41553465389323,
+      "snr": 2.7572003173976856
+     },
+     "propofol": {
+      "amplitude": 33.414713541666664,
+      "noise_sd": 131.1660963438616,
+      "snr": 0.25475114738543053
+     }
+    },
+    "log_snr_ratio": -2.381683890068383,
+    "degraded_state": "awake",
+    "noise_scale": 10.776816010118939,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 60.05858759999995,
+      "latency_sd_ms": 7.627520564434223
+     },
+     "propofol": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 3.1540739462093508
+     }
+    },
+    "matched_relative_change": -1.384089523884034
+   },
+   {
+    "response": "C19",
+    "site": "IH02-IH03",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 98.14452120000004,
+     "latency_sd_ms": 1.6985355429537294
+    },
+    "propofol": {
+     "mean_latency_ms": 85.44921000000005,
+     "latency_sd_ms": 9.913517466894847
+    },
+    "relative_change": 1.9026517261770834,
+    "snr": {
+     "awake": {
+      "amplitude": 133.50423177083334,
+      "noise_sd": 46.747153198730985,
+      "snr": 2.8558793987578586
+     },
+     "propofol": {
+      "amplitude": 118.9697265625,
+      "noise_sd": 151.5051139432967,
+      "snr": 0.785252216681124
+     }
+    },
+    "log_snr_ratio": -1.2911301339288273,
+    "degraded_state": "awake",
+    "noise_scale": 3.496712879706801,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 98.6328024,
+      "latency_sd_ms": 6.510032752985029
+     },
+     "propofol": {
+      "mean_latency_ms": 85.44921000000005,
+      "latency_sd_ms": 9.913517466894847
+     }
+    },
+    "matched_relative_change": 0.5640364626144814
+   },
+   {
+    "response": "C20",
+    "site": "IH01-IH02",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 70.80077399999999,
+     "latency_sd_ms": 1.309102524076419
+    },
+    "propofol": {
+     "mean_latency_ms": 61.52343119999995,
+     "latency_sd_ms": 1.93157266501381
+    },
+    "relative_change": 0.5294445526101266,
+    "snr": {
+     "awake": {
+      "amplitude": 297.8434244791667,
+      "noise_sd": 46.448419538869246,
+      "snr": 6.412347878272232
+     },
+     "propofol": {
+      "amplitude": 35.6689453125,
+      "noise_sd": 132.83415438972332,
+      "snr": 0.2685223952858582
+     }
+    },
+    "log_snr_ratio": -3.1730464471545767,
+    "degraded_state": "awake",
+    "noise_scale": 23.85917608580526,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 15.136717199999964,
+      "latency_sd_ms": 11.097358697727229
+     },
+     "propofol": {
+      "mean_latency_ms": 61.52343119999995,
+      "latency_sd_ms": 1.93157266501381
+     }
+    },
+    "matched_relative_change": -3.150667303865463
+   },
+   {
+    "response": "C20",
+    "site": "IH02-IH03",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 67.8710868,
+     "latency_sd_ms": 1.0447664716969418
+    },
+    "propofol": {
+     "mean_latency_ms": 84.47264760000002,
+     "latency_sd_ms": 8.336285908546609
+    },
+    "relative_change": 1.8580067327231462,
+    "snr": {
+     "awake": {
+      "amplitude": 467.3258463541667,
+      "noise_sd": 52.95520544443346,
+      "snr": 8.824927453912673
+     },
+     "propofol": {
+      "amplitude": 0.5533854166666666,
+      "noise_sd": 130.34381112142756,
+      "snr": 0.004245582601164975
+     }
+    },
+    "log_snr_ratio": -7.639456606811008,
+    "degraded_state": "awake",
+    "noise_scale": 2078.613764395453,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 42.48046440000002,
+      "latency_sd_ms": 6.593242989171495
+     },
+     "propofol": {
+      "mean_latency_ms": 84.47264760000002,
+      "latency_sd_ms": 8.336285908546609
+     }
+    },
+    "matched_relative_change": -0.4528110284525828
+   },
+   {
+    "response": "C21",
+    "site": "IH01-IH02",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 95.70311520000001,
+     "latency_sd_ms": 0.7858035957943141
+    },
+    "propofol": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 2.108777637869499
+    },
+    "relative_change": 0.9520655371635725,
+    "snr": {
+     "awake": {
+      "amplitude": 279.0364583333333,
+      "noise_sd": 45.254762875285536,
+      "snr": 6.165902561511825
+     },
+     "propofol": {
+      "amplitude": 77.60416666666667,
+      "noise_sd": 135.43774966543657,
+      "snr": 0.5729877147129763
+     }
+    },
+    "log_snr_ratio": -2.3759255295835273,
+    "degraded_state": "awake",
+    "noise_scale": 10.71440320405306,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 86.91405360000005,
+      "latency_sd_ms": 16.537875615689778
+     },
+     "propofol": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 2.108777637869499
+     }
+    },
+    "matched_relative_change": -2.1909672098268307
+   },
+   {
+    "response": "C21",
+    "site": "IH02-IH03",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 85.93749120000001,
+     "latency_sd_ms": 2.128681377689077
+    },
+    "propofol": {
+     "mean_latency_ms": 84.47264760000002,
+     "latency_sd_ms": 9.85429952234448
+    },
+    "relative_change": 1.5495975437065108,
+    "snr": {
+     "awake": {
+      "amplitude": 287.0035807291667,
+      "noise_sd": 39.80605723501627,
+      "snr": 7.210047934028937
+     },
+     "propofol": {
+      "amplitude": 53.336588541666664,
+      "noise_sd": 129.24144580970403,
+      "snr": 0.4126895068954878
+     }
+    },
+    "log_snr_ratio": -2.8605353675935072,
+    "degraded_state": "awake",
+    "noise_scale": 17.442235241842436,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 51.75780720000006,
+      "latency_sd_ms": 3.2514928941112786
+     },
+     "propofol": {
+      "mean_latency_ms": 84.47264760000002,
+      "latency_sd_ms": 9.85429952234448
+     }
+    },
+    "matched_relative_change": 0.6189411163843594
+   },
+   {
+    "response": "C21",
+    "site": "IH06-IH07",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 5.9839195213635605
+    },
+    "propofol": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 5.245229771785908
+    },
+    "relative_change": -0.1317567429468665,
+    "snr": {
+     "awake": {
+      "amplitude": 23.4423828125,
+      "noise_sd": 22.7819471894048,
+      "snr": 1.0289894282347538
+     },
+     "propofol": {
+      "amplitude": 316.728515625,
+      "noise_sd": 111.16305706743827,
+      "snr": 2.8492245893602335
+     }
+    },
+    "log_snr_ratio": 1.0184697003782524,
+    "degraded_state": "propofol",
+    "noise_scale": 2.582074226171874,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 5.9839195213635605
+     },
+     "propofol": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 25.03623976718438
+     }
+    },
+    "matched_relative_change": 1.4312485743014962
+   },
+   {
+    "response": "C21",
+    "site": "IH15-IH16",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 16.1132796,
+     "latency_sd_ms": 3.1689814522936035
+    },
+    "propofol": {
+     "mean_latency_ms": 8.789061600000025,
+     "latency_sd_ms": 11.225245431528732
+    },
+    "relative_change": 1.8708908738499175,
+    "snr": {
+     "awake": {
+      "amplitude": 12.239583333333334,
+      "noise_sd": 31.518027854178992,
+      "snr": 0.3883359514104396
+     },
+     "propofol": {
+      "amplitude": 215.36458333333334,
+      "noise_sd": 79.75997881183665,
+      "snr": 2.700158482255922
+     }
+    },
+    "log_snr_ratio": 1.9391949282632106,
+    "degraded_state": "propofol",
+    "noise_scale": 6.880865343486835,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 16.1132796,
+      "latency_sd_ms": 3.1689814522936035
+     },
+     "propofol": {
+      "mean_latency_ms": 34.66796519999997,
+      "latency_sd_ms": 8.851165485964493
+     }
+    },
+    "matched_relative_change": 0.2609666002696731
+   },
+   {
+    "response": "C22",
+    "site": "IH01-IH02",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 2.9568310483696276
+    },
+    "propofol": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 7.541149134318765
+    },
+    "relative_change": 0.9362564724132231,
+    "snr": {
+     "awake": {
+      "amplitude": 134.7900390625,
+      "noise_sd": 43.143243511799966,
+      "snr": 3.1242444492063752
+     },
+     "propofol": {
+      "amplitude": 125.49641927083333,
+      "noise_sd": 154.93179119274697,
+      "snr": 0.8100107686401573
+     }
+    },
+    "log_snr_ratio": -1.3499002144883616,
+    "degraded_state": "awake",
+    "noise_scale": 3.72515267578204,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 97.16795880000001,
+      "latency_sd_ms": 2.7329170537881047
+     },
+     "propofol": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 7.541149134318765
+     }
+    },
+    "matched_relative_change": 0.9951038645630838
+   },
+   {
+    "response": "C22",
+    "site": "IH06-IH07",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 67.8710868,
+     "latency_sd_ms": 1.9169240704012402
+    },
+    "propofol": {
+     "mean_latency_ms": 94.23827160000002,
+     "latency_sd_ms": 2.8632874634736227
+    },
+    "relative_change": 0.07303231695940299,
+    "snr": {
+     "awake": {
+      "amplitude": 25.37109375,
+      "noise_sd": 43.6378973525639,
+      "snr": 0.5814004635699834
+     },
+     "propofol": {
+      "amplitude": 223.7646484375,
+      "noise_sd": 135.1473156202504,
+      "snr": 1.655709160115728
+     }
+    },
+    "log_snr_ratio": 1.0465449061129206,
+    "degraded_state": "propofol",
+    "noise_scale": 2.666446074253547,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 67.8710868,
+      "latency_sd_ms": 1.9169240704012402
+     },
+     "propofol": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 9.451717389456794
+     }
+    },
+    "matched_relative_change": 1.2167425586922438
+   },
+   {
+    "response": "C22",
+    "site": "IH15-IH16",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 18.066404399999954,
+     "latency_sd_ms": 2.1346359057971966
+    },
+    "propofol": {
+     "mean_latency_ms": 20.996091600000057,
+     "latency_sd_ms": 13.913279263648125
+    },
+    "relative_change": 1.7242654275350766,
+    "snr": {
+     "awake": {
+      "amplitude": 88.51725260416667,
+      "noise_sd": 57.61272555685543,
+      "snr": 1.5364184170876092
+     },
+     "propofol": {
+      "amplitude": 175.98470052083334,
+      "noise_sd": 118.15133339800965,
+      "snr": 1.4894855221650671
+     }
+    },
+    "log_snr_ratio": -0.031023231393020892,
+    "degraded_state": "awake",
+    "noise_scale": 0.2530054950614062,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 18.066404399999954,
+      "latency_sd_ms": 2.0856115544204097
+     },
+     "propofol": {
+      "mean_latency_ms": 20.996091600000057,
+      "latency_sd_ms": 13.913279263648125
+     }
+    },
+    "matched_relative_change": 1.7474994000304056
+   },
+   {
+    "response": "C23",
+    "site": "IH01-IH02",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 88.8671784,
+     "latency_sd_ms": 0.6841335064370292
+    },
+    "propofol": {
+     "mean_latency_ms": 61.03514999999999,
+     "latency_sd_ms": 5.3709626898606375
+    },
+    "relative_change": 2.4363023096390695,
+    "snr": {
+     "awake": {
+      "amplitude": 143.61979166666666,
+      "noise_sd": 50.06333913169367,
+      "snr": 2.8687617357857196
+     },
+     "propofol": {
+      "amplitude": 70.1904296875,
+      "noise_sd": 182.76316596988346,
+      "snr": 0.3840512901766338
+     }
+    },
+    "log_snr_ratio": -2.0108596528695744,
+    "degraded_state": "awake",
+    "noise_scale": 7.402496567476223,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 66.4062432,
+      "latency_sd_ms": 26.77766250590406
+     },
+     "propofol": {
+      "mean_latency_ms": 61.03514999999999,
+      "latency_sd_ms": 5.3709626898606375
+     }
+    },
+    "matched_relative_change": -1.5222197386442877
+   },
+   {
+    "response": "C23",
+    "site": "IH06-IH07",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 1.0793161891239857
+    },
+    "propofol": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 1.8684955753618209
+    },
+    "relative_change": 0.5488059195361635,
+    "snr": {
+     "awake": {
+      "amplitude": 834.9951171875,
+      "noise_sd": 42.864991938671196,
+      "snr": 19.47965179562296
+     },
+     "propofol": {
+      "amplitude": 180.0244140625,
+      "noise_sd": 117.14531259580403,
+      "snr": 1.536761566240835
+     }
+    },
+    "log_snr_ratio": -2.5396930998802554,
+    "degraded_state": "awake",
+    "noise_scale": 12.636273305617083,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 89.35545959999996,
+      "latency_sd_ms": 6.456962214755034
+     },
+     "propofol": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 1.8684955753618209
+     }
+    },
+    "matched_relative_change": -1.3437451860764338
+   },
+   {
+    "response": "C24",
+    "site": "IH06-IH07",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 0.7622528321713068
+    },
+    "propofol": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 3.1972881464921423
+    },
+    "relative_change": 1.433779973871583,
+    "snr": {
+     "awake": {
+      "amplitude": 756.3720703125,
+      "noise_sd": 32.62321640816111,
+      "snr": 23.185085763747193
+     },
+     "propofol": {
+      "amplitude": 180.87890625,
+      "noise_sd": 136.59465457715675,
+      "snr": 1.3242019375496783
+     }
+    },
+    "log_snr_ratio": -2.8626992502488715,
+    "degraded_state": "awake",
+    "noise_scale": 17.480143116877727,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 92.28514679999995,
+      "latency_sd_ms": 7.514048482008336
+     },
+     "propofol": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 3.1972881464921423
+     }
+    },
+    "matched_relative_change": -0.9259303670445908
+   },
+   {
+    "response": "C25",
+    "site": "C20-C21",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 9.765624000000003,
+     "latency_sd_ms": 14.143465682556151
+    },
+    "propofol": {
+     "mean_latency_ms": 23.925778800000046,
+     "latency_sd_ms": 15.954916454331746
+    },
+    "relative_change": -0.77557372938471,
+    "snr": {
+     "awake": {
+      "amplitude": 16.5234375,
+      "noise_sd": 31.62029844481466,
+      "snr": 0.5225579236336917
+     },
+     "propofol": {
+      "amplitude": 32.373046875,
+      "noise_sd": 44.92528958310183,
+      "snr": 0.7205974001595925
+     }
+    },
+    "log_snr_ratio": 0.3213447541009214,
+    "degraded_state": "propofol",
+    "noise_scale": 0.9495200605525548,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 9.765624000000003,
+      "latency_sd_ms": 14.143465682556151
+     },
+     "propofol": {
+      "mean_latency_ms": 85.44921000000005,
+      "latency_sd_ms": 14.786063846097145
+     }
+    },
+    "matched_relative_change": -2.124621323446973
+   },
+   {
+    "response": "C26",
+    "site": "C12-C13",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 9.765624000000003,
+     "latency_sd_ms": 1.486731208132338
+    },
+    "propofol": {
+     "mean_latency_ms": 52.73436959999998,
+     "latency_sd_ms": 5.54117899783711
+    },
+    "relative_change": -0.37077154992243133,
+    "snr": {
+     "awake": {
+      "amplitude": 71.54947916666667,
+      "noise_sd": 36.93454094885719,
+      "snr": 1.9371969253859245
+     },
+     "propofol": {
+      "amplitude": 163.88346354166666,
+      "noise_sd": 63.02225235486099,
+      "snr": 2.6004063234503887
+     }
+    },
+    "log_snr_ratio": 0.29442566666507325,
+    "degraded_state": "propofol",
+    "noise_scale": 0.8954984219414168,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 9.765624000000003,
+      "latency_sd_ms": 1.486731208132338
+     },
+     "propofol": {
+      "mean_latency_ms": 64.45311840000005,
+      "latency_sd_ms": 4.517158195352058
+     }
+    },
+    "matched_relative_change": -0.7757664607201025
+   },
+   {
+    "response": "C26",
+    "site": "IH02-IH03",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 11.230467599999997,
+     "latency_sd_ms": 0.45580108158218713
+    },
+    "propofol": {
+     "mean_latency_ms": 43.45702680000005,
+     "latency_sd_ms": 2.22525098750732
+    },
+    "relative_change": 0.23242634806931406,
+    "snr": {
+     "awake": {
+      "amplitude": 308.6181640625,
+      "noise_sd": 34.74321711436478,
+      "snr": 8.882832094869535
+     },
+     "propofol": {
+      "amplitude": 94.53938802083333,
+      "noise_sd": 112.9633298795844,
+      "snr": 0.8369033395315943
+     }
+    },
+    "log_snr_ratio": -2.3621671353513634,
+    "degraded_state": "awake",
+    "noise_scale": 10.566715447757993,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 14.160154800000043,
+      "latency_sd_ms": 9.619893710812015
+     },
+     "propofol": {
+      "mean_latency_ms": 43.45702680000005,
+      "latency_sd_ms": 2.22525098750732
+     }
+    },
+    "matched_relative_change": -2.5853040429596437
+   },
+   {
+    "response": "C27",
+    "site": "IH01-IH02",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 0.5153043127208198
+    },
+    "propofol": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 6.040906282220056
+    },
+    "relative_change": 2.4615517017591553,
+    "snr": {
+     "awake": {
+      "amplitude": 113.90787760416667,
+      "noise_sd": 27.298648018107606,
+      "snr": 4.172656372162089
+     },
+     "propofol": {
+      "amplitude": 55.460611979166664,
+      "noise_sd": 122.3908766964258,
+      "snr": 0.4531433508457439
+     }
+    },
+    "log_snr_ratio": -2.220099608477966,
+    "degraded_state": "awake",
+    "noise_scale": 9.153787847771413,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 10.514832066302873
+     },
+     "propofol": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 6.040906282220056
+     }
+    },
+    "matched_relative_change": -0.5542327907412007
+   },
+   {
+    "response": "C27",
+    "site": "IH02-IH03",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 10.74218639999998,
+     "latency_sd_ms": 0.4268652333022244
+    },
+    "propofol": {
+     "mean_latency_ms": 8.789061600000025,
+     "latency_sd_ms": 4.242630164182963
+    },
+    "relative_change": 2.4971410225723667,
+    "snr": {
+     "awake": {
+      "amplitude": 521.8668619791666,
+      "noise_sd": 21.89261641282504,
+      "snr": 23.83757391708781
+     },
+     "propofol": {
+      "amplitude": 132.6416015625,
+      "noise_sd": 122.64223608008938,
+      "snr": 1.08153280470099
+     }
+    },
+    "log_snr_ratio": -3.092883773250403,
+    "degraded_state": "awake",
+    "noise_scale": 22.01784920586647,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 11.230467599999997,
+      "latency_sd_ms": 1.9345434847421084
+     },
+     "propofol": {
+      "mean_latency_ms": 8.789061600000025,
+      "latency_sd_ms": 4.242630164182963
+     }
+    },
+    "matched_relative_change": 1.0304344832489705
+   },
+   {
+    "response": "C28",
+    "site": "IH01-IH02",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 82.51952280000006,
+     "latency_sd_ms": 2.6193217456792874
+    },
+    "propofol": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 3.1068401727254416
+    },
+    "relative_change": -0.012616484623098556,
+    "snr": {
+     "awake": {
+      "amplitude": 580.8430989583334,
+      "noise_sd": 48.84360493398297,
+      "snr": 11.891896590012164
+     },
+     "propofol": {
+      "amplitude": 45.8984375,
+      "noise_sd": 144.0313013223124,
+      "snr": 0.31866987994011625
+     }
+    },
+    "log_snr_ratio": -3.619456780492804,
+    "degraded_state": "awake",
+    "noise_scale": 37.303889813907105,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 8.789061600000025,
+      "latency_sd_ms": 13.990158653462363
+     },
+     "propofol": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 3.1068401727254416
+     }
+    },
+    "matched_relative_change": -3.9275821621896316
+   },
+   {
+    "response": "C28",
+    "site": "IH02-IH03",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 89.35545959999996,
+     "latency_sd_ms": 0.7040509075275064
+    },
+    "propofol": {
+     "mean_latency_ms": 84.47264760000002,
+     "latency_sd_ms": 4.548897164047397
+    },
+    "relative_change": 1.9219839940089305,
+    "snr": {
+     "awake": {
+      "amplitude": 398.5921223958333,
+      "noise_sd": 25.244787210552666,
+      "snr": 15.789086240711761
+     },
+     "propofol": {
+      "amplitude": 65.25065104166667,
+      "noise_sd": 132.80701751418206,
+      "snr": 0.49131930121613304
+     }
+    },
+    "log_snr_ratio": -3.4699800116708315,
+    "degraded_state": "awake",
+    "noise_scale": 32.12053749680438,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 87.4023348,
+      "latency_sd_ms": 15.984697790082707
+     },
+     "propofol": {
+      "mean_latency_ms": 84.47264760000002,
+      "latency_sd_ms": 4.548897164047397
+     }
+    },
+    "matched_relative_change": -1.2226528430903871
+   },
+   {
+    "response": "C29",
+    "site": "C12-C13",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 0.9412634666443548
+    },
+    "propofol": {
+     "mean_latency_ms": 17.089842000000033,
+     "latency_sd_ms": 6.494181223015898
+    },
+    "relative_change": 3.6892966898457327,
+    "snr": {
+     "awake": {
+      "amplitude": 262.6953125,
+      "noise_sd": 36.90271015725983,
+      "snr": 7.118591327859973
+     },
+     "propofol": {
+      "amplitude": 46.028645833333336,
+      "noise_sd": 63.88068877884503,
+      "snr": 0.7205408506580843
+     }
+    },
+    "log_snr_ratio": -2.290463026136929,
+    "degraded_state": "awake",
+    "noise_scale": 9.828771004520352,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 12.695311200000049,
+      "latency_sd_ms": 2.4924349318370163
+     },
+     "propofol": {
+      "mean_latency_ms": 17.089842000000033,
+      "latency_sd_ms": 6.494181223015898
+     }
+    },
+    "matched_relative_change": 0.6603949391157681
+   },
+   {
+    "response": "C29",
+    "site": "C20-C21",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 10.74218639999998,
+     "latency_sd_ms": 0.9648276896567147
+    },
+    "propofol": {
+     "mean_latency_ms": 9.277342799999985,
+     "latency_sd_ms": 6.529848249938723
+    },
+    "relative_change": 2.05879293183151,
+    "snr": {
+     "awake": {
+      "amplitude": 900.4736328125,
+      "noise_sd": 34.41447760042241,
+      "snr": 26.165547048764367
+     },
+     "propofol": {
+      "amplitude": 897.1484375,
+      "noise_sd": 63.93277852629129,
+      "snr": 14.032683361807319
+     }
+    },
+    "log_snr_ratio": -0.6230544125726781,
+    "degraded_state": "awake",
+    "noise_scale": 1.5737813738047295,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 10.74218639999998,
+      "latency_sd_ms": 1.6717786802228596
+     },
+     "propofol": {
+      "mean_latency_ms": 9.277342799999985,
+      "latency_sd_ms": 6.529848249938723
+     }
+    },
+    "matched_relative_change": 1.5090990406901152
+   },
+   {
+    "response": "C29",
+    "site": "IH01-IH02",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 2.3198770952818424
+    },
+    "propofol": {
+     "mean_latency_ms": 81.54296040000003,
+     "latency_sd_ms": 2.6591047022733423
+    },
+    "relative_change": 0.3316874465674796,
+    "snr": {
+     "awake": {
+      "amplitude": 529.4189453125,
+      "noise_sd": 53.92792999272402,
+      "snr": 9.817156812507536
+     },
+     "propofol": {
+      "amplitude": 60.880533854166664,
+      "noise_sd": 158.59266443663236,
+      "snr": 0.383879885431222
+     }
+    },
+    "log_snr_ratio": -3.2415571238320515,
+    "degraded_state": "awake",
+    "noise_scale": 25.553952925816912,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 72.75389880000006,
+      "latency_sd_ms": 21.78679393943892
+     },
+     "propofol": {
+      "mean_latency_ms": 81.54296040000003,
+      "latency_sd_ms": 2.6591047022733423
+     }
+    },
+    "matched_relative_change": -2.2173620220656223
+   },
+   {
+    "response": "C29",
+    "site": "IH02-IH03",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 1.3103388077814093
+    },
+    "propofol": {
+     "mean_latency_ms": 84.47264760000002,
+     "latency_sd_ms": 7.975994174350167
+    },
+    "relative_change": 1.966064951138054,
+    "snr": {
+     "awake": {
+      "amplitude": 564.9088541666666,
+      "noise_sd": 33.049193728573115,
+      "snr": 17.092969311328986
+     },
+     "propofol": {
+      "amplitude": 15.665690104166666,
+      "noise_sd": 142.14634928476045,
+      "snr": 0.11020817757889607
+     }
+    },
+    "log_snr_ratio": -5.044051405889897,
+    "degraded_state": "awake",
+    "noise_scale": 155.09388137493121,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 67.38280560000004,
+      "latency_sd_ms": 5.643280517111738
+     },
+     "propofol": {
+      "mean_latency_ms": 84.47264760000002,
+      "latency_sd_ms": 7.975994174350167
+     }
+    },
+    "matched_relative_change": 0.11993284453508243
+   },
+   {
+    "response": "C29",
+    "site": "IH06-IH07",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 84.96092879999998,
+     "latency_sd_ms": 5.411981556185717
+    },
+    "propofol": {
+     "mean_latency_ms": 54.199213199999974,
+     "latency_sd_ms": 5.731198343313332
+    },
+    "relative_change": 0.5068344393670845,
+    "snr": {
+     "awake": {
+      "amplitude": 96.9970703125,
+      "noise_sd": 27.12501625315319,
+      "snr": 3.57592671677107
+     },
+     "propofol": {
+      "amplitude": 162.1435546875,
+      "noise_sd": 80.33472093675454,
+      "snr": 2.0183496350868197
+     }
+    },
+    "log_snr_ratio": -0.5719441988849344,
+    "degraded_state": "awake",
+    "noise_scale": 1.4625150094250128,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 83.49608519999998,
+      "latency_sd_ms": 7.0080194615230935
+     },
+     "propofol": {
+      "mean_latency_ms": 54.199213199999974,
+      "latency_sd_ms": 5.731198343313332
+     }
+    },
+    "matched_relative_change": 0.23100286833594932
+   },
+   {
+    "response": "C29",
+    "site": "IH15-IH16",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 74.70702360000001,
+     "latency_sd_ms": 6.907933230103639
+    },
+    "propofol": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 4.575368488665666
+    },
+    "relative_change": -0.6947513128423479,
+    "snr": {
+     "awake": {
+      "amplitude": 11.808268229166666,
+      "noise_sd": 31.480290918623552,
+      "snr": 0.3751003527791722
+     },
+     "propofol": {
+      "amplitude": 286.4908854166667,
+      "noise_sd": 69.0455655559751,
+      "snr": 4.14930174167969
+     }
+    },
+    "log_snr_ratio": 2.403501746470278,
+    "degraded_state": "propofol",
+    "noise_scale": 11.016551266886983,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 74.70702360000001,
+      "latency_sd_ms": 6.907933230103639
+     },
+     "propofol": {
+      "mean_latency_ms": 51.269525999999985,
+      "latency_sd_ms": 2.316686657154394
+     }
+    },
+    "matched_relative_change": -0.716054923553845
+   },
+   {
+    "response": "C30",
+    "site": "C12-C13",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 92.77342800000002,
+     "latency_sd_ms": 2.944070665815434
+    },
+    "propofol": {
+     "mean_latency_ms": 96.67967760000005,
+     "latency_sd_ms": 8.124970152841277
+    },
+    "relative_change": 0.9739058922659449,
+    "snr": {
+     "awake": {
+      "amplitude": 286.8977864583333,
+      "noise_sd": 36.17704607972949,
+      "snr": 7.930381762680347
+     },
+     "propofol": {
+      "amplitude": 49.796549479166664,
+      "noise_sd": 78.67902540090772,
+      "snr": 0.6329075535116143
+     }
+    },
+    "log_snr_ratio": -2.528132088570722,
+    "degraded_state": "awake",
+    "noise_scale": 12.490111464595426,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 95.70311520000001,
+      "latency_sd_ms": 9.796346746547895
+     },
+     "propofol": {
+      "mean_latency_ms": 96.67967760000005,
+      "latency_sd_ms": 8.124970152841277
+     }
+    },
+    "matched_relative_change": -0.19721985196335198
+   },
+   {
+    "response": "C30",
+    "site": "C20-C21",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 12.207029999999975,
+     "latency_sd_ms": 2.2671409103420967
+    },
+    "propofol": {
+     "mean_latency_ms": 12.695311200000049,
+     "latency_sd_ms": 5.915734365984902
+    },
+    "relative_change": 0.9198754029577038,
+    "snr": {
+     "awake": {
+      "amplitude": 201.8994140625,
+      "noise_sd": 35.26122567970366,
+      "snr": 5.725819513378776
+     },
+     "propofol": {
+      "amplitude": 326.767578125,
+      "noise_sd": 79.64251665443521,
+      "snr": 4.102928835647268
+     }
+    },
+    "log_snr_ratio": -0.33328461679603344,
+    "degraded_state": "awake",
+    "noise_scale": 0.9734188597840967,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 12.207029999999975,
+      "latency_sd_ms": 2.0087657722950065
+     },
+     "propofol": {
+      "mean_latency_ms": 12.695311200000049,
+      "latency_sd_ms": 5.915734365984902
+     }
+    },
+    "matched_relative_change": 1.0408744399033945
+   },
+   {
+    "response": "C30",
+    "site": "IH01-IH02",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 98.6328024,
+     "latency_sd_ms": 1.7706196608438267
+    },
+    "propofol": {
+     "mean_latency_ms": 82.03124159999999,
+     "latency_sd_ms": 2.2203694280128814
+    },
+    "relative_change": 0.41064773286205547,
+    "snr": {
+     "awake": {
+      "amplitude": 260.6526692708333,
+      "noise_sd": 63.21418758666998,
+      "snr": 4.123325462554822
+     },
+     "propofol": {
+      "amplitude": 20.548502604166668,
+      "noise_sd": 158.49333619730976,
+      "snr": 0.12964900037554675
+     }
+    },
+    "log_snr_ratio": -3.4595844660999266,
+    "degraded_state": "awake",
+    "noise_scale": 31.78803292873877,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 72.75389880000006,
+      "latency_sd_ms": 28.182947113047167
+     },
+     "propofol": {
+      "mean_latency_ms": 82.03124159999999,
+      "latency_sd_ms": 2.2203694280128814
+     }
+    },
+    "matched_relative_change": -2.661061165131791
+   },
+   {
+    "response": "C30",
+    "site": "IH02-IH03",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 7.1809394130519975
+    },
+    "propofol": {
+     "mean_latency_ms": 84.47264760000002,
+     "latency_sd_ms": 9.774138486632687
+    },
+    "relative_change": 0.4682241401974686,
+    "snr": {
+     "awake": {
+      "amplitude": 207.3486328125,
+      "noise_sd": 53.47586024253151,
+      "snr": 3.877424914196841
+     },
+     "propofol": {
+      "amplitude": 80.33854166666667,
+      "noise_sd": 148.50032393741452,
+      "snr": 0.5409991004499449
+     }
+    },
+    "log_snr_ratio": -1.9695089142841191,
+    "degraded_state": "awake",
+    "noise_scale": 7.097050388147415,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 71.77733640000002,
+      "latency_sd_ms": 20.13589572762559
+     },
+     "propofol": {
+      "mean_latency_ms": 84.47264760000002,
+      "latency_sd_ms": 9.774138486632687
+     }
+    },
+    "matched_relative_change": -0.8856231195055455
+   },
+   {
+    "response": "C30",
+    "site": "IH15-IH16",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 63.476556000000016,
+     "latency_sd_ms": 5.127596238877393
+    },
+    "propofol": {
+     "mean_latency_ms": 8.789061600000025,
+     "latency_sd_ms": 7.501520672148278
+    },
+    "relative_change": 2.3576314688857276,
+    "snr": {
+     "awake": {
+      "amplitude": 17.301432291666668,
+      "noise_sd": 34.76378697223345,
+      "snr": 0.4976854882204197
+     },
+     "propofol": {
+      "amplitude": 206.99055989583334,
+      "noise_sd": 69.97600530376172,
+      "snr": 2.9580219533438568
+     }
+    },
+    "log_snr_ratio": 1.7823077371731726,
+    "degraded_state": "propofol",
+    "noise_scale": 5.858828132841087,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 63.476556000000016,
+      "latency_sd_ms": 5.127596238877393
+     },
+     "propofol": {
+      "mean_latency_ms": 31.24999680000002,
+      "latency_sd_ms": 6.140733921232666
+     }
+    },
+    "matched_relative_change": 0.888958653306957
+   },
+   {
+    "response": "C31",
+    "site": "C12-C13",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 13.409861155580913
+    },
+    "propofol": {
+     "mean_latency_ms": 52.24608840000002,
+     "latency_sd_ms": 2.2258731106550704
+    },
+    "relative_change": -1.1554639509340132,
+    "snr": {
+     "awake": {
+      "amplitude": 128.20638020833334,
+      "noise_sd": 45.43054716441504,
+      "snr": 2.8220302904199928
+     },
+     "propofol": {
+      "amplitude": 95.3369140625,
+      "noise_sd": 105.34558036231888,
+      "snr": 0.90499206264377
+     }
+    },
+    "log_snr_ratio": -1.137285692924212,
+    "degraded_state": "awake",
+    "noise_scale": 2.9535995636234293,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 18.101562053861123
+     },
+     "propofol": {
+      "mean_latency_ms": 52.24608840000002,
+      "latency_sd_ms": 2.2258731106550704
+     }
+    },
+    "matched_relative_change": -1.4554718433574547
+   },
+   {
+    "response": "C31",
+    "site": "C20-C21",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 4.4264617797671795
+    },
+    "propofol": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 5.505336267056239
+    },
+    "relative_change": 0.21811728262515803,
+    "snr": {
+     "awake": {
+      "amplitude": 227.9833984375,
+      "noise_sd": 39.15131888813444,
+      "snr": 5.823134568950492
+     },
+     "propofol": {
+      "amplitude": 77.8857421875,
+      "noise_sd": 91.62443908736755,
+      "snr": 0.8500542318543729
+     }
+    },
+    "log_snr_ratio": -1.924293831839865,
+    "degraded_state": "awake",
+    "noise_scale": 6.776927037227682,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 91.30858440000003,
+      "latency_sd_ms": 6.349957286681623
+     },
+     "propofol": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 5.505336267056239
+     }
+    },
+    "matched_relative_change": -0.22482759631932875
+   },
+   {
+    "response": "C31",
+    "site": "IH01-IH02",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 88.37889720000004,
+     "latency_sd_ms": 1.0589602636023434
+    },
+    "propofol": {
+     "mean_latency_ms": 61.52343119999995,
+     "latency_sd_ms": 8.413900892107572
+    },
+    "relative_change": 2.4348127871371963,
+    "snr": {
+     "awake": {
+      "amplitude": 169.75911458333334,
+      "noise_sd": 33.34500441817421,
+      "snr": 5.0909909158928945
+     },
+     "propofol": {
+      "amplitude": 25.821940104166668,
+      "noise_sd": 127.2041594381455,
+      "snr": 0.20299603580748385
+     }
+    },
+    "log_snr_ratio": -3.222041318745265,
+    "degraded_state": "awake",
+    "noise_scale": 25.059318012675,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 97.65623999999997,
+      "latency_sd_ms": 4.246946835990902
+     },
+     "propofol": {
+      "mean_latency_ms": 61.52343119999995,
+      "latency_sd_ms": 8.413900892107572
+     }
+    },
+    "matched_relative_change": 1.145720332530513
+   },
+   {
+    "response": "C31",
+    "site": "IH02-IH03",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 87.89061599999997,
+     "latency_sd_ms": 1.118749221274877
+    },
+    "propofol": {
+     "mean_latency_ms": 85.44921000000005,
+     "latency_sd_ms": 5.128409315133682
+    },
+    "relative_change": 1.5507551185039627,
+    "snr": {
+     "awake": {
+      "amplitude": 87.23958333333333,
+      "noise_sd": 25.12041118468377,
+      "snr": 3.472856502704239
+     },
+     "propofol": {
+      "amplitude": 63.435872395833336,
+      "noise_sd": 185.73530900290766,
+      "snr": 0.3415391114181755
+     }
+    },
+    "log_snr_ratio": -2.319270533160621,
+    "degraded_state": "awake",
+    "noise_scale": 10.118962070795611,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 97.16795880000001,
+      "latency_sd_ms": 22.533478127012362
+     },
+     "propofol": {
+      "mean_latency_ms": 85.44921000000005,
+      "latency_sd_ms": 5.128409315133682
+     }
+    },
+    "matched_relative_change": -1.3516877332373678
+   },
+   {
+    "response": "C31",
+    "site": "IH15-IH16",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 67.38280560000004,
+     "latency_sd_ms": 3.568178217264289
+    },
+    "propofol": {
+     "mean_latency_ms": 8.789061600000025,
+     "latency_sd_ms": 4.932422517232725
+    },
+    "relative_change": 2.3606570151772686,
+    "snr": {
+     "awake": {
+      "amplitude": 91.61783854166667,
+      "noise_sd": 51.44665728138674,
+      "snr": 1.7808317076960751
+     },
+     "propofol": {
+      "amplitude": 180.3466796875,
+      "noise_sd": 81.19919185929459,
+      "snr": 2.22104032759356
+     }
+    },
+    "log_snr_ratio": 0.220895195460475,
+    "degraded_state": "propofol",
+    "noise_scale": 0.7453117881164429,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 67.38280560000004,
+      "latency_sd_ms": 3.568178217264289
+     },
+     "propofol": {
+      "mean_latency_ms": 51.75780720000006,
+      "latency_sd_ms": 4.406204827980651
+     }
+    },
+    "matched_relative_change": 0.4747731645100206
+   },
+   {
+    "response": "C32",
+    "site": "C20-C21",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 98.14452120000004,
+     "latency_sd_ms": 3.6246942422982653
+    },
+    "propofol": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 14.937389353800933
+    },
+    "relative_change": 1.4061964136076281,
+    "snr": {
+     "awake": {
+      "amplitude": 97.9541015625,
+      "noise_sd": 33.894644117247196,
+      "snr": 2.8899581073534955
+     },
+     "propofol": {
+      "amplitude": 94.169921875,
+      "noise_sd": 121.57368843012422,
+      "snr": 0.7745913041794826
+     }
+    },
+    "log_snr_ratio": -1.3166617444660849,
+    "degraded_state": "awake",
+    "noise_scale": 3.5944340207757652,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 96.67967760000005,
+      "latency_sd_ms": 9.307858788090932
+     },
+     "propofol": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 14.937389353800933
+     }
+    },
+    "matched_relative_change": 0.448069399741054
+   },
+   {
+    "response": "C32",
+    "site": "IH02-IH03",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 89.35545959999996,
+     "latency_sd_ms": 0.9753510929621606
+    },
+    "propofol": {
+     "mean_latency_ms": 25.39062240000004,
+     "latency_sd_ms": 8.99148740764458
+    },
+    "relative_change": 3.4794784978661073,
+    "snr": {
+     "awake": {
+      "amplitude": 42.4560546875,
+      "noise_sd": 38.74534482534646,
+      "snr": 1.0957717599076848
+     },
+     "propofol": {
+      "amplitude": 84.74934895833333,
+      "noise_sd": 169.3543394700248,
+      "snr": 0.500426202384579
+     }
+    },
+    "log_snr_ratio": -0.7837540574611462,
+    "degraded_state": "awake",
+    "noise_scale": 1.9479952489416266,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 89.35545959999996,
+      "latency_sd_ms": 6.347771756773409
+     },
+     "propofol": {
+      "mean_latency_ms": 25.39062240000004,
+      "latency_sd_ms": 8.99148740764458
+     }
+    },
+    "matched_relative_change": 1.6064168735307576
+   },
+   {
+    "response": "IH02",
+    "site": "C20-C21",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 60.05858759999995,
+     "latency_sd_ms": 1.7394009545595868
+    },
+    "propofol": {
+     "mean_latency_ms": 82.03124159999999,
+     "latency_sd_ms": 10.332499918971198
+    },
+    "relative_change": 1.4699738605707013,
+    "snr": {
+     "awake": {
+      "amplitude": 20.2294921875,
+      "noise_sd": 42.50379678978817,
+      "snr": 0.47594553229090053
+     },
+     "propofol": {
+      "amplitude": 3.4326171875,
+      "noise_sd": 54.57793898430299,
+      "snr": 0.0628938587894872
+     }
+    },
+    "log_snr_ratio": -2.02385489529127,
+    "degraded_state": "awake",
+    "noise_scale": 7.5010769400443555,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 9.277342799999985,
+      "latency_sd_ms": 10.122713338329596
+     },
+     "propofol": {
+      "mean_latency_ms": 82.03124159999999,
+      "latency_sd_ms": 10.332499918971198
+     }
+    },
+    "matched_relative_change": -2.159012485033461
+   },
+   {
+    "response": "IH03",
+    "site": "C12-C13",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 54.199213199999974,
+     "latency_sd_ms": 16.235473803966187
+    },
+    "propofol": {
+     "mean_latency_ms": 52.73436959999998,
+     "latency_sd_ms": 7.752632789927062
+    },
+    "relative_change": -0.7117671145426359,
+    "snr": {
+     "awake": {
+      "amplitude": 22.932942708333332,
+      "noise_sd": 55.93556793066367,
+      "snr": 0.40998855570324116
+     },
+     "propofol": {
+      "amplitude": 119.71842447916667,
+      "noise_sd": 83.93580290065483,
+      "snr": 1.4263093976817451
+     }
+    },
+    "log_snr_ratio": 1.2467162999713122,
+    "degraded_state": "propofol",
+    "noise_scale": 3.3320787498185056,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 54.199213199999974,
+      "latency_sd_ms": 16.235473803966187
+     },
+     "propofol": {
+      "mean_latency_ms": 66.89452439999997,
+      "latency_sd_ms": 7.921931893301042
+     }
+    },
+    "matched_relative_change": -0.9280142117479848
+   },
+   {
+    "response": "IH03",
+    "site": "IH06-IH07",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 20.019529200000022,
+     "latency_sd_ms": 7.977852921630201
+    },
+    "propofol": {
+     "mean_latency_ms": 8.789061600000025,
+     "latency_sd_ms": 10.53742695453471
+    },
+    "relative_change": 1.1014643823386416,
+    "snr": {
+     "awake": {
+      "amplitude": 41.23046875,
+      "noise_sd": 35.54944108320414,
+      "snr": 1.1598063849583264
+     },
+     "propofol": {
+      "amplitude": 218.9306640625,
+      "noise_sd": 46.63041038661231,
+      "snr": 4.695019028298225
+     }
+    },
+    "log_snr_ratio": 1.3982490838690391,
+    "degraded_state": "propofol",
+    "noise_scale": 3.9226472041024736,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 20.019529200000022,
+      "latency_sd_ms": 7.977852921630201
+     },
+     "propofol": {
+      "mean_latency_ms": 8.789061600000025,
+      "latency_sd_ms": 9.825049006391414
+     }
+    },
+    "matched_relative_change": 1.0314661366594597
+   },
+   {
+    "response": "IH03",
+    "site": "IH15-IH16",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 61.52343119999995,
+     "latency_sd_ms": 14.223378489111381
+    },
+    "propofol": {
+     "mean_latency_ms": 45.898432799999966,
+     "latency_sd_ms": 4.547471642807579
+    },
+    "relative_change": -0.8473284629984361,
+    "snr": {
+     "awake": {
+      "amplitude": 106.99055989583333,
+      "noise_sd": 61.47740680646984,
+      "snr": 1.7403232415550378
+     },
+     "propofol": {
+      "amplitude": 208.3740234375,
+      "noise_sd": 65.05891367914153,
+      "snr": 3.20285125671114
+     }
+    },
+    "log_snr_ratio": 0.6099705638254777,
+    "degraded_state": "propofol",
+    "noise_scale": 1.5449881319261336,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 61.52343119999995,
+      "latency_sd_ms": 14.223378489111381
+     },
+     "propofol": {
+      "mean_latency_ms": 45.410151600000006,
+      "latency_sd_ms": 7.092721246855824
+     }
+    },
+    "matched_relative_change": -0.39213548780091617
+   },
+   {
+    "response": "IH04",
+    "site": "C12-C13",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 62.49999359999998,
+     "latency_sd_ms": 1.4442178501392637
+    },
+    "propofol": {
+     "mean_latency_ms": 75.19530479999997,
+     "latency_sd_ms": 0.6372605219310614
+    },
+    "relative_change": -1.003066957730207,
+    "snr": {
+     "awake": {
+      "amplitude": 164.27408854166666,
+      "noise_sd": 34.828137661956035,
+      "snr": 4.716706076452341
+     },
+     "propofol": {
+      "amplitude": 84.77376302083333,
+      "noise_sd": 71.2946798587769,
+      "snr": 1.1890615567494838
+     }
+    },
+    "log_snr_ratio": -1.377946302582613,
+    "degraded_state": "awake",
+    "noise_scale": 3.8386299443684795,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 0.5337164295083695
+     },
+     "propofol": {
+      "mean_latency_ms": 75.19530479999997,
+      "latency_sd_ms": 0.6372605219310614
+     }
+    },
+    "matched_relative_change": 0.4535672641828982
+   },
+   {
+    "response": "IH04",
+    "site": "C20-C21",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 0.36991765788054504
+    },
+    "propofol": {
+     "mean_latency_ms": 24.902341199999967,
+     "latency_sd_ms": 6.274283119829954
+    },
+    "relative_change": 4.212314425336944,
+    "snr": {
+     "awake": {
+      "amplitude": 217.75390625,
+      "noise_sd": 27.314368623014346,
+      "snr": 7.97213764137775
+     },
+     "propofol": {
+      "amplitude": 362.333984375,
+      "noise_sd": 74.19694968393276,
+      "snr": 4.883408090473871
+     }
+    },
+    "log_snr_ratio": -0.4901093124960722,
+    "degraded_state": "awake",
+    "noise_scale": 1.2903638333180978,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 1.3642989453697072
+     },
+     "propofol": {
+      "mean_latency_ms": 24.902341199999967,
+      "latency_sd_ms": 6.274283119829954
+     }
+    },
+    "matched_relative_change": 2.9071988773901367
+   },
+   {
+    "response": "IH04",
+    "site": "IH01-IH02",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 71.28905519999995,
+     "latency_sd_ms": 0.5601609304533745
+    },
+    "propofol": {
+     "mean_latency_ms": 82.03124159999999,
+     "latency_sd_ms": 9.654005643701716
+    },
+    "relative_change": 2.706546724868307,
+    "snr": {
+     "awake": {
+      "amplitude": 512.7115885416666,
+      "noise_sd": 53.53078882674993,
+      "snr": 9.577882182925332
+     },
+     "propofol": {
+      "amplitude": 183.8134765625,
+      "noise_sd": 186.86203618650808,
+      "snr": 0.983685505701301
+     }
+    },
+    "log_snr_ratio": -2.275905542086029,
+    "degraded_state": "awake",
+    "noise_scale": 9.685243975445115,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 72.26561759999998,
+      "latency_sd_ms": 3.036450665247937
+     },
+     "propofol": {
+      "mean_latency_ms": 82.03124159999999,
+      "latency_sd_ms": 9.654005643701716
+     }
+    },
+    "matched_relative_change": 1.029931927215287
+   },
+   {
+    "response": "IH05",
+    "site": "C12-C13",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 1.6166264062333378
+    },
+    "propofol": {
+     "mean_latency_ms": 52.24608840000002,
+     "latency_sd_ms": 0.7957040461003592
+    },
+    "relative_change": -0.06849233168496871,
+    "snr": {
+     "awake": {
+      "amplitude": 249.38151041666666,
+      "noise_sd": 53.57835483274613,
+      "snr": 4.654519743936765
+     },
+     "propofol": {
+      "amplitude": 68.52213541666667,
+      "noise_sd": 99.38679288985685,
+      "snr": 0.6894491050999579
+     }
+    },
+    "log_snr_ratio": -1.9097011341546926,
+    "degraded_state": "awake",
+    "noise_scale": 6.676597740278738,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 19.042966799999988,
+      "latency_sd_ms": 15.415945893402277
+     },
+     "propofol": {
+      "mean_latency_ms": 52.24608840000002,
+      "latency_sd_ms": 0.7957040461003592
+     }
+    },
+    "matched_relative_change": -3.9731975733237266
+   },
+   {
+    "response": "IH05",
+    "site": "C20-C21",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 96.67967760000005,
+     "latency_sd_ms": 1.4359205379369648
+    },
+    "propofol": {
+     "mean_latency_ms": 24.414060000000006,
+     "latency_sd_ms": 8.832078707220248
+    },
+    "relative_change": 3.1928282929614524,
+    "snr": {
+     "awake": {
+      "amplitude": 189.2919921875,
+      "noise_sd": 41.07375820635421,
+      "snr": 4.608587099249566
+     },
+     "propofol": {
+      "amplitude": 264.5263671875,
+      "noise_sd": 104.81571827861977,
+      "snr": 2.5237280393799284
+     }
+    },
+    "log_snr_ratio": -0.6021841349450433,
+    "degraded_state": "awake",
+    "noise_scale": 1.5279567443386237,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 6.596498536096834
+     },
+     "propofol": {
+      "mean_latency_ms": 24.414060000000006,
+      "latency_sd_ms": 8.832078707220248
+     }
+    },
+    "matched_relative_change": 1.6930343912846935
+   },
+   {
+    "response": "IH05",
+    "site": "IH01-IH02",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 71.28905519999995,
+     "latency_sd_ms": 0.8176112229297571
+    },
+    "propofol": {
+     "mean_latency_ms": 61.52343119999995,
+     "latency_sd_ms": 9.385940585643546
+    },
+    "relative_change": 2.5879059349565843,
+    "snr": {
+     "awake": {
+      "amplitude": 233.740234375,
+      "noise_sd": 36.7127878137687,
+      "snr": 6.366725282772954
+     },
+     "propofol": {
+      "amplitude": 139.05436197916666,
+      "noise_sd": 145.04799893267415,
+      "snr": 0.9586782513539569
+     }
+    },
+    "log_snr_ratio": -1.8932850177765221,
+    "degraded_state": "awake",
+    "noise_scale": 6.565429340855388,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 54.68749440000005,
+      "latency_sd_ms": 7.385438163610167
+     },
+     "propofol": {
+      "mean_latency_ms": 61.52343119999995,
+      "latency_sd_ms": 9.385940585643546
+     }
+    },
+    "matched_relative_change": 0.12191960580312289
+   },
+   {
+    "response": "IH05",
+    "site": "IH15-IH16",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 12.207029999999975,
+     "latency_sd_ms": 4.132820475922263
+    },
+    "propofol": {
+     "mean_latency_ms": 55.17577560000001,
+     "latency_sd_ms": 5.772436706682164
+    },
+    "relative_change": -1.1743777941248246,
+    "snr": {
+     "awake": {
+      "amplitude": 215.34016927083334,
+      "noise_sd": 61.84072403247947,
+      "snr": 3.482174127808306
+     },
+     "propofol": {
+      "amplitude": 239.3310546875,
+      "noise_sd": 103.55602788078926,
+      "snr": 2.3111262529595193
+     }
+    },
+    "log_snr_ratio": -0.4099218869710216,
+    "degraded_state": "awake",
+    "noise_scale": 1.127007166791464,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 82.51952280000006,
+      "latency_sd_ms": 2.0509730121503513
+     },
+     "propofol": {
+      "mean_latency_ms": 55.17577560000001,
+      "latency_sd_ms": 5.772436706682164
+     }
+    },
+    "matched_relative_change": 1.4372908731509768
+   },
+   {
+    "response": "IH06",
+    "site": "C12-C13",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 91.30858440000003,
+     "latency_sd_ms": 2.2657621675191324
+    },
+    "propofol": {
+     "mean_latency_ms": 70.31249280000003,
+     "latency_sd_ms": 4.418704970933015
+    },
+    "relative_change": 0.9292307773025258,
+    "snr": {
+     "awake": {
+      "amplitude": 120.56477864583333,
+      "noise_sd": 48.78397414478128,
+      "snr": 2.4714013312654823
+     },
+     "propofol": {
+      "amplitude": 116.5771484375,
+      "noise_sd": 98.22883857779738,
+      "snr": 1.1867914771808152
+     }
+    },
+    "log_snr_ratio": -0.7335319022917313,
+    "degraded_state": "awake",
+    "noise_scale": 1.8266044088274955,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 71.28905519999995,
+      "latency_sd_ms": 4.101723974149186
+     },
+     "propofol": {
+      "mean_latency_ms": 70.31249280000003,
+      "latency_sd_ms": 4.418704970933015
+     }
+    },
+    "matched_relative_change": 0.08823261545703485
+   },
+   {
+    "response": "IH06",
+    "site": "C20-C21",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 91.30858440000003,
+     "latency_sd_ms": 9.179365982948392
+    },
+    "propofol": {
+     "mean_latency_ms": 23.925778800000046,
+     "latency_sd_ms": 12.866123878462052
+    },
+    "relative_change": 1.6769279828360402,
+    "snr": {
+     "awake": {
+      "amplitude": 7.802734375,
+      "noise_sd": 35.970859056852134,
+      "snr": 0.2169182104510692
+     },
+     "propofol": {
+      "amplitude": 200.849609375,
+      "noise_sd": 114.89902295199774,
+      "snr": 1.748053240269158
+     }
+    },
+    "log_snr_ratio": 2.0867376414433765,
+    "degraded_state": "propofol",
+    "noise_scale": 7.996295884165179,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 91.30858440000003,
+      "latency_sd_ms": 9.179365982948392
+     },
+     "propofol": {
+      "mean_latency_ms": 53.710932000000014,
+      "latency_sd_ms": 13.65101461456714
+     }
+    },
+    "matched_relative_change": 0.9274839634592684
+   },
+   {
+    "response": "IH06",
+    "site": "IH02-IH03",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 77.6367108,
+     "latency_sd_ms": 3.9754889411493615
+    },
+    "propofol": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 9.79581820569064
+    },
+    "relative_change": 0.6575060594770852,
+    "snr": {
+     "awake": {
+      "amplitude": 107.09635416666667,
+      "noise_sd": 44.730092530587044,
+      "snr": 2.3942797366992417
+     },
+     "propofol": {
+      "amplitude": 51.652018229166664,
+      "noise_sd": 157.77450155170402,
+      "snr": 0.32737874448134363
+     }
+    },
+    "log_snr_ratio": -1.9897199877134222,
+    "degraded_state": "awake",
+    "noise_scale": 7.244796185116763,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 8.789061600000025,
+      "latency_sd_ms": 8.704633151070002
+     },
+     "propofol": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 9.79581820569064
+     }
+    },
+    "matched_relative_change": -2.3047340702505186
+   },
+   {
+    "response": "IH08",
+    "site": "C12-C13",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 60.54686880000003,
+     "latency_sd_ms": 5.307496459847842
+    },
+    "propofol": {
+     "mean_latency_ms": 52.24608840000002,
+     "latency_sd_ms": 5.021440782138122
+    },
+    "relative_change": 0.09204938447609132,
+    "snr": {
+     "awake": {
+      "amplitude": 0.830078125,
+      "noise_sd": 29.95341844351054,
+      "snr": 0.027712300235963147
+     },
+     "propofol": {
+      "amplitude": 214.19270833333334,
+      "noise_sd": 111.22728550049605,
+      "snr": 1.9257208999528994
+     }
+    },
+    "log_snr_ratio": 4.241179303627452,
+    "degraded_state": "propofol",
+    "noise_scale": 69.48255737588705,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 60.54686880000003,
+      "latency_sd_ms": 5.307496459847842
+     },
+     "propofol": {
+      "mean_latency_ms": 23.925778800000046,
+      "latency_sd_ms": 23.786093465237563
+     }
+    },
+    "matched_relative_change": 2.4284421216282936
+   },
+   {
+    "response": "IH08",
+    "site": "IH02-IH03",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 85.93749120000001,
+     "latency_sd_ms": 0.5793863276861037
+    },
+    "propofol": {
+     "mean_latency_ms": 84.47264760000002,
+     "latency_sd_ms": 10.113873189667748
+    },
+    "relative_change": 2.876886256312035,
+    "snr": {
+     "awake": {
+      "amplitude": 69.10807291666667,
+      "noise_sd": 35.23458430575366,
+      "snr": 1.961370462525412
+     },
+     "propofol": {
+      "amplitude": 126.123046875,
+      "noise_sd": 151.54563267583626,
+      "snr": 0.8322446820013847
+     }
+    },
+    "log_snr_ratio": -0.8572722369319291,
+    "degraded_state": "awake",
+    "noise_scale": 2.134044253961083,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 75.68358600000005,
+      "latency_sd_ms": 11.58780648834901
+     },
+     "propofol": {
+      "mean_latency_ms": 84.47264760000002,
+      "latency_sd_ms": 10.113873189667748
+     }
+    },
+    "matched_relative_change": -0.24591179355187878
+   },
+   {
+    "response": "IH09",
+    "site": "C12-C13",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 13.65321944311243
+    },
+    "propofol": {
+     "mean_latency_ms": 97.16795880000001,
+     "latency_sd_ms": 5.503214808808912
+    },
+    "relative_change": -0.8887417639710261,
+    "snr": {
+     "awake": {
+      "amplitude": 48.030598958333336,
+      "noise_sd": 29.862088960382394,
+      "snr": 1.6084138997126036
+     },
+     "propofol": {
+      "amplitude": 117.17122395833333,
+      "noise_sd": 82.75926244135951,
+      "snr": 1.4158079772805734
+     }
+    },
+    "log_snr_ratio": -0.12754816114315107,
+    "degraded_state": "awake",
+    "noise_scale": 0.5390602258312426,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 98.6328024,
+      "latency_sd_ms": 13.960898920416549
+     },
+     "propofol": {
+      "mean_latency_ms": 97.16795880000001,
+      "latency_sd_ms": 5.503214808808912
+     }
+    },
+    "matched_relative_change": -0.9159651829932657
+   },
+   {
+    "response": "IH09",
+    "site": "IH06-IH07",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 36.132808799999964,
+     "latency_sd_ms": 8.487942242460823
+    },
+    "propofol": {
+     "mean_latency_ms": 8.789061600000025,
+     "latency_sd_ms": 22.95824938254808
+    },
+    "relative_change": 2.40872406077035,
+    "snr": {
+     "awake": {
+      "amplitude": 32.451171875,
+      "noise_sd": 33.52918528079766,
+      "snr": 0.9678485058086083
+     },
+     "propofol": {
+      "amplitude": 384.78515625,
+      "noise_sd": 85.28749953088331,
+      "snr": 4.511624310320719
+     }
+    },
+    "log_snr_ratio": 1.5393369523896456,
+    "degraded_state": "propofol",
+    "noise_scale": 4.552973512519163,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 36.132808799999964,
+      "latency_sd_ms": 8.487942242460823
+     },
+     "propofol": {
+      "mean_latency_ms": 8.789061600000025,
+      "latency_sd_ms": 9.698816562274876
+     }
+    },
+    "matched_relative_change": 1.5470506128076589
+   },
+   {
+    "response": "IH10",
+    "site": "IH06-IH07",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 33.69140280000005,
+     "latency_sd_ms": 6.514179649999365
+    },
+    "propofol": {
+     "mean_latency_ms": 8.789061600000025,
+     "latency_sd_ms": 28.034656575283964
+    },
+    "relative_change": 2.803194940811455,
+    "snr": {
+     "awake": {
+      "amplitude": 20.8984375,
+      "noise_sd": 31.77215254709533,
+      "snr": 0.6577595732307591
+     },
+     "propofol": {
+      "amplitude": 224.1748046875,
+      "noise_sd": 58.531337943225004,
+      "snr": 3.8299962475648175
+     }
+    },
+    "log_snr_ratio": 1.7617796280988895,
+    "degraded_state": "propofol",
+    "noise_scale": 5.736278423340273,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 33.69140280000005,
+      "latency_sd_ms": 6.514179649999365
+     },
+     "propofol": {
+      "mean_latency_ms": 25.39062240000004,
+      "latency_sd_ms": 28.45061285472861
+     }
+    },
+    "matched_relative_change": 1.7570512022887588
+   },
+   {
+    "response": "IH10",
+    "site": "IH15-IH16",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 4.04917118785217
+    },
+    "propofol": {
+     "mean_latency_ms": 8.789061600000025,
+     "latency_sd_ms": 17.470288663259037
+    },
+    "relative_change": 3.8848236533231897,
+    "snr": {
+     "awake": {
+      "amplitude": 33.585611979166664,
+      "noise_sd": 29.351837521843706,
+      "snr": 1.144242228588659
+     },
+     "propofol": {
+      "amplitude": 222.93294270833334,
+      "noise_sd": 55.67723674683821,
+      "snr": 4.004023111312061
+     }
+    },
+    "log_snr_ratio": 1.2525570246712543,
+    "degraded_state": "propofol",
+    "noise_scale": 3.3533498796399996,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 4.04917118785217
+     },
+     "propofol": {
+      "mean_latency_ms": 80.56639799999999,
+      "latency_sd_ms": 11.293800211573782
+     }
+    },
+    "matched_relative_change": 1.233002211249844
+   },
+   {
+    "response": "IH11",
+    "site": "C12-C13",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 1.5091592789223693
+    },
+    "propofol": {
+     "mean_latency_ms": 20.507810399999983,
+     "latency_sd_ms": 4.780910932069707
+    },
+    "relative_change": 2.7286147338201543,
+    "snr": {
+     "awake": {
+      "amplitude": 81.53483072916667,
+      "noise_sd": 22.601078642650354,
+      "snr": 3.6075636927922017
+     },
+     "propofol": {
+      "amplitude": 197.63997395833334,
+      "noise_sd": 57.87202066167406,
+      "snr": 3.415121360868968
+     }
+    },
+    "log_snr_ratio": -0.05481963718863356,
+    "degraded_state": "awake",
+    "noise_scale": 0.3404048662618405,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 0.9369203890115122
+     },
+     "propofol": {
+      "mean_latency_ms": 20.507810399999983,
+      "latency_sd_ms": 4.780910932069707
+     }
+    },
+    "matched_relative_change": 3.20532442472306
+   },
+   {
+    "response": "IH11",
+    "site": "C20-C21",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 12.207029999999975,
+     "latency_sd_ms": 1.3324329396291037
+    },
+    "propofol": {
+     "mean_latency_ms": 20.996091600000057,
+     "latency_sd_ms": 4.099450496744631
+    },
+    "relative_change": 0.5815220996594317,
+    "snr": {
+     "awake": {
+      "amplitude": 219.5947265625,
+      "noise_sd": 23.539791647278673,
+      "snr": 9.328660586844503
+     },
+     "propofol": {
+      "amplitude": 265.1611328125,
+      "noise_sd": 61.377531937732066,
+      "snr": 4.320166100544867
+     }
+    },
+    "log_snr_ratio": -0.7697975940127463,
+    "degraded_state": "awake",
+    "noise_scale": 1.9138187926599197,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 11.718748800000014,
+      "latency_sd_ms": 2.285061811390177
+     },
+     "propofol": {
+      "mean_latency_ms": 20.996091600000057,
+      "latency_sd_ms": 4.099450496744631
+     }
+    },
+    "matched_relative_change": 0.0013135792813119274
+   },
+   {
+    "response": "IH12",
+    "site": "C12-C13",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 26.36718479999996,
+     "latency_sd_ms": 0.3644590286660754
+    },
+    "propofol": {
+     "mean_latency_ms": 27.832028399999956,
+     "latency_sd_ms": 1.4278258941766035
+    },
+    "relative_change": 1.3114268504279558,
+    "snr": {
+     "awake": {
+      "amplitude": 705.078125,
+      "noise_sd": 30.369668124475847,
+      "snr": 23.216523872111594
+     },
+     "propofol": {
+      "amplitude": 123.83626302083333,
+      "noise_sd": 66.02408725395766,
+      "snr": 1.8756224912963149
+     }
+    },
+    "log_snr_ratio": -2.515923661337404,
+    "degraded_state": "awake",
+    "noise_scale": 12.337576359566546,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 26.855466000000035,
+      "latency_sd_ms": 0.8761039814036682
+     },
+     "propofol": {
+      "mean_latency_ms": 27.832028399999956,
+      "latency_sd_ms": 1.4278258941766035
+     }
+    },
+    "matched_relative_change": 0.4527053458941692
+   },
+   {
+    "response": "IH12",
+    "site": "C20-C21",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 27.343747199999996,
+     "latency_sd_ms": 0.3165639682162702
+    },
+    "propofol": {
+     "mean_latency_ms": 26.36718479999996,
+     "latency_sd_ms": 1.7015307132590474
+    },
+    "relative_change": 1.7181258562144728,
+    "snr": {
+     "awake": {
+      "amplitude": 744.853515625,
+      "noise_sd": 44.660219275620946,
+      "snr": 16.678232389055903
+     },
+     "propofol": {
+      "amplitude": 625.0927734375,
+      "noise_sd": 90.17786120987606,
+      "snr": 6.931776436598847
+     }
+    },
+    "log_snr_ratio": -0.8779882990261753,
+    "degraded_state": "awake",
+    "noise_scale": 2.188400924103957,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 27.343747199999996,
+      "latency_sd_ms": 0.3707070828468861
+     },
+     "propofol": {
+      "mean_latency_ms": 26.36718479999996,
+      "latency_sd_ms": 1.7015307132590474
+     }
+    },
+    "matched_relative_change": 1.5602389719890073
+   },
+   {
+    "response": "IH12",
+    "site": "IH01-IH02",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 76.17186720000001,
+     "latency_sd_ms": 3.262728073964563
+    },
+    "propofol": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 11.55803008572216
+    },
+    "relative_change": 1.0014667911874373,
+    "snr": {
+     "awake": {
+      "amplitude": 570.0602213541666,
+      "noise_sd": 48.68423052511328,
+      "snr": 11.709340277240424
+     },
+     "propofol": {
+      "amplitude": 38.924153645833336,
+      "noise_sd": 119.60360188711044,
+      "snr": 0.32544298860307275
+     }
+    },
+    "log_snr_ratio": -3.5829548205094754,
+    "degraded_state": "awake",
+    "noise_scale": 35.96579807013769,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 67.38280560000004,
+      "latency_sd_ms": 14.143882223765338
+     },
+     "propofol": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 11.55803008572216
+     }
+    },
+    "matched_relative_change": -0.587854031891863
+   },
+   {
+    "response": "IH13",
+    "site": "C12-C13",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 1.1637226141447379
+    },
+    "propofol": {
+     "mean_latency_ms": 54.199213199999974,
+     "latency_sd_ms": 0.979267759174172
+    },
+    "relative_change": 0.43110158970333684,
+    "snr": {
+     "awake": {
+      "amplitude": 414.599609375,
+      "noise_sd": 42.64685990728976,
+      "snr": 9.721691357260543
+     },
+     "propofol": {
+      "amplitude": 82.08821614583333,
+      "noise_sd": 89.35593541717205,
+      "snr": 0.9186655118386009
+     }
+    },
+    "log_snr_ratio": -2.3591928038705614,
+    "degraded_state": "awake",
+    "noise_scale": 10.535051741701675,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 93.74999040000006,
+      "latency_sd_ms": 2.6494092163656457
+     },
+     "propofol": {
+      "mean_latency_ms": 54.199213199999974,
+      "latency_sd_ms": 0.979267759174172
+     }
+    },
+    "matched_relative_change": -0.4473216783231213
+   },
+   {
+    "response": "IH13",
+    "site": "C20-C21",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 28.32030960000003,
+     "latency_sd_ms": 0.567194909017127
+    },
+    "propofol": {
+     "mean_latency_ms": 26.855466000000035,
+     "latency_sd_ms": 1.826192516467522
+    },
+    "relative_change": 1.2223953120786664,
+    "snr": {
+     "awake": {
+      "amplitude": 375.732421875,
+      "noise_sd": 39.39573278853409,
+      "snr": 9.53738883070998
+     },
+     "propofol": {
+      "amplitude": 433.2568359375,
+      "noise_sd": 89.71010264746485,
+      "snr": 4.829521125843272
+     }
+    },
+    "log_snr_ratio": -0.6804724235616497,
+    "degraded_state": "awake",
+    "noise_scale": 1.702902330878751,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 30.761715599999945,
+      "latency_sd_ms": 1.014466495513782
+     },
+     "propofol": {
+      "mean_latency_ms": 26.855466000000035,
+      "latency_sd_ms": 1.826192516467522
+     }
+    },
+    "matched_relative_change": 0.7236718943559429
+   },
+   {
+    "response": "IH13",
+    "site": "IH01-IH02",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 3.9799584731848863
+    },
+    "propofol": {
+     "mean_latency_ms": 81.54296040000003,
+     "latency_sd_ms": 10.073160056711119
+    },
+    "relative_change": 1.1238152477670407,
+    "snr": {
+     "awake": {
+      "amplitude": 286.4990234375,
+      "noise_sd": 46.813180401378375,
+      "snr": 6.120050399931047
+     },
+     "propofol": {
+      "amplitude": 37.906901041666664,
+      "noise_sd": 141.60191282200623,
+      "snr": 0.26770048713477257
+     }
+    },
+    "log_snr_ratio": -3.129456840526618,
+    "degraded_state": "awake",
+    "noise_scale": 22.839677451109402,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 58.1054628,
+      "latency_sd_ms": 10.300001650894215
+     },
+     "propofol": {
+      "mean_latency_ms": 81.54296040000003,
+      "latency_sd_ms": 10.073160056711119
+     }
+    },
+    "matched_relative_change": -0.36113990831101694
+   },
+   {
+    "response": "IH14",
+    "site": "C12-C13",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 84.96092879999998,
+     "latency_sd_ms": 1.5949920254488827
+    },
+    "propofol": {
+     "mean_latency_ms": 69.82421159999996,
+     "latency_sd_ms": 0.15558959007819861
+    },
+    "relative_change": -2.131191638838053,
+    "snr": {
+     "awake": {
+      "amplitude": 112.21516927083333,
+      "noise_sd": 31.38844989824952,
+      "snr": 3.5750465421069224
+     },
+     "propofol": {
+      "amplitude": 140.49479166666666,
+      "noise_sd": 81.53094477208782,
+      "snr": 1.7232081887362742
+     }
+    },
+    "log_snr_ratio": -0.7297904153715431,
+    "degraded_state": "awake",
+    "noise_scale": 1.8177334735106996,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 87.89061599999997,
+      "latency_sd_ms": 0.8307039165863772
+     },
+     "propofol": {
+      "mean_latency_ms": 69.82421159999996,
+      "latency_sd_ms": 0.15558959007819861
+     }
+    },
+    "matched_relative_change": -1.444939505310834
+   },
+   {
+    "response": "IH14",
+    "site": "C20-C21",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 91.79686559999999,
+     "latency_sd_ms": 4.873891204714532
+    },
+    "propofol": {
+     "mean_latency_ms": 84.47264760000002,
+     "latency_sd_ms": 5.714266376779799
+    },
+    "relative_change": 0.2422236559280632,
+    "snr": {
+     "awake": {
+      "amplitude": 10.2880859375,
+      "noise_sd": 30.371435267518823,
+      "snr": 0.3387421716122433
+     },
+     "propofol": {
+      "amplitude": 206.26953125,
+      "noise_sd": 93.726798986917,
+      "snr": 2.2007529701168225
+     }
+    },
+    "log_snr_ratio": 1.8713155776379926,
+    "degraded_state": "propofol",
+    "noise_scale": 6.419416045369641,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 91.79686559999999,
+      "latency_sd_ms": 4.873891204714532
+     },
+     "propofol": {
+      "mean_latency_ms": 91.30858440000003,
+      "latency_sd_ms": 11.772085570829349
+     }
+    },
+    "matched_relative_change": 0.8871718119404068
+   },
+   {
+    "response": "IH14",
+    "site": "IH01-IH02",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 88.37889720000004,
+     "latency_sd_ms": 2.7151779845137933
+    },
+    "propofol": {
+     "mean_latency_ms": 61.52343119999995,
+     "latency_sd_ms": 9.641452187488948
+    },
+    "relative_change": 1.629429356219612,
+    "snr": {
+     "awake": {
+      "amplitude": 381.9742838541667,
+      "noise_sd": 45.12698140159502,
+      "snr": 8.464432408072962
+     },
+     "propofol": {
+      "amplitude": 108.1298828125,
+      "noise_sd": 159.6077509866215,
+      "snr": 0.6774726298947947
+     }
+    },
+    "log_snr_ratio": -2.525259087444922,
+    "degraded_state": "awake",
+    "noise_scale": 12.454048834005132,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 98.6328024,
+      "latency_sd_ms": 12.80285632508747
+     },
+     "propofol": {
+      "mean_latency_ms": 61.52343119999995,
+      "latency_sd_ms": 9.641452187488948
+     }
+    },
+    "matched_relative_change": 0.18838923315385342
+   },
+   {
+    "response": "IH14",
+    "site": "IH02-IH03",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 98.14452120000004,
+     "latency_sd_ms": 3.5058247864849537
+    },
+    "propofol": {
+     "mean_latency_ms": 63.96483719999998,
+     "latency_sd_ms": 9.977924514458115
+    },
+    "relative_change": 1.4740568791525976,
+    "snr": {
+     "awake": {
+      "amplitude": 347.5748697916667,
+      "noise_sd": 26.76941697332241,
+      "snr": 12.984028383511276
+     },
+     "propofol": {
+      "amplitude": 25.496419270833332,
+      "noise_sd": 152.54445523385377,
+      "snr": 0.16714091136086723
+     }
+    },
+    "log_snr_ratio": -4.352638057991549,
+    "degraded_state": "awake",
+    "noise_scale": 77.67668876972162,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 9.625502773190583
+     },
+     "propofol": {
+      "mean_latency_ms": 63.96483719999998,
+      "latency_sd_ms": 9.977924514458115
+     }
+    },
+    "matched_relative_change": 0.47396764506801053
+   },
+   {
+    "response": "IH15",
+    "site": "C12-C13",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 0.76450612559341
+    },
+    "propofol": {
+     "mean_latency_ms": 52.73436959999998,
+     "latency_sd_ms": 10.503304760897025
+    },
+    "relative_change": 3.251289939790638,
+    "snr": {
+     "awake": {
+      "amplitude": 663.4195963541666,
+      "noise_sd": 39.36532153523655,
+      "snr": 16.852894133236756
+     },
+     "propofol": {
+      "amplitude": 167.02473958333334,
+      "noise_sd": 123.56940799328626,
+      "snr": 1.3516673932144119
+     }
+    },
+    "log_snr_ratio": -2.523183464279576,
+    "degraded_state": "awake",
+    "noise_scale": 12.428059066772406,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 15.540442612235221
+     },
+     "propofol": {
+      "mean_latency_ms": 52.73436959999998,
+      "latency_sd_ms": 10.503304760897025
+     }
+    },
+    "matched_relative_change": 0.23931887203441277
+   },
+   {
+    "response": "IH16",
+    "site": "C12-C13",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 0.7034190794485342
+    },
+    "propofol": {
+     "mean_latency_ms": 35.15624640000004,
+     "latency_sd_ms": 6.097548802193177
+    },
+    "relative_change": 3.1962291494445196,
+    "snr": {
+     "awake": {
+      "amplitude": 212.59765625,
+      "noise_sd": 22.307588220561776,
+      "snr": 9.530284230997255
+     },
+     "propofol": {
+      "amplitude": 153.77604166666666,
+      "noise_sd": 100.50976884781346,
+      "snr": 1.52996115133352
+     }
+    },
+    "log_snr_ratio": -1.8292321982932065,
+    "degraded_state": "awake",
+    "noise_scale": 6.148309772299553,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 51.269525999999985,
+      "latency_sd_ms": 6.291894557956002
+     },
+     "propofol": {
+      "mean_latency_ms": 35.15624640000004,
+      "latency_sd_ms": 6.097548802193177
+     }
+    },
+    "matched_relative_change": 0.3459188589140042
+   },
+   {
+    "response": "IH16",
+    "site": "IH01-IH02",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 95.21483400000005,
+     "latency_sd_ms": 5.233080375593599
+    },
+    "propofol": {
+     "mean_latency_ms": 61.52343119999995,
+     "latency_sd_ms": 5.3394291157321065
+    },
+    "relative_change": 0.45683630505902106,
+    "snr": {
+     "awake": {
+      "amplitude": 106.58365885416667,
+      "noise_sd": 20.12283781429373,
+      "snr": 5.296651488114552
+     },
+     "propofol": {
+      "amplitude": 35.262044270833336,
+      "noise_sd": 134.91135585523534,
+      "snr": 0.26137195084356546
+     }
+    },
+    "log_snr_ratio": -3.008885613328175,
+    "degraded_state": "awake",
+    "noise_scale": 20.240116151068037,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 58.1054628,
+      "latency_sd_ms": 3.969628747659194
+     },
+     "propofol": {
+      "mean_latency_ms": 61.52343119999995,
+      "latency_sd_ms": 5.3394291157321065
+     }
+    },
+    "matched_relative_change": 0.23928775036808225
+   },
+   {
+    "response": "IH16",
+    "site": "IH02-IH03",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 83.98436640000006,
+     "latency_sd_ms": 4.192067994303335
+    },
+    "propofol": {
+     "mean_latency_ms": 43.45702680000005,
+     "latency_sd_ms": 14.546940964101903
+    },
+    "relative_change": 1.903044668675295,
+    "snr": {
+     "awake": {
+      "amplitude": 48.3642578125,
+      "noise_sd": 27.66831414545133,
+      "snr": 1.7480016150695283
+     },
+     "propofol": {
+      "amplitude": 125.96842447916667,
+      "noise_sd": 181.6828425217584,
+      "snr": 0.6933424352609446
+     }
+    },
+    "log_snr_ratio": -0.9247044684465793,
+    "degraded_state": "awake",
+    "noise_scale": 2.3143166547852263,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 65.91796200000005,
+      "latency_sd_ms": 2.38009760969965
+     },
+     "propofol": {
+      "mean_latency_ms": 43.45702680000005,
+      "latency_sd_ms": 14.546940964101903
+     }
+    },
+    "matched_relative_change": 2.226877637881339
+   },
+   {
+    "response": "IH16",
+    "site": "IH06-IH07",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 96.67967760000005,
+     "latency_sd_ms": 0.9197548258041209
+    },
+    "propofol": {
+     "mean_latency_ms": 8.789061600000025,
+     "latency_sd_ms": 4.299026591866538
+    },
+    "relative_change": 3.9399320340328785,
+    "snr": {
+     "awake": {
+      "amplitude": 744.853515625,
+      "noise_sd": 25.600639445470616,
+      "snr": 29.095113706497006
+     },
+     "propofol": {
+      "amplitude": 25.9912109375,
+      "noise_sd": 136.3105518892279,
+      "snr": 0.190676441238545
+     }
+    },
+    "log_snr_ratio": -5.027747558559595,
+    "degraded_state": "awake",
+    "noise_scale": 152.58565088842573,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 92.77342800000002,
+      "latency_sd_ms": 23.76740888231006
+     },
+     "propofol": {
+      "mean_latency_ms": 8.789061600000025,
+      "latency_sd_ms": 4.299026591866538
+     }
+    },
+    "matched_relative_change": 0.6467256698186266
+   },
+   {
+    "response": "P01",
+    "site": "IH15-IH16",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 23.925778800000046,
+     "latency_sd_ms": 11.912107403674439
+    },
+    "propofol": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 3.4189041665532063
+    },
+    "relative_change": -2.6696209121060397,
+    "snr": {
+     "awake": {
+      "amplitude": 36.995442708333336,
+      "noise_sd": 36.140976455874856,
+      "snr": 1.0236425890014818
+     },
+     "propofol": {
+      "amplitude": 266.6585286458333,
+      "noise_sd": 80.39714386784574,
+      "snr": 3.316766191149254
+     }
+    },
+    "log_snr_ratio": 1.1756228379213944,
+    "degraded_state": "propofol",
+    "noise_scale": 3.0819862887889986,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 23.925778800000046,
+      "latency_sd_ms": 11.912107403674439
+     },
+     "propofol": {
+      "mean_latency_ms": 34.17968400000001,
+      "latency_sd_ms": 8.107863923864084
+     }
+    },
+    "matched_relative_change": -0.7413958102047402
+   },
+   {
+    "response": "P02",
+    "site": "C20-C21",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 10.25390520000002,
+     "latency_sd_ms": 3.900917405540148
+    },
+    "propofol": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 18.321313600346336
+    },
+    "relative_change": -0.7218302392298757,
+    "snr": {
+     "awake": {
+      "amplitude": 49.3017578125,
+      "noise_sd": 27.658385513152332,
+      "snr": 1.78252478941895
+     },
+     "propofol": {
+      "amplitude": 235.9130859375,
+      "noise_sd": 67.31726851343271,
+      "snr": 3.5044958173016947
+     }
+    },
+    "log_snr_ratio": 0.6760158831183836,
+    "degraded_state": "propofol",
+    "noise_scale": 1.6927111049777945,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 10.25390520000002,
+      "latency_sd_ms": 3.900917405540148
+     },
+     "propofol": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 13.63799300509447
+     }
+    },
+    "matched_relative_change": -1.017035797780852
+   },
+   {
+    "response": "P03",
+    "site": "C20-C21",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 6.593086098547034
+    },
+    "propofol": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 5.977511912980058
+    },
+    "relative_change": -0.09801712581216557,
+    "snr": {
+     "awake": {
+      "amplitude": 97.705078125,
+      "noise_sd": 31.024630761497903,
+      "snr": 3.1492744869748353
+     },
+     "propofol": {
+      "amplitude": 239.013671875,
+      "noise_sd": 79.00356363977716,
+      "snr": 3.0253530456524884
+     }
+    },
+    "log_snr_ratio": -0.04014431073474797,
+    "degraded_state": "awake",
+    "noise_scale": 0.28913625283737515,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 6.036631399880952
+     },
+     "propofol": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 5.977511912980058
+     }
+    },
+    "matched_relative_change": -0.009841727795553704
+   },
+   {
+    "response": "P04",
+    "site": "C12-C13",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 0.5385363621364374
+    },
+    "propofol": {
+     "mean_latency_ms": 52.73436959999998,
+     "latency_sd_ms": 4.631927954586894
+    },
+    "relative_change": 2.782948198028281,
+    "snr": {
+     "awake": {
+      "amplitude": 119.58821614583333,
+      "noise_sd": 11.18138498186645,
+      "snr": 10.695295470085057
+     },
+     "propofol": {
+      "amplitude": 122.76204427083333,
+      "noise_sd": 66.81329942067863,
+      "snr": 1.8373893421709784
+     }
+    },
+    "log_snr_ratio": -1.7614582407455028,
+    "degraded_state": "awake",
+    "noise_scale": 5.734379124788931,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 12.207029999999975,
+      "latency_sd_ms": 5.238794123054176
+     },
+     "propofol": {
+      "mean_latency_ms": 52.73436959999998,
+      "latency_sd_ms": 4.631927954586894
+     }
+    },
+    "matched_relative_change": -1.5863735586129823
+   },
+   {
+    "response": "P04",
+    "site": "C20-C21",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 2.4995700414216198
+    },
+    "propofol": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 12.66188681005665
+    },
+    "relative_change": 1.622477709088421,
+    "snr": {
+     "awake": {
+      "amplitude": 108.7890625,
+      "noise_sd": 14.270818887779537,
+      "snr": 7.623182898996695
+     },
+     "propofol": {
+      "amplitude": 114.39453125,
+      "noise_sd": 38.57902369061018,
+      "snr": 2.9652002644598467
+     }
+    },
+    "log_snr_ratio": -0.9442494127769461,
+    "degraded_state": "awake",
+    "noise_scale": 2.368425491472014,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 2.3668255078977216
+     },
+     "propofol": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 12.66188681005665
+     }
+    },
+    "matched_relative_change": 1.6770468336002746
+   },
+   {
+    "response": "P04",
+    "site": "IH02-IH03",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 5.116058853159776
+    },
+    "propofol": {
+     "mean_latency_ms": 24.414060000000006,
+     "latency_sd_ms": 21.523531136843793
+    },
+    "relative_change": 2.837945394335607,
+    "snr": {
+     "awake": {
+      "amplitude": 52.742513020833336,
+      "noise_sd": 22.245239433407143,
+      "snr": 2.3709573088085727
+     },
+     "propofol": {
+      "amplitude": 40.714518229166664,
+      "noise_sd": 109.0631649681782,
+      "snr": 0.3733113580652652
+     }
+    },
+    "log_snr_ratio": -1.8486362687762545,
+    "degraded_state": "awake",
+    "noise_scale": 6.271932410703011,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 84.47264760000002,
+      "latency_sd_ms": 12.387529264818273
+     },
+     "propofol": {
+      "mean_latency_ms": 24.414060000000006,
+      "latency_sd_ms": 21.523531136843793
+     }
+    },
+    "matched_relative_change": 1.7937251350862926
+   },
+   {
+    "response": "P04",
+    "site": "IH06-IH07",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 9.758068832544406
+    },
+    "propofol": {
+     "mean_latency_ms": 8.789061600000025,
+     "latency_sd_ms": 9.486537097891528
+    },
+    "relative_change": 2.394613351729358,
+    "snr": {
+     "awake": {
+      "amplitude": 16.0546875,
+      "noise_sd": 12.65715679009616,
+      "snr": 1.2684276387065305
+     },
+     "propofol": {
+      "amplitude": 205.6396484375,
+      "noise_sd": 37.24499605114448,
+      "snr": 5.5212691700951595
+     }
+    },
+    "log_snr_ratio": 1.4708297023217158,
+    "degraded_state": "propofol",
+    "noise_scale": 4.236420825819083,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 9.758068832544406
+     },
+     "propofol": {
+      "mean_latency_ms": 56.6406192,
+      "latency_sd_ms": 7.032392377284102
+     }
+    },
+    "matched_relative_change": 0.232048230249977
+   },
+   {
+    "response": "P04",
+    "site": "IH15-IH16",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 84.96092879999998,
+     "latency_sd_ms": 5.148517964837918
+    },
+    "propofol": {
+     "mean_latency_ms": 8.789061600000025,
+     "latency_sd_ms": 16.348044626134996
+    },
+    "relative_change": 3.424082937334865,
+    "snr": {
+     "awake": {
+      "amplitude": 40.72265625,
+      "noise_sd": 15.173694886983018,
+      "snr": 2.6837666470369417
+     },
+     "propofol": {
+      "amplitude": 264.5914713541667,
+      "noise_sd": 64.68474733421866,
+      "snr": 4.090477002052014
+     }
+    },
+    "log_snr_ratio": 0.42144031657983244,
+    "degraded_state": "propofol",
+    "noise_scale": 1.1502387579110513,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 84.96092879999998,
+      "latency_sd_ms": 5.148517964837918
+     },
+     "propofol": {
+      "mean_latency_ms": 8.789061600000025,
+      "latency_sd_ms": 9.105931473984196
+     }
+    },
+    "matched_relative_change": 2.838900653390077
+   },
+   {
+    "response": "P05",
+    "site": "IH15-IH16",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 8.789061600000025,
+     "latency_sd_ms": 12.713594391268458
+    },
+    "propofol": {
+     "mean_latency_ms": 8.789061600000025,
+     "latency_sd_ms": 10.825074261672295
+    },
+    "relative_change": -0.16080671141236746,
+    "snr": {
+     "awake": {
+      "amplitude": 37.3291015625,
+      "noise_sd": 25.203399370653422,
+      "snr": 1.4811137582482472
+     },
+     "propofol": {
+      "amplitude": 161.2548828125,
+      "noise_sd": 70.16214543260037,
+      "snr": 2.2983174448022794
+     }
+    },
+    "log_snr_ratio": 0.43938296536962795,
+    "degraded_state": "propofol",
+    "noise_scale": 1.186560712418838,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 8.789061600000025,
+      "latency_sd_ms": 12.713594391268458
+     },
+     "propofol": {
+      "mean_latency_ms": 8.789061600000025,
+      "latency_sd_ms": 8.353127538811066
+     }
+    },
+    "matched_relative_change": -0.42003582119748223
+   },
+   {
+    "response": "P06",
+    "site": "IH06-IH07",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 74.21874240000005,
+     "latency_sd_ms": 6.895206289796488
+    },
+    "propofol": {
+     "mean_latency_ms": 8.789061600000025,
+     "latency_sd_ms": 5.680451487190865
+    },
+    "relative_change": 1.9397130501558033,
+    "snr": {
+     "awake": {
+      "amplitude": 55.283203125,
+      "noise_sd": 37.13930355959549,
+      "snr": 1.4885363436147894
+     },
+     "propofol": {
+      "amplitude": 145.1318359375,
+      "noise_sd": 94.23387623510388,
+      "snr": 1.5401238040490972
+     }
+    },
+    "log_snr_ratio": 0.034069487990393006,
+    "degraded_state": "propofol",
+    "noise_scale": 0.26554486228223123,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 74.21874240000005,
+      "latency_sd_ms": 6.895206289796488
+     },
+     "propofol": {
+      "mean_latency_ms": 8.789061600000025,
+      "latency_sd_ms": 10.637333753404617
+     }
+    },
+    "matched_relative_change": 2.5670521988254675
+   },
+   {
+    "response": "P06",
+    "site": "IH15-IH16",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 83.49608519999998,
+     "latency_sd_ms": 4.782089968803711
+    },
+    "propofol": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 9.941156535682692
+    },
+    "relative_change": 0.5602632601267385,
+    "snr": {
+     "awake": {
+      "amplitude": 118.06640625,
+      "noise_sd": 42.59467751534404,
+      "snr": 2.7718582024119915
+     },
+     "propofol": {
+      "amplitude": 158.79720052083334,
+      "noise_sd": 74.46802096329496,
+      "snr": 2.1324213866124353
+     }
+    },
+    "log_snr_ratio": -0.2622597912096425,
+    "degraded_state": "awake",
+    "noise_scale": 0.8304498282722798,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 83.49608519999998,
+      "latency_sd_ms": 3.7504592604387352
+     },
+     "propofol": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 9.941156535682692
+     }
+    },
+    "matched_relative_change": 0.8032626411054852
+   },
+   {
+    "response": "P07",
+    "site": "C12-C13",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 9.765624000000003,
+     "latency_sd_ms": 6.127494107625801
+    },
+    "propofol": {
+     "mean_latency_ms": 20.507810399999983,
+     "latency_sd_ms": 7.03938557357491
+    },
+    "relative_change": -0.6032023296409678,
+    "snr": {
+     "awake": {
+      "amplitude": 19.718424479166668,
+      "noise_sd": 31.54472306810809,
+      "snr": 0.6250942332444223
+     },
+     "propofol": {
+      "amplitude": 63.484700520833336,
+      "noise_sd": 67.97563754715894,
+      "snr": 0.9339331385717425
+     }
+    },
+    "log_snr_ratio": 0.401502437992468,
+    "degraded_state": "propofol",
+    "noise_scale": 1.1100623678736004,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 9.765624000000003,
+      "latency_sd_ms": 6.127494107625801
+     },
+     "propofol": {
+      "mean_latency_ms": 53.710932000000014,
+      "latency_sd_ms": 7.057147663587984
+     }
+    },
+    "matched_relative_change": -1.5634930108167653
+   },
+   {
+    "response": "P07",
+    "site": "IH02-IH03",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 83.00780400000002,
+     "latency_sd_ms": 1.2585776693960824
+    },
+    "propofol": {
+     "mean_latency_ms": 23.925778800000046,
+     "latency_sd_ms": 21.443278805630392
+    },
+    "relative_change": 4.079407143278839,
+    "snr": {
+     "awake": {
+      "amplitude": 122.9736328125,
+      "noise_sd": 42.40804902690914,
+      "snr": 2.8997710489928377
+     },
+     "propofol": {
+      "amplitude": 60.7421875,
+      "noise_sd": 132.669264280194,
+      "snr": 0.4578467200339191
+     }
+    },
+    "log_snr_ratio": -1.8458526085509492,
+    "degraded_state": "awake",
+    "noise_scale": 6.254053914764222,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 8.8551228562218
+     },
+     "propofol": {
+      "mean_latency_ms": 23.925778800000046,
+      "latency_sd_ms": 21.443278805630392
+     }
+    },
+    "matched_relative_change": 2.3058007894493766
+   },
+   {
+    "response": "P08",
+    "site": "C20-C21",
+    "trials": 10,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 2.9305297757455304
+    },
+    "propofol": {
+     "mean_latency_ms": 22.46093520000005,
+     "latency_sd_ms": 13.552646688416846
+    },
+    "relative_change": 3.0159632208435756,
+    "snr": {
+     "awake": {
+      "amplitude": 10.2490234375,
+      "noise_sd": 25.102497358512544,
+      "snr": 0.4082870039233144
+     },
+     "propofol": {
+      "amplitude": 58.544921875,
+      "noise_sd": 49.4008083910513,
+      "snr": 1.1851004828011096
+     }
+    },
+    "log_snr_ratio": 1.0656124774930056,
+    "degraded_state": "propofol",
+    "noise_scale": 2.724918523624478,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 99.12108359999996,
+      "latency_sd_ms": 2.9305297757455304
+     },
+     "propofol": {
+      "mean_latency_ms": 95.70311520000001,
+      "latency_sd_ms": 14.9458997719429
+     }
+    },
+    "matched_relative_change": 1.6643451017654465
+   },
+   {
+    "response": "P08",
+    "site": "IH02-IH03",
+    "trials": 6,
+    "awake": {
+     "mean_latency_ms": 24.902341199999967,
+     "latency_sd_ms": 1.5140328391138589
+    },
+    "propofol": {
+     "mean_latency_ms": 24.414060000000006,
+     "latency_sd_ms": 2.360511712624137
+    },
+    "relative_change": 0.46390420513334546,
+    "snr": {
+     "awake": {
+      "amplitude": 241.12955729166666,
+      "noise_sd": 40.615408216287875,
+      "snr": 5.936898528942206
+     },
+     "propofol": {
+      "amplitude": 19.099934895833332,
+      "noise_sd": 101.52703065460696,
+      "snr": 0.18812659813533747
+     }
+    },
+    "log_snr_ratio": -3.451827012284366,
+    "degraded_state": "awake",
+    "noise_scale": 31.542148694165963,
+    "matched": {
+     "awake": {
+      "mean_latency_ms": 41.992183200000056,
+      "latency_sd_ms": 13.494451661581142
+     },
+     "propofol": {
+      "mean_latency_ms": 24.414060000000006,
+      "latency_sd_ms": 2.360511712624137
+     }
+    },
+    "matched_relative_change": -1.2010758991922985
+   }
+  ],
+  "median_relative_change": 1.5077443461062965,
+  "median_matched_relative_change": 0.40194543520162995,
+  "median_restricted_relative_change": 1.1815986519694657,
+  "restricted_connections": 43,
+  "median_log_snr_ratio": -0.9292111553532667,
+  "median_matched_snr": 0.8434787856929836,
+  "median_snr": {
+   "awake": 3.3487114677701335,
+   "propofol": 1.256631747149581
+  }
+ },
+ "seconds": 2.4
+}
