@@ -149,7 +149,7 @@
    "map": "auto",
    "band": "gamma",
    "channels": "all",
-   "out": "/Users/Gsano/Documents/Dev/Repos/Payroll/random/neuroscience/analysis/open_data/results/2026-10-21/exploratory",
+   "out": "analysis/open_data/results/2026-10-21/exploratory",
    "surrogates": "1000",
    "check_only": "False"
   }

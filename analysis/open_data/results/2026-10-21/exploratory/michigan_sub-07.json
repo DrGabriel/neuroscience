@@ -147,7 +147,7 @@
   "arguments": {
    "root": "data_external/ds006623",
    "subject": "['sub-07', 'sub-19', 'sub-28']",
-   "out": "/Users/Gsano/Documents/Dev/Repos/Payroll/random/neuroscience/analysis/open_data/results/2026-10-21/exploratory",
+   "out": "analysis/open_data/results/2026-10-21/exploratory",
    "null_realisations": "200",
    "surrogates": "1000",
    "check_only": "False"

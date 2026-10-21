@@ -146,7 +146,7 @@
   },
   "arguments": {
    "session_dir": "data_external/ds004370/sub-PRIOS02/ses-1",
-   "out": "/Users/Gsano/Documents/Dev/Repos/Payroll/random/neuroscience/analysis/open_data/results/2026-10-21/exploratory"
+   "out": "analysis/open_data/results/2026-10-21/exploratory"
   }
  },
  "runs": {
