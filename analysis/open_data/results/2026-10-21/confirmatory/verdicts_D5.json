@@ -145,8 +145,8 @@
    }
   },
   "arguments": {
-   "inputs": "/Users/Gsano/Documents/Dev/Repos/Payroll/random/neuroscience/analysis/open_data/results/2026-10-21/confirmatory",
-   "out": "/Users/Gsano/Documents/Dev/Repos/Payroll/random/neuroscience/analysis/open_data/results/2026-10-21/confirmatory/verdicts_D5.json"
+   "inputs": "analysis/open_data/results/2026-10-21/confirmatory",
+   "out": "analysis/open_data/results/2026-10-21/confirmatory/verdicts_D5.json"
   }
  },
  "primary": {

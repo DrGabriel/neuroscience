@@ -395,6 +395,28 @@ test("the pre-specified studies P4b and K1c appear in the ledger with the paper'
   assert.match(verdictText(k1c), /C\. elegans: Passed; Human: Not evaluable/);
 });
 
+test("the DPC readout studies are judged by their Wilson pass rule, not reported as counts_Regression", () => {
+  // C.12's report wrote a verdict per organism, but the ledger had no rule for the study and showed "No pass rule".
+  assert.equal(paperVerdict("dpc_readout:SP2"), PaperVerdict.PASSED);
+  assert.equal(paperVerdict("dpc_pair_rule:T2b-1"), PaperVerdict.PASSED);
+});
+
+test("the readout tests that could not have failed are not shown as passes_Regression", () => {
+  // A referee showed that SP1 and SP1-1 are built in (the timing agent leaves the oscillators almost uncoupled at its
+  // loss) and that T2a-D and T2a-1 cannot fail at the maximum transmission failure chosen (limitation 25).
+  for (const key of ["dpc_readout:SP1", "dpc_pair_rule:SP1-1"]) assert.equal(paperVerdict(key), PaperVerdict.CONSISTENCY, key);
+  for (const key of ["dpc_readout:T2a-D", "dpc_pair_rule:T2a-1"]) assert.equal(paperVerdict(key), PaperVerdict.COULD_NOT_FAIL, key);
+});
+
+test("the human timing result shows both counting rules, each beside the other_Regression", () => {
+  const countedTwice = realIndex().find("dpc_readout:T2b-D");
+  const countedOnce = realIndex().find("dpc_pair_rule:T2b-1");
+  assert.match(verdictText(countedTwice), /Human: Failed/);
+  assert.deepEqual(countedOnce.groups.map(({ group, holding, applicable }) => `${group} ${holding}/${applicable}`), ["C. elegans 20/20", "Human 20/20", "Drosophila 6/6"]);
+  assert.equal(countedOnce.paper.verdict, PaperVerdict.PASSED);
+  for (const entry of [countedTwice, countedOnce]) assert.equal(entry.paper.note, "notePairRule", entry.identifier);
+});
+
 test("an observation whose desired outcome is no run says what was expected_Regression", () => {
   const rat = realIndex().find("validation:O3");
   assert.equal(rat.paper.verdict, PaperVerdict.OBSERVATION);

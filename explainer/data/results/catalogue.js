@@ -121,6 +121,26 @@ globalThis.DPC_RESULTS_CATALOGUE = Object.freeze([
   "script": "data/results/current/disconnection_full_20261020T163516Z.js"
  },
  {
+  "identifier": "current/dpc_pair_rule_full_20261021T105142Z",
+  "kind": "dpc_pair_rule",
+  "label": "full",
+  "report_set": "current",
+  "set_note": "",
+  "started_utc": "2026-10-21T10:51:42.065688+00:00",
+  "machine": "Mac14,9 · Apple M2 Pro",
+  "git_commit": "b3704957101ad47892b4dadd84915f40c96ba1dd",
+  "working_tree_dirty": false,
+  "checks": {
+   "checks": 9,
+   "holding_in_every_run": 9,
+   "holding_in_none": 0
+  },
+  "has_curves": false,
+  "json_link": "../simulator/results/dpc_pair_rule_full_20261021T105142Z.json",
+  "markdown_link": "../simulator/results/dpc_pair_rule_full_20261021T105142Z.md",
+  "script": "data/results/current/dpc_pair_rule_full_20261021T105142Z.js"
+ },
+ {
   "identifier": "current/dpc_readout_full_20261020T224553Z",
   "kind": "dpc_readout",
   "label": "full",

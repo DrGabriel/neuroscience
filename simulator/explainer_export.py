@@ -94,6 +94,7 @@ OUTCOME_REPORTS: tuple[tuple[str, str, bool], ...] = (
     ("learned_timing", reporting.RunLabel.FULL, False),
     ("disconnection", reporting.RunLabel.FULL, False),
     ("dpc_readout", reporting.RunLabel.FULL, False),
+    ("dpc_pair_rule", reporting.RunLabel.FULL, False),
 )
 # The predictions table of Section 8, read from each language version of the paper.
 PREDICTION_SOURCES: tuple[tuple[str, str, str], ...] = (

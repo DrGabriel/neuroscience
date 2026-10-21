@@ -18,6 +18,7 @@
     "learned_timing:full": "studyLearnedTiming",
     "disconnection:full": "studyDisconnection",
     "dpc_readout:full": "studyDpcReadout",
+    "dpc_pair_rule:full": "studyDpcPairRule",
   });
 
   function verdictOf(holding, applicable) {
@@ -45,10 +46,14 @@
   });
 
   // How a study's results are judged (paper, Section 6 and Section 10, item 28): percolation checks hold only in every
-  // run at every network size; pre-specified tests pass at 80% of an organism's runs, as their reports record per
+  // run at every network size; pre-specified tests pass at 80% of an organism's runs, or, from the DPC readout on
+  // (Appendices C.12 and C.13), when the Wilson interval's lower bound exceeds one half, as their reports record per
   // group; phase-model and Wilson-Cowan results have no pass rule and are reported as counts.
-  const PassRule = Object.freeze({ EVERY_RUN: "ruleEveryRun", REPORTED: "ruleReported", COUNTS: "ruleCounts", OBSERVATION: "ruleObservation", EXTENSION: "ruleExtension" });
-  const STUDY_RULE = Object.freeze({ validation: PassRule.EVERY_RUN, glia: PassRule.EVERY_RUN, prespecified: PassRule.REPORTED, learned_timing: PassRule.REPORTED, disconnection: PassRule.REPORTED });
+  const PassRule = Object.freeze({ EVERY_RUN: "ruleEveryRun", REPORTED: "ruleReported", WILSON: "ruleWilson", COUNTS: "ruleCounts", OBSERVATION: "ruleObservation", EXTENSION: "ruleExtension" });
+  const STUDY_RULE = Object.freeze({
+    validation: PassRule.EVERY_RUN, glia: PassRule.EVERY_RUN, prespecified: PassRule.REPORTED, learned_timing: PassRule.REPORTED,
+    disconnection: PassRule.REPORTED, dpc_readout: PassRule.WILSON, dpc_pair_rule: PassRule.WILSON,
+  });
   // Report sections that the paper keeps out of the verdict (Appendix B.4).
   const SECTION_RULE = Object.freeze({ "validation:observations": PassRule.OBSERVATION, "validation:extension_tests": PassRule.EXTENSION });
   const ruleFor = ({ study, section }) => SECTION_RULE[`${study}:${section}`] ?? STUDY_RULE[study] ?? PassRule.COUNTS;
@@ -91,6 +96,16 @@
     "congestion:W4": { verdict: PaperVerdict.FAILED },
     // Section 6: L2 held in every seed only because quorum was lost earlier, not later.
     "learned_timing:L2": { note: "noteEarlierLoss" },
+    // Appendix C.13 and limitation 32: the human timing verdict depends on how a diffusion-MRI fibre is counted, so
+    // C.12's failure and the pair rule's pass are each shown with the other.
+    // Appendices C.12 and C.13: at the timing agent's loss its effective coupling is almost zero, so SP1 and SP1-1 could
+    // not have failed; T2a-D and T2a-1 could not fail at the maximum transmission failure chosen (limitation 25).
+    "dpc_readout:SP1": { verdict: PaperVerdict.CONSISTENCY, note: "noteBuiltInShare" },
+    "dpc_pair_rule:SP1-1": { verdict: PaperVerdict.CONSISTENCY, note: "noteBuiltInShare" },
+    "dpc_readout:T2a-D": { verdict: PaperVerdict.COULD_NOT_FAIL, note: "noteMaxima" },
+    "dpc_pair_rule:T2a-1": { verdict: PaperVerdict.COULD_NOT_FAIL, note: "noteMaxima" },
+    "dpc_readout:T2b-D": { note: "notePairRule" },
+    "dpc_pair_rule:T2b-1": { note: "notePairRule" },
   });
 
   // What the hypothesis expects of each observation, for the ones where "in no run" is the desired outcome: patients
@@ -118,6 +133,7 @@
   const RULE_VERDICT = Object.freeze({
     [PassRule.EVERY_RUN]: (entry) => (entry.holding === entry.applicable ? PaperVerdict.PASSED : PaperVerdict.FAILED),
     [PassRule.REPORTED]: (entry) => reportedVerdict(entry.groups),
+    [PassRule.WILSON]: (entry) => reportedVerdict(entry.groups),
     [PassRule.COUNTS]: () => PaperVerdict.COUNTS,
     [PassRule.OBSERVATION]: () => PaperVerdict.OBSERVATION,
     [PassRule.EXTENSION]: () => PaperVerdict.EXTENSION,
