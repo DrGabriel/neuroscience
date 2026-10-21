@@ -93,6 +93,7 @@ OUTCOME_REPORTS: tuple[tuple[str, str, bool], ...] = (
     ("prespecified", reporting.RunLabel.FULL, False),
     ("learned_timing", reporting.RunLabel.FULL, False),
     ("disconnection", reporting.RunLabel.FULL, False),
+    ("dpc_readout", reporting.RunLabel.FULL, False),
 )
 # The predictions table of Section 8, read from each language version of the paper.
 PREDICTION_SOURCES: tuple[tuple[str, str, str], ...] = (
@@ -383,10 +384,19 @@ def outcomes_from(study: str, label: str, report: str, document: dict) -> list[d
     ]
     if not outcomes:
         raise ValueError(f"{report}: no check outcomes found; has the report format changed?")
-    keys = [(outcome["identifier"], outcome["group"]) for outcome in outcomes]
-    if len(keys) != len(set(keys)):
-        raise ValueError(f"{report}: an identifier appears twice in the same group")
-    return outcomes
+    return without_repeats(report, outcomes)
+
+
+def without_repeats(report: str, outcomes: list[dict[str, object]]) -> list[dict[str, object]]:
+    """Drops an outcome listed twice with identical results (the readout study lists a test once per calibrated
+    coupling, and two connectomes calibrated to the same one); a repeat with different results is an error."""
+    kept: dict[tuple[object, object], dict[str, object]] = {}
+    for outcome in outcomes:
+        key = (outcome["identifier"], outcome["group"])
+        if key in kept and kept[key] != outcome:
+            raise ValueError(f"{report}: {key} appears twice with different results")
+        kept.setdefault(key, outcome)
+    return list(kept.values())
 
 
 def outcomes_record() -> list[dict[str, object]]:

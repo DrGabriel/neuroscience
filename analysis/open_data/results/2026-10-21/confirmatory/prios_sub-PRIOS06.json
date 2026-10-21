@@ -1,0 +1,343 @@
+{
+ "provenance": {
+  "started_utc": "2026-10-21T04:07:47Z",
+  "git_commit": "adc63f696a87c72172329b512f02b7e7dc7ad8fa",
+  "python": "3.13.2",
+  "numpy": "2.5.4",
+  "scipy": "1.18.1",
+  "machine": "arm64",
+  "module_sha256": {
+   "__init__.py": "134fe679aeadf533c15ad8a250d2d2b06044944ce83aefc2c668bf464f8e557b",
+   "catalogues.py": "80777e433a1413e5001211bb567bb5b386fd95ce08e71a9e1ed1575196c31d80",
+   "classification.py": "a5902680913b413379d273ba5bc3f3010d6137416c2695930bea44bf6c0f15bd",
+   "constants.py": "2ab75c3630c9b93dda56d6bce5ccd6a33e5d9cdd2395ded7673e8353158467ad",
+   "download.py": "7fb7fc439dcfe7fcbb8c81801109f7f78107b9d0144554f05f5ce2dfb9748a47",
+   "early_warning.py": "1d7320de71ff0a64e5eb4b6f5386c70023483d45e747c68c0a5fb72da2da6f70",
+   "evoked_latency.py": "9d7a751c5761918701a5def3b2cfcc1b7afd8ebd4279f0ebc1374c169a7a8753",
+   "group.py": "cefea31da91d9cfbbfb2cd4b46aec73b654c99ea178d5ac1352ce3d3a0af5dd7",
+   "hysteresis.py": "5d05d31eb0a1f905903fc173034408bcf4bf2b6240797a7769909486b057ae58",
+   "loaders/__init__.py": "55f72d3b6251a4bb939058c387625d2e844032821a90d6dd69ca04c16df29af7",
+   "loaders/michigan.py": "68768eebe54855a30d632ac6f035bd57e752a722173862ed1f8f9766b02650c9",
+   "loaders/neurotycho.py": "3a0165f681ccdefca715c0aa095e5e8f662c67d1b7441b1836db6310fd735e9c",
+   "loaders/prios.py": "de644898753e712933a2166f4fb221e759df7c833a666c56d935a297d53162b2",
+   "montage.py": "7e1d192ab576ffac25840b1d152f7234a3d3655f0edfae866d33c93fa47b03cc",
+   "network.py": "83c26414dba64fa9c076d265e9bde50cc61101f3a9829b4fbe8d242dda10630a",
+   "outputs.py": "378160471a9ec99d993febc4e3e440d61abb35ee0b68fa1d510008f36bdc51ab",
+   "phase.py": "6bb08e9df9fcc0bb73b0804d18ef04803a01c8c449aa844ea678c5bd6142a19a",
+   "pipeline_michigan.py": "1e37b9e24fcd9d080e077de50256997522e4271509b83a29df7dad4cf30c6e5c",
+   "pipeline_neurotycho.py": "9f1f4b14b3e1331b2fa204af7ef5a624104973299b3259e5cbc13fa4b84f8cb4",
+   "pipeline_prios.py": "0ce65d7b21bf85946b935f3c92058ad4aea8e1f44b35ade52b7b8a8c10aa5afc",
+   "run.py": "d961f62cda18e19cda742ee80c39d26bca35ddf459d1201dc72f327c29009a34",
+   "run_tests.py": "4d91414a9e299c412b3d3eb696a65de40a369b12798a8a57b0efa14fa2c559f7",
+   "settings.py": "d8ad26558ad6512d160d7e234f5f79212d4efb0d09c0de29fdb72109041f3ed3",
+   "specs.py": "db294aa2a3bbdb78eb13f0352235728ccb6ff986043f3aac483dd9e496b2005c",
+   "stats.py": "eb1c6d2778133b10c44fff3814ebaa75fbec1462a4da556a527124a87306940b",
+   "threshold_shape.py": "ceb0676de75698dbd126bab6d81ecbac9c8e0cac4b5eeb5871cefe88f819c86a",
+   "transfer.py": "ecc6449b491442885f0a510f46965095c08437cc46635885f36118a47df8769a",
+   "verdicts.py": "c29a189ab8094e77251dcfa15cc7784699a4d7938abecd779245bca3d0aacc89"
+  },
+  "settings": {
+   "GAMMA": {
+    "name": "gamma",
+    "low_hz": 30.0,
+    "high_hz": 45.0
+   },
+   "FMRI": {
+    "tr_seconds": 0.8,
+    "window_trs": 75,
+    "step_trs": 25,
+    "edge_alpha": 0.01,
+    "edge_alpha_sensitivity": [
+     0.001,
+     0.05
+    ],
+    "surrogates_per_window": 20,
+    "cofluctuation_volumes_per_surrogate": 20,
+    "awake_max_concentration": 0.0,
+    "framewise_displacement_limit_mm": 0.5,
+    "max_censored_share": 0.2
+   },
+   "SHAPE": {
+    "null_realisations": 200,
+    "min_width_ug_per_ml": 0.05,
+    "max_width_ug_per_ml": 20.0,
+    "bic_margin": 10.0,
+    "smallest_steepness_ratio": 1.5,
+    "smallest_local_slope_ratio": 1.5,
+    "lor_coincidence_ug_per_ml": 0.4,
+    "deep_top_share": 0.2,
+    "intact_share": 0.9,
+    "coupling_fall_gate": 0.9
+   },
+   "WARNING": {
+    "rolling_share": 0.5,
+    "detrend_bandwidth_share": 0.1,
+    "surrogates": 1000,
+    "smallest_kendall_tau": 0.2,
+    "min_points": 40
+   },
+   "ECOG": {
+    "sampling_hz": 1000.0,
+    "filter_order": 4,
+    "filter_margin_seconds": 2.0,
+    "line_noise_hz": [
+     50.0,
+     100.0,
+     150.0
+    ],
+    "notch_quality": 30.0,
+    "long_range_quantile": 0.5,
+    "window_seconds": 1.0,
+    "block_seconds": 30.0,
+    "order_parameter_window_seconds": 2.0,
+    "edge_alpha": 0.01,
+    "surrogates_per_window": 20,
+    "min_shift_seconds": 1.0,
+    "muscle_band": [
+     70.0,
+     150.0
+    ],
+    "muscle_mad_limit": 5.0,
+    "muscle_mad_floor": 0.05
+   },
+   "LAG": {
+    "bootstrap_resamples": 2000,
+    "smallest_auc_difference": 0.05,
+    "confidence": 0.95
+   },
+   "HYSTERESIS": {
+    "smallest_ratio": 1.05,
+    "ke0_per_minute": [
+     0.2,
+     0.26,
+     0.456,
+     0.8,
+     1.21
+    ]
+   },
+   "EVOKED": {
+    "artefact_end_ms": 9.0,
+    "response_end_ms": 100.0,
+    "baseline_ms": [
+     -500.0,
+     -10.0
+    ],
+    "max_shift_ms": 20.0,
+    "response_z": 3.4,
+    "smallest_log_ratio": 0.18232155679395462,
+    "unit_window_ms": [
+     2.0,
+     50.0
+    ],
+    "min_distance_mm": 20.0,
+    "min_trials": 6
+   },
+   "FAMILY": {
+    "alpha": 0.05,
+    "primary_tests": [
+     "H1",
+     "H2a",
+     "H2b",
+     "H3",
+     "H4"
+    ]
+   }
+  },
+  "arguments": {
+   "session_dir": "data_external/ds004370/sub-PRIOS06/ses-1",
+   "out": "analysis/open_data/results/2026-10-21/confirmatory"
+  }
+ },
+ "runs": {
+  "SPESclin": "sub-PRIOS06_ses-1_task-SPESclin_run-021154",
+  "SPESprop": "sub-PRIOS06_ses-1_task-SPESprop_run-050811"
+ },
+ "H5a": {
+  "connections": [
+   {
+    "response": "C08",
+    "site": "C15-C16",
+    "trials": 8,
+    "awake": {
+     "mean_latency_ms": 14.160154800000043,
+     "latency_sd_ms": 2.3384612292702993
+    },
+    "propofol": {
+     "mean_latency_ms": 8.789061600000025,
+     "latency_sd_ms": 2.263204949759975
+    },
+    "relative_change": 0.4442128814250007
+   },
+   {
+    "response": "C20",
+    "site": "C15-C16",
+    "trials": 8,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 2.4517587780722745
+    },
+    "propofol": {
+     "mean_latency_ms": 8.789061600000025,
+     "latency_sd_ms": 1.2614818800518928
+    },
+    "relative_change": 1.7583157107168659
+   },
+   {
+    "response": "C21",
+    "site": "C15-C16",
+    "trials": 8,
+    "awake": {
+     "mean_latency_ms": 26.855466000000035,
+     "latency_sd_ms": 1.3619927602250872
+    },
+    "propofol": {
+     "mean_latency_ms": 40.52733959999995,
+     "latency_sd_ms": 6.228687989478286
+    },
+    "relative_change": 1.1087094003012448
+   },
+   {
+    "response": "C26",
+    "site": "C15-C16",
+    "trials": 8,
+    "awake": {
+     "mean_latency_ms": 31.73827799999998,
+     "latency_sd_ms": 1.6232284553535028
+    },
+    "propofol": {
+     "mean_latency_ms": 8.789061600000025,
+     "latency_sd_ms": 0.4860352870190966
+    },
+    "relative_change": 0.07812442153636256
+   },
+   {
+    "response": "C28",
+    "site": "C15-C16",
+    "trials": 8,
+    "awake": {
+     "mean_latency_ms": 26.36718479999996,
+     "latency_sd_ms": 6.390305536761053
+    },
+    "propofol": {
+     "mean_latency_ms": 8.789061600000025,
+     "latency_sd_ms": 10.843352166384971
+    },
+    "relative_change": 1.6273823952401167
+   },
+   {
+    "response": "C30",
+    "site": "C15-C16",
+    "trials": 8,
+    "awake": {
+     "mean_latency_ms": 32.226559200000054,
+     "latency_sd_ms": 1.8294395525717893
+    },
+    "propofol": {
+     "mean_latency_ms": 8.789061600000025,
+     "latency_sd_ms": 9.584627926619586
+    },
+    "relative_change": 2.955433877054727
+   },
+   {
+    "response": "LC1",
+    "site": "C15-C16",
+    "trials": 8,
+    "awake": {
+     "mean_latency_ms": 30.761715599999945,
+     "latency_sd_ms": 1.6264963003725594
+    },
+    "propofol": {
+     "mean_latency_ms": 8.789061600000025,
+     "latency_sd_ms": 2.0624202491351635
+    },
+    "relative_change": 1.4902149475539919
+   },
+   {
+    "response": "LC2",
+    "site": "C15-C16",
+    "trials": 8,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 0.7112562291207727
+    },
+    "propofol": {
+     "mean_latency_ms": 8.789061600000025,
+     "latency_sd_ms": 2.062106608115131
+    },
+    "relative_change": 3.487284842310073
+   },
+   {
+    "response": "LC3",
+    "site": "C15-C16",
+    "trials": 8,
+    "awake": {
+     "mean_latency_ms": 36.62109000000004,
+     "latency_sd_ms": 0.20689578529676214
+    },
+    "propofol": {
+     "mean_latency_ms": 8.789061600000025,
+     "latency_sd_ms": 7.688487574167749
+    },
+    "relative_change": 5.042380510618521
+   },
+   {
+    "response": "LC4",
+    "site": "C15-C16",
+    "trials": 8,
+    "awake": {
+     "mean_latency_ms": 26.36718479999996,
+     "latency_sd_ms": 3.778576275694757
+    },
+    "propofol": {
+     "mean_latency_ms": 8.789061600000025,
+     "latency_sd_ms": 2.378947607577615
+    },
+    "relative_change": 0.6359232048295231
+   },
+   {
+    "response": "LC5",
+    "site": "C15-C16",
+    "trials": 8,
+    "awake": {
+     "mean_latency_ms": 26.36718479999996,
+     "latency_sd_ms": 0.7352528759948677
+    },
+    "propofol": {
+     "mean_latency_ms": 8.789061600000025,
+     "latency_sd_ms": 1.0927909941739007
+    },
+    "relative_change": 1.49488804738041
+   },
+   {
+    "response": "LC6",
+    "site": "C15-C16",
+    "trials": 8,
+    "awake": {
+     "mean_latency_ms": 30.761715599999945,
+     "latency_sd_ms": 2.4383433251205666
+    },
+    "propofol": {
+     "mean_latency_ms": 8.789061600000025,
+     "latency_sd_ms": 5.8791839019224525
+    },
+    "relative_change": 2.1328620849939233
+   },
+   {
+    "response": "LC7",
+    "site": "C15-C16",
+    "trials": 8,
+    "awake": {
+     "mean_latency_ms": 99.12108359999996,
+     "latency_sd_ms": 1.599608676239098
+    },
+    "propofol": {
+     "mean_latency_ms": 33.203121599999974,
+     "latency_sd_ms": 4.952672394320746
+    },
+    "relative_change": 2.2238665604240784
+   }
+  ],
+  "median_relative_change": 1.6273823952401167
+ },
+ "seconds": 0.7
+}

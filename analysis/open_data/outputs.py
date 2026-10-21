@@ -54,6 +54,13 @@ def settings_snapshot() -> dict:
     return {name: asdict(value) for name, value in vars(settings).items() if is_dataclass(value) and not isinstance(value, type)}
 
 
+def portable(value: object) -> str:
+    """An argument as recorded: a path inside the repository relative to its root, so results read the same wherever it is cloned."""
+    text = str(value)
+    path = Path(text)
+    return str(path.relative_to(REPO)) if path.is_absolute() and path.is_relative_to(REPO) else text
+
+
 def provenance(arguments: argparse.Namespace) -> dict:
     return {
         "started_utc": time.strftime(UTC_FORMAT, time.gmtime()),
@@ -64,7 +71,7 @@ def provenance(arguments: argparse.Namespace) -> dict:
         "machine": platform.machine(),
         "module_sha256": module_hashes(),
         "settings": settings_snapshot(),
-        "arguments": {k: str(v) for k, v in vars(arguments).items() if k != "handler"},
+        "arguments": {k: portable(v) for k, v in vars(arguments).items() if k != "handler"},
     }
 
 

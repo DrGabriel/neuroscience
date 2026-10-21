@@ -1,0 +1,836 @@
+{
+ "gabaergic": {
+  "induction": [
+   {
+    "concentration": 0.0,
+    "undirected": {
+     "mean_share": 0.975,
+     "cycles_with_quorum": 3,
+     "cycles": 3
+    },
+    "strongly_connected": {
+     "mean_share": 0.3166666666666667,
+     "cycles_with_quorum": 1,
+     "cycles": 3
+    },
+    "receiver_phase": {
+     "mean_share": 1.0,
+     "cycles_with_quorum": 3,
+     "cycles": 3
+    },
+    "jitter_only": {
+     "mean_share": 0.9916666666666667,
+     "cycles_with_quorum": 3,
+     "cycles": 3
+    },
+    "counting_share": 0.2986111111111111,
+    "budget": {
+     "static_counting_share": 0.38292492254802635,
+     "effective_coupling": 3.0103301416831907,
+     "reference_coupling": 0.225
+    },
+    "fluctuations": {
+     "susceptibility": 0.006578298296860053,
+     "independent_susceptibility": 0.022655388501970353,
+     "coherence_autocorrelation": -0.064441357237233
+    }
+   },
+   {
+    "concentration": 1.0,
+    "undirected": {
+     "mean_share": 0.4083333333333334,
+     "cycles_with_quorum": 1,
+     "cycles": 3
+    },
+    "strongly_connected": {
+     "mean_share": 0.05833333333333333,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "receiver_phase": {
+     "mean_share": 0.5416666666666666,
+     "cycles_with_quorum": 2,
+     "cycles": 3
+    },
+    "jitter_only": {
+     "mean_share": 0.625,
+     "cycles_with_quorum": 3,
+     "cycles": 3
+    },
+    "counting_share": 0.15555555555555556,
+    "budget": {
+     "static_counting_share": 0.21112067141533628,
+     "effective_coupling": 1.6675491063451353,
+     "reference_coupling": 0.3375
+    },
+    "fluctuations": {
+     "susceptibility": 0.022818793000409527,
+     "independent_susceptibility": 0.06172066166379864,
+     "coherence_autocorrelation": -0.2888335288630971
+    }
+   },
+   {
+    "concentration": 2.0,
+    "undirected": {
+     "mean_share": 0.05833333333333333,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "strongly_connected": {
+     "mean_share": 0.025000000000000005,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "receiver_phase": {
+     "mean_share": 0.075,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "jitter_only": {
+     "mean_share": 0.08333333333333333,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "counting_share": 0.016666666666666666,
+    "budget": {
+     "static_counting_share": 0.039724753614994696,
+     "effective_coupling": 0.3171219013819567,
+     "reference_coupling": 0.43676470588235294
+    },
+    "fluctuations": {
+     "susceptibility": 0.06451906534141616,
+     "independent_susceptibility": 0.34126724910899453,
+     "coherence_autocorrelation": 0.6626046698616728
+    }
+   },
+   {
+    "concentration": 3.0,
+    "undirected": {
+     "mean_share": 0.05000000000000001,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "strongly_connected": {
+     "mean_share": 0.025000000000000005,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "receiver_phase": {
+     "mean_share": 0.06666666666666667,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "jitter_only": {
+     "mean_share": 0.08333333333333333,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "counting_share": 0.008333333333333333,
+    "budget": {
+     "static_counting_share": 0.021300668575967782,
+     "effective_coupling": 0.17027355981753173,
+     "reference_coupling": 0.4472560975609756
+    },
+    "fluctuations": {
+     "susceptibility": 0.15487777646319148,
+     "independent_susceptibility": 0.4481957659418869,
+     "coherence_autocorrelation": 0.8165205445827848
+    }
+   }
+  ],
+  "emergence": [
+   {
+    "concentration": 3.0,
+    "undirected": {
+     "mean_share": 0.05000000000000001,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "strongly_connected": {
+     "mean_share": 0.025000000000000005,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "receiver_phase": {
+     "mean_share": 0.05000000000000001,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "jitter_only": {
+     "mean_share": 0.075,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "counting_share": 0.006944444444444444,
+    "budget": {
+     "static_counting_share": 0.021300668575967782,
+     "effective_coupling": 0.17027355981753173,
+     "reference_coupling": 0.4472560975609756
+    },
+    "fluctuations": {
+     "susceptibility": 0.07362984263240864,
+     "independent_susceptibility": 0.502634634432159,
+     "coherence_autocorrelation": -0.5123057175158857
+    }
+   },
+   {
+    "concentration": 2.0,
+    "undirected": {
+     "mean_share": 0.041666666666666664,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "strongly_connected": {
+     "mean_share": 0.025000000000000005,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "receiver_phase": {
+     "mean_share": 0.06666666666666667,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "jitter_only": {
+     "mean_share": 0.08333333333333333,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "counting_share": 0.008333333333333333,
+    "budget": {
+     "static_counting_share": 0.039724753614994696,
+     "effective_coupling": 0.3171219013819567,
+     "reference_coupling": 0.43676470588235294
+    },
+    "fluctuations": {
+     "susceptibility": 0.11743361900016536,
+     "independent_susceptibility": 0.37510954616164527,
+     "coherence_autocorrelation": 0.9032624830910807
+    }
+   },
+   {
+    "concentration": 1.0,
+    "undirected": {
+     "mean_share": 0.5499999999999999,
+     "cycles_with_quorum": 2,
+     "cycles": 3
+    },
+    "strongly_connected": {
+     "mean_share": 0.08333333333333333,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "receiver_phase": {
+     "mean_share": 0.4166666666666667,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "jitter_only": {
+     "mean_share": 0.7583333333333333,
+     "cycles_with_quorum": 3,
+     "cycles": 3
+    },
+    "counting_share": 0.15277777777777776,
+    "budget": {
+     "static_counting_share": 0.21112067141533628,
+     "effective_coupling": 1.6675491063451353,
+     "reference_coupling": 0.3375
+    },
+    "fluctuations": {
+     "susceptibility": 0.007357141259492546,
+     "independent_susceptibility": 0.04776982439676836,
+     "coherence_autocorrelation": 0.10648083186620959
+    }
+   },
+   {
+    "concentration": 0.0,
+    "undirected": {
+     "mean_share": 0.9916666666666667,
+     "cycles_with_quorum": 3,
+     "cycles": 3
+    },
+    "strongly_connected": {
+     "mean_share": 0.325,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "receiver_phase": {
+     "mean_share": 0.9833333333333334,
+     "cycles_with_quorum": 3,
+     "cycles": 3
+    },
+    "jitter_only": {
+     "mean_share": 0.9416666666666668,
+     "cycles_with_quorum": 3,
+     "cycles": 3
+    },
+    "counting_share": 0.33055555555555555,
+    "budget": {
+     "static_counting_share": 0.38292492254802635,
+     "effective_coupling": 3.0103301416831907,
+     "reference_coupling": 0.225
+    },
+    "fluctuations": {
+     "susceptibility": 0.060531291358054726,
+     "independent_susceptibility": 0.015756426640802457,
+     "coherence_autocorrelation": 0.953872116935939
+    }
+   }
+  ]
+ },
+ "nmda_antagonist": {
+  "induction": [
+   {
+    "concentration": 0.0,
+    "undirected": {
+     "mean_share": 0.975,
+     "cycles_with_quorum": 3,
+     "cycles": 3
+    },
+    "strongly_connected": {
+     "mean_share": 0.3166666666666667,
+     "cycles_with_quorum": 1,
+     "cycles": 3
+    },
+    "receiver_phase": {
+     "mean_share": 1.0,
+     "cycles_with_quorum": 3,
+     "cycles": 3
+    },
+    "jitter_only": {
+     "mean_share": 0.9916666666666667,
+     "cycles_with_quorum": 3,
+     "cycles": 3
+    },
+    "counting_share": 0.2986111111111111,
+    "budget": {
+     "static_counting_share": 0.38292492254802635,
+     "effective_coupling": 3.0103301416831907,
+     "reference_coupling": 0.225
+    },
+    "fluctuations": {
+     "susceptibility": 0.006578298296860053,
+     "independent_susceptibility": 0.022655388501970353,
+     "coherence_autocorrelation": -0.064441357237233
+    }
+   },
+   {
+    "concentration": 1.0,
+    "undirected": {
+     "mean_share": 0.09999999999999999,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "strongly_connected": {
+     "mean_share": 0.03333333333333333,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "receiver_phase": {
+     "mean_share": 0.21666666666666665,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "jitter_only": {
+     "mean_share": 0.09166666666666667,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "counting_share": 0.05277777777777778,
+    "budget": {
+     "static_counting_share": 0.05296620279306346,
+     "effective_coupling": 8.797484107422834e-06,
+     "reference_coupling": 0.3375
+    },
+    "fluctuations": {
+     "susceptibility": 0.19833336223045545,
+     "independent_susceptibility": 0.4380615776833903,
+     "coherence_autocorrelation": 0.02188221788033473
+    }
+   },
+   {
+    "concentration": 2.0,
+    "undirected": {
+     "mean_share": 0.09166666666666667,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "strongly_connected": {
+     "mean_share": 0.025000000000000005,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "receiver_phase": {
+     "mean_share": 0.18333333333333335,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "jitter_only": {
+     "mean_share": 0.06666666666666667,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "counting_share": 0.020833333333333332,
+    "budget": {
+     "static_counting_share": 0.025873571374194486,
+     "effective_coupling": 8.926153372858721e-20,
+     "reference_coupling": 0.43676470588235294
+    },
+    "fluctuations": {
+     "susceptibility": 0.09623064798221322,
+     "independent_susceptibility": 0.4904703035942705,
+     "coherence_autocorrelation": 0.05047582961855418
+    }
+   },
+   {
+    "concentration": 3.0,
+    "undirected": {
+     "mean_share": 0.06666666666666667,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "strongly_connected": {
+     "mean_share": 0.025000000000000005,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "receiver_phase": {
+     "mean_share": 0.20833333333333334,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "jitter_only": {
+     "mean_share": 0.06666666666666667,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "counting_share": 0.018055555555555557,
+    "budget": {
+     "static_counting_share": 0.02415673508137655,
+     "effective_coupling": 9.284862909301181e-22,
+     "reference_coupling": 0.4472560975609756
+    },
+    "fluctuations": {
+     "susceptibility": 0.015217376180441645,
+     "independent_susceptibility": 0.5122966053898603,
+     "coherence_autocorrelation": -0.7505753557220362
+    }
+   }
+  ],
+  "emergence": [
+   {
+    "concentration": 3.0,
+    "undirected": {
+     "mean_share": 0.075,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "strongly_connected": {
+     "mean_share": 0.03333333333333333,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "receiver_phase": {
+     "mean_share": 0.19166666666666665,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "jitter_only": {
+     "mean_share": 0.06666666666666667,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "counting_share": 0.024999999999999998,
+    "budget": {
+     "static_counting_share": 0.02415673508137655,
+     "effective_coupling": 9.284862909301181e-22,
+     "reference_coupling": 0.4472560975609756
+    },
+    "fluctuations": {
+     "susceptibility": 0.07214784851438379,
+     "independent_susceptibility": 0.45529108640458266,
+     "coherence_autocorrelation": -0.5553106761049512
+    }
+   },
+   {
+    "concentration": 2.0,
+    "undirected": {
+     "mean_share": 0.06666666666666667,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "strongly_connected": {
+     "mean_share": 0.025000000000000005,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "receiver_phase": {
+     "mean_share": 0.21666666666666667,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "jitter_only": {
+     "mean_share": 0.075,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "counting_share": 0.024999999999999998,
+    "budget": {
+     "static_counting_share": 0.025873571374194486,
+     "effective_coupling": 8.926153372858721e-20,
+     "reference_coupling": 0.43676470588235294
+    },
+    "fluctuations": {
+     "susceptibility": 0.07573211923776814,
+     "independent_susceptibility": 0.4666778615559676,
+     "coherence_autocorrelation": -0.7564014863588968
+    }
+   },
+   {
+    "concentration": 1.0,
+    "undirected": {
+     "mean_share": 0.10000000000000002,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "strongly_connected": {
+     "mean_share": 0.025000000000000005,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "receiver_phase": {
+     "mean_share": 0.225,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "jitter_only": {
+     "mean_share": 0.125,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "counting_share": 0.04305555555555555,
+    "budget": {
+     "static_counting_share": 0.05296620279306346,
+     "effective_coupling": 8.797484107422834e-06,
+     "reference_coupling": 0.3375
+    },
+    "fluctuations": {
+     "susceptibility": 0.08004284751497273,
+     "independent_susceptibility": 0.4518368649235889,
+     "coherence_autocorrelation": -0.6974546509403364
+    }
+   },
+   {
+    "concentration": 0.0,
+    "undirected": {
+     "mean_share": 0.9416666666666668,
+     "cycles_with_quorum": 3,
+     "cycles": 3
+    },
+    "strongly_connected": {
+     "mean_share": 0.43333333333333335,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "receiver_phase": {
+     "mean_share": 0.9833333333333334,
+     "cycles_with_quorum": 3,
+     "cycles": 3
+    },
+    "jitter_only": {
+     "mean_share": 1.0,
+     "cycles_with_quorum": 3,
+     "cycles": 3
+    },
+    "counting_share": 0.32222222222222224,
+    "budget": {
+     "static_counting_share": 0.38292492254802635,
+     "effective_coupling": 3.0103301416831907,
+     "reference_coupling": 0.225
+    },
+    "fluctuations": {
+     "susceptibility": 0.08270676126916635,
+     "independent_susceptibility": 0.04228180738253495,
+     "coherence_autocorrelation": 0.7775690125378436
+    }
+   }
+  ]
+ },
+ "fixed_jitter": {
+  "induction": [
+   {
+    "concentration": 0.0,
+    "undirected": {
+     "mean_share": 0.7833333333333333,
+     "cycles_with_quorum": 3,
+     "cycles": 3
+    },
+    "strongly_connected": {
+     "mean_share": 0.275,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "receiver_phase": {
+     "mean_share": 1.0,
+     "cycles_with_quorum": 3,
+     "cycles": 3
+    },
+    "jitter_only": {
+     "mean_share": 1.0,
+     "cycles_with_quorum": 3,
+     "cycles": 3
+    },
+    "counting_share": 0.25138888888888894,
+    "budget": {
+     "static_counting_share": 0.4041666666666667,
+     "effective_coupling": 4.0,
+     "reference_coupling": 0.225
+    },
+    "fluctuations": {
+     "susceptibility": 0.1252635305176099,
+     "independent_susceptibility": 0.08302861174998966,
+     "coherence_autocorrelation": 0.8342521228928105
+    }
+   },
+   {
+    "concentration": 1.0,
+    "undirected": {
+     "mean_share": 0.2833333333333333,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "strongly_connected": {
+     "mean_share": 0.09999999999999999,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "receiver_phase": {
+     "mean_share": 0.39999999999999997,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "jitter_only": {
+     "mean_share": 0.8249999999999998,
+     "cycles_with_quorum": 3,
+     "cycles": 3
+    },
+    "counting_share": 0.1486111111111111,
+    "budget": {
+     "static_counting_share": 0.22916666666666666,
+     "effective_coupling": 2.2333333333333334,
+     "reference_coupling": 0.3375
+    },
+    "fluctuations": {
+     "susceptibility": 0.008657316487411793,
+     "independent_susceptibility": 0.21030651352637775,
+     "coherence_autocorrelation": -0.5238816935878915
+    }
+   },
+   {
+    "concentration": 2.0,
+    "undirected": {
+     "mean_share": 0.05833333333333333,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "strongly_connected": {
+     "mean_share": 0.025000000000000005,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "receiver_phase": {
+     "mean_share": 0.06666666666666667,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "jitter_only": {
+     "mean_share": 0.075,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "counting_share": 0.02777777777777778,
+    "budget": {
+     "static_counting_share": 0.03333333333333333,
+     "effective_coupling": 0.43333333333333335,
+     "reference_coupling": 0.43676470588235294
+    },
+    "fluctuations": {
+     "susceptibility": 0.015265014090403851,
+     "independent_susceptibility": 0.3637537602852681,
+     "coherence_autocorrelation": -0.41911282455969184
+    }
+   },
+   {
+    "concentration": 3.0,
+    "undirected": {
+     "mean_share": 0.05833333333333333,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "strongly_connected": {
+     "mean_share": 0.03333333333333333,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "receiver_phase": {
+     "mean_share": 0.05833333333333333,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "jitter_only": {
+     "mean_share": 0.075,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "counting_share": 0.019444444444444445,
+    "budget": {
+     "static_counting_share": 0.0125,
+     "effective_coupling": 0.23333333333333334,
+     "reference_coupling": 0.4472560975609756
+    },
+    "fluctuations": {
+     "susceptibility": 0.07494445455394043,
+     "independent_susceptibility": 0.37948539476424603,
+     "coherence_autocorrelation": 0.46377594060021915
+    }
+   }
+  ],
+  "emergence": [
+   {
+    "concentration": 3.0,
+    "undirected": {
+     "mean_share": 0.05833333333333333,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "strongly_connected": {
+     "mean_share": 0.025000000000000005,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "receiver_phase": {
+     "mean_share": 0.05833333333333333,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "jitter_only": {
+     "mean_share": 0.075,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "counting_share": 0.015277777777777779,
+    "budget": {
+     "static_counting_share": 0.0125,
+     "effective_coupling": 0.23333333333333334,
+     "reference_coupling": 0.4472560975609756
+    },
+    "fluctuations": {
+     "susceptibility": 0.3336405330676718,
+     "independent_susceptibility": 0.16665476150159508,
+     "coherence_autocorrelation": 0.23920903105684185
+    }
+   },
+   {
+    "concentration": 2.0,
+    "undirected": {
+     "mean_share": 0.075,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "strongly_connected": {
+     "mean_share": 0.041666666666666664,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "receiver_phase": {
+     "mean_share": 0.08333333333333333,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "jitter_only": {
+     "mean_share": 0.075,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "counting_share": 0.02638888888888889,
+    "budget": {
+     "static_counting_share": 0.03333333333333333,
+     "effective_coupling": 0.43333333333333335,
+     "reference_coupling": 0.43676470588235294
+    },
+    "fluctuations": {
+     "susceptibility": 0.16405853443985371,
+     "independent_susceptibility": 0.38553941736740666,
+     "coherence_autocorrelation": 0.49363481991352726
+    }
+   },
+   {
+    "concentration": 1.0,
+    "undirected": {
+     "mean_share": 0.30833333333333335,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "strongly_connected": {
+     "mean_share": 0.09166666666666667,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "receiver_phase": {
+     "mean_share": 0.3499999999999999,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "jitter_only": {
+     "mean_share": 0.8249999999999998,
+     "cycles_with_quorum": 3,
+     "cycles": 3
+    },
+    "counting_share": 0.11944444444444445,
+    "budget": {
+     "static_counting_share": 0.22916666666666666,
+     "effective_coupling": 2.2333333333333334,
+     "reference_coupling": 0.3375
+    },
+    "fluctuations": {
+     "susceptibility": 0.02367097979977973,
+     "independent_susceptibility": 0.15206608311003683,
+     "coherence_autocorrelation": 0.03977094933421459
+    }
+   },
+   {
+    "concentration": 0.0,
+    "undirected": {
+     "mean_share": 0.7833333333333332,
+     "cycles_with_quorum": 3,
+     "cycles": 3
+    },
+    "strongly_connected": {
+     "mean_share": 0.225,
+     "cycles_with_quorum": 0,
+     "cycles": 3
+    },
+    "receiver_phase": {
+     "mean_share": 1.0,
+     "cycles_with_quorum": 3,
+     "cycles": 3
+    },
+    "jitter_only": {
+     "mean_share": 1.0,
+     "cycles_with_quorum": 3,
+     "cycles": 3
+    },
+    "counting_share": 0.21527777777777776,
+    "budget": {
+     "static_counting_share": 0.4041666666666667,
+     "effective_coupling": 4.0,
+     "reference_coupling": 0.225
+    },
+    "fluctuations": {
+     "susceptibility": 0.09178758669021464,
+     "independent_susceptibility": 0.17228159886943673,
+     "coherence_autocorrelation": 0.9266352164672408
+    }
+   }
+  ]
+ }
+}

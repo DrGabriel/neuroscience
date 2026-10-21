@@ -39,6 +39,11 @@ connection is a component of one). Quorum holds in that cycle when the share is 
 connected component of the directed counting connections is recorded as a secondary measure; it is meaningful only on
 connectomes whose wiring is directed.
 
+Pair rules (Appendix C.13). Taking every directed arc as its own connection, as above, gives two populations linked
+both ways two chances to be joined in a cycle, and every human fibre is stored as two arcs. The giant component is
+therefore also read under the three pair rules of connection_pairs, with the same on-time arcs: one timing draw per
+anatomical connection (primary in C.13), both directions on time, and either direction on time (the reading above).
+
 Cycles. The model's time is dimensionless: only timing errors are converted from milliseconds to phase, so nothing in
 the model fixes how many time units one 25 ms cycle of the 40 Hz rhythm lasts. One cycle is therefore sampled per
 ReadoutSettings.cycle_interval, set by the study to the jitter correlation time τ, the time over which a
@@ -61,10 +66,10 @@ Dependencies: numpy, scipy.
 from __future__ import annotations
 
 import math
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum, StrEnum
 from fractions import Fraction
-from typing import Sequence
+from typing import Mapping, Sequence
 
 import numpy as np
 from scipy.sparse import coo_matrix
@@ -73,6 +78,7 @@ from scipy.special import erf, erfcx
 
 import comparisons
 import dpc_simulator as dpc
+from connection_pairs import AnatomicalConnections, PairRule
 import phase_dynamics as dynamics
 from connectomes import Connectome
 
@@ -163,9 +169,19 @@ class CycleSnapshot:
     phase_errors: np.ndarray
     # Every connection of the connectome, transmitting or not.
     connection_count: int
+    # Index in the connectome of each transmitting connection, and the connectome's anatomical connections; the pair
+    # rules are read only when both are given.
+    edges: np.ndarray | None = None
+    anatomical: AnatomicalConnections | None = None
 
     def counting_graph(self, counts: np.ndarray) -> CountingGraph:
         return CountingGraph(self.phases.size, self.sources[counts], self.targets[counts])
+
+    def on_time_arcs(self, counts: np.ndarray) -> np.ndarray:
+        """Over every arc of the connectome: whether it transmits and counts in this cycle."""
+        arcs = np.zeros(self.connection_count, dtype=bool)
+        arcs[self.edges[counts]] = True
+        return arcs
 
 
 def wrapped_phase(angles: np.ndarray) -> np.ndarray:
@@ -189,6 +205,15 @@ def counting_connections(timing_errors: np.ndarray, half_window: float) -> np.nd
 
 
 @dataclass(frozen=True)
+class PairRuleCycle:
+    """One cycle read under one pair rule, timed against the shared rhythm."""
+
+    giant_share: float
+    # Share of the anatomical connections that count.
+    counting_share: float
+
+
+@dataclass(frozen=True)
 class CycleReadout:
     giant_share: float
     strongly_connected_share: float
@@ -196,6 +221,21 @@ class CycleReadout:
     jitter_only_giant_share: float
     # Share of all connections of the connectome that count, timed against the shared rhythm.
     counting_share: float
+    pair_rules: Mapping[PairRule, PairRuleCycle] = field(default_factory=dict)
+
+
+def read_pair_rule(anatomical: AnatomicalConnections, on_time_arcs: np.ndarray, rule: PairRule) -> PairRuleCycle:
+    counts = anatomical.counting(on_time_arcs, rule)
+    graph = CountingGraph(anatomical.population_count, anatomical.lower[counts], anatomical.higher[counts])
+    return PairRuleCycle(graph.largest_component_share(ComponentKind.UNDIRECTED), int(counts.sum()) / anatomical.count)
+
+
+def read_pair_rules(snapshot: CycleSnapshot, on_time: np.ndarray) -> dict[PairRule, PairRuleCycle]:
+    """The giant component under every pair rule, from the connections on time for the shared rhythm."""
+    if snapshot.anatomical is None or snapshot.edges is None:
+        return {}
+    arcs = snapshot.on_time_arcs(on_time)
+    return {rule: read_pair_rule(snapshot.anatomical, arcs, rule) for rule in PairRule}
 
 
 def giant_share_for(snapshot: CycleSnapshot, half_window: float, reference: TimingReference) -> float:
@@ -212,6 +252,7 @@ def read_cycle(snapshot: CycleSnapshot, half_window: float) -> CycleReadout:
         receiver_phase_giant_share=giant_share_for(snapshot, half_window, TimingReference.RECEIVER_PHASE),
         jitter_only_giant_share=giant_share_for(snapshot, half_window, TimingReference.JITTER_ONLY),
         counting_share=int(on_time.sum()) / snapshot.connection_count,
+        pair_rules=read_pair_rules(snapshot, on_time),
     )
 
 
@@ -274,6 +315,20 @@ class ComponentSummary:
 
 
 @dataclass(frozen=True)
+class PairRuleSummary:
+    """One pair rule across the cycles held at one concentration."""
+
+    component: ComponentSummary
+    # Mean share of the anatomical connections that count.
+    counting_share: float
+
+    @classmethod
+    def of(cls, cycles: Sequence[PairRuleCycle], quorum_fraction: float) -> PairRuleSummary:
+        shares = [cycle.giant_share for cycle in cycles]
+        return cls(ComponentSummary.of(shares, quorum_fraction), float(np.mean([cycle.counting_share for cycle in cycles])))
+
+
+@dataclass(frozen=True)
 class FluctuationMeasurement:
     """Fluctuations of global coherence R over the measurement window.
 
@@ -304,6 +359,7 @@ class ConcentrationReadout:
     counting_share: float
     budget: ConnectionBudget
     fluctuations: FluctuationMeasurement
+    pair_rules: Mapping[PairRule, PairRuleSummary] = field(default_factory=dict)
 
     @property
     def holds_quorum(self) -> bool:
@@ -324,6 +380,7 @@ class CycleSampling:
     interval_steps: int
     # Every connection of the connectome, transmitting or not.
     connection_count: int
+    anatomical: AnatomicalConnections | None = None
 
 
 class CycleRecorder:
@@ -342,7 +399,10 @@ class CycleRecorder:
 
     def _snapshot(self, phases: np.ndarray, mean_field: complex) -> CycleSnapshot:
         c = self._drive.connectivity
-        return CycleSnapshot(phases, mean_field, c.sources, c.targets, self._drive.latest_phase_errors, self._sampling.connection_count)
+        sampling = self._sampling
+        return CycleSnapshot(
+            phases, mean_field, c.sources, c.targets, self._drive.latest_phase_errors, sampling.connection_count, c.edges, sampling.anatomical
+        )
 
 
 def independent_phase_susceptibility(mean_coherence: float, mean_second_harmonic: float) -> float:
@@ -394,6 +454,8 @@ class ConcentrationObservers:
         def summary(share_of: str) -> ComponentSummary:
             return ComponentSummary.of([getattr(c, share_of) for c in cycles], quorum_fraction)
 
+        rules = cycles[0].pair_rules if cycles else {}
+
         return ConcentrationReadout(
             concentration=self.concentration,
             undirected=summary("giant_share"),
@@ -403,6 +465,7 @@ class ConcentrationObservers:
             counting_share=float(np.mean([c.counting_share for c in cycles])),
             budget=self.budget,
             fluctuations=self.fluctuations.measurement(),
+            pair_rules={rule: PairRuleSummary.of([c.pair_rules[rule] for c in cycles], quorum_fraction) for rule in rules},
         )
 
 
@@ -415,13 +478,14 @@ class DpcReadoutNetwork(dynamics.PhaseNetwork):
         super().__init__(connectome, design)
         self._settings = settings
         self._total_weight = float(np.abs(connectome.weights.astype(float)).sum())
+        self._anatomical = AnatomicalConnections.of(connectome)
         self._observed: list[ConcentrationObservers] = []
 
     def _step_observers(self, concentration: float, drives: Sequence[dynamics.PhaseDrive]) -> Sequence[dynamics.StepObserver]:
         drive = next(d for d in drives if isinstance(d, dynamics.SynapticDrive))
         interval = self._settings.interval_steps(self._design.integration.time_step)
         half_window = self._settings.half_window(dynamics.reference_frequency_hz(self._design.dynamics, self._design.agent, concentration))
-        cycles = CycleRecorder(drive, CycleSampling(half_window, interval, self._connectome.edge_count))
+        cycles = CycleRecorder(drive, CycleSampling(half_window, interval, self._connectome.edge_count, self._anatomical))
         observers = ConcentrationObservers(
             concentration, self._budget(concentration, drive, half_window), cycles, FluctuationRecorder(self._connectome.node_count, interval)
         )
@@ -475,3 +539,8 @@ def dpc_loss_concentration(induction: Sequence[ConcentrationReadout]) -> float |
 def dpc_recovery_concentration(emergence: Sequence[ConcentrationReadout]) -> float | None:
     """Highest concentration of emergence at which DPC quorum has returned."""
     return dpc.recovery_concentration(emergence, holds_quorum)
+
+
+def pair_rule_loss_concentration(induction: Sequence[ConcentrationReadout], rule: PairRule) -> float | None:
+    """Last concentration of induction at which quorum under the pair rule still held; None if never lost or held."""
+    return dpc.loss_concentration(induction, lambda point: point.pair_rules[rule].component.holds_quorum)

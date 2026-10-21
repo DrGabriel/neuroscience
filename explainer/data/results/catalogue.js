@@ -121,6 +121,26 @@ globalThis.DPC_RESULTS_CATALOGUE = Object.freeze([
   "script": "data/results/current/disconnection_full_20261020T163516Z.js"
  },
  {
+  "identifier": "current/dpc_readout_full_20261020T224553Z",
+  "kind": "dpc_readout",
+  "label": "full",
+  "report_set": "current",
+  "set_note": "",
+  "started_utc": "2026-10-20T22:45:53.054362+00:00",
+  "machine": "Mac14,9 · Apple M2 Pro",
+  "git_commit": "adc63f696a87c72172329b512f02b7e7dc7ad8fa",
+  "working_tree_dirty": false,
+  "checks": {
+   "checks": 80,
+   "holding_in_every_run": 43,
+   "holding_in_none": 23
+  },
+  "has_curves": false,
+  "json_link": "../simulator/results/dpc_readout_full_20261020T224553Z.json",
+  "markdown_link": "../simulator/results/dpc_readout_full_20261020T224553Z.md",
+  "script": "data/results/current/dpc_readout_full_20261020T224553Z.js"
+ },
+ {
   "identifier": "current/glia_full_20261020T011431Z",
   "kind": "glia",
   "label": "full",

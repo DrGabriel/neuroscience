@@ -17,6 +17,7 @@
     "prespecified:full": "studyPrespecified",
     "learned_timing:full": "studyLearnedTiming",
     "disconnection:full": "studyDisconnection",
+    "dpc_readout:full": "studyDpcReadout",
   });
 
   function verdictOf(holding, applicable) {
