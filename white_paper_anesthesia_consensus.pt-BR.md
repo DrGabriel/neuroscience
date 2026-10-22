@@ -43,7 +43,7 @@ Esta é uma **hipótese**, não um teorema: seu valor está em saber se suas pre
 | P3 Quórum | Qualquer experiência exige um componente gigante de conexões temporalmente coerentes que contenha pelo menos uma fração $q^*$ das populações; a consciência conectada (relatável, responsiva) exige, além disso, que as populações sensoriais pertençam a ele | Como em P2 |
 | P4 Dois modos de falha | Os anestésicos eliminam conexões temporalmente coerentes ao fazer a transmissão falhar ou ao tornar variável, de um ensaio para outro, a temporização dos sinais entre áreas em relação ao ritmo compartilhado, e não a temporização de neurônios isolados | A falha de transmissão abole o quórum por construção; a variabilidade temporal o faz no conectoma humano apenas sob regras de contagem adotadas depois de uma falha |
 | P5 Retroalimentação da referência | O ritmo compartilhado é sustentado pelo próprio grupo coerente, de modo que um grupo menor o enfraquece | Produz inércia no modelo de percolação depois de calibrado; ausente do modelo de osciladores |
-| P7 Alerta | Os sistemas de alerta promotores da vigília sustentam parte do ritmo compartilhado independentemente da coerência cortical | Presente nas equações; a recuperação causada pelo alerta em concentração fixa não foi simulada |
+| P7 Alerta | Os sistemas de alerta promotores da vigília sustentam parte do ritmo compartilhado independentemente da coerência cortical | Presente nas equações; a recuperação causada pelo alerta em concentração fixa reproduzida no modelo de percolação, uma verificação de consistência |
 | P6 Dinâmica padrão (auxiliar) | Quando o quórum se perde, o córtex passa à sua própria dinâmica local, específica de cada agente | Não testado |
 | P8 Degradação gradual (auxiliar) | À medida que a folga temporal diminui, o ritmo desacelera e a atividade passa a ocorrer em rajadas | Sua previsão distintiva falhou |
 | P9 Controle glial (auxiliar) | Alças gliais mais lentas mantêm as condições para a coerência temporal | Apenas verificações de consistência; seu único teste não poderia ter passado |
@@ -231,7 +231,7 @@ Sob propofol, as respostas do lobo temporal à fala persistem, enquanto as respo
 
 ### 5.4 Despertar e inércia neural
 
-No modelo de percolação, o ramo de $S$ baixo persiste até $c_{\text{on}}$ (Seção 4.3), reproduzindo a histerese medida depois que $\lambda$ é ajustado: uma calibração, e não uma explicação. O despertar também é ativo: o metilfenidato (Solt et al., 2011) e a estimulação dopaminérgica (Taylor et al., 2016) e colinérgica pré-frontal (Pal et al., 2018) restauram um comportamento semelhante ao da vigília durante a administração contínua de anestésico em roedores, e a estimulação talâmica central restaura o alerta em macacos anestesiados (Redinbaugh et al., 2020; Bastos et al., 2021), de modo liga-desliga e com assinaturas de acesso consciente (Tasserie et al., 2022). P7 explica isso [H]: elevar o alerta reduz $\sigma_{\text{ref}} = \lambda(1 - S)(1 - A)$, de modo que $S$ pode subir acima de $q^*$ com $p(c)$ e $\sigma_0(c)$ inalterados. Isso decorre da equação e ainda não foi simulado [C.14 RESULT PENDING]. Entre $c_{\text{on}}$ e $c_{\text{off}}$, onde o modelo de percolação tem dois estados estáveis, um breve estímulo de despertar deveria restaurar um quórum que dura mais que ele; acima de $c_{\text{off}}$, o quórum deveria voltar apenas enquanto o estímulo dura (previsão 15). O modelo de fase não mostra inércia robusta, de modo que isso se apoia apenas no modelo de percolação. A CPD propõe [H] que os estados metaestáveis da recuperação (Hudson et al., 2014), em que a ativação subcortical e límbica precede a recuperação frontoparietal (Långsjö et al., 2012), sejam componentes gigantes de tamanho intermediário, e que esse componente, ao contrário da correlação média entre regiões, que permanece baixa por horas em camundongos (Zhang et al., 2026), volte junto com a responsividade. A retroalimentação forte também pode prender redes pequenas do modelo na inconsciência sem nenhum agente presente, uma pista notada depois dos resultados (Apêndice F.6). A micróglia é uma contribuinte candidata (P9): a perda genética de seu receptor P2Y12 acelera a recuperação (Cao et al., 2023).
+No modelo de percolação, o ramo de $S$ baixo persiste até $c_{\text{on}}$ (Seção 4.3), reproduzindo a histerese medida depois que $\lambda$ é ajustado: uma calibração, e não uma explicação. O despertar também é ativo: o metilfenidato (Solt et al., 2011) e a estimulação dopaminérgica (Taylor et al., 2016) e colinérgica pré-frontal (Pal et al., 2018) restauram um comportamento semelhante ao da vigília durante a administração contínua de anestésico em roedores, e a estimulação talâmica central restaura o alerta em macacos anestesiados (Redinbaugh et al., 2020; Bastos et al., 2021), de modo liga-desliga e com assinaturas de acesso consciente (Tasserie et al., 2022). P7 explica isso [H]: elevar o alerta reduz $\sigma_{\text{ref}} = \lambda(1 - S)(1 - A)$, de modo que $S$ pode subir acima de $q^*$ com $p(c)$ e $\sigma_0(c)$ inalterados. No modelo de percolação, um pulso de impulso de alerta restaura o quórum em concentração fixa em todas as sementes, em todos os tamanhos de rede, uma verificação de consistência da equação, e não um teste (Apêndice C.14). Entre $c_{\text{on}}$ e $c_{\text{off}}$, onde o modelo de percolação tem dois estados estáveis, um breve estímulo de despertar deveria restaurar um quórum que dura mais que ele; acima de $c_{\text{off}}$, o quórum deveria voltar apenas enquanto o estímulo dura (previsão 15). O modelo de fase não mostra inércia robusta, de modo que isso se apoia apenas no modelo de percolação. A CPD propõe [H] que os estados metaestáveis da recuperação (Hudson et al., 2014), em que a ativação subcortical e límbica precede a recuperação frontoparietal (Långsjö et al., 2012), sejam componentes gigantes de tamanho intermediário, e que esse componente, ao contrário da correlação média entre regiões, que permanece baixa por horas em camundongos (Zhang et al., 2026), volte junto com a responsividade. A retroalimentação forte também pode prender redes pequenas do modelo na inconsciência sem nenhum agente presente, uma pista notada depois dos resultados (Apêndice F.6). A micróglia é uma contribuinte candidata (P9): a perda genética de seu receptor P2Y12 acelera a recuperação (Cao et al., 2023).
 
 ### 5.5 Delírio do despertar [H]
 
@@ -276,6 +276,7 @@ As simulações perguntam se os modelos se comportam como a hipótese diz, e nã
 | A variabilidade temporal abole o quórum, critério de coerência (T2b) | Verificação de construção | Sim | Não: o erro excede um ciclo | 20/20 | 6/6 | 20/20 | C.3 |
 | O mesmo, leitura da CPD, bastando um dos sentidos de uma conexão chegar a tempo (T2b-D) | Teste | Sim | Sim | 20/20, a 1,21 CE50 | 6/6, a 1,10 | **0/20, falha** em todas as condições (componente gigante de 0,645 a 3 CE50) | C.12, C.13 |
 | O mesmo, um sorteio de temporização por conexão (T2b-1); os dois sentidos (sem veredicto) | Teste | Sim, depois da falha de T2b-D e de um diagnóstico *post hoc* | Sim, embora em grande parte previsível | 20/20, a 0,903; os dois sentidos, 0,708 | 6/6, a 1,000; os dois, 1,000 | 20/20, a 1,15; os dois sentidos, 0,60 | C.13 |
+| O resultado humano com qualquer um dos sentidos, em função da reciprocidade e do erro temporal máximo | Estimativa estática *post hoc*, sem veredicto | Sim, depois de C.13 | Não se aplica | | | Quórum mantido apenas acima de uma fração recíproca de cerca de 0,62 e, com todas as conexões nos dois sentidos, apenas abaixo de um erro temporal máximo de cerca de 49,5 ms (40 ms supostos) | C.14 |
 | O mesmo, com a temporização avaliada no receptor e os erros reduzidos a um ciclo | Leitura secundária | Sim | Sim | Nunca abolido, 0/20 | 0/6 | 0/20 | C.12 |
 | Os osciladores antecipam a perda por temporização (T0b-D) | Teste | Sim | Sim | 9/20, falha | 0/6, falha | 0/20, falha | C.12 |
 | A coerência se perde antes do quórum sob variabilidade temporal | Medição | Sim | Não se aplica | 0,650 contra 0,903 CE50 | 0,600 contra 1,000 | 0,700 contra 1,150 | C.13 |
@@ -283,19 +284,21 @@ As simulações perguntam se os modelos se comportam como a hipótese diz, e nã
 | A perda de coerência é do tipo sincronização (SP2) | Teste | Sim | Sim | 20/20 | 6/6 | 20/20 | C.12 |
 | O limiar de quórum decorre da distribuição de graus | Verificação de consistência | Não | Sim | Aproximadamente: 2,0% acima da estimativa (10 sorteios), dentro do erro amostral | 5,5% acima, além dele | 3,4% acima, dentro dele | B.5 |
 | O mesmo, mantendo a direção | Medição | Não | Não se aplica | 1,8 vez mais conexões | 3,4 vezes | Nenhuma direção medida | B.5 |
+| O limiar dirigido decorre da distribuição de graus de entrada e de saída | Estimativa, sem veredicto | Sim | Não se aplica | Estimativa de 0,91 do limiar medido | 0,96 | 0,96 | C.14 |
 | A conectividade importa além da distribuição de graus (WN, GN) | Teste | Sim | Sim | 2/20, falha | Não executado | 0/20 a 3/20, falha | C.12 |
 | As flutuações têm um pico no colapso (T1) | Teste | Sim | Sim | 7/20, falha | 0/6 | 5/20 | C.3 |
 | As flutuações aumentam dez vezes em relação à vigília antes do limiar (T1b; T1c) | *Post hoc*; T1c, um teste | T1c, em sementes não usadas no estudo que o sugeriu | Sim, mas inflado por um valor de vigília próximo de zero | T1b 18/20; T1c 16/20 | 6/6; 6/6 | 20/20; 20/20 | C.3, C.7 |
 | As flutuações excedem as de fases independentes (T1d); tornam-se mais lentas no limiar (T1e) | Teste | Sim | Sim, mas os critérios são pouco exigentes (limitação 33) | T1d 17/20; T1e 20/20 | 6/6; 6/6 | 16/20; 20/20 | C.12 |
 | O excesso cresce com o tamanho do conectoma (T1f; entre conectomas, e não um teste de tamanho finito) | Teste | Sim | Sim | Não executado | 6/6 (contra o humano) | 13/20, falha (contra *C. elegans*) | C.12 |
-| A retroalimentação torna a transição mais abrupta (C4) | Verificação de consistência | Não | Dificilmente | 19/20 com 302 nós, todas nos tamanhos maiores | | | B.4 |
-| O dano aos *hubs* reduz a concentração de perda mais do que o dano aleatório (C5) | Verificação de consistência | Não | Sim | Todas as sementes com $\lambda$ calibrado para 1,08; 9 de 20 com 10.000 nós com 1,11 | | | B.4, D |
-| O alerta reduzido retarda o despertar mais do que a indução (C6); a ação sobre o alerta não é necessária (C7) | Verificações de consistência | Não | Não | Todas as sementes | | | B.4 |
-| Inércia neural, modelo de percolação (C2, C3, calibração) | Verificações de consistência; calibração | Não | Não | Razões de 1,07 a 1,63 reproduzidas; a de 2,85 do halotano não (teto de 2,04 a 2,40); $c_{\text{off}} \approx$ 0,88 e $c_{\text{on}} \approx$ 0,83 CE50 com 1.000.000 de nós | | | B.3, B.4 |
+| A retroalimentação torna a transição mais abrupta (C4) | Verificação de consistência | Não; a repetição com sementes novas, sim | Dificilmente | 19/20 com 302 nós, todas nos tamanhos maiores; todas as sementes em todos os tamanhos com sementes novas | | | B.4, C.14 |
+| O dano aos *hubs* reduz a concentração de perda mais do que o dano aleatório (C5) | Verificação de consistência | Não; a repetição com sementes novas, sim | Sim | Todas as sementes com $\lambda$ calibrado para 1,08; 9 de 20 com 10.000 nós com 1,11; com sementes novas, 19/20 com 302 nós, o que falha na regra de todas as sementes, e todas as sementes nos tamanhos maiores | | | B.4, C.14, D |
+| O alerta reduzido retarda o despertar mais do que a indução (C6); a ação sobre o alerta não é necessária (C7) | Verificações de consistência | Não; a repetição com sementes novas, sim | Não | Todas as sementes, também com sementes novas | | | B.4, C.14 |
+| Inércia neural, modelo de percolação (C2, C3, calibração) | Verificações de consistência; calibração | Não; a repetição com sementes novas, sim | Não | Razões de 1,07 a 1,63 reproduzidas nas redes de calibração; a de 2,85 do halotano não (teto de 2,04 a 2,40); $c_{\text{off}} \approx$ 0,88 e $c_{\text{on}} \approx$ 0,83 CE50 com 1.000.000 de nós. Com sementes novas, a razão calibrada para 1,08 é 1,071 com 10.000 nós e 1,066 com 1.000.000, dentro da faixa publicada em 9 de 20 sementes nesse tamanho | | | B.3, B.4, C.14 |
+| O alerta restaura o quórum em concentração fixa, que dura mais que o pulso dentro da janela e não acima dela (P15a, P15b; previsão 15) | Verificações de consistência | Sim | Não | 20/20 em todos os tamanhos; janela de 0,057 CE50 de largura em torno de 0,854 com 1.000.000 de nós | | | C.14 |
 | O mesmo nos grafos dos conectomas (PI1, PI2; PI4, de validação reservada) | Teste | Sim | Sim | 20/20; PI4 13/20, falha | Sem inércia | 20/20; PI4 17/20 | C.12 |
 | Inércia neural, modelo de fase (S3; I1, I2) | Teste | I1, I2 | Sim | S3 2/20; I1 0/10, I2 0/20 | S3 0/6 | S3 5/20; I1 0/10, I2 0/20 | C.2, C.3, C.12 |
-| A retroalimentação forte prende redes pequenas na inconsciência em concentração zero (O1, O2) | Teste, sem veredicto | Não | Sim | 4/20 com 302 nós, 2/20 com 1.000 (O2: 4/20 em ambos), nenhuma nos tamanhos maiores | | | B.4 |
-| O sono perde o quórum com a fração humana de estados DOWN (O4, O5), e não com a de rato (O3) | Teste | Não | Sim | Fração limiar de 0,152; O3 0/20, O4, O5 20/20 em todos os tamanhos; entre as duas frações em 6 das 14 configurações fora da referência que podem afetar o sono | | | B.4, B.6 |
+| A retroalimentação forte prende redes pequenas na inconsciência em concentração zero (O1, O2) | Teste, sem veredicto | Não | Sim | 4/20 com 302 nós, 2/20 com 1.000 (O2: 4/20 em ambos), nenhuma nos tamanhos maiores; com sementes novas, 2/20 e 1/20 (O2: 6/20 e 3/20) | | | B.4, C.14 |
+| O sono perde o quórum com a fração humana de estados DOWN (O4, O5), e não com a de rato (O3) | Teste | Não | Sim | Fração limiar de 0,152; O3 0/20, O4, O5 20/20 em todos os tamanhos; entre as duas frações em 6 das 14 configurações fora da referência que podem afetar o sono; com sementes novas, O4 19/20 com 302 nós | | | B.4, B.6, C.14 |
 | Verificações gliais (M1, G1 a G3); os astrócitos restauram o quórum no sono (A1) | Verificações de consistência; A1, verificação de construção | Sim | Não; A1 não poderia passar | Todas as sementes; A1 0/20 | | | B.7 |
 | Tempos de chegada aprendidos tornam inofensivos os atrasos constantes (L1 a L4) | Teste | Sim | Sim | L1, L4 0/20; L2 20/20, só porque o quórum foi perdido antes | Não executado | L1, L3, L4 0/20; L2 20/20 | C.10 |
 | Desvios temporais constantes são inofensivos sem aprendizado (S4; D1) | Comparação *post hoc* | Não | Sim | Perda mais precoce do que com *jitter* em 20/20 | Mesmo passo em 6/6 | Mais precoce em 18/20; atrasos: 1,16 em vez de 1,57 CE50 | C.3, F.4 |
@@ -313,10 +316,10 @@ As simulações perguntam se os modelos se comportam como a hipótese diz, e nã
 | Teste | Dados | Confirmatório (código registrado) | Exploratório (desvios documentados) |
 |---|---|---|---|
 | OD1, o componente gigante colapsa num limiar (previsão 1) | RMf de Michigan | Não avaliável: o código rejeitou 19 dos 26 participantes | Pelo ponto de corte descritivo fixado em E.5, o componente gigante permaneceu intacto (mediana de 0,95 do valor de vigília; pelo menos 0,9 em 21 de 24 participantes), com a rede de vigília quase totalmente conectada, de modo que a medida tinha pouca margem para cair; teste de inclinação inconclusivo |
-| OD2a, OD2b, desaceleração antes da LOR (previsão 2) | RMf de Michigan; ECoG do Neurotycho | OD2a não avaliável; OD2b inconclusivo | Ambos inconclusivos |
-| OD3, a variabilidade do atraso acompanha a LOR entre agentes (previsão 3, forma com a atividade em curso) | ECoG do Neurotycho | Inconclusivo | Inconclusivo; área sob a curva característica de operação do receptor (AUC) de 0,92 sob cetamina, 0,47 sob propofol e 0,44 sob medetomidina (para a medetomidina, um agonista α2, não se prevê a abolição do quórum) |
+| OD2a, OD2b, desaceleração antes da LOR (previsão 2) | RMf de Michigan; ECoG do Neurotycho | OD2a não avaliável; OD2b inconclusivo (intervalo de 95% entre macacos de −0,51 a 0,52) | Ambos inconclusivos (OD2b entre macacos de −0,47 a 0,39; Apêndice E.15) |
+| OD3, a variabilidade do atraso acompanha a LOR entre agentes (previsão 3, forma com a atividade em curso) | ECoG do Neurotycho | Inconclusivo (intervalo de 95% entre macacos de −0,25 a 0,22) | Inconclusivo; área sob a curva característica de operação do receptor (AUC) de 0,92 sob cetamina, 0,47 sob propofol e 0,44 sob medetomidina (para a medetomidina, um agonista α2, não se prevê a abolição do quórum); entre macacos, de −0,26 a 0,24 (Apêndice E.15) |
 | OD4, histerese entre indução e despertar | RMf de Michigan | Não avaliável | Inconclusivo; não interpretável (Apêndice E.14) |
-| OD5, a variabilidade da latência aumenta mais do que a latência (previsão 8, secundária) | ECoG do PRIOS | Relatado sem veredicto | Relatado sem veredicto; não interpretável como variabilidade temporal sem um controle da relação sinal-ruído [E.15 RESULT PENDING] |
+| OD5, a variabilidade da latência aumenta mais do que a latência (previsão 8, secundária) | ECoG do PRIOS | Relatado sem veredicto | Relatado sem veredicto; não interpretável como variabilidade temporal: a relação sinal-ruído (SNR) não foi menor sob propofol (mediana do grupo de 3,54, contra 3,10 em vigília), e a comparação com SNR igualada foi não informativa pela regra fixada de antemão (Apêndice E.15) |
 
 ![Figura 1. Fração coerente durante a indução e o despertar no modelo de percolação, sem e com retroalimentação da referência calibrada.](figures/figure_1_percolation_hysteresis.png)
 
@@ -326,7 +329,7 @@ As simulações perguntam se os modelos se comportam como a hipótese diz, e nã
 
 ![Figura 4. Propagação de um estímulo sensorial além das populações estimuladas durante a indução (média ± DP entre sementes).](figures/figure_4_broadcast.png)
 
-**Como ler a tabela.** Três resultados têm mais peso. O resultado humano para a variabilidade temporal depende de como se conta uma conexão inferida da ressonância magnética de difusão (RM de difusão), que não registra direção, e, portanto, da reciprocidade não medida das conexões corticais humanas (conexões num único sentido são comuns no córtex de macaco; Markov et al., 2014), do erro temporal máximo livre de 40 ms e da regra de P2 segundo a qual um sinal atrasado é perdido. O resultado das flutuações sobrevive a uma comparação com fases independentes, mas com um critério pouco exigente e sobre a coerência global, e não sobre $S$. A inércia é uma propriedade apenas do modelo de percolação. A cetamina continua sendo o principal problema em aberto: nada nos modelos explica por que a complexidade e os sonhos são preservados sob ela e não sob propofol (Sarasso et al., 2015). Os relatos detalhados estão no Apêndice F.7.
+**Como ler a tabela.** Três resultados têm mais peso. O resultado humano para a variabilidade temporal depende de como se conta uma conexão inferida da ressonância magnética de difusão (RM de difusão), que não registra direção, e, portanto, da reciprocidade não medida das conexões corticais humanas (conexões num único sentido são comuns no córtex de macaco; Markov et al., 2014), do erro temporal máximo livre de 40 ms e da regra de P2 segundo a qual um sinal atrasado é perdido; numa estimativa estática, o resultado com qualquer um dos sentidos exige que mais de cerca de 62% das conexões humanas sejam recíprocas e um erro temporal máximo abaixo de cerca de 49,5 ms (Apêndice C.14). O resultado das flutuações sobrevive a uma comparação com fases independentes, mas com um critério pouco exigente e sobre a coerência global, e não sobre $S$. A inércia é uma propriedade apenas do modelo de percolação, e, em redes não usadas na calibração, sua razão fica um pouco abaixo do alvo da calibração (Apêndice C.14). A cetamina continua sendo o principal problema em aberto: nada nos modelos explica por que a complexidade e os sonhos são preservados sob ela e não sob propofol (Sarasso et al., 2015). Os relatos detalhados estão no Apêndice F.7.
 
 ---
 ## 7. Principais objeções e respostas
@@ -393,7 +396,7 @@ Os anestésicos interrompem o movimento de órgãos e bloqueiam potenciais de a�
 | 14 | Com a mesma profundidade de ondas lentas, a responsividade volta mais rápido e com menos histerese ao acordar do sono NREM do que no despertar da anestesia (P7) | Estímulos de despertar graduados no sono N3 comparados com a redução do propofol em degraus nos mesmos voluntários | Retorno igual ou mais lento a partir do sono; a parte distintiva é a histerese menor |
 | 15 | Entre as concentrações de recuperação e de perda, um breve estímulo de despertar restaura uma responsividade que dura mais que ele; acima da concentração de perda, a responsividade volta apenas enquanto o estímulo dura (P5, P7) | Estimulação talâmica central ou colinérgica em animais, em concentrações de equilíbrio, dentro e fora da janela entre indução e despertar no mesmo animal, comparando por quanto tempo a responsividade persiste depois do estímulo | Responsividade que nunca dura mais que o estímulo dentro da janela, ou que dura mais que ele igualmente fora dela |
 
-**Quais previsões discriminam.** O comportamento de limiar de uma rede funcional (previsão 1) também é esperado pelo modelo de Zhou et al. (2015) e pela ignição do GNW; o aumento da variância antes de uma transição (previsão 2) é genérico (Scheffer et al., 2009); a vulnerabilidade dos *hubs* (previsão 6) decorre da percolação em redes de cauda pesada (Albert et al., 2000). A previsão 15 também não é específica da CPD: qualquer explicação com dois estados estáveis numa faixa de concentrações a prevê, como a alternância impulsionada por ruído numa paisagem de múltiplos poços (Proekt e Hudson, 2018) ou a retroalimentação adaptativa em redes de osciladores (Kim et al., 2018); ela separa explicações biestáveis de monoestáveis. Sua janela é estreita (cerca de 0,83 a 0,88 CE50 no modelo de percolação), de modo que a concentração precisa ser mantida dentro de poucos por cento [C.14 RESULT PENDING]. Duas previsões são específicas da CPD, e apenas em parte. Que a variabilidade, de um ensaio para outro, da latência evocada entre áreas, e não a latência média, a amplitude da resposta nem a coerência dos ritmos em curso, acompanhe a perda de responsividade (previsões 3 e 8) decorre de P2 tal como a comunicação por coerência o aplicaria (Fries, 2015; Womelsdorf et al., 2007); o acréscimo da CPD é que essa variabilidade, por meio de P3, fixa um limiar de rede.
+**Quais previsões discriminam.** O comportamento de limiar de uma rede funcional (previsão 1) também é esperado pelo modelo de Zhou et al. (2015) e pela ignição do GNW; o aumento da variância antes de uma transição (previsão 2) é genérico (Scheffer et al., 2009); a vulnerabilidade dos *hubs* (previsão 6) decorre da percolação em redes de cauda pesada (Albert et al., 2000). A previsão 15 também não é específica da CPD: qualquer explicação com dois estados estáveis numa faixa de concentrações a prevê, como a alternância impulsionada por ruído numa paisagem de múltiplos poços (Proekt e Hudson, 2018) ou a retroalimentação adaptativa em redes de osciladores (Kim et al., 2018); ela separa explicações biestáveis de monoestáveis. Sua janela é estreita: no modelo de percolação em grafos aleatórios, tem 0,057 CE50 de largura em torno de 0,854 CE50 com 1.000.000 de nós, de modo que um experimento precisa manter a concentração a cerca de 3% do alvo (cerca de 6% em redes de 302 nós; Apêndice C.14). Duas previsões são específicas da CPD, e apenas em parte. Que a variabilidade, de um ensaio para outro, da latência evocada entre áreas, e não a latência média, a amplitude da resposta nem a coerência dos ritmos em curso, acompanhe a perda de responsividade (previsões 3 e 8) decorre de P2 tal como a comunicação por coerência o aplicaria (Fries, 2015; Womelsdorf et al., 2007); o acréscimo da CPD é que essa variabilidade, por meio de P3, fixa um limiar de rede.
 
 Um resultado falseador nulo (previsões 1, 2, 4, 6, 10, 11, 12 e 14) só será declarado por meio de um teste de equivalência contra um menor tamanho de efeito de interesse fixado antes da coleta dos dados (dois testes unilaterais; Lakens et al., 2018). Para a previsão 1, comportamento de limiar significa que uma sigmoide se ajusta ao componente gigante em função da concentração melhor do que uma reta, pelo critério de informação bayesiano; como aplicar um limiar a uma conectividade que declina de forma contínua também produz uma sigmoide, e a análise de percolação de redes funcionais com limiar é um método estabelecido (Gallos et al., 2012), o componente gigante é calculado em vários limiares, junto com a conectividade sem limiar, e o comportamento de limiar só é declarado se o colapso for mais abrupto do que a aplicação do limiar produz por si só. A densidade de arestas precisa ser fixada de modo que a rede de vigília fique perto de seu próprio limiar de percolação; uma rede muito acima dele tem pouca margem para cair, como no teste de RMf da Seção 6.
 
@@ -421,10 +424,10 @@ O PCI (Casali et al., 2013), a complexidade de Lempel-Ziv normalizada (Lempel e 
 Os itens mantêm a numeração usada nos apêndices; o texto completo de cada um, com seus valores, está no Apêndice F.9.
 
 1. **Palavras emprestadas.** Consenso e quórum são usados apenas em seu sentido cotidiano (Seção 1.4); as previsões são formuladas em termos neurofisiológicos.
-2. **Parâmetros.** $W$ e $\sigma_b$ são supostos, e não medidos entre áreas; $\lambda$ é calibrado por uma única razão (1,08), adotada depois de vistos os resultados com um alvo anterior (1,11); as razões humanas são alvos fracos; o modelo não alcança os 2,85 do halotano.
+2. **Parâmetros.** $W$ e $\sigma_b$ são supostos, e não medidos entre áreas; $\lambda$ é calibrado por uma única razão (1,08), adotada depois de vistos os resultados com um alvo anterior (1,11); as razões humanas são alvos fracos; o modelo não alcança os 2,85 do halotano; em redes não usadas na calibração, o $\lambda$ calibrado dá 1,071, e não 1,08, com 10.000 nós, e 1,066 com 1.000.000, logo abaixo da faixa publicada (Apêndice C.14).
 3. **Topologia simplificada.** A percolação em grafos aleatórios ignora a disposição espacial, a modularidade, a direção e a dinâmica sináptica, e trata um feixe de fibras como uma única conexão do tipo tudo ou nada.
 4. **Fatores de confusão na medição.** A sincronia de fase do EEG é afetada pela condução de volume, pela escolha da referência e pela relação sinal-ruído.
-5. **Cetamina.** A explicação pela via sensorial se mantém em um conectoma; a explicação pela retroalimentação falhou; nenhuma das duas explica a complexidade preservada; o veredicto humano para as falhas de temporização depende da regra de contagem.
+5. **Cetamina.** A explicação pela via sensorial se mantém em um conectoma; a explicação pela retroalimentação falhou; nenhuma das duas explica a complexidade preservada; o veredicto humano para as falhas de temporização depende da regra de contagem e, sob a regra de qualquer um dos sentidos, da reciprocidade não medida das conexões humanas e do erro temporal máximo (Apêndice C.14).
 6. **Criticalidade.** Se o córtex opera perto da criticalidade é uma questão em aberto (Beggs e Plenz, 2003; Tagliazucchi et al., 2016; Toker et al., 2022); dois estudos situam o ponto crítico entre estados sincronizados e dessincronizados, e não entre quiescência e atividade (di Santo et al., 2018; Fontenele et al., 2019), e a inconsciência anestésica é caracterizada pelo afastamento da criticalidade de avalanches e da borda do caos no EEG em repouso (Maschke et al., 2024). A CPD exige apenas um limiar no subgrafo temporalmente coerente.
 7. **Experiência.** A CPD trata das condições para a experiência e o relato, e não de por que a integração é acompanhada de experiência.
 8. **O alerta como um único número.** Sem alerta, o modelo pode permanecer inconsciente em concentração zero; com ele, algumas redes pequenas ainda permanecem; o nível de alerta é livre.
@@ -448,7 +451,7 @@ Os itens mantêm a numeração usada nos apêndices; o texto completo de cada um
 26. **Mais falha de transmissão do que a medida.** O modelo precisa, na maioria dos casos, de mais falha do que a única medição comparável, e essa comparação não é entre grandezas equivalentes.
 27. **No modelo, os ratos deveriam permanecer conscientes no sono NREM.**
 28. **As sementes são realizações de um único diagrama de conexões,** e não cérebros independentes.
-29. **Os resultados perto dos limites da calibração são frágeis,** e a validação com 10.000 nós compartilha sementes com a calibração.
+29. **Os resultados perto dos limites da calibração são frágeis.** A validação com 10.000 nós compartilhava sementes com a calibração; repetida com sementes disjuntas, C5 falhou em 1 de 20 sementes com 302 nós, e a razão de inércia ficou abaixo do alvo da calibração (Apêndice C.14).
 30. **P6 não é testado.**
 31. **A medida de difusão global tem um piso** de travamento ao acaso.
 32. **O modelo de osciladores não implementava P2 e P3 tal como formulados** até a leitura do Apêndice C.12.
@@ -462,7 +465,7 @@ Os itens mantêm a numeração usada nos apêndices; o texto completo de cada um
 
 **O que se afirma.** A experiência exige que os sinais entre áreas cerebrais cheguem dentro de uma janela curta de um ritmo compartilhado, e que as conexões que o fazem liguem um componente gigante que contenha pelo menos um quórum das populações; a consciência conectada e responsiva exige, além disso, que as populações sensoriais pertençam a ele. Os anestésicos, qualquer que seja seu alvo molecular, eliminariam essas conexões por falha de transmissão, por variabilidade temporal entre áreas de um ensaio para outro, ou por ambas, e também suprimindo os sistemas de alerta que sustentam parte do ritmo. O ritmo compartilhado é sustentado pelo próprio grupo coerente. As palavras consenso e quórum carregam apenas seu sentido cotidiano. Três outras propostas (dinâmica padrão, degradação gradual e controle glial) são auxiliares.
 
-**O que os modelos mostraram.** As simulações mostram que o mecanismo pode operar, e não que os cérebros o utilizam, e apenas para uma janela temporal entre áreas comparável ao *jitter* temporal, de cerca de 3 ms cada, nenhum dos dois medido entre áreas. Lida com a janela e o quórum da própria CPD, a falha de transmissão abole o quórum em três conectomas reais, o que, com as doses escolhidas, não poderia deixar de fazer, e na maioria dos casos apenas com mais falha de transmissão do que a medida. A variabilidade temporal sozinha abole o quórum nos dois conectomas de invertebrados; no conectoma humano, não o aboliu sob a regra de contagem fixada de antemão e o aboliu sob duas regras adotadas depois dessa falha, com o erro temporal máximo escolhido de 40 ms, de modo que o veredicto humano depende da reciprocidade não medida das conexões corticais humanas. Ela só o faz porque a CPD conta como perdido um sinal com mais de meio ciclo de atraso, como P2 exige; avaliada no receptor, com todo erro reduzido a um ciclo, nunca o faz. O limiar de quórum de cada conectoma é aproximado por sua distribuição de graus, com diferença de 2,0 a 5,5%, como se espera de redes com caminhos curtos. As flutuações no limiar excedem as de fases independentes, um critério pouco exigente. A inércia neural aparece apenas no modelo de percolação, depois de calibrado e abaixo de um teto. Seis mecanismos propostos não sobreviveram: o congestionamento como fonte da excitação da indução, a explicação da cetamina pelas conexões de retroalimentação, as ilhas locais de coerência, o mecanismo específico da degradação gradual, a inércia no modelo de fase e os tempos de chegada aprendidos como forma de tornar inofensivos os atrasos constantes. A cetamina continua sendo a principal lacuna: os modelos não explicam por que a complexidade e os sonhos são preservados sob ela.
+**O que os modelos mostraram.** As simulações mostram que o mecanismo pode operar, e não que os cérebros o utilizam, e apenas para uma janela temporal entre áreas comparável ao *jitter* temporal, de cerca de 3 ms cada, nenhum dos dois medido entre áreas. Lida com a janela e o quórum da própria CPD, a falha de transmissão abole o quórum em três conectomas reais, o que, com as doses escolhidas, não poderia deixar de fazer, e na maioria dos casos apenas com mais falha de transmissão do que a medida. A variabilidade temporal sozinha abole o quórum nos dois conectomas de invertebrados; no conectoma humano, não o aboliu sob a regra de contagem fixada de antemão e o aboliu sob duas regras adotadas depois dessa falha, com o erro temporal máximo escolhido de 40 ms, de modo que o veredicto humano depende da reciprocidade não medida das conexões corticais humanas (numa estimativa estática, o quórum só sobrevive se mais de cerca de 62% delas forem recíprocas). Ela só o faz porque a CPD conta como perdido um sinal com mais de meio ciclo de atraso, como P2 exige; avaliada no receptor, com todo erro reduzido a um ciclo, nunca o faz. O limiar de quórum de cada conectoma é aproximado por sua distribuição de graus, com diferença de 2,0 a 5,5%, como se espera de redes com caminhos curtos. As flutuações no limiar excedem as de fases independentes, um critério pouco exigente. A inércia neural aparece apenas no modelo de percolação, depois de calibrado e abaixo de um teto; em redes não usadas na calibração, sua razão fica um pouco abaixo do alvo calibrado, perto da menor razão medida. Seis mecanismos propostos não sobreviveram: o congestionamento como fonte da excitação da indução, a explicação da cetamina pelas conexões de retroalimentação, as ilhas locais de coerência, o mecanismo específico da degradação gradual, a inércia no modelo de fase e os tempos de chegada aprendidos como forma de tornar inofensivos os atrasos constantes. A cetamina continua sendo a principal lacuna: os modelos não explicam por que a complexidade e os sonhos são preservados sob ela.
 
 **O que os dados mostraram.** Os testes confirmatórios especificados de antemão em registros abertos foram inconclusivos (dois testes de eletrocorticografia em macacos) ou não puderam ser executados, porque o código registrado rejeitou os arquivos de RMf. Por um critério descritivo fixado de antemão, numa análise exploratória cuja medida de rede tinha pouca margem para cair (a rede de vigília ficava muito acima de seu limiar de percolação), a forma da previsão 1 baseada no acoplamento em curso não foi sustentada: o componente gigante da RMf manteve uma mediana de 0,95 de seu tamanho de vigília durante a perda de responsividade. A RMf mede o acoplamento em curso, e não a rede sincronizada ao estímulo de que trata a previsão 1, e nenhum conjunto de dados aberto permitiu testar essa rede nem a variabilidade temporal evocada das previsões 3 e 8.
 
@@ -569,6 +572,7 @@ Os itens mantêm a numeração usada nos apêndices; o texto completo de cada um
 | PLD2 | Fosfolipase D2 |
 | PLV | Valor de travamento de fase (do inglês *phase-locking value*) |
 | SESOI | Menor tamanho de efeito de interesse (do inglês *smallest effect size of interest*) |
+| SNR | Relação sinal-ruído (do inglês *signal-to-noise ratio*) |
 | TCI | Infusão alvo-controlada (do inglês *target-controlled infusion*), cujas concentrações no sítio efetor e no plasma são previsões de um modelo |
 | EMT, EMT-EEG | Estimulação magnética transcraniana; EMT com registro de EEG |
 | TR | Tempo de repetição de uma aquisição de RMf (o intervalo de amostragem) |
@@ -619,9 +623,13 @@ Os identificadores de testes aparecem apenas na tabela da Seção 6 e nos apênd
 | OD1 (H1), OD2a (H2a), OD2b (H2b), OD3 (H3), OD4 (H4) | Testes (confirmatórios com o código registrado; exploratórios com desvios) | E.4 a E.8 | E.14 |
 | OD5 (H5a) | Análise secundária, sem veredicto | E.9 | E.14 |
 | Dev1 a Dev7 (D1 a D7 do Apêndice E.13) | Desvios do plano registrado para os dados abertos | Nenhum | E.13 |
-| Análises de C.14 e E.15 | [C.14 RESULT PENDING]; [E.15 RESULT PENDING] | analysis/2026-10-21_round3_*.md | C.14, E.15 |
+| P15a, P15b | Verificações de consistência | C.14 | C.14 |
+| C1 a C7, O1 a O5, E1 a E3 em sementes disjuntas da calibração | Tipos como em B.4 | C.14 | C.14 |
+| Estimativa do limiar dirigido; estimativas de reciprocidade e de erro temporal máximo | Estimativas, sem veredicto (a segunda *post hoc* na origem) | C.14 | C.14 |
+| R1 (OD5 com controle da relação sinal-ruído), R2 (*bootstrap* entre macacos de OD2b e OD3) | Análises exploratórias, sem veredicto | E.15 | E.15 |
+| R3 (Michigan reanalisado com um gerador por sujeito, Dev8) | Análise exploratória | E.15 | [E.15 RESULT PENDING] |
 
-Os identificadores de dados abertos H1 a H5a e D1 a D7 coincidem com os testes H1 e D1 de C.3; os Apêndices E.1 a E.12 são texto registrado e os mantêm, e o restante do artigo usa OD1 a OD5 e Dev1 a Dev7. A pré-especificação registrada do Apêndice E.15 chama seu novo desvio de D8; nas demais partes, ele é Dev8.
+Os identificadores de dados abertos H1 a H5a e D1 a D7 coincidem com os testes H1 e D1 de C.3; os Apêndices E.1 a E.12 são texto registrado e os mantêm, e o restante do artigo usa OD1 a OD5 e Dev1 a Dev7. A pré-especificação registrada do Apêndice E.15 chama seu novo desvio de D8; nas demais partes, ele é Dev8. R1 a R3 são as reanálises de E.15; o relatório com sementes novas de C.14 também identifica como R1 sua linha de razões entre perda e recuperação, que o artigo chama de fração de sementes dentro da faixa publicada.
 
 ### A.6 Regras de aprovação por estudo
 
@@ -633,6 +641,9 @@ Os identificadores de dados abertos H1 a H5a e D1 a D7 coincidem com os testes H
 | Execução de replicação do pico de sincronia (C.6) | Nenhuma: apenas contagens | Não se aplica |
 | K2, T1c (C.7); L1 a L4 (C.10); K1c (C.11) | Vale em pelo menos 80% das sementes (das sementes aplicáveis, no caso de K1c) | Antes de cada execução |
 | Leitura da CPD (C.12); regra dos pares (C.13) | Limite inferior do intervalo de Wilson de 95% acima de metade | Antes de cada execução |
+| Verificações do pulso P15a, P15b (C.14) | Limite inferior do intervalo de Wilson de 95% acima de metade | Antes da execução, commit 74f9cb0 |
+| Validação com sementes novas (C.14) | Como em B.4: vale apenas se valer em todas as sementes, em todos os tamanhos | Antes da execução, commit 74f9cb0 |
+| Estimativas (C.14); reanálises de dados abertos (E.15) | Nenhuma: relatadas sem veredicto; R1 com uma regra de leitura fixada de antemão | Antes de cada execução, commit 74f9cb0 |
 | Dados abertos (Apêndice E) | Testes unilaterais com correção de Holm, com equivalência para resultados nulos, mais pontos de corte descritivos | E.4 a E.9, *commit* adc63f6 |
 
 A passagem da regra de 80% para a regra de Wilson foi feita para C.12, depois de vistos os resultados anteriores. Nenhum veredicto relatado neste artigo se inverte sob qualquer das duas regras: todas as contagens em C.7 e em C.10 a C.13 estão em 16 de 20 (ou 6 de 6) ou acima, ou em 13 de 20 (ou 0 de 6) ou abaixo, e a contagem humana de K1c (2 de 2 sementes aplicáveis) não tem veredicto sob nenhuma das regras, porque menos da metade das sementes era aplicável.
@@ -3502,7 +3513,7 @@ Some reports name tests with labels used elsewhere: P1 to P3b, which are also th
 | congestion | G1 | B1 |
 | congestion | G2 | B2 |
 
-The open-data analyses of Appendix E are reproduced from the repository root with the commands of Appendix E.11 (`analysis/open_data/run.py`, with `run.py group` for the confirmatory verdicts), and the exploratory analyses with `analysis/open_data/deviations.py` and `analysis/open_data/exploratory_group.py` (Appendix E.13); their results are in `analysis/open_data/results/2026-10-21/`. The DPC readout and pair-rule reports are `simulator/results/dpc_readout_full_20261020T224553Z` and `simulator/results/dpc_pair_rule_full_20261021T105142Z` (Appendices C.12 and C.13). Interpreters: the calibration, validation and glial studies (Appendices B.3, B.4 and B.7) ran on CPython 3.15.0 with the standard library only; every other simulator report and every open-data result ran on CPython 3.13.2, as each report records. The C.14 and E.15 analyses: [C.14 RESULT PENDING]; [E.15 RESULT PENDING].
+The open-data analyses of Appendix E are reproduced from the repository root with the commands of Appendix E.11 (`analysis/open_data/run.py`, with `run.py group` for the confirmatory verdicts), and the exploratory analyses with `analysis/open_data/deviations.py` and `analysis/open_data/exploratory_group.py` (Appendix E.13); their results are in `analysis/open_data/results/2026-10-21/`. The DPC readout and pair-rule reports are `simulator/results/dpc_readout_full_20261020T224553Z` and `simulator/results/dpc_pair_rule_full_20261021T105142Z` (Appendices C.12 and C.13). Interpreters: the calibration, validation and glial studies (Appendices B.3, B.4 and B.7) ran on CPython 3.15.0 with the standard library only; every other simulator report and every open-data result ran on CPython 3.13.2, as each report records. The C.14 reports are `simulator/results/prediction15_full_20261021T201526Z`, `directed_threshold_estimate_full_20261021T201513Z`, `reciprocity_estimate_full_20261021T201522Z` and `validation_fresh_seeds_full_20261021T201644Z`, all run on CPython 3.13.2 with the commands of Appendix C.14; the E.15 results are in `analysis/open_data/results/2026-10-21/exploratory_snr/` and `exploratory_monkey/`, reproduced with the commands of Appendix E.15.5, and the Michigan rerun is [E.15 RESULT PENDING].
 
 Every report records the machine, operating system, Python and package versions, Git commit and the SHA-256 hash of every simulator module that ran. Since the code corrections of 19 October 2026 (Appendix D), each study records its sources when it starts, so that the record describes the code that ran; earlier reports recorded them when the run ended. The table below is generated from the reports and the repository each time the appendices are built: for every report cited in Appendices B and C it compares the hash of each simulator file the report recorded with that file in the commit the report names, and, where they differ, finds the later commit in which that code was committed unchanged. Every earlier report is kept, unedited, in `simulator/results/archive/`, with a README for each set naming its successor and the reason.
 
@@ -4178,7 +4189,7 @@ Against the expectations stated before the run:
 **Notes added in the third review round (21 October 2026), after the run.**
 
 - *Counting and the threshold theory.* Section 4.1 and Appendix B.5 give each undirected link one failure draw and one timing draw. C.12's rule gave each human link two, one per stored direction, either sufficing, which contradicts that framing; the primary rule here restores it in the readout. The dynamics still couple each human pair through two independently timed arcs, so the phase model itself keeps two draws per link.
-- *What else the human verdict depends on.* Besides reciprocity, the human verdict depends on the NMDA-antagonist-like agent's maximal added timing error, $\sigma_{\max}$ = 40 ms, a free parameter that the sensitivity analysis does not vary (Appendix C.1). The static giant component under each rule across $\sigma_{\max}$ and across intermediate degrees of reciprocity is [C.14 RESULT PENDING].
+- *What else the human verdict depends on.* Besides reciprocity, the human verdict depends on the NMDA-antagonist-like agent's maximal added timing error, $\sigma_{\max}$ = 40 ms, a free parameter that the sensitivity analysis does not vary (Appendix C.1). Static estimates under the either-direction rule (Appendix C.14), post hoc in origin, place the crossing of $q^*$ at three times the EC50 at a reciprocal share of about 0.62 and, with every connection two-way, at $\sigma_{\max}$ of about 49.5 ms; the other rules were not swept.
 - *Kinds.* T2a-1 is a construction check (limitation 25); SP1-1 is a consistency check, reclassified after the run.
 
 #### Commands
@@ -4192,9 +4203,366 @@ of the added readings, the full study should take about two and a half hours on 
 of it on *Drosophila*; it took just over four hours (Results).
 
 
-### C.14 Analyses requested in the third review round
+### C.14 Pre-specified analyses requested in the third round of review
 
-Pre-specified and committed before they are run (`analysis/2026-10-21_round3_simulator_prespecification.md`); this section will be replaced by the committed text and its results. It covers (A) prediction 15 in the percolation model, including arousal-driven recovery at a fixed concentration (Section 5.4); (B) the directed generating-function estimate of the strong component (Newman et al., 2001; Dorogovtsev et al., 2001); (C) static estimates of the human verdict across reciprocity and the maximal timing error (Appendix C.13); and (D) the validation study on seeds disjoint from the calibration. [C.14 RESULT PENDING]
+*The text from here to Results is reproduced as committed in `74f9cb0` (`analysis/2026-10-21_round3_simulator_prespecification.md`), without its draft header and its list of references to add, which are in the reference list; the Results subsection was added after the runs.*
+
+The four analyses below, their conditions, seeds and pass rules, or the statement that an analysis is reported
+without a verdict, were written and committed before any of them was run in full. The code is
+`simulator/prediction15_study.py` (analysis A), `simulator/directed_threshold_estimate.py` (B),
+`simulator/reciprocity_estimate.py` (C) and `simulator/fresh_seed_validation.py` (D), with the package
+`simulator/round3_study/`; the unit tests are `simulator/tests/test_round3_pulse.py` and
+`simulator/tests/test_round3_estimates.py`.
+
+**What these analyses are, and what they are not.** Referees asked for all four after the results of Appendices C.12,
+C.13 and E.14 had been seen. They are therefore post hoc in origin, even though each is fixed here before its own run,
+and none of them is a blind test of DPC. Analyses A and D ask whether the percolation model has properties the paper
+attributes to it; analyses B and C are a deterministic computation and a static estimate, reported without a verdict.
+No verdict reported earlier is changed by them.
+
+**What had been seen.** Before this text was written we had read every report cited in Appendices B and C, including
+the results of C.12, C.13 and E.14. The code was then checked with one smoke run per command. The first smoke runs
+used the first seed of the blocks then intended for analyses A and D (the base seed plus 7000 and 7500, at 302 nodes)
+and both generators then intended for C (7200 and 7201). Because their outcomes were read, those seeds were withdrawn
+and every block was moved to offsets that no run has used (below); smoke runs now use a block of their own, the base
+seed plus 7900 and 7901, which no analysis uses. What the smoke runs showed, on one seed or one draw each:
+
+- A, at 302 nodes: on the withdrawn seed the window was one grid step wide (c_on 0.88, c_off 0.89) and both checks held;
+  on the smoke seed it was 0.86 to 0.93, both checks held, and the smallest effective increases of the arousal drive
+  were 0.061 inside the window and 0.368 above c_off.
+- B is deterministic, so its smoke run computed the *C. elegans* row exactly: onset 0.0377, quorum estimate 0.0967,
+  against 0.1058 measured in Appendix B.5. That row is known before the full run.
+- C, with one assignment of direction and two draws: a giant component of 0.66 to 0.68 with every fibre two-way and
+  0.07 to 0.13 with every fibre one-way, and 0.66 to 0.67 at the reference timing error. These agree with the post hoc
+  diagnostic of Appendix C.13 (0.66 under the either-direction rule, 0.10 with one draw per fibre).
+- D, at 302 nodes: on the withdrawn seed every claim held except C4; on the smoke seed every claim held, with a
+  loss-to-recovery ratio of 1.081.
+
+#### Seeds
+
+Earlier studies used the base seed (20,261,017) plus 0 to 19, 1000, 2000, 3000, 4000, 5000, 5500, 5600 and 6000, each
+block at most 20 seeds long. The seeds of this appendix are:
+
+| Analysis | Seeds (offset from the base seed) | Count |
+|---|---|---|
+| A, prediction 15 | 7100 to 7119, at each network size | 20 per size, as in B.4 |
+| C, reciprocity and timing error | 7300 (reciprocity sweep) and 7301 (timing-error sweep), one generator each | 2 |
+| D, validation on fresh seeds | 7600 to 7619, at each network size | 20 per size, as in B.4 |
+| Smoke runs only | 7900 and 7901 | 2 |
+| Withdrawn (seen in early smoke runs) | 7000, 7200, 7201, 7500 | 4 |
+
+Analysis B uses no random numbers. A unit test checks that every block of this appendix is disjoint from every
+earlier block, from the withdrawn seeds, from the smoke block and from the others, and in particular that D's seeds
+include none of the calibration seeds of `calibrate_feedback.py` and none of B.4's.
+
+#### A. Prediction 15 in the percolation model
+
+**Why.** Section 5.4 derives prediction 15 from P5 and P7: between the recovery and loss concentrations, where the
+percolation model has two stable states, a brief arousing stimulus should restore quorum that outlasts it, and above
+the loss concentration quorum should return only while the stimulus lasts. The section states that this follows from
+the model's equation and has not been simulated. A referee asked for the simulation, and for the width of the window
+in which the prediction applies, since an experiment has to hold the concentration inside it.
+
+**Model and procedure.** The percolation model of Appendix B with every reference value (random graph of mean degree
+8, GABAergic-like agent, $W$ = 3 ms, baseline jitter 3 ms, arousal level $A_0$ = 0.5, $\lambda$ = 8.85 ms, $q^*$ = 0.5,
+concentration grid 0 to 3 times the EC50 in steps of 0.01), at the five network sizes of B.4 (302, 1,000, 10,000,
+100,000 and 1,000,000 nodes), 20 seeds each. For each seed:
+
+1. The reference sweep of B.4 gives the loss concentration $c_{\text{off}}$ (the last concentration of induction with
+   quorum) and the recovery concentration $c_{\text{on}}$ (the highest concentration of emergence with quorum). The
+   window is $[c_{\text{on}}, c_{\text{off}}]$; a seed without both, or with $c_{\text{off}} \le c_{\text{on}}$, has no
+   window.
+2. Two test concentrations are fixed from the seed's own window: (i) its midpoint, $(c_{\text{on}} + c_{\text{off}})/2$;
+   (ii) $c_{\text{off}}$ + 0.1 times the EC50. The value 0.1 was chosen before any run of this analysis because it lies
+   above $c_{\text{off}}$ in every seed and, in every seed of B.4 at every size, below the loss concentration of the
+   model without feedback ($\lambda$ = 0), which is the state the full pulse produces (below): B.4's no-feedback loss
+   exceeded $c_{\text{off}}$ + 0.1 by at least 0.02 EC50 in every seed.
+3. The starting state is the unconscious state that induction leaves: the network is taken up the induction branch to
+   three times the EC50, where quorum is lost, then set to the test concentration and settled there by the reference
+   solver. This is the state on the emergence branch, the one an animal is in when it is stimulated during emergence.
+4. The model has no time other than the steps of its self-consistency map, $S \to F(\pi(c, S))$. The pulse raises the
+   arousal drive $A(c)$ of Section 4.3 by a fixed amount, capped at 1, for 500 steps (the iteration limit within which
+   the reference solver must converge, so that the network settles under the pulse); $A$ then returns to baseline and
+   the map is iterated to its steady state by the reference solver. The primary pulse raises $A$ by 1, which takes it
+   to its maximum at every concentration: during the pulse the reference does not weaken ($\sigma_{\text{ref}}$ = 0),
+   the strongest stimulus the model can represent. The secondary pulse raises $A$ by $A_0$ = 0.5, which brings the drive
+   back at least to its awake value at every concentration, since the agent removes at most $A_0$.
+5. Quorum before the pulse, at its end and after it is read against $q^*$ = 0.5.
+
+**Checks.** Both are consistency checks, not tests, for a reason found while the code was written. With the primary
+pulse the pulsed map does not depend on $S$, so one step takes the network to the state of the model without feedback.
+Because the map is monotone in $S$ and in $A$, that state lies at or above the conscious branch wherever the conscious
+branch exists, so after the pulse the network settles on it (P15a); above $c_{\text{off}}$ no state with quorum exists,
+so after any pulse the network returns below $q^*$ (P15b). P15a can fail only where the window is too narrow for the
+starting state to lie below $q^*$ at its midpoint, and P15b only where the model without feedback has already lost
+quorum at $c_{\text{off}}$ + 0.1. The checks confirm that the code implements the equations; they do not test them.
+
+- P15a (consistency check): inside the window, at its midpoint, the network starts without quorum, the primary pulse
+  restores quorum, and quorum persists after the pulse.
+- P15b (consistency check): at $c_{\text{off}}$ + 0.1 EC50, the network starts without quorum, the primary pulse restores
+  quorum, and quorum is lost again after the pulse.
+
+A seed without a window counts as failing both.
+
+**Pass rule.** Appendix C.12's: a check passes at a network size when the lower bound of the Wilson 95% interval for
+the share of seeds in which it holds lies above one half (15 of 20 seeds pass, 14 do not). There are two checks per
+size and no correction for multiple comparisons.
+
+**Reported without a verdict.** P15a and P15b with the secondary pulse ($A$ raised by 0.5); whether each seed has a
+window; at each size, the mean and SD across seeds of $c_{\text{off}}$, $c_{\text{on}}$, the window width
+$c_{\text{off}} - c_{\text{on}}$ in EC50, its midpoint, and the precision an experiment would need, half the width as a
+share of the midpoint (aiming at the midpoint, the concentration must stay within that share of its target to remain
+inside the window); the giant component before, at the end of and after each pulse and the first step of the pulse at
+which quorum returned; and, by bisection on the increase of $A$ to 1/1024, the smallest increase that leaves quorum
+persisting at the window's midpoint and the smallest that restores quorum during the pulse at $c_{\text{off}}$ + 0.1.
+These two are the informative quantities: they say how strong an arousing stimulus must be, in the model's units, which
+the checks do not.
+
+**What we expect, stated before the run.**
+
+- P15a and P15b should pass at every size, for the reason given under Checks. In B.4 one window, at 1,000 nodes, was one
+  grid step wide, and the no-feedback loss lay above $c_{\text{off}}$ + 0.1 in every seed, so failures, if any, should
+  be confined to a few seeds at 302 or 1,000 nodes.
+- The window should be about as wide as B.4's hysteresis: 0.085 ± 0.037, 0.069 ± 0.041, 0.061 ± 0.013,
+  0.061 ± 0.010 and 0.054 ± 0.005 EC50 from 302 to 1,000,000 nodes, around a midpoint near 0.86 EC50. An experiment
+  would then have to hold the concentration within about 5% of its target in small networks and about 3% at
+  1,000,000 nodes. This width belongs to random graphs of mean degree 8 with $\lambda$ calibrated to the inertia ratio
+  1.08; on the connectome graphs of C.12 the calibrated $\lambda$ differs, and the window there is not computed here.
+- The secondary pulse should restore quorum at the midpoint in every seed and leave it persisting, since at the
+  midpoint the conscious branch exists and the drive is restored above its awake value. At $c_{\text{off}}$ + 0.1 it is
+  marginal: a mean-field estimate for a random graph of mean degree 8 gives a giant component of about 0.6 during the
+  pulse, so P15b with the secondary pulse may fail in some seeds because quorum does not return, not because it
+  persists.
+- The smallest increase at the midpoint depends on where the midpoint sits relative to $c_{\text{on}}$ and should be
+  small; the smallest increase that restores quorum during the pulse above $c_{\text{off}}$ should be several times
+  larger.
+
+#### B. Directed generating-function estimate of the strong component
+
+**Why.** Appendix B.5 measured the quorum threshold of each connectome on its directed wiring, as the occupation at
+which the largest strongly connected component reaches $q^*$, and compared the undirected measurement with the
+generating-function formula of Callaway et al. (2000), which it matched within 6%. A referee asked whether the directed
+measurement also has a theoretical counterpart.
+
+**Method.** For an uncorrelated directed network with joint distribution $p_{jk}$ of in-degree $j$ and out-degree $k$,
+each arc kept with probability $\pi$ (Newman, Strogatz and Watts, 2001; Dorogovtsev, Mendes and Samukhin, 2001):
+
+$$
+\pi_c = \frac{\langle k \rangle}{\langle j k \rangle}, \qquad
+x = 1 - \pi + \frac{\pi}{\langle k \rangle} \sum_{jk} p_{jk}\, j\, x^{k}, \qquad
+y = 1 - \pi + \frac{\pi}{\langle k \rangle} \sum_{jk} p_{jk}\, k\, y^{j}, \qquad
+S_{\text{strong}} = \sum_{jk} p_{jk} \bigl(1 - x^{k}\bigr)\bigl(1 - y^{j}\bigr),
+$$
+
+where $x$ is the probability that an arc does not lead into the giant out-component and $y$ that it does not come from
+the giant in-component, each the smallest solution in [0, 1], found by iteration from zero. $\pi_c$ is the onset of a
+giant strongly connected component, and the quorum estimate is the smallest $\pi$ at which $S_{\text{strong}}$ reaches
+$q^*$ = 0.5, by bisection to about $10^{-12}$. Each population keeps its own pair $(j, k)$; every arc counts, as in B.5's
+measurement, so a repeated arc is a second chance; self-connections are left out (there are none in the three
+connectomes). The estimates are computed for *C. elegans*, *Drosophila* and the human connectome and set beside the
+directed thresholds measured in B.5 (`simulator/results/percolation_full_20261020T011339Z.json`: 0.1058 ± 0.0079,
+0.1503 ± 0.0006 and 0.0495 ± 0.0015), with the critical transmission failure and timing error they imply, as in B.5.
+
+**Reported without a verdict.** The computation is deterministic. The estimate assumes an uncorrelated network, so it
+ignores every correlation between populations, among them reciprocity (46% of *C. elegans* connections and 7.5% of
+*Drosophila* connections are two-way, Appendix C.13, and every human connection is), degree assortativity and
+modularity. A difference from the measurement measures how much those correlations matter; it does not test DPC.
+
+**What we expect, stated before the run.** The *C. elegans* row is known from the smoke run: the estimate, 0.0967, is
+9% below the measurement. For the human connectome, in which every population has as many inputs as outputs,
+$\pi_c = \langle k \rangle / \langle k^2 \rangle$ = 35.8 / 1,536.3 = 0.0233 from B.5's degree moments, close to the
+undirected onset of 0.0239. Reciprocity creates two-arc cycles that an uncorrelated network lacks, which should lower
+the measured threshold below the estimate, while modularity and the other correlations can move it either way; *C.
+elegans* moved the other way. We therefore state no expectation for the direction of the difference on *Drosophila*
+or the human connectome, and expect agreement within about 20%, as the undirected formula agreed within 6%.
+
+#### C. Static estimates of reciprocity and maximal timing error on the human connectome
+
+**Why.** Appendix C.13 showed that the human verdict of clause (b) of P4 depends on how a connection inferred from
+diffusion MRI is counted: with every fibre two-way and either direction sufficient, timing variability alone does not
+abolish quorum; with one timing draw per fibre, it does. Diffusion MRI cannot say how many human fibres are two-way. A
+referee asked how much reciprocity the either-direction result needs, and how large the agent's timing error must be
+before even a fully reciprocal connectome loses quorum.
+
+**Method.** Static, as the diagnostic of C.13 (`pair_rule_diagnostic.py`): no oscillators run, and every arc is on time
+independently with the probability of C.12's static baseline at three times the EC50 of the NMDA-antagonist-like
+agent, $(1 - p)\,\operatorname{erf}(W / (2\sqrt{2}\,\sigma_{\text{eff}}))$, with $\sigma_{\text{eff}}$ combining the
+baseline jitter and the agent's added error (0.024 at its reference maximal error of 40 ms). The giant component is
+read under C.12's either-direction rule: a fibre counts when any of its arcs is on time.
+
+- (i) Reciprocity sweep. For each reciprocal share $r$ from 0 to 1 in steps of 0.05, a random share $r$ of the 17,865
+  human fibres is made two-way and the rest one-way in a random direction (each direction with probability one half);
+  the number of fibres never changes. Ten assignments of direction per value of $r$, 20 timing draws on each.
+- (ii) Timing-error sweep. With every fibre two-way ($r$ = 1), the agent's maximal added timing error is set to 20, 25,
+  ..., 80 ms (its reference value is 40 ms), ten assignments of 20 draws each.
+
+For each sweep, the mean giant component (over assignments and draws) is reported at every value, and the value at which
+it first falls below $q^*$ = 0.5 is interpolated linearly between the two grid values around the crossing, reading $r$
+downwards from 1 and the timing error upwards from 20 ms. A sweep that never crosses is reported as such.
+
+**Reported without a verdict.** These are post hoc static estimates requested by referees. They leave out the
+oscillator dynamics, which in C.12 did not reliably bring the timing loss forward (T0b-D), and they assume that the two
+directions of a fibre are timed independently, an upper bound on the benefit of reciprocity.
+
+**What we expect, stated before the run.** Under the either-direction rule with independent arcs, a fibre counts with
+probability $p + r\,p(1 - p)$, and the direction of a one-way fibre does not matter, so sweep (i) is bond percolation
+on the undirected human graph at that occupation. Setting it equal to B.5's undirected quorum threshold (0.0368 by
+formula, 0.0381 measured) gives a crossing at $r$ of about 0.53 to 0.59: quorum should survive the timing faults only
+if more than about half of the human fibres are two-way. For sweep (ii), $2p - p^2$ reaches the same thresholds when the
+maximal added timing error is about 50 to 52 ms, so a fully reciprocal human connectome should keep quorum at three
+times the EC50 unless the agent's maximal timing error exceeds about 50 ms, a quarter more than the 40 ms assumed.
+
+#### D. The validation study on seeds disjoint from calibration and from B.4
+
+**Why.** Appendix C.12 found that the percolation feedback was calibrated (`calibrate_feedback.py`) on the base seed
+plus 0 to 9 at 10,000 nodes, and that B.4 used the base seed plus 0 to 19 at every size with the same graph builder,
+so ten of B.4's twenty networks at 10,000 nodes were the calibration networks themselves. A referee asked for the
+validation to be repeated on networks that played no part in calibration.
+
+**Method.** `validation_study.py` unchanged, with every claim (C1 to C7), observation (O1 to O5) and extension test
+(E1 to E3) of B.4, at B.4's five sizes with 20 seeds each, on the base seed plus 7600 to 7619. The calibrated $\lambda$
+is not recalibrated. Also reported, without a verdict, at every size: the loss-to-recovery concentration ratio
+$c_{\text{off}} / c_{\text{on}}$ of the reference sweep (mean ± SD across seeds) and the number of seeds in which it lies
+within the published range of 1.07 to 1.63.
+
+**Pass rule.** B.4's: a claim holds at a size only when it holds in every seed, and the verdict is that every claim
+holds at every size, or that at least one failed. Observations and extension tests are reported, not judged.
+
+**What we expect, stated before the run.** The code and design are B.4's, so B.4's outcomes should recur. C1 to C3 and
+C5 to C7 held in every seed at every size and should hold again. C4 held in 19 of 20 seeds at 302 nodes, so the
+every-seed rule may fail again there for that reason alone, as it did in B.4. The ratio should fall with size, as in
+B.4 (1.106 ± 0.050, 1.086 ± 0.055, 1.075 ± 0.017, 1.075 ± 0.013 and 1.066 ± 0.006 from 302 to 1,000,000 nodes, within
+the published range in 14, 10, 14, 15 and 9 of 20 seeds). At 10,000 nodes B.4's calibration seeds gave 1.079 ± 0.015
+and its other ten seeds 1.071 ± 0.019, so on fresh seeds the ratio should be near 1.07, slightly below the target of
+1.08 to which $\lambda$ was calibrated, and near the lowest published ratio at 1,000,000 nodes. A ratio well below 1.07
+on fresh seeds would show that the calibration fitted its own networks rather than the model.
+
+#### Commands and run times
+
+From `simulator/`: the unit tests, `../.venv/bin/python -m unittest discover -s tests -t .`; and for each analysis,
+a check that the code runs end to end in about a second (`--smoke`, on the smoke seeds only) and the full run:
+
+| Analysis | Full run | Estimated run time |
+|---|---|---|
+| A | `../.venv/bin/python prediction15_study.py` | about 2 minutes, at most 5 |
+| B | `../.venv/bin/python directed_threshold_estimate.py` | under 1 minute |
+| C | `../.venv/bin/python reciprocity_estimate.py` | under 1 minute |
+| D | `../.venv/bin/python fresh_seed_validation.py` | about 12 minutes |
+
+The estimates are for the machine that ran B.4 (Apple M2 Pro, 10 worker processes). D repeats B.4's design, which took
+695.5 s. A needs one graph, one percolation curve and one sweep per seed, against about fifteen of each per seed in
+B.4, whose seeds took 320 s each at 1,000,000 nodes, so about 25 s per seed there and about one minute for its 20
+seeds on 10 workers; the pulses and bisections add about 13,000 steps of the map per seed, each a single lookup. B
+needs about 8 s to load the *Drosophila* connectome, and its *C. elegans* row took under a second. C reads the giant
+component about 6,800 times on the human connectome, at about 0.5 ms a reading and 1.4 ms per assignment of direction
+as timed on that machine, about 5 s in all. Each report is written to `simulator/results/<kind>_full_<start time>.md`
+and `.json`, with kinds `prediction15`, `directed_threshold_estimate`, `reciprocity_estimate` and
+`validation_fresh_seeds`; smoke reports (`_quick_`) are ignored by git and are not results.
+
+#### Results
+
+All four analyses ran from a clean working tree at commit `74f9cb0`, made at 20:10:45 UTC on 21 October 2026 (reports `simulator/results/directed_threshold_estimate_full_20261021T201513Z`, `reciprocity_estimate_full_20261021T201522Z`, `prediction15_full_20261021T201526Z` and `validation_fresh_seeds_full_20261021T201644Z`, each as `.md` and `.json`). B ran from 20:15:13 to 20:15:22 UTC, C from 20:15:22 to 20:15:25, A from 20:15:26 to 20:16:43 and D from 20:16:44 to 20:28:45 (721.1 s on 10 worker processes). D's command exited with status 1 because at least one claim failed under B.4's every-seed rule; the run itself completed. Counts are seeds in which a check or claim holds, with the Wilson 95% interval (20/20 is 84–100%); concentrations are relative to the EC50, as mean ± SD across seeds.
+
+**A. Prediction 15.**
+
+| Check | N = 302 | N = 1,000 | N = 10,000 | N = 100,000 | N = 1,000,000 |
+|---|---|---|---|---|---|
+| P15a, primary pulse: inside the window (at its midpoint), quorum restored by the pulse persists after it (consistency check) | 20/20, passes | 20/20, passes | 20/20, passes | 20/20, passes | 20/20, passes |
+| P15b, primary pulse: at $c_{\text{off}}$ + 0.1 EC50, quorum restored by the pulse is lost again after it (consistency check) | 20/20, passes | 20/20, passes | 20/20, passes | 20/20, passes | 20/20, passes |
+| P15a with the secondary pulse ($A$ raised by 0.5), no verdict | 20/20 | 20/20 | 20/20 | 20/20 | 20/20 |
+| P15b with the secondary pulse, no verdict | 18/20 (70–97%) | 20/20 | 20/20 | 20/20 | 20/20 |
+| The seed has a window, no verdict | 20/20 | 20/20 | 20/20 | 20/20 | 20/20 |
+
+| Quantity (no verdict) | N = 302 | N = 1,000 | N = 10,000 | N = 100,000 | N = 1,000,000 |
+|---|---|---|---|---|---|
+| $c_{\text{off}}$ (loss) | 0.890 ± 0.035 | 0.895 ± 0.018 | 0.886 ± 0.007 | 0.885 ± 0.005 | 0.882 ± 0.004 |
+| $c_{\text{on}}$ (recovery) | 0.796 ± 0.056 | 0.810 ± 0.034 | 0.820 ± 0.013 | 0.826 ± 0.008 | 0.825 ± 0.005 |
+| Window width $c_{\text{off}} - c_{\text{on}}$ | 0.094 ± 0.040 | 0.084 ± 0.032 | 0.066 ± 0.013 | 0.059 ± 0.006 | 0.057 ± 0.007 |
+| Window midpoint | 0.843 ± 0.042 | 0.852 ± 0.022 | 0.853 ± 0.008 | 0.855 ± 0.006 | 0.854 ± 0.003 |
+| Precision needed: half the width as a share of the midpoint | 0.057 ± 0.025 | 0.050 ± 0.019 | 0.039 ± 0.008 | 0.035 ± 0.004 | 0.033 ± 0.004 |
+| Giant component at the midpoint before, at the end of and after the primary pulse (means) | 0.158, 0.816, 0.766 | 0.101, 0.802, 0.751 | 0.019, 0.807, 0.746 | 0.006, 0.807, 0.745 | 0.001, 0.808, 0.748 |
+| Giant component at $c_{\text{off}}$ + 0.1 before, at the end of and after the primary pulse (means) | 0.058, 0.636, 0.058 | 0.021, 0.649, 0.021 | 0.004, 0.657, 0.004 | 0.001, 0.660, 0.001 | 0.000, 0.664, 0.000 |
+| Giant component at $c_{\text{off}}$ + 0.1 at the end of the secondary pulse | 0.567 ± 0.088 | 0.610 ± 0.018 | 0.631 ± 0.010 | 0.635 ± 0.009 | 0.639 ± 0.007 |
+| Smallest increase of $A$ for quorum persisting at the midpoint | 0.079 ± 0.030 | 0.067 ± 0.024 | 0.050 ± 0.011 | 0.044 ± 0.007 | 0.042 ± 0.004 |
+| Smallest increase of $A$ for quorum during the pulse at $c_{\text{off}}$ + 0.1 | 0.412 ± 0.062 | 0.367 ± 0.037 | 0.310 ± 0.012 | 0.298 ± 0.013 | 0.288 ± 0.012 |
+
+Against the expectations stated before the run:
+
+- *P15a and P15b* hold in every seed at every size and pass, as expected, with no failure at 302 or 1,000 nodes. They are consistency checks: with the primary pulse the reference does not weaken, so the outcome follows from the equations. They show that the code implements prediction 15 as Section 5.4 derives it, not that the prediction holds in brains, and they do not separate DPC from other accounts with two stable states (Section 8).
+- *Window.* Every seed has one. Its width falls from 0.094 ± 0.040 EC50 at 302 nodes to 0.057 ± 0.007 at 1,000,000, around a midpoint of 0.843 to 0.855, close to B.4's hysteresis (0.085 ± 0.037 to 0.054 ± 0.005) and to the expected midpoint near 0.86. An experiment aiming at the midpoint would have to hold the concentration within 5.7 ± 2.5% of its target at 302 nodes and 3.3 ± 0.4% at 1,000,000 to stay inside the window, as expected (about 5% and 3%). These widths belong to random graphs of mean degree 8 with $\lambda$ calibrated on such graphs; the window on the connectome graphs was not computed, and the EC50 here is that of the circuit effect, not a clinical concentration (limitation 23).
+- *Pulse outcomes.* With the primary pulse quorum returned at the first step in every seed; the giant component reached 0.80 to 0.82 at the midpoint and 0.64 to 0.66 above $c_{\text{off}}$, and after the pulse it settled at 0.75 to 0.77 inside the window and fell back to its value before the pulse above $c_{\text{off}}$.
+- *Secondary pulse* (no verdict). At the midpoint it restored quorum, which persisted, in every seed at every size, as expected. Above $c_{\text{off}}$ quorum returned during the pulse in 18 of 20 seeds at 302 nodes and in every seed at larger sizes, and was lost again after the pulse wherever it had returned. The two seeds at 302 nodes failed because quorum did not return, the failure anticipated; the giant component during the pulse was 0.567 ± 0.088 at 302 nodes and 0.639 ± 0.007 at 1,000,000, near the mean-field estimate of about 0.6.
+- *Stimulus strength.* The smallest increase of the arousal drive that leaves quorum persisting at the midpoint is 0.079 ± 0.030 at 302 nodes and 0.042 ± 0.004 at 1,000,000; the smallest that restores quorum during the pulse above $c_{\text{off}}$ is 0.412 ± 0.062 and 0.288 ± 0.012. As expected, it is small inside the window and several times larger above it. Both are in the model's units (the awake arousal share $A_0$ is 0.5) and have no stated mapping to the intensity of a real stimulus.
+
+**B. Directed generating-function estimate.** Deterministic, reported without a verdict.
+
+| Organism | Populations | Arcs | Onset $\pi_c$ | Quorum threshold, estimate | Quorum threshold, measured (B.5) | Estimate / measured | Critical failure $p_q$ (estimate) | Critical jitter $\sigma_q$, ms (estimate) |
+|---|---|---|---|---|---|---|---|---|
+| *C. elegans* | 300 | 5,764 | 0.0377 | 0.0967 | 0.1058 ± 0.0079 | 0.91 | 0.747 | 12.3 |
+| *Drosophila* | 138,639 | 2,700,513 | 0.0095 | 0.1441 | 0.1503 ± 0.0006 | 0.96 | 0.624 | 8.3 |
+| Human | 998 | 35,730 | 0.0233 | 0.0474 | 0.0495 ± 0.0015 | 0.96 | 0.876 | 25.2 |
+
+- The estimate lies below the measured directed threshold on all three connectomes, at 0.91, 0.96 and 0.96 of it (9%, 4% and 4% below), within the about 20% expected. The *C. elegans* row equals the smoke run's, as stated before the run, and the human onset is the 0.0233 computed in advance.
+- No direction of the difference was expected for *Drosophila* or the human connectome. On both, as on *C. elegans*, the measurement lies above the estimate, so on balance the correlations the estimate ignores raise the directed threshold on all three; on the human connectome they do so although reciprocity alone was expected to lower it. The difference measures how much those correlations matter; it does not test DPC.
+
+**C. Reciprocity and maximal timing error on the human connectome.** Static estimates, post hoc in origin, reported without a verdict: either-direction rule, NMDA-antagonist-like agent at three times the EC50, an arc on time with probability 0.0242 at the reference maximal timing error of 40 ms, and the mean giant component over 10 assignments of direction of 20 timing draws each.
+
+| Reciprocal share $r$ | Giant component | $r$ | Giant component | $r$ | Giant component |
+|---|---|---|---|---|---|
+| 1 | 0.654 | 0.65 | 0.518 | 0.3 | 0.267 |
+| 0.95 | 0.642 | 0.6 | 0.490 | 0.25 | 0.240 |
+| 0.9 | 0.618 | 0.55 | 0.462 | 0.2 | 0.200 |
+| 0.85 | 0.606 | 0.5 | 0.423 | 0.15 | 0.170 |
+| 0.8 | 0.587 | 0.45 | 0.396 | 0.1 | 0.133 |
+| 0.75 | 0.563 | 0.4 | 0.356 | 0.05 | 0.108 |
+| 0.7 | 0.542 | 0.35 | 0.324 | 0 | 0.085 |
+
+| Maximal added timing error (ms), every fibre two-way | 20 | 25 | 30 | 35 | 40 | 45 | 50 | 55 | 60 | 65 | 70 | 75 | 80 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Giant component | 0.903 | 0.854 | 0.795 | 0.728 | 0.656 | 0.573 | 0.492 | 0.393 | 0.306 | 0.218 | 0.146 | 0.117 | 0.084 |
+
+- *Reciprocity.* The giant component is 0.654 with every fibre two-way and 0.085 with every fibre one-way, and first falls below $q^*$ at a reciprocal share of 0.618 by linear interpolation (about 0.62), slightly above the 0.53 to 0.59 expected from B.5's undirected thresholds; the reason for the difference was not examined. Under the either-direction rule, timing faults at three times the EC50 leave quorum on the human connectome only if more than about 62% of its fibres are two-way, with their two directions timed independently, which is an upper bound on the benefit of reciprocity.
+- *Maximal timing error.* With every fibre two-way the giant component falls below $q^*$ at a maximal added timing error of 49.5 ms (49.521 by interpolation), slightly below the about 50 to 52 ms expected and about a quarter more than the 40 ms assumed. At 40 ms it is 0.656, close to the 0.645 of C.13's phase model and the 0.66 of its static diagnostic.
+- *What these estimates do and do not show.* Under the either-direction rule the human verdict of clause (b) of P4 depends on two unmeasured quantities, the share of two-way human cortical connections and the agent's maximal timing error between areas. The estimates say where each would tip the verdict, not which way it goes; they leave out the oscillator dynamics, and both sweeps were requested after the result they qualify had been seen.
+
+**D. Validation on seeds disjoint from calibration and from B.4.** Kinds are those of B.4 (the report labels C1, C4, C5 and C6 "test", as B.4's did).
+
+| Claim | Kind | N = 302 | N = 1,000 | N = 10,000 | N = 100,000 | N = 1,000,000 |
+|---|---|---|---|---|---|---|
+| C1, omission-fault and timing-fault agents both abolish quorum | Construction check | 20/20 | 20/20 | 20/20 | 20/20 | 20/20 |
+| C2, no hysteresis without feedback | Consistency check | 20/20 | 20/20 | 20/20 | 20/20 | 20/20 |
+| C3, hysteresis grows with $\lambda$ | Consistency check | 20/20 | 20/20 | 20/20 | 20/20 | 20/20 |
+| C4, feedback sharpens the transition | Consistency check | 20/20 | 20/20 | 20/20 | 20/20 | 20/20 |
+| C5, hub lesions lower the loss concentration more than random lesions | Consistency check | **19/20 (76–99%), fails** | 20/20 | 20/20 | 20/20 | 20/20 |
+| C6, reduced arousal delays emergence more than induction | Consistency check | 20/20 | 20/20 | 20/20 | 20/20 | 20/20 |
+| C7, without action on arousal circuits quorum is still lost, at a higher concentration | Consistency check | 20/20 | 20/20 | 20/20 | 20/20 | 20/20 |
+
+Verdict under B.4's rule: at least one claim failed (C5 at 302 nodes).
+
+| Observation or extension test (no verdict; B.4's count in brackets where it differs) | N = 302 | N = 1,000 | N = 10,000 | N = 100,000 | N = 1,000,000 |
+|---|---|---|---|---|---|
+| O1, trapped unconscious at zero concentration, $\lambda$ = 16.52 ms | 2/20 (4) | 1/20 (2) | 0/20 | 0/20 | 0/20 |
+| O2, trapped unconscious at zero concentration after a hub lesion, $\lambda$ = 8.85 ms | 6/20 (4) | 3/20 (4) | 0/20 | 0/20 | 0/20 |
+| O3, sleep at the rat share of down-states (0.095) loses quorum | 0/20 | 0/20 | 0/20 | 0/20 | 0/20 |
+| O4, sleep at the human share (0.25) loses quorum | 19/20 (20) | 20/20 | 20/20 | 20/20 | 20/20 |
+| O5, one typical human slow wave (0.271) loses quorum | 20/20 | 20/20 | 20/20 | 20/20 | 20/20 |
+| E1, rat-share sleep has a wakeable stable unconscious state | 13/20 (15) | 12/20 (15) | 20/20 | 20/20 | 20/20 |
+| E2, human-share sleep has a wakeable stable unconscious state | 18/20 | 20/20 (17) | 20/20 (18) | 20/20 | 20/20 |
+| E3, deep anaesthesia has only an unconscious state | 20/20 | 20/20 | 20/20 | 20/20 | 20/20 |
+
+| Quantity, GABAergic-like agent (no verdict) | N = 302 | N = 1,000 | N = 10,000 | N = 100,000 | N = 1,000,000 |
+|---|---|---|---|---|---|
+| $c_{\text{off}}$ | 0.909 ± 0.030 | 0.900 ± 0.014 | 0.887 ± 0.006 | 0.884 ± 0.005 | 0.880 ± 0.002 |
+| $c_{\text{on}}$ | 0.827 ± 0.039 | 0.840 ± 0.032 | 0.828 ± 0.010 | 0.827 ± 0.007 | 0.826 ± 0.005 |
+| Hysteresis | 0.082 ± 0.031 | 0.060 ± 0.031 | 0.058 ± 0.011 | 0.057 ± 0.007 | 0.054 ± 0.005 |
+| Loss-to-recovery ratio $c_{\text{off}} / c_{\text{on}}$ | 1.101 ± 0.042 | 1.072 ± 0.040 | 1.071 ± 0.014 | 1.069 ± 0.009 | 1.066 ± 0.007 |
+| Seeds with the ratio within the published range, 1.07 to 1.63 | 15/20 (53–89%) | 10/20 (30–70%) | 11/20 (34–74%) | 13/20 (43–82%) | 9/20 (26–66%) |
+
+Against the expectations stated before the run:
+
+- *Claims.* C1 to C4, C6 and C7 hold in every seed at every size, as expected; C4 now also holds in every seed at 302 nodes, where it failed in one seed of B.4. C5, expected to hold everywhere, holds in 19 of 20 seeds at 302 nodes: in one seed (the base seed plus 7615) the hub-lesioned network has no loss concentration (the hub-lesion $c_{\text{off}}$ is defined in 19 of 20 seeds at that size), so the claim does not hold there by its definition. Under B.4's every-seed rule the verdict is that at least one claim failed, as in B.4, though for a different claim. The failure is confined to the smallest networks, where hub lesions also leave 6 of 20 networks trapped unconscious at zero concentration (O2).
+- *Observations and extension tests* differ from B.4 by at most three seeds in any cell, and only at 302 to 10,000 nodes.
+- *Neural inertia.* The loss-to-recovery ratio falls with size, as expected: 1.101 ± 0.042 at 302 nodes, 1.071 ± 0.014 at 10,000 and 1.066 ± 0.007 at 1,000,000. At 10,000 nodes it equals B.4's ten seeds that were not calibration seeds (1.071 ± 0.019) and lies below the calibration seeds' 1.079 ± 0.015, so by the reading fixed before the run (a ratio well below 1.07 would show that the calibration fitted its own networks) the calibration did not fit its own networks: at 1,000,000 nodes B.4 gave the same 1.066 ± 0.006. What it means for the calibration is nonetheless plain. $\lambda$ = 8.85 ms was chosen so that ten networks of 10,000 nodes give the isoflurane ratio of 1.08; on networks that played no part in the choice, the same $\lambda$ gives a mean ratio below 1.08 at every size from 1,000 nodes up, and at 100,000 and 1,000,000 nodes a mean (1.069 and 1.066) just below 1.07, the lowest published ratio, with only 13 and 9 of 20 seeds inside the published range. The calibrated percolation model therefore reproduces its target ratio on its calibration networks (Appendix B.3), not on fresh ones; on fresh networks it reproduces about the bottom of the published range at 10,000 nodes and falls slightly below it in the largest networks. The shortfall is small (at 1,000,000 nodes less than one SD below 1.07) and was already present in B.4, so it reflects the fall of the ratio with network size, which a calibration at a single size does not correct, rather than the overlap of B.4's seeds with the calibration.
 
 
 ## Appendix D: Model revision history
@@ -4601,14 +4969,292 @@ In H2a neither indicator rose by the smallest effect of interest (median τ −0
 - *Point-estimate rule.* E.4 also counts a test against DPC "if the estimate is at or beyond −SESOI", a rule on a point estimate without inference; it is a limitation of the committed plan.
 - *Smallest effects of interest.* Only two have a stated basis: the ±0.4 µg/ml midpoint margin is one concentration step of the protocol, and the 0.9 cut is Section 8's falsifier. The others (log 1.5, τ = 0.2, 0.05 in AUC, log 1.05, log 1.2) are conventional choices. Minimal detectable effects were not computed, so the power of the inconclusive tests is not known; H3's interval (−0.21 to 0.23 exploratory) shows that it could not have reached either verdict.
 - *OD3 (H3) tests ongoing coupling, not evoked timing.* Its lag variability is the circular standard deviation across windows, $\sqrt{-2 \ln \bar R}$, a monotonic transform of the across-window phase-locking value $\bar R$ of the window phase differences, so H3 tests the ongoing form of prediction 3, not the evoked form. Medetomidine, an α2-adrenoceptor agonist like dexmedetomidine, under which DPC predicts a giant component at or near quorum (Section 9.2), tests a prediction DPC does not make for that agent; its inclusion was fixed in advance, and this reading is post hoc. Agent-specific AUCs in the exploratory analysis: 0.92 under ketamine, 0.47 under propofol and 0.44 under medetomidine.
-- *Inference unit.* The Neurotycho tests resample sessions, but the 23 sessions come from 4 monkeys, so the unit of inference is the session, not the animal. A bootstrap over monkeys: [E.15 RESULT PENDING].
+- *Inference unit.* The Neurotycho tests resample sessions, but the 23 sessions come from 4 monkeys, so the unit of inference is the session, not the animal. A two-stage bootstrap over monkeys and then sessions (Appendix E.15) leaves the point estimates unchanged and widens the 95% intervals of OD3 (H3) to −0.25 to 0.22 (confirmatory) and −0.26 to 0.24 (exploratory); those of OD2b (H2b) span −0.51 to 0.52 and −0.47 to 0.39. Both remain inconclusive.
 - *OD4 (H4) is not interpretable.* Its sigmoid midpoints come from giant-component curves that span only 0.86 to 0.98 of the regions, and at most one of the five equilibration rate constants (0.456 per minute, that of Schnider et al., 1999) could match the dataset's pharmacokinetic model, which the files do not state; neither the dataset-series result nor the least favourable one can be read as network hysteresis.
-- *OD5 (H5a) is not interpretable as timing variability* without a control for signal-to-noise: lower response amplitude under propofol makes single-trial latencies noisier by itself (E.9). The amplitude-matched result: [E.15 RESULT PENDING].
+- *OD5 (H5a) is not interpretable as timing variability* without a control for signal-to-noise: lower response amplitude under propofol makes single-trial latencies noisier by itself (E.9). In the signal-to-noise control of Appendix E.15 the SNR was not lower under propofol (group median 3.54 against 3.10 awake), and the SNR-matched comparison is uninformative by the rule fixed in advance, because at the matched SNR (1.94) the estimator could not see a 2 ms jitter in simulation; OD5 therefore remains not interpretable as timing variability.
 
 
-### E.15 Open-data reanalyses requested in the third review round
+### E.15 Reanalyses requested by the referees after the results of E.14
 
-Pre-specified and committed before they are run (`analysis/2026-10-21_round3_open_data_prespecification.md`), and exploratory with respect to Appendix E; this section will be replaced by the committed text and its results. It covers OD5 (H5a) with a signal-to-noise control, a monkey-level bootstrap of OD2b and OD3 (H2b, H3), and the Michigan analysis rerun with one random generator per subject. [E.15 RESULT PENDING]
+*The text from here to Results is reproduced as committed in `74f9cb0` (`analysis/2026-10-21_round3_open_data_prespecification.md`), without its draft header; the Results subsection was added after the runs.*
+
+#### E.15.1 Status and common rules
+
+The referees asked for three reanalyses after the results of E.14 had been seen by them and by us. Each is therefore
+exploratory: it was fixed, and committed with its code, after E.14 and before its own run, and none of them changes a
+verdict of E.14. Their results are reported beside those of E.14, never in their place.
+
+- **Seed.** Every random step uses the committed seed, 20261021 (`settings.SEED`), as stated below for each.
+- **Numbers.** Every number on which a reanalysis depends that is not already in `settings.py` is in
+  `analysis/open_data/round3_settings.py`.
+- **Provenance.** Every result file records, as before, the commit, the SHA-256 of every analysis module, every
+  setting and the software versions. The settings of this round are written into each of its result files.
+- **Inputs.** R1 reads the PRIOS recordings again and R3 the Michigan recordings; R2 reads only the per-session
+  result files of 21 October.
+
+#### E.15.2 R1: H5a with a signal-to-noise control (PRIOS)
+
+**Concern.** Lower evoked amplitude under propofol could by itself make single-trial latency estimates noisier, and so
+inflate the trial-to-trial spread on which H5a rests (E.9 stated this confound).
+
+**What was seen before this was fixed.** The H5a results of E.14 (exploratory: median $r$ 1.28 over six patients,
+p 0.031). No signal-to-noise ratio (SNR) of the data has been computed or read. While the code was being written, the
+committed estimator was run on synthetic responses (10 trials, a 2 ms true jitter, white noise). It showed that when
+each trial is aligned with a template that includes that trial, a low SNR pulls the single-trial shifts towards zero,
+because each trial then aligns best with its own noise at zero shift: below an SNR of about 6 the measured spread fell
+far below the true 2 ms instead of rising above it. With 200 trials per state the same estimator behaved as the
+referees expect, a lower SNR raising the spread. This is why the simulation below varies the number of trials and
+includes a null check of the matching.
+
+**Data and connections.** The exploratory H5a analysis exactly as run for E.14: the committed code, the same seed and
+therefore the same connections and the same equalised trials, with deviation D4 for sub-PRIOS02. The H5a statistic is
+recomputed alongside; it must reproduce E.14 (median $r$ 1.28, p 0.031). If it does not, the reanalysis is stopped
+and the discrepancy reported.
+
+**SNR of a connection in one state.** On the baseline-corrected, equalised trials of H5a: the absolute value of the
+mean response at its N1 (the committed peak: the largest negative deflection from 9 to 100 ms), divided by the noise,
+the median over trials of the standard deviation of the de-meaned first 266 samples of the trial (from −500 to
+−370 ms at 2,048 Hz). 266 samples is the length of the span the latency estimator reads (about −11 to 119 ms around the
+pulse), so the noise is measured over the same length as it acts.
+
+**(a) Matching rule.** For each connection, the state with the higher SNR is degraded to the SNR of the other. Each of
+its trials receives, over the span the estimator reads only, the de-meaned first 266 samples of the next trial of the
+same state (the last trial receives the first trial's), multiplied by $\sqrt{(\text{SNR}_\text{high}/\text{SNR}_\text{low})^2 - 1}$,
+which raises the noise of that state by the factor that equalises the two SNRs. The added noise is the state's own
+pre-pulse activity, so it has that state's spectrum, and no random draw is involved. Mean latency, single-trial
+latencies and their spread are then measured on the degraded trials by the committed estimator
+(`evoked_latency.connection_latency`, as `pipeline_prios.measure` calls it), and the matched relative change
+$r_\text{matched} = \log(\text{SD}_\text{prop}/\text{SD}_\text{awake}) - \log(\text{latency}_\text{prop}/\text{latency}_\text{awake})$
+is computed as in H5a. A connection whose matched spread is zero in either state has no $r_\text{matched}$. Per
+patient, the median over connections. Because the SNR is taken from the mean response, a larger true jitter, which
+flattens the mean response, also lowers the SNR of its state, and matching then adds noise to the other state. With
+many trials this can only remove part of a true rise. At H5a's trial counts, where a lower SNR can lower the measured
+spread (below), it can instead raise $r_\text{matched}$; the null check of (b) measures this.
+
+**(a′) Restriction (secondary).** The H5a statistic as run, restricted to connections whose propofol SNR is at least
+the awake SNR divided by 1.25 (log SNR ratio at least −0.22). Connections whose SNR rose under propofol are kept,
+because under the referees' concern a higher SNR cannot inflate the spread; the simulation shows whether that holds at
+H5a's trial counts. Per patient, the median over the kept connections; a patient with no
+kept connection is left out of this row.
+
+**(b) Simulation.** Synthetic cortico-cortical evoked potentials go through the committed H5a measure
+(`pipeline_prios.measure`: baseline correction, response test, N1 latency and single-trial alignment) at 2,048 Hz over
+the committed trial span (−500 to +120 ms). Each response is a negative Gaussian deflection, latency 22 ms (the awake
+median of van Blooijs et al., 2024, E.1), width (standard deviation) 5 ms, an assumed shape, with a Gaussian
+trial-to-trial jitter of the latency. Noise is Gaussian with unit standard deviation over each trial, white or pink
+(power falling as 1/f). The grid: nominal SNR (amplitude over noise standard deviation) from 0.5 to 16 in eleven
+half-octave steps; true jitter 0, 2 and 4 ms; 6 and 10 trials (the range and median of H5a's equalised trial counts)
+and 100 trials (to show the large-sample behaviour); 200 synthetic connections per cell; one generator seeded with the
+committed seed. Per cell: the median measured SNR (measured as for the data), the median latency spread over
+connections that pass the response test, and the share that pass. From these, for every pair of SNRs within a colour,
+jitter and trial count, the $r$ an SNR change alone produces, $\log$ of the spread at the lower SNR over that at the
+higher (the mean latency is the same by construction). **Null check:** the matching rule itself on synthetic pairs
+of states that differ only in SNR (10 trials; awake SNR 4, 8 and 16; propofol SNR half or a quarter of it; every
+colour and jitter; 200 connections each), reporting the median $r$ as run and after matching. Finally, the group
+step reads the simulation at the group median SNRs of the data (the median over patients of each patient's median
+awake and propofol SNR), interpolating log spread in log measured SNR, and reports for each colour, jitter and trial
+count the $r$ the observed SNR change alone would produce, and whether the observed SNRs lie inside the simulated
+range.
+
+**(c) Test, reported without verdict.** As H5a: one-sided Wilcoxon signed-rank test over patients of the per-patient
+median $r_\text{matched}$ > 0, with its median and the SESOI $\log 1.2$, beside the same test for the H5a statistic as
+run and for the restricted statistic. No verdict, as for H5a (E.9): six patients, one deep state, two days. With six
+patients the smallest one-sided p-value is 1/64 = 0.016, and 0.031 if the patient closest to zero goes the other way. The reading is
+fixed now. First, sensitivity: matching lowers one state's SNR, and the simulation may show that at the matched SNR
+the estimator no longer sees a true jitter. The matched SNR of a connection is the lower of its two SNRs; the group
+value is the median over patients of each patient's median. If, at that SNR, the simulated median spread of a 2 ms
+true jitter with 10 trials (interpolated in log measured SNR) is below 1 ms in either noise colour, the matched
+comparison cannot detect a rise, and its result is reported as uninformative rather than read either way. Otherwise:
+if the median $r_\text{matched}$ is at least $\log 1.2$ with p below 0.05, the rise of latency variability over
+latency in H5a is not explained by a difference in SNR between the states; if it falls below $\log 1.2$ while the H5a
+statistic as run stays above it, the H5a result is not distinguishable from an SNR difference and will be reported as
+such in Section 8 and E.14.
+
+**Expectations, stated before running.** (1) The simulation will show that at 6 and 10 trials a lower SNR lowers the
+measured spread over most of the simulated range, and raises it only at 100 trials, because with few trials each trial
+carries a large share of its own template (the development check above). (2) The null check will give a median
+$r_\text{matched}$ within ±0.2 of zero in most conditions, because both states are then measured at the same SNR and
+trial count. (3) We cannot say in advance whether the matched comparison will be informative: that depends on the SNRs
+of the data, which have not been measured; in the development check a 2 ms jitter with 10 trials was seen only above
+an SNR of about 6. (4) We do not know which state has the higher SNR in these data; E.9 assumed lower amplitude under
+propofol, but no amplitude has been measured. If propofol lowers the SNR, matching adds noise to the awake trials,
+which at these trial counts lowers the awake spread, so we expect $r_\text{matched}$ to be at least the $r$ as run
+(median 1.28) and, if the comparison is informative, the reading above to find the rise not explained by SNR. If
+propofol raises the SNR in most connections, the propofol trials are degraded, which at these trial counts lowers the
+propofol spread, and $r_\text{matched}$ will be lower than 1.28; by how much depends on SNRs that have not been
+measured, and in that case we make no prediction. (5) The restricted row will keep fewer connections and give a median
+close to the as-run median, if $r$ does not depend on the SNR change.
+
+#### E.15.3 R2: monkey-level bootstrap of H2b and H3 (Neurotycho)
+
+**Concern.** The sessions of one monkey are not independent, so tests over sessions (the Wilcoxon test of H2b, the
+session bootstrap of H3) may overstate the evidence; the inference should be to monkeys.
+
+**Inference unit.** The monkey. Four monkeys: Chibi and George received every agent; Kin2 and Su received only
+ketamine-medetomidine.
+
+**What is computed.** From the per-session result files only, no recording: the confirmatory set
+(`results/2026-10-21/confirmatory/`, 20 sessions) and the exploratory set (`results/2026-10-21/exploratory/group_inputs.txt`,
+23 sessions), each read exactly as the committed group step reads it (gamma band, sleep sessions left out, H2b
+exclusions as recorded). Beside the session-level results, recomputed with the committed group functions (they
+reproduce E.14), a two-stage bootstrap with 2,000 resamples and one generator seeded with the committed seed:
+
+- **H2b.** Draw the monkeys with replacement (as many as there are), then, within each drawn monkey, its sessions with
+  replacement (as many as it has); recompute the committed effect, the smaller of the two median Kendall $\tau$.
+- **H3.** Within each agent, draw with replacement the monkeys that received it, then each drawn monkey's sessions with
+  that agent, with replacement; recompute $D = \text{AUC}_\text{lag variability} - \max(\text{AUC}_\text{mean lag}, \text{AUC}_\text{power})$
+  with the committed leave-one-agent-out AUC. Resampling within agent keeps every agent in every resample, as the
+  committed bootstrap does, so that $D$ stays defined; a monkey that received two agents is drawn separately for each.
+
+For each: the point estimate (identical to E.14), the 95% percentile interval, the share of resamples at or below zero
+and the share at or above the SESOI (0.2 in $\tau$, 0.05 in AUC), each as $(1 + k)/(1 + B)$ as in E.7.
+
+**Rule.** Reported without verdict, as a sensitivity analysis of H2b and H3; the verdicts of E.14 stand. With two
+monkeys for three of the four agents there are only three distinct monkey draws per agent, and a percentile bootstrap
+over $n$ units understates the variance of a mean by a factor $(n - 1)/n$, a half for two monkeys. The monkey-level
+interval is therefore a lower bound on the uncertainty at the monkey level: it can show that the session-level
+results overstate the evidence, but it cannot show that they understate it.
+
+**Expectations, stated before running.** The point estimates equal E.14 (H2b: 0.06 confirmatory, −0.01 exploratory;
+H3: $D$ 0.07 and 0.085). For H2b, the share at or below zero will be near one half, because the smaller median $\tau$
+is near zero. For H3, the 95% interval will include zero and be at least as wide as the session-level interval
+(−0.23 to 0.20 and −0.21 to 0.23), because the large ketamine AUC rests on two monkeys; H3 stays inconclusive.
+
+#### E.15.4 R3: Michigan reanalysed with one generator per subject (deviation D8)
+
+**Concern.** Under D6 each process seeded its generator once and analysed its subjects in turn, so a subject's random
+draws (edge-test surrogates and null realisations) depended on its place in its process, and no subject's result
+except sub-02's can be reproduced by analysing that subject alone.
+
+**Deviation D8.** Each subject's generator is seeded with the committed seed plus the number in the subject's name
+(sub-02 with 20261023, sub-30 with 20261051), and the seed is written into its result file. Every other step is the
+exploratory analysis as run for E.14: the committed code with D1 to D5 (`deviations.py`, unchanged), the same 25
+subjects (sub-29 still refused, E.13), the same settings (200 null realisations, 1,000 surrogates). D8 is implemented
+in a new module, `reseeded.py`, which replaces only the committed runner's single generator; `deviations.py` and
+`exploratory_group.py`, whose hashes are recorded in the earlier results, are not changed. Each subject is now
+independent, so the launcher (`launch_reseeded.py`) runs one process per subject, at most ten at a time, longest
+expected first, with linear-algebra libraries held to one thread each. It is a dry run unless `--execute` is given,
+checks the interpreter, the timing table and every subject's runs by file name before starting, writes one log per
+subject and a report with one line per subject and outcome, reports every failure with its subject, command, exit
+code and the end of its log, ends with a summary and exits non-zero if any check or subject failed. Re-running it skips every subject whose result exists, so an interrupted run resumes.
+
+**Group step.** Once all 25 files exist, `reseeded.py listing` writes a list of inputs that is the list of E.14
+(`exploratory/group_inputs.txt`) with each Michigan file replaced by its reseeded one; it refuses if any is missing,
+if any carries a seed other than its D8 seed, or if the folder holds a Michigan file not in the earlier list. The
+Neurotycho and PRIOS inputs are the same files as in E.14. The unchanged exploratory group step (D7) then computes the
+five primary verdicts with the committed rules and D5.
+
+**Rule.** The D8 verdicts are exploratory and are reported beside those of E.14 (D6). Where they differ, both are
+reported and neither replaces the other; the difference measures how much the exploratory results depend on the
+random draws. Per subject, the H1 null-A p-value and steepness ratio, the H2a $\tau$ and the H4 $\log H$ are tabulated
+beside their D6 values.
+
+**Expectations, stated before running.** The verdicts of E.14 will not change: H1 counts against DPC through the
+falsifier (giant component intact through LOR, median 0.95 of its awake size), because the edge threshold is the 99th
+percentile of 20 surrogates pooled over every pair of regions and varies little between draws; H2a and H4 stay
+inconclusive. Per-subject null-A p-values will move by amounts like sub-05's between its two D6-era analyses (0.025
+and 0.065, E.13), and group medians by less.
+
+#### E.15.5 Commands and run times
+
+From the repository root, after the commit. Run times are for the machine that ran E.14 (Apple M2 Pro, one core per
+process): R3 from the per-subject times of the D6 run (0.76 to 4.42 h, 55.1 h in all, measured with nine or ten
+processes running at once), R1 and R2 from synthetic data of the real size.
+
+```
+OUT=analysis/open_data/results/$(date -u +%Y-%m-%d)
+PREVIOUS=analysis/open_data/results/2026-10-21/exploratory/group_inputs.txt
+
+# R1. Simulation (about 10 minutes), the seven PRIOS sessions (under a minute each), group step (seconds).
+.venv/bin/python -E -s -m analysis.open_data.snr_control simulate --out $OUT/exploratory_snr/snr_simulation.json
+for s in data_external/ds004370/sub-*/ses-1; do
+  .venv/bin/python -E -s -m analysis.open_data.snr_control prios --session-dir "$s" --out $OUT/exploratory_snr; done
+.venv/bin/python -E -s -m analysis.open_data.snr_control group --inputs $OUT/exploratory_snr \
+  --simulation $OUT/exploratory_snr/snr_simulation.json --out $OUT/exploratory_snr/snr_group.json
+
+# R2. Monkey-level bootstrap, confirmatory and exploratory inputs (about 10 seconds each).
+.venv/bin/python -E -s -m analysis.open_data.monkey_bootstrap --inputs analysis/open_data/results/2026-10-21/confirmatory \
+  --out $OUT/exploratory_monkey/monkey_bootstrap_confirmatory.json
+.venv/bin/python -E -s -m analysis.open_data.monkey_bootstrap --inputs $PREVIOUS \
+  --out $OUT/exploratory_monkey/monkey_bootstrap_exploratory.json
+
+# R3. Michigan with one generator per subject (D8).
+# Dry run: plan, checks and expected wall time; starts nothing.
+.venv/bin/python -E -s -m analysis.open_data.launch_reseeded --root data_external/ds006623 --previous $PREVIOUS --out $OUT/exploratory_reseeded
+# Staged first run on the shortest subject (about 45 minutes), to be checked before the rest.
+.venv/bin/python -E -s -m analysis.open_data.launch_reseeded --root data_external/ds006623 --previous $PREVIOUS --out $OUT/exploratory_reseeded --subject sub-26 --execute
+# The other 24 subjects (about 5.8 hours on ten processes); sub-26 is skipped because its result exists.
+.venv/bin/python -E -s -m analysis.open_data.launch_reseeded --root data_external/ds006623 --previous $PREVIOUS --out $OUT/exploratory_reseeded --execute
+# Group step, once all 25 files exist.
+.venv/bin/python -E -s -m analysis.open_data.reseeded listing --previous $PREVIOUS --folder $OUT/exploratory_reseeded \
+  --out $OUT/exploratory_reseeded/group_inputs.txt
+.venv/bin/python -E -s -m analysis.open_data.exploratory_group group --inputs $OUT/exploratory_reseeded/group_inputs.txt \
+  --out $OUT/exploratory_reseeded/verdicts_reseeded.json
+
+# Tests of the analysis code (synthetic data only).
+.venv/bin/python -I analysis/open_data/run_tests.py
+```
+
+R1 and R2 can run while R3 runs, on a core that R3 leaves free (with ten R3 processes on ten cores, wait for R3 or
+run R3 on nine).
+
+#### Results
+
+R1 and R2 were run after commit `74f9cb0` with the commands of E.15.5 and with the analysis code of that commit, unchanged. Each result file records the commit at the head of the repository when the file was written: `74f9cb0` for R2 (written at 20:15:56 and 20:16:15 UTC on 21 October 2026) and `f697899` for R1 (written from 20:32:52 to 20:33:41 UTC; that commit changed only the paper and the simulator result files). The R1 simulation took 995.4 s. The files are in `analysis/open_data/results/2026-10-21/exploratory_snr/` and `analysis/open_data/results/2026-10-21/exploratory_monkey/`. Every result below is exploratory, and none changes a verdict of E.14. R3 is still running: [E.15 RESULT PENDING].
+
+**R1: H5a with a signal-to-noise control.** The H5a statistic as run reproduced E.14 (median $r$ 1.28 over six patients, p 0.031), so the reanalysis went ahead; sub-PRIOS09 again had no responding connection. Per patient (SNR is the median over connections; "propofol SNR higher" counts connections with a positive log SNR ratio; matched $r$ was undefined for 3 connections of sub-PRIOS01 and 1 of sub-PRIOS04, whose matched spread was zero):
+
+| Patient | Connections | Propofol SNR higher | SNR awake | SNR propofol | Matched SNR | Median $r$ as run | Median $r$, SNR-matched | Median $r$, SNR-restricted (connections kept) |
+|---|---|---|---|---|---|---|---|---|
+| sub-PRIOS01 | 395 | 190 | 2.61 | 2.49 | 1.66 | 1.24 | 1.03 | 1.05 (221) |
+| sub-PRIOS02 (D4) | 57 | 35 | 3.27 | 4.40 | 2.97 | −0.10 | −0.13 | −0.20 (40) |
+| sub-PRIOS03 | 209 | 133 | 2.93 | 4.33 | 2.23 | 0.64 | 0.45 | 0.55 (157) |
+| sub-PRIOS04 | 138 | 35 | 3.35 | 1.26 | 0.84 | 1.51 | 0.40 | 1.18 (43) |
+| sub-PRIOS05 | 224 | 175 | 1.31 | 2.75 | 1.10 | 1.33 | 1.74 | 1.32 (186) |
+| sub-PRIOS06 | 13 | 6 | 5.64 | 4.45 | 3.23 | 1.63 | 1.42 | 1.49 (7) |
+| sub-PRIOS09 | 0 | | | | | | | |
+
+| Group (six patients) | Median $r$ (SESOI log 1.2 = 0.18) | One-sided p |
+|---|---|---|
+| As run (E.14) | 1.28 | 0.031 |
+| SNR-matched | 0.74 | 0.031 |
+| SNR-restricted | 1.12 | 0.031 |
+
+Group median SNR (the median over patients of each patient's median): 3.10 awake and 3.54 under propofol; median log SNR ratio 0.03. Group matched SNR: 1.94.
+
+**Reading fixed in advance.** At the group matched SNR of 1.94, the simulated median spread of a 2 ms true jitter with 10 trials is 0.04 ms in white noise and 0.13 ms in pink noise, below the 1 ms floor in both colours. By the rule of E.15.2(c), the matched comparison therefore cannot detect a rise and is reported as **uninformative**, not read either way; the rule's two further readings (that the rise is not explained by an SNR difference, or that it cannot be distinguished from one) do not apply. OD5 (H5a) remains not interpretable as timing variability, as E.14 stated.
+
+The simulation read at the group SNRs of the data (awake 3.10, propofol 3.54, inside the simulated range in every cell) gives the $r$ that this SNR change alone would produce. It is reported as pre-specified; the rule does not use it.
+
+| Noise | True jitter (ms) | 6 trials | 10 trials | 100 trials |
+|---|---|---|---|---|
+| White | 0 | 0.00 | 0.01 | −0.04 |
+| White | 2 | 0.12 | 0.15 | −0.01 |
+| White | 4 | 0.29 | 1.43 | 0.00 |
+| Pink | 0 | 0.07 | 0.06 | −0.16 |
+| Pink | 2 | 0.20 | 0.27 | −0.04 |
+| Pink | 4 | 1.12 | 0.26 | −0.02 |
+
+Against the expectations stated before the run:
+
+1. *The estimator at few trials.* As expected, at 6 and 10 trials a lower SNR lowered the measured spread over most of the simulated range, and only at 100 trials did it raise it. With 10 trials and a true jitter of 2 ms, the median measured spread was at most 0.14 ms (white) and 0.38 ms (pink) up to a measured SNR of 5.59 and 4.39, and reached 1.46 and 1.44 ms only at 7.71 and 6.09. With 100 trials in pink noise the spread fell as the SNR rose at every step.
+2. *Null check.* After matching, the median $r$ lay within ±0.2 of zero in 33 of 36 conditions, as expected. The three exceptions (−0.31, −0.34 and −0.42) all had a 4 ms jitter and a propofol SNR a quarter of the awake one. Without matching, the same synthetic pairs gave median $r$ from −4.29 to 0.09: a lower SNR alone lowered the measured spread.
+3. *Informativeness.* The matched comparison was not informative (above).
+4. *Which state has the higher SNR.* E.9 assumed lower response amplitude under propofol; the SNR, which combines amplitude and noise, was not lower under propofol: its group median was 3.54 against 3.10 awake, it was higher under propofol in 574 of 1,036 connections, and the patient's median SNR was higher under propofol in three of the six patients. For propofol raising the SNR in most connections we expected $r_\text{matched}$ below 1.28 and predicted no size; it is 0.74, but by the rule above it is not read.
+5. *Restriction.* The restricted statistic kept 654 of the 1,036 connections and gave a median of 1.12, against 1.28 as run.
+
+**R2: monkey-level bootstrap of H2b and H3.** Two-stage bootstrap (2,000 resamples), monkeys and then sessions; four monkeys in H2b, and in H3 two monkeys for each of ketamine, medetomidine and propofol and four for ketamine-medetomidine. Shares are of resamples, as $(1 + k)/(1 + B)$.
+
+| Set | Test | Point estimate (SESOI) | Session-level 95% interval (E.14) | Monkey-level 95% interval | Share at or below zero | Share at or above the SESOI |
+|---|---|---|---|---|---|---|
+| Confirmatory, 20 sessions | H2b, smaller median τ | 0.06 (0.2) | none (Wilcoxon p 0.45) | −0.51 to 0.52 | 0.52 | 0.20 |
+| Confirmatory, 20 sessions | H3, D in AUC | 0.07 (0.05) | −0.23 to 0.20 | −0.25 to 0.22 | 0.47 | 0.39 |
+| Exploratory, 23 sessions | H2b, smaller median τ | −0.01 (0.2) | none (Wilcoxon p 0.51) | −0.47 to 0.39 | 0.57 | 0.08 |
+| Exploratory, 23 sessions | H3, D in AUC | 0.085 (0.05) | −0.21 to 0.23 | −0.26 to 0.24 | 0.42 | 0.40 |
+
+Against the expectations stated before the run: the point estimates equal E.14's, as expected. For H2b the share of resamples at or below zero is near one half (0.52 and 0.57), as expected, and the monkey-level interval spans about −0.5 to 0.5. For H3 the monkey-level interval includes zero and is wider than the session-level one in both sets, as expected, and H3 stays inconclusive. Because three of the four agents rest on two monkeys, these intervals are a lower bound on the uncertainty at the level of the animal (E.15.3); the verdicts of E.14 stand.
+
+**R3: Michigan reanalysed with one generator per subject (D8).** [E.15 RESULT PENDING]
 
 ---
 
@@ -4758,7 +5404,7 @@ The isolated forearm technique shows something different. A cuff keeps the muscl
 
 The same distinction separates two kinds of memory. Implicit memory, such as priming, depends on plasticity within the populations that processed the input and does not require awareness; explicit (episodic) memory is memory for events that were consciously experienced. Under anaesthesia, patients can show implicit memory for words presented during surgery with no explicit recall, which declined as hypnosis deepened and was still present at bispectral index values of 40 to 60 (Lubke et al., 1999), on an EEG-derived scale of hypnotic depth that runs from 100 (awake) to 0; a meta-analysis pooling 44 studies found memory for specific material presented during anaesthesia, provided that patients were tested within 36 hours (Merikle and Daneman, 1996), although individual studies conflict, and in one study implicit memory appeared only for words played during surgical stimulation, although that group did not differ significantly from the group tested before stimulation (Deeprose et al., 2004). DPC proposes an account of this pattern [H]: local learning continues while populations process their inputs, but an episode can only be written for a state that reached quorum, and under anaesthesia no such state exists. On emergence, local traces persist, but no episode exists to recall. At equally sedating concentrations, propofol and midazolam impair memory strongly, thiopental mildly and fentanyl not at all (Veselis et al., 1997), so memory and responsiveness can be affected separately; we do not claim that loss of quorum is the *only* cause of anaesthetic amnesia.
 
-As concentration falls, the system remains on the low-$S$ branch until $c_{\text{on}}$ is reached (Section 4.3), which can reproduce the hysteresis observed by Friedman et al. (2010) once $\lambda$ is fitted to it (Section 4.3); this is a calibration, not an independent explanation. In the model, recovery requires that $\sigma_{\text{eff}}$ falls below the value at which the high-$S$ branch becomes the only solution. Emergence is an active process that involves arousal pathways, including orexinergic signalling (Kelz et al., 2008): methylphenidate actively induces emergence from isoflurane in rats (Solt et al., 2011), optogenetic activation of dopamine neurons of the ventral tegmental area restores righting during continuous isoflurane in mice (Taylor et al., 2016), and cholinergic stimulation of prefrontal, but not parietal, cortex restores wake-like behaviour despite continuous sevoflurane in rats (Pal et al., 2018); stimulating the central lateral thalamus in anaesthetised macaques restored arousal and wake-like neural processing (Redinbaugh et al., 2020), and thalamic stimulation reversed the electrophysiological features of propofol-induced unconsciousness in macaques, among them the fall in coherence above 4 Hz (Bastos et al., 2021). In these experiments consciousness returns while the agent's concentration, and so its action on connections, is unchanged. DPC accounts for this through P7 [H]: the arousal drive sustains part of the shared rhythm, so raising it at a fixed concentration lowers the error of a weakened reference, $\sigma_{\text{ref}} = \lambda(1 - S)(1 - A)$ in Section 4.3, more connections fall inside the window, and $S$ can rise above $q^*$ with $p(c)$ and $\sigma_0(c)$ unchanged. This follows from the model's equation and has not been simulated. It gives a sharper prediction (prediction 15): between $c_{\text{on}}$ and $c_{\text{off}}$, where the percolation model has two stable states, a brief arousing stimulus should restore quorum that outlasts the stimulus, whereas above $c_{\text{off}}$ quorum should return only while the stimulus lasts. The phase model showed no robust inertia (Section 4.3), so this prediction rests on the percolation model alone. It passes through discrete metastable states (Hudson et al., 2014), and early return of consciousness is associated with subcortical and limbic activation before full frontal-parietal recovery (Långsjö et al., 2012). DPC proposes [H] that these intermediate states correspond to giant components of intermediate size. Recovery of responsiveness does not mean that every measure of coordination has recovered: in mice, the inter-regional correlation of cortical calcium activity stayed below its level before anaesthesia for at least 1.5 hours after behavioural recovery, while local activity recovered (Zhang et al., 2026). DPC requires only that the giant component of timing-coherent connections exceed $q^*$ [H], so it predicts that this component, unlike the mean correlation, returns with responsiveness.
+As concentration falls, the system remains on the low-$S$ branch until $c_{\text{on}}$ is reached (Section 4.3), which can reproduce the hysteresis observed by Friedman et al. (2010) once $\lambda$ is fitted to it (Section 4.3); this is a calibration, not an independent explanation. In the model, recovery requires that $\sigma_{\text{eff}}$ falls below the value at which the high-$S$ branch becomes the only solution. Emergence is an active process that involves arousal pathways, including orexinergic signalling (Kelz et al., 2008): methylphenidate actively induces emergence from isoflurane in rats (Solt et al., 2011), optogenetic activation of dopamine neurons of the ventral tegmental area restores righting during continuous isoflurane in mice (Taylor et al., 2016), and cholinergic stimulation of prefrontal, but not parietal, cortex restores wake-like behaviour despite continuous sevoflurane in rats (Pal et al., 2018); stimulating the central lateral thalamus in anaesthetised macaques restored arousal and wake-like neural processing (Redinbaugh et al., 2020), and thalamic stimulation reversed the electrophysiological features of propofol-induced unconsciousness in macaques, among them the fall in coherence above 4 Hz (Bastos et al., 2021). In these experiments consciousness returns while the agent's concentration, and so its action on connections, is unchanged. DPC accounts for this through P7 [H]: the arousal drive sustains part of the shared rhythm, so raising it at a fixed concentration lowers the error of a weakened reference, $\sigma_{\text{ref}} = \lambda(1 - S)(1 - A)$ in Section 4.3, more connections fall inside the window, and $S$ can rise above $q^*$ with $p(c)$ and $\sigma_0(c)$ unchanged. This follows from the model's equation; simulated, it holds in every seed at every network size, as a consistency check must (Appendix C.14). It gives a sharper prediction (prediction 15): between $c_{\text{on}}$ and $c_{\text{off}}$, where the percolation model has two stable states, a brief arousing stimulus should restore quorum that outlasts the stimulus, whereas above $c_{\text{off}}$ quorum should return only while the stimulus lasts. The phase model showed no robust inertia (Section 4.3), so this prediction rests on the percolation model alone. It passes through discrete metastable states (Hudson et al., 2014), and early return of consciousness is associated with subcortical and limbic activation before full frontal-parietal recovery (Långsjö et al., 2012). DPC proposes [H] that these intermediate states correspond to giant components of intermediate size. Recovery of responsiveness does not mean that every measure of coordination has recovered: in mice, the inter-regional correlation of cortical calcium activity stayed below its level before anaesthesia for at least 1.5 hours after behavioural recovery, while local activity recovered (Zhang et al., 2026). DPC requires only that the giant component of timing-coherent connections exceed $q^*$ [H], so it predicts that this component, unlike the mean correlation, returns with responsiveness.
 
 **What the simulations showed.** P5 was proposed to explain neural inertia: the shared reference is produced by the agreeing group, so a shrinking group weakens it, which shrinks the group further, and recovery has to rebuild the reference from a weak start. In the percolation model this produces inertia. Without reference feedback there is none (consistency check C2, every seed at every network size), and with it quorum is lost at a higher concentration than the one at which it returns: on random networks of up to 1,000,000 nodes, $c_{\text{off}}$ ≈ 0.88 and $c_{\text{on}}$ ≈ 0.83 times the EC50. With $\lambda$ calibrated, the model reproduces every reported ratio from 1.07 to 1.63 at every arousal level tested (Appendix B.3), although the lowest, 1.07, comes from a study that reported no consistent hysteresis (Warnaby et al., 2017). Four limits qualify this result. First, reproducing a ratio is a calibration, and a feedback loop acting through a threshold is expected to have two stable states, so the result shows that the mechanism works, not that the brain uses it. Second, the model has a ceiling: the halothane ratio of 2.85 (Friedman et al., 2010) could not be reached, because before the mean ratio approached it some networks no longer recovered at zero concentration; the largest ratio reached rose with the arousal level, from 2.04 at level 0 to 2.40 at 0.7. Third, the phase-oscillator model, in which coupling is graded rather than all-or-nothing, showed no graded inertia at any feedback strength tried (Appendix C.2): each run's ratio of loss to recovery concentration stayed within run-to-run noise, 0.91 to 1.05, except one of four runs at the strongest feedback, for which no ratio could be computed (no loss or no recovery within the concentration range). A post hoc scan on the *C. elegans* connectome found no inertia beyond run-to-run noise at arousal level 0 or at feedback strengths between 0.6 and 0.75, and every run recovered (`simulator/results/diagnostics/`). At the reference strength, hysteresis averaged −0.0075 ± 0.029, 0.000 and 0.005 ± 0.032 EC50 on the *C. elegans*, *Drosophila* and human connectomes, and it was strictly positive in only 2 of 20, 0 of 6 and 5 of 20 seeds (test S3, Appendix C.3). That network instead fluctuated collectively near the threshold, its fluctuations rising at least tenfold before collapse (T1b, then T1c on seeds not used in the study that suggested it). Fourth, other mechanisms also explain inertia, among them noise-driven switching between metastable states (Proekt and Hudson, 2018) and adaptive feedback in oscillator networks (Kim et al., 2018). We therefore keep P5 as a hypothesis that the models show to be workable under one condition, an all-or-nothing integration window (P2), not as an established explanation; prediction 5 tests it in data.
 
@@ -4786,14 +5432,14 @@ Appendices B and C report every test; this section summarises them. The simulati
 |---|---|---|
 | Agents that cause transmission failure and agents that cause timing jitter both abolish quorum | Transmission failure: built in at the doses chosen. Timing variability: on the human connectome, fails or passes depending on how a connection inferred from diffusion MRI is counted (Appendix C.13) | These tests could not fail with the maximum effects chosen (limitation 25), so they show that the mechanism operates, not that it is right. Percolation: every seed at every size (C1). Phase model, where quorum is read as global coherence at least half its awake value rather than as the giant component of P3 (Section 4.7): 20 of 20, 6 of 6 and 20 of 20 seeds for each agent class (T2a, T2b); also with measured conduction delays (D1), with inhibitory connections signed (SG1, SG2), with fixed timing offsets (S4) and on rewired connectomes with the same degrees (N1). With a natural-frequency spread of 0.25 instead of 0.5, the GABAergic-like agent abolished it in no seed of 5 (phase-model sensitivity, Appendix B.6). Read with DPC's own window and quorum (Appendix C.12, fresh seeds, fixed before the run), transmission failure abolishes quorum on all three connectomes under every condition, and the oscillator dynamics bring the loss forward relative to static percolation; timing variability alone abolishes it on *C. elegans* and *Drosophila* (at the concentration static percolation on its draws predicts) but on the human connectome in no seed of 20, under every condition, although global coherence falls below half its awake value at 0.69 times the EC50. With one timing draw per connection, or with both directions required, timing variability alone abolishes quorum there in 20 of 20 seeds, at 1.15 and 0.60 times the EC50; the human verdict depends on how a human connection is counted (Appendix C.13) |
 | The quorum threshold of a connectome is predictable from its wiring | Approximately (measured threshold 2.0 to 5.5% above the generating-function estimate, 10 draws; within sampling error for *C. elegans* and human, not for *Drosophila*); not tested with direction kept | The measured threshold lies 2.0%, 5.5% and 3.4% above the generating-function estimate on the *C. elegans*, *Drosophila* and human connectomes (Appendix B.5); the gap exceeds seed-to-seed variation only for *Drosophila* (2.0% and 3.4% are 0.7 and 1.8 standard errors). Tree-based estimates of this kind are known to be accurate on clustered networks as long as their mean shortest-path length is small (Melnik et al., 2011), so this reproduces a known property rather than a new one. With direction kept, quorum needs 1.8 and 3.4 times as many timing-coherent connections on the *C. elegans* and *Drosophila* wiring, and no directed estimate was computed; the human connectome comes from diffusion imaging, which gives no direction (each of its 17,865 connections is recorded in both directions), so its directed value only splits each connection into two independent links and is not reported as a result. On degree-preserving rewired copies, DPC quorum is lost at the same concentration within one step in almost every seed (C.12: WN and GN tests), so the threshold depends on the degree distribution, not on the particular wiring |
-| Reference feedback sharpens the transition | Consistency check; failed the every-seed rule by one seed | 19 of 20 seeds at 302 nodes, every seed at every larger size (C4); positive feedback through a threshold is expected to sharpen it |
-| Hub damage lowers the loss concentration more than random damage | Consistency check, sensitive to calibration | Every seed at every network size with $\lambda$ calibrated to 1.08 (C5), but 9 of 20 seeds at 10,000 nodes with the earlier target of 1.11 (Appendix D); expected for networks with heavy-tailed degree distributions (Callaway et al., 2000; Albert et al., 2000) |
+| Reference feedback sharpens the transition | Consistency check; failed the every-seed rule by one seed | 19 of 20 seeds at 302 nodes, every seed at every larger size (C4), and every seed at every size on fresh seeds (Appendix C.14); positive feedback through a threshold is expected to sharpen it |
+| Hub damage lowers the loss concentration more than random damage | Consistency check, sensitive to calibration | Every seed at every network size with $\lambda$ calibrated to 1.08 (C5), but 9 of 20 seeds at 10,000 nodes with the earlier target of 1.11 (Appendix D) and 19 of 20 at 302 nodes on fresh seeds (Appendix C.14); expected for networks with heavy-tailed degree distributions (Callaway et al., 2000; Albert et al., 2000) |
 | Fluctuations rise before the collapse | Supported by the corrected test | The pre-specified surge at the collapse failed (T1: 7 of 20, 0 of 6, 5 of 20). A rise of at least tenfold on the conscious side of the threshold, found post hoc (T1b: 18 of 20, 6 of 6, 20 of 20), passed as a pre-specified test on seeds not used in the study that suggested it (T1c: 16 of 20, 6 of 6, 20 of 20). But the ratio is measured against the awake value, which is very small when awake coherence is close to 1: the susceptibility at loss is similar across conditions (median 0.41 to 0.78 on the human connectome), and the ratio fails where awake coherence is low, as with measured conduction delays (awake coherence 0.41; 0 of 20 seeds) or without reference feedback (3 of 20, 1 of 6). The result may therefore reflect the awake baseline rather than a rise before collapse; a comparison at matched coherence is in Appendix C.12. The corrected test, which compares the fluctuations with those of independent phases at the same mean coherence, passed on all three connectomes (C.12: T1d, 17 of 20, 6 of 6 and 16 of 20 seeds), as did slower fluctuations at the threshold (T1e, every seed); growth with network size held only between the human and fly connectomes (T1f) |
 | Reduced arousal delays emergence more than it shifts induction | Consistency check | Every seed at every size (C6); it follows from the model's equation, since the reference error $\lambda(1 - S)(1 - A(c))$ is close to zero on the conscious branch |
 | Sleep loses quorum at the measured human share of down-states but not at the rat share | Mixed | Quorum is lost when about 15% of populations are silent at once (0.152 in the largest networks); in the sensitivity analysis the threshold fell between the rat and human shares in 6 of the 14 non-reference settings that can affect sleep (both quorum fractions, arousal level 0.3, $\lambda$ for the ratios 1.07 and 1.11, baseline jitter 1 ms), and not at either extreme of the integration window or mean degree, at arousal 0 or 0.7, at the largest baseline jitter or at the strongest feedback; the rat share (0.095) abolishes quorum in no seed (O3), which implies that rats keep quorum in NREM sleep (limitation 27), and the human estimates (0.25 and 0.271) in every seed (O4, O5); the model equates a share of time spent in down-states with a share of populations silent at once; deep anaesthesia has no conscious state to return to without arousal drive (E3) |
 | Glial extension (P9) | Not tested | Damaged myelin lowers the loss concentration (M1) and the microglial loop shapes emergence (G1 to G3) in every seed, but all four are consistency checks that follow from the equations; the one test, whether silencing astrocytes restores quorum in sleep, failed in every seed (A1) but could not have passed, since the share of populations it leaves silent already loses quorum (O4) |
 | Learned arrival times make constant delays harmless (P4b) | Failed | Pre-specified (Appendix C.10): with learning, coherence fell even at zero concentration and, without conduction delays, quorum was lost on average below 0.13 times the EC50 with every agent (L1, L3 and L4: no seed); with conduction delays, learning first raised awake coherence (0.41 to 0.62, every seed); L2 held in every seed only because quorum was lost earlier, not later |
-| Neural inertia from reference feedback (P5) | Percolation model only | Reproduced in the percolation model once $\lambda$ is calibrated, up to a ceiling below the largest measured ratio; absent from the phase model (Section 5.4); whether neural inertia exists in humans is contested (Kuizenga et al., 2018). With DPC's own readout, the phase model shows no inertia at any feedback up to 1.5 times its locking threshold (C.12: I1, I2). The percolation model on the connectome graphs reproduces it on the *C. elegans* and human graphs once calibrated (PI1, PI2), within the measured range on held-out human seeds (PI4: 17 of 20) but not *C. elegans* seeds (13 of 20), and on the fly graph not at all |
+| Neural inertia from reference feedback (P5) | Percolation model only | Reproduced in the percolation model once $\lambda$ is calibrated, up to a ceiling below the largest measured ratio, on the calibration networks; on fresh seeds the ratio calibrated to 1.08 is 1.071 at 10,000 nodes and 1.066 at 1,000,000 (Appendix C.14); absent from the phase model (Section 5.4); whether neural inertia exists in humans is contested (Kuizenga et al., 2018). With DPC's own readout, the phase model shows no inertia at any feedback up to 1.5 times its locking threshold (C.12: I1, I2). The percolation model on the connectome graphs reproduces it on the *C. elegans* and human graphs once calibrated (PI1, PI2), within the measured range on held-out human seeds (PI4: 17 of 20) but not *C. elegans* seeds (13 of 20), and on the fly graph not at all |
 | The sensory area keeps processing while broadcast collapses (T3) | Held in most seeds of two connectomes | 17 of 20 *C. elegans* and 16 of 20 human seeds, but 0 of 6 *Drosophila* seeds (see below); it also holds on rewired connectomes (N2: 19 of 20 and 20 of 20), so, within the limits of the broadcast measure, it reflects the degree distribution rather than the particular wiring. The broadcast measure has a floor, and the human count cannot be read as propagation (limitation 31) |
 | A slower reference rate protects more against timing faults (P8) | Failed | The slower rate raised the loss concentration (F1, every seed) but its distinctive prediction failed in every seed (F3; in the fly the two gains were equal). In the Wilson-Cowan model, burstiness rose after the synchrony surge mainly at the middle coupling in the exploratory run (B1: 23 of 30 seeds, against 4 and 3 of 30), less clearly in the confirmatory run (18 of 30, against 5 and 15 of 30), and the gaps between bursts (B2) could rarely be measured in 1 s windows |
 | Congestion causes the excitation of induction | Failed | Hub activity rose by at least 10% in at most 1 of 10 seeds in every setting (W1 to W4), in an exploratory and a confirmatory run; replaced by survivor lock-in with collective fluctuations (Section 5.1) |
@@ -4854,7 +5500,7 @@ The protocol of Section 9.2 in its earlier, fuller form:
 ### F.9 Limitations in full (Section 10)
 
 1. **Borrowed words.** Consensus and quorum are used in their everyday sense only (Section 1.4) and do not imply that the brain implements an algorithm. The predictions in Section 8 are stated in neurophysiological terms so that they can be tested without the words.
-2. **Measured, calibrated and free parameters.** $W$ and the baseline jitter are assumed: they are values measured within neurons or local circuits and applied between cortical areas, where they have not been measured (Section 4.7). $\lambda$ is calibrated to one measured inertia ratio (Appendix B): 1.08, for isoflurane in mice (Friedman et al., 2010), whose authors showed that the hysteresis is not fully explained by pharmacokinetics. This target was adopted after results at an earlier target, the human propofol ratio 1.11 (Iwakiri et al., 2005), had been seen; at 1.11 consistency check C5 held in only 9 of 20 seeds at 10,000 nodes, and at 1.08 in every seed (Appendix D). The choice is therefore not independent of the results. The human propofol estimates of 1.07 and 1.11 are not usable as calibration targets: their authors found no consistent hysteresis (Warnaby et al., 2017) or describe the two concentrations as similar (Iwakiri et al., 2005), and the one study designed to test human neural inertia found none for propofol (Kuizenga et al., 2018). The other reported ratios from 1.07 to 1.63 give other values of $\lambda$, which Appendix B reports and with which the sensitivity analysis (Appendix B.6) repeats the tests. The largest measured ratio, 2.85 for halothane in mice (Friedman et al., 2010), could not be reproduced: as $\lambda$ grows, the mean ratio reaches only about 2.0 to 2.4, rising with the arousal level, before some seeds no longer recover at zero concentration (Appendix B.3). The model's neural inertia is therefore bounded, and an agent with inertia as large as halothane's lies outside it. The quorum $q^*$, the oscillator coupling and the maximal effects of each agent class are free parameters; the sensitivity analysis (Appendix B.6) reports how the results depend on them.
+2. **Measured, calibrated and free parameters.** $W$ and the baseline jitter are assumed: they are values measured within neurons or local circuits and applied between cortical areas, where they have not been measured (Section 4.7). $\lambda$ is calibrated to one measured inertia ratio (Appendix B): 1.08, for isoflurane in mice (Friedman et al., 2010), whose authors showed that the hysteresis is not fully explained by pharmacokinetics. This target was adopted after results at an earlier target, the human propofol ratio 1.11 (Iwakiri et al., 2005), had been seen; at 1.11 consistency check C5 held in only 9 of 20 seeds at 10,000 nodes, and at 1.08 in every seed (Appendix D). The choice is therefore not independent of the results. The human propofol estimates of 1.07 and 1.11 are not usable as calibration targets: their authors found no consistent hysteresis (Warnaby et al., 2017) or describe the two concentrations as similar (Iwakiri et al., 2005), and the one study designed to test human neural inertia found none for propofol (Kuizenga et al., 2018). The other reported ratios from 1.07 to 1.63 give other values of $\lambda$, which Appendix B reports and with which the sensitivity analysis (Appendix B.6) repeats the tests. The largest measured ratio, 2.85 for halothane in mice (Friedman et al., 2010), could not be reproduced: as $\lambda$ grows, the mean ratio reaches only about 2.0 to 2.4, rising with the arousal level, before some seeds no longer recover at zero concentration (Appendix B.3). The model's neural inertia is therefore bounded, and an agent with inertia as large as halothane's lies outside it. On networks not used for calibration the calibrated $\lambda$ does not reproduce its target: the ratio is 1.071 ± 0.014 at 10,000 nodes and 1.066 ± 0.007 at 1,000,000, just below the lowest published ratio (Appendix C.14). The quorum $q^*$, the oscillator coupling and the maximal effects of each agent class are free parameters; the sensitivity analysis (Appendix B.6) reports how the results depend on them.
 3. **Simplified topology.** Random-graph percolation ignores spatial embedding, modularity, directionality and synaptic dynamics. It also treats each connection as either coherent or not, although a fibre bundle between regions contains many synapses, so that synaptic failure weakens a bundle rather than removing it.
 4. **Measurement confounds.** EEG phase synchrony is affected by volume conduction, reference choice and changes in signal-to-noise ratio. These must be controlled before connectivity changes are interpreted.
 5. **Ketamine.** DPC's account of disconnected consciousness under ketamine is provisional: its first version failed its first test (K1) and passed, with a corrected measure, a test fixed in advance on *C. elegans* only (K1c, and again with its control, K1e; the human connectome could not be evaluated), the revised version failed its pre-specified test (K2) and is kept only as a contributing factor, and neither explains why complexity is preserved under ketamine (Section 7.2). Read with DPC's own quorum, the timing faults assigned to ketamine abolish quorum on the human connectome under two of three rules for counting a connection, but not under the rule used first, which counts each connection inferred from diffusion MRI as two independently timed connections (Appendices C.12 and C.13); under that rule, either ketamine also causes transmission failure there, or its fault type is not timing variability alone, or the human model lacks what makes timing faults decisive.
@@ -4881,7 +5527,7 @@ The protocol of Section 9.2 in its earlier, fuller form:
 26. **The model mostly needs more transmission failure than is measured.** On the connectomes, quorum is lost only when 85 to 90% of transmissions fail with the direction of connections ignored, or 61% and 72% with it kept on the *Drosophila* and *C. elegans* wiring, the only connectomes with measured direction (Appendix B.5), whereas isoflurane at 0.7 mM, about twice its MAC, inhibited the exocytosis triggered by single action potentials by 62% in cultured rat hippocampal neurons, measured at 4 mM extracellular calcium, well above the physiological level (Baumgart et al., 2015). The inhibition at the lower concentrations at which responsiveness is lost was not reported there, so on that ground alone the gap between what the model needs and what has been measured would be larger than this comparison shows. Read with DPC's own quorum in the oscillator model, the GABAergic-like agent abolishes quorum at 74 to 81% transmission failure with one timing draw per connection, at 75 to 87% with C.12's rule and at 43 to 75% with both directions required (the maximal failure times the fractional effect of the Hill dose-response at the mean loss concentration, Appendices C.12 and C.13). Only two values fall below the measured 62%: the both-directions rule on the human connectome (43%) and the directed *Drosophila* wiring in the percolation model (61%). Read literally, the model mostly reaches unconsciousness only beyond measured anaesthetic effects, unless timing error contributes much more than assumed or the threshold is lower in real networks. The comparison is not like-for-like: the measurement is the release probability at single synapses, whereas the model's failure is that of a whole inter-areal connection made of many synapses, which fails less often than any one of them; and the high calcium of the measurement and the high concentration at which it was made bias it in opposite directions.
 27. **Rats should stay conscious in NREM sleep, in the model.** The rat share of down-states never abolishes quorum (test O3), so the model implies that rats remain conscious during NREM sleep unless their down-states are larger or more synchronised than the share of time they occupy. The comparison also treats a share of time as a share of populations silent at once.
 28. **Pass rules, realisations and multiplicity.** Percolation checks count as holding only in every seed, the pre-specified tests at 80% of seeds, and the cross-species results are reported as counts. Seeds are realisations of one wiring diagram, not independent brains, so the counts describe the model's own variability, not generality across individuals, and none is corrected for multiple comparisons (item 21).
-29. **Results that depend on the calibration choice.** Switching the reference ratio from 1.11 to 1.08 (Appendix D) changed some outcomes: with λ calibrated to 1.11, the hub-lesion test C5 held in 16, 17 and 9 of 20 seeds at 302, 1,000 and 10,000 nodes (archived report `validation_full_20261018T123515Z`, run before the code corrections of 19 October), against every seed at the reference value. λ and the arousal level are not separately identified, since every arousal level tested reproduces every reported ratio up to 1.63, and λ was not recalibrated when the Hill coefficient was varied. Results close to such edges are fragile, and the sensitivity analysis (Appendix B.6) shows where. The calibration also used the same ten random networks at 10,000 nodes as ten of the twenty validation networks at that size, so at that size the validation is not independent of the calibration; the tests of Appendix C.12 use calibration seeds disjoint from their test seeds.
+29. **Results that depend on the calibration choice.** Switching the reference ratio from 1.11 to 1.08 (Appendix D) changed some outcomes: with λ calibrated to 1.11, the hub-lesion test C5 held in 16, 17 and 9 of 20 seeds at 302, 1,000 and 10,000 nodes (archived report `validation_full_20261018T123515Z`, run before the code corrections of 19 October), against every seed at the reference value. λ and the arousal level are not separately identified, since every arousal level tested reproduces every reported ratio up to 1.63, and λ was not recalibrated when the Hill coefficient was varied. Results close to such edges are fragile, and the sensitivity analysis (Appendix B.6) shows where. The calibration also used the same ten random networks at 10,000 nodes as ten of the twenty validation networks at that size, so at that size the validation is not independent of the calibration; the tests of Appendix C.12 use calibration seeds disjoint from their test seeds. Repeated on seeds disjoint from both (Appendix C.14), every claim held at every size except C5 in one of 20 seeds at 302 nodes, so the every-seed verdict is again that a claim failed, and the loss-to-recovery ratio was 1.071 ± 0.014 at 10,000 nodes, below the 1.08 to which $\lambda$ was calibrated, and 1.066 ± 0.007 at 1,000,000.
 30. **P6 is not tested.** In the Wilson-Cowan model, each region's inhibition is balanced while it receives long-range excitation, so a region cut off from that input has a single, low-activity steady state and no second state to alternate with. In 10 realisations at each of the three global couplings, this held for all 998 regions, with excitatory activity at most 0.12 on a scale of 0 to 1; the steady state was stable in all but at most 2 regions, which by linear stability analysis would oscillate at about 10 Hz instead (post hoc diagnostic, `simulator/results/diagnostics/`). Accordingly, at the highest concentration, hub activity fell on average to 1 to 19% of its awake value, depending on the coupling (a post hoc reading of the runs in Appendices C.5 and C.6). Testing P6 would need local circuits that sustain activity on their own, which adaptation then destabilises into up and down states, as in the whole-brain model of Sacha et al. (2025). That model also bears on the clause that the default dynamics are agent-specific: in it, GABAergic and NMDA-antagonist actions both produced slow waves, each with increased adaptation, and they differed in how closely functional connectivity followed anatomical connectivity rather than in the form of the dynamics.
 31. **The broadcast measure has a floor.** Broadcast is the locking of the non-sensory populations to the stimulus over two stimulus cycles, and a coherent population rotating at its own frequency shows some locking to any rhythm over so short a window. A post hoc diagnostic repeated K1 with a phantom stimulus of zero strength (`simulator/results/diagnostics/`). On *C. elegans*, the broadcast left at the highest concentration was at about the level of locking to the phantom (median 0.093 against 0.090; with a window four times longer, 0.039 against 0.026, above it in 15 of 20 seeds but by less than half of the awake excess), while awake broadcast clearly exceeded it (0.212 against 0.093); on the human connectome, even awake broadcast barely exceeded it (0.040 against 0.029). The ratio tests built on broadcast (K1, K2b, T3 and N2) therefore compare quantities that both contain this floor. Their verdicts are reported as fixed, but they cannot be read as measures of propagation: the human T3 count is not interpretable. On *C. elegans*, with the phantom's locking subtracted from both sides of the ratio, K1's criterion holds in 16 of 20 seeds, and in 20 of 20 with the longer window; this reading was post hoc, and a test with a floor-corrected broadcast and a window of eight cycles, fixed before its run on fresh seeds, then passed on *C. elegans* (K1c: 20 of 20 seeds) and could not be evaluated on the human connectome (Appendix C.11); the same correction for T3 (T3c) was not run.
 32. **The oscillator model did not implement P2 and P3 as stated.** Until the readout of Appendix C.12, quorum on the connectomes was read as global phase coherence at least half its awake value, and timing error weakened coupling smoothly rather than excluding late signals (Section 4.7). Every connectome result before C.12 is therefore a result about agreement among coupled oscillators, not a direct test of the window and the giant component. The readout of C.12 now provides that test; it changed one central result: timing variability alone did not abolish quorum on the human connectome. Appendix C.13 shows this depends on how a human connection is counted.
