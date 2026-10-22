@@ -40,6 +40,10 @@ PANEL_SIZE_INCHES = (4.2, 3.0)
 FIGURE_ONE_NODE_COUNT = 10_000
 COMPENSATION_LABELS = {"none": "no compensation", "slow": "slow compensation", "fast": "fast compensation"}
 FIGURE_ONE_STEP = 0.01
+FIGURE_MARGIN_INCHES = 0.15
+COHERENCE_CRITERION_LABEL = "half the awake coherence"
+COHERENCE_LOSS_LABEL = "coherence below half awake"
+LABEL_HEIGHT_AXES_FRACTION = 0.95
 
 
 def latest(kind: str) -> dict[str, object]:
@@ -72,7 +76,8 @@ def save(figure: plt.Figure, name: str) -> None:
     figure.patch.set_facecolor(SURFACE)
     figure.tight_layout()
     for suffix in ("png", "svg"):
-        figure.savefig(FIGURES_DIRECTORY / f"{name}.{suffix}", dpi=RESOLUTION_DPI, facecolor=SURFACE)
+        # Titles and end-of-line labels can reach past the axes, so the canvas is fitted to everything drawn.
+        figure.savefig(FIGURES_DIRECTORY / f"{name}.{suffix}", dpi=RESOLUTION_DPI, facecolor=SURFACE, bbox_inches="tight", pad_inches=FIGURE_MARGIN_INCHES)
     plt.close(figure)
 
 
@@ -133,7 +138,8 @@ def figure_species_coherence(report: dict[str, object]) -> None:
             axis.plot(x, mean, color=colour, linewidth=LINE_WIDTH, label=name)
             axis.fill_between(x, mean - spread, mean + spread, color=colour, alpha=BAND_OPACITY, linewidth=0)
         axis.axhline(cal.QUORUM_FRACTION, color=TEXT_SECONDARY, linewidth=1, linestyle="--")
-        axis.annotate("quorum", (x[0], cal.QUORUM_FRACTION), xytext=(0, 3), textcoords="offset points", fontsize=8, color=TEXT_SECONDARY)
+        # The oscillator studies read loss as coherence below half its awake value, not as DPC's quorum (Section 4.7).
+        axis.annotate(COHERENCE_CRITERION_LABEL, (x[0], cal.QUORUM_FRACTION), xytext=(0, 3), textcoords="offset points", fontsize=8, color=TEXT_SECONDARY)
         style(axis, f"{cal.ORGANISMS[organism].display_name} (n = {len(runs)})", "Concentration (× EC50)", "Global coherence / awake")
         axis.legend(frameon=False, fontsize=8, loc="upper right")
     save(figure, "figure_3_species_coherence")
@@ -152,7 +158,7 @@ def figure_broadcast(report: dict[str, object]) -> None:
         losses = [r["loss_concentration"] for r in runs if r["loss_concentration"] is not None]
         if losses:
             axis.axvline(float(np.mean(losses)), color=TEXT_SECONDARY, linewidth=1, linestyle="--")
-            axis.annotate("loss of quorum", (float(np.mean(losses)), 0.95), xytext=(4, 0), textcoords="offset points", fontsize=8, color=TEXT_SECONDARY)
+            axis.annotate(COHERENCE_LOSS_LABEL, (float(np.mean(losses)), LABEL_HEIGHT_AXES_FRACTION), xycoords=("data", "axes fraction"), xytext=(4, 0), textcoords="offset points", fontsize=8, color=TEXT_SECONDARY)
         style(axis, f"{cal.ORGANISMS[organism].display_name}: stimulus broadcast", "Concentration (× EC50)", "Rest-of-network / sensory entrainment")
     save(figure, "figure_4_broadcast")
 
