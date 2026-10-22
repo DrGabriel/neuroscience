@@ -19,6 +19,8 @@
     "disconnection:full": "studyDisconnection",
     "dpc_readout:full": "studyDpcReadout",
     "dpc_pair_rule:full": "studyDpcPairRule",
+    "prediction15:full": "studyPrediction15",
+    "validation_fresh_seeds:full": "studyValidationFreshSeeds",
   });
 
   function verdictOf(holding, applicable) {
@@ -48,14 +50,25 @@
   // How a study's results are judged (paper, Section 6 and Section 10, item 28): percolation checks hold only in every
   // run at every network size; pre-specified tests pass at 80% of an organism's runs, or, from the DPC readout on
   // (Appendices C.12 and C.13), when the Wilson interval's lower bound exceeds one half, as their reports record per
-  // group; phase-model and Wilson-Cowan results have no pass rule and are reported as counts.
-  const PassRule = Object.freeze({ EVERY_RUN: "ruleEveryRun", REPORTED: "ruleReported", WILSON: "ruleWilson", COUNTS: "ruleCounts", OBSERVATION: "ruleObservation", EXTENSION: "ruleExtension" });
+  // group; phase-model and Wilson-Cowan results have no pass rule and are reported as counts. Appendix C.14 (paper,
+  // Appendix A.6): the pulse checks use the Wilson rule per network size, the fresh-seed validation B.4's every-run
+  // rule, and the two estimates have no verdict.
+  const PassRule = Object.freeze({
+    EVERY_RUN: "ruleEveryRun", REPORTED: "ruleReported", WILSON: "ruleWilson", WILSON_BY_SIZE: "ruleWilsonBySize", ESTIMATE: "ruleEstimate",
+    COUNTS: "ruleCounts", OBSERVATION: "ruleObservation", EXTENSION: "ruleExtension",
+  });
   const STUDY_RULE = Object.freeze({
     validation: PassRule.EVERY_RUN, glia: PassRule.EVERY_RUN, prespecified: PassRule.REPORTED, learned_timing: PassRule.REPORTED,
     disconnection: PassRule.REPORTED, dpc_readout: PassRule.WILSON, dpc_pair_rule: PassRule.WILSON,
+    prediction15: PassRule.WILSON_BY_SIZE, validation_fresh_seeds: PassRule.EVERY_RUN,
+    directed_threshold_estimate: PassRule.ESTIMATE, reciprocity_estimate: PassRule.ESTIMATE,
   });
-  // Report sections that the paper keeps out of the verdict (Appendix B.4).
-  const SECTION_RULE = Object.freeze({ "validation:observations": PassRule.OBSERVATION, "validation:extension_tests": PassRule.EXTENSION });
+  // Report sections that the paper keeps out of the verdict (Appendices B.4 and C.14).
+  const SECTION_RULE = Object.freeze({
+    "validation:observations": PassRule.OBSERVATION, "validation:extension_tests": PassRule.EXTENSION,
+    "validation_fresh_seeds:observations": PassRule.OBSERVATION, "validation_fresh_seeds:extension_tests": PassRule.EXTENSION,
+    "prediction15:observations": PassRule.OBSERVATION,
+  });
   const ruleFor = ({ study, section }) => SECTION_RULE[`${study}:${section}`] ?? STUDY_RULE[study] ?? PassRule.COUNTS;
 
   // Verdicts the paper states in words where the counts alone do not give one, keyed by study and report identifier,
@@ -106,6 +119,14 @@
     "dpc_pair_rule:T2a-1": { verdict: PaperVerdict.COULD_NOT_FAIL, note: "noteMaxima" },
     "dpc_readout:T2b-D": { note: "notePairRule" },
     "dpc_pair_rule:T2b-1": { note: "notePairRule" },
+    // Appendix C.14, D: on fresh seeds C1 is a construction check and C4 to C6 consistency checks, as in Section 6;
+    // C5 held in 19 of 20 seeds at 302 nodes and so failed B.4's every-seed rule there.
+    "validation_fresh_seeds:C1": { verdict: PaperVerdict.COULD_NOT_FAIL, note: "noteMaxima" },
+    "validation_fresh_seeds:C4": { verdict: PaperVerdict.CONSISTENCY },
+    "validation_fresh_seeds:C5": { verdict: PaperVerdict.FAILED, note: "noteFreshSeedC5" },
+    "validation_fresh_seeds:C6": { verdict: PaperVerdict.CONSISTENCY },
+    "validation_fresh_seeds:O3": { note: "noteRatSleep" },
+    "validation_fresh_seeds:E3": { note: "noteArousalDrive" },
   });
 
   // What the hypothesis expects of each observation, for the ones where "in no run" is the desired outcome: patients
@@ -115,6 +136,8 @@
   const EXPECTED = Object.freeze({
     "validation:O1": Expected.NO_RUN, "validation:O2": Expected.NO_RUN, "validation:O3": Expected.NO_RUN,
     "validation:O4": Expected.EVERY_RUN, "validation:O5": Expected.EVERY_RUN,
+    "validation_fresh_seeds:O1": Expected.NO_RUN, "validation_fresh_seeds:O2": Expected.NO_RUN, "validation_fresh_seeds:O3": Expected.NO_RUN,
+    "validation_fresh_seeds:O4": Expected.EVERY_RUN, "validation_fresh_seeds:O5": Expected.EVERY_RUN,
   });
 
   function metExpectation(expected, entry) {
@@ -134,6 +157,8 @@
     [PassRule.EVERY_RUN]: (entry) => (entry.holding === entry.applicable ? PaperVerdict.PASSED : PaperVerdict.FAILED),
     [PassRule.REPORTED]: (entry) => reportedVerdict(entry.groups),
     [PassRule.WILSON]: (entry) => reportedVerdict(entry.groups),
+    [PassRule.WILSON_BY_SIZE]: (entry) => reportedVerdict(entry.groups),
+    [PassRule.ESTIMATE]: () => PaperVerdict.COUNTS,
     [PassRule.COUNTS]: () => PaperVerdict.COUNTS,
     [PassRule.OBSERVATION]: () => PaperVerdict.OBSERVATION,
     [PassRule.EXTENSION]: () => PaperVerdict.EXTENSION,

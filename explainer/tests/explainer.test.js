@@ -479,3 +479,15 @@ test("every language says the predictions in plain words first, one lead per pre
     for (const prediction of data.predictions["en-GB"]) assert.ok(`predictionLead${prediction.number}` in locale.messages, `${code}: ${prediction.number}`);
   }
 });
+
+test("the C.14 studies carry the paper's verdicts: pulse checks are consistency checks, and C5 fails on fresh seeds_Regression", () => {
+  for (const key of ["prediction15:P15a", "prediction15:P15b"]) assert.equal(paperVerdict(key), PaperVerdict.CONSISTENCY, key);
+  assert.equal(paperVerdict("prediction15:P15b-A0"), PaperVerdict.OBSERVATION);
+  const c5 = realIndex().find("validation_fresh_seeds:C5");
+  assert.equal(c5.paper.verdict, PaperVerdict.FAILED);
+  assert.equal(c5.paper.note, "noteFreshSeedC5");
+  assert.deepEqual(c5.groups.filter((group) => group.holding < group.applicable).map((group) => group.group), ["N = 302"]);
+  for (const identifier of ["C4", "C6"]) assert.equal(paperVerdict(`validation_fresh_seeds:${identifier}`), PaperVerdict.CONSISTENCY, identifier);
+  assert.equal(paperVerdict("validation_fresh_seeds:C1"), PaperVerdict.COULD_NOT_FAIL);
+  assert.equal(paperVerdict("validation_fresh_seeds:O4"), PaperVerdict.OBSERVATION);
+});

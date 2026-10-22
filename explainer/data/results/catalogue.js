@@ -101,6 +101,26 @@ globalThis.DPC_RESULTS_CATALOGUE = Object.freeze([
   "script": "data/results/current/convergence_full_20261019T225958Z.js"
  },
  {
+  "identifier": "current/directed_threshold_estimate_full_20261021T201513Z",
+  "kind": "directed_threshold_estimate",
+  "label": "full",
+  "report_set": "current",
+  "set_note": "",
+  "started_utc": "2026-10-21T20:15:13.375058+00:00",
+  "machine": "Mac14,9 · Apple M2 Pro",
+  "git_commit": "74f9cb009f6e5096b0fcea8f23b798a9d941eb60",
+  "working_tree_dirty": false,
+  "checks": {
+   "checks": 0,
+   "holding_in_every_run": 0,
+   "holding_in_none": 0
+  },
+  "has_curves": false,
+  "json_link": "../simulator/results/directed_threshold_estimate_full_20261021T201513Z.json",
+  "markdown_link": "../simulator/results/directed_threshold_estimate_full_20261021T201513Z.md",
+  "script": "data/results/current/directed_threshold_estimate_full_20261021T201513Z.js"
+ },
+ {
   "identifier": "current/disconnection_full_20261020T163516Z",
   "kind": "disconnection",
   "label": "full",
@@ -221,6 +241,26 @@ globalThis.DPC_RESULTS_CATALOGUE = Object.freeze([
   "script": "data/results/current/percolation_full_20261020T011339Z.js"
  },
  {
+  "identifier": "current/prediction15_full_20261021T201526Z",
+  "kind": "prediction15",
+  "label": "full",
+  "report_set": "current",
+  "set_note": "",
+  "started_utc": "2026-10-21T20:15:26.243591+00:00",
+  "machine": "Mac14,9 · Apple M2 Pro",
+  "git_commit": "74f9cb009f6e5096b0fcea8f23b798a9d941eb60",
+  "working_tree_dirty": false,
+  "checks": {
+   "checks": 25,
+   "holding_in_every_run": 24,
+   "holding_in_none": 0
+  },
+  "has_curves": false,
+  "json_link": "../simulator/results/prediction15_full_20261021T201526Z.json",
+  "markdown_link": "../simulator/results/prediction15_full_20261021T201526Z.md",
+  "script": "data/results/current/prediction15_full_20261021T201526Z.js"
+ },
+ {
   "identifier": "current/prespecified_full_20261019T202442Z",
   "kind": "prespecified",
   "label": "full",
@@ -239,6 +279,26 @@ globalThis.DPC_RESULTS_CATALOGUE = Object.freeze([
   "json_link": "../simulator/results/prespecified_full_20261019T202442Z.json",
   "markdown_link": "../simulator/results/prespecified_full_20261019T202442Z.md",
   "script": "data/results/current/prespecified_full_20261019T202442Z.js"
+ },
+ {
+  "identifier": "current/reciprocity_estimate_full_20261021T201522Z",
+  "kind": "reciprocity_estimate",
+  "label": "full",
+  "report_set": "current",
+  "set_note": "",
+  "started_utc": "2026-10-21T20:15:22.882696+00:00",
+  "machine": "Mac14,9 · Apple M2 Pro",
+  "git_commit": "74f9cb009f6e5096b0fcea8f23b798a9d941eb60",
+  "working_tree_dirty": false,
+  "checks": {
+   "checks": 0,
+   "holding_in_every_run": 0,
+   "holding_in_none": 0
+  },
+  "has_curves": false,
+  "json_link": "../simulator/results/reciprocity_estimate_full_20261021T201522Z.json",
+  "markdown_link": "../simulator/results/reciprocity_estimate_full_20261021T201522Z.md",
+  "script": "data/results/current/reciprocity_estimate_full_20261021T201522Z.js"
  },
  {
   "identifier": "current/sensitivity_full_20261020T110144Z",
@@ -279,6 +339,26 @@ globalThis.DPC_RESULTS_CATALOGUE = Object.freeze([
   "json_link": "../simulator/results/species_full_20261020T103719Z.json",
   "markdown_link": "../simulator/results/species_full_20261020T103719Z.md",
   "script": "data/results/current/species_full_20261020T103719Z.js"
+ },
+ {
+  "identifier": "current/validation_fresh_seeds_full_20261021T201644Z",
+  "kind": "validation_fresh_seeds",
+  "label": "full",
+  "report_set": "current",
+  "set_note": "",
+  "started_utc": "2026-10-21T20:16:44.345772+00:00",
+  "machine": "Mac14,9 · Apple M2 Pro",
+  "git_commit": "74f9cb009f6e5096b0fcea8f23b798a9d941eb60",
+  "working_tree_dirty": false,
+  "checks": {
+   "checks": 75,
+   "holding_in_every_run": 55,
+   "holding_in_none": 11
+  },
+  "has_curves": false,
+  "json_link": "../simulator/results/validation_fresh_seeds_full_20261021T201644Z.json",
+  "markdown_link": "../simulator/results/validation_fresh_seeds_full_20261021T201644Z.md",
+  "script": "data/results/current/validation_fresh_seeds_full_20261021T201644Z.js"
  },
  {
   "identifier": "current/validation_full_20261019T113035Z",
