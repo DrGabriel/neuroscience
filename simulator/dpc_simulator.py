@@ -47,11 +47,11 @@ REFERENCE_NODE_COUNT = 2_000
 REFERENCE_MEAN_DEGREE = 8.0
 REFERENCE_EDGES_PER_NEW_NODE = 4  # preferential attachment; gives mean degree 8
 
-# Measured range: the window for integrating thalamic input in rodent barrel cortex spans 1-10 ms
+# Assumed (Section 4.7): the window for integrating thalamic input in rodent barrel cortex spans 1-10 ms
 # (Gabernet et al., 2005), and it is under 2 ms in hippocampal pyramidal cells (Pouille & Scanziani,
 # 2001); 3 ms lies within that range, and the sensitivity analysis covers 1-10 ms.
 REFERENCE_INTEGRATION_WINDOW_MS = 3.0
-# Measured: in area MT of alert macaques, responses to time-varying stimuli are rate-modulated with
+# Assumed (Section 4.7): in area MT of alert macaques, responses to time-varying stimuli are rate-modulated with
 # a precision of about 3 ms (Buracas et al., 1998);
 # single neurons in vitro reach under 1 ms (Mainen & Sejnowski, 1995). No trial-to-trial timing
 # variability between cortical areas has been measured, so the sensitivity analysis covers 1-10 ms.

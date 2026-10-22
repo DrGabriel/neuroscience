@@ -223,7 +223,7 @@ Network sizes run from 302 nodes, the number of *C. elegans* neurons (White et a
 
 {report_section("percolation")}
 
-### B.6 Sensitivity to free parameters
+### B.6 Sensitivity to assumed and free parameters
 
 Each free parameter is varied with the others held at their reference values. {report_section("sensitivity")}
 

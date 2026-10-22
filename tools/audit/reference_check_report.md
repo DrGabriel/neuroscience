@@ -1,6 +1,6 @@
 # Reference check
 
-Entries: 311. Problems against Crossref: 5. Without a DOI: 4.
+Entries: 314. Problems against Crossref: 5. Without a DOI: 4.
 
 | Entry | Issue |
 |---|---|

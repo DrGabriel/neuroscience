@@ -15,7 +15,7 @@ as an archive file, not through the GitHub integration.
 |---|---|
 | `white_paper_anesthesia_consensus.pdf` | `tools/pdf/build.mjs` (already built with every commit) |
 | `white_paper_anesthesia_consensus.pt-BR.pdf` | same |
-| `dpc-v1.0.0-history.bundle` | after the final commit: `git bundle create ../dpc-v1.0.0-history.bundle --all` (read-only for the repository; the full history, so the order of pre-specification commits and runs can be checked). It contains the author photographs, which `NOTICE.md` keeps outside the CC BY licence; say so in the record's description |
+| `dpc-v1.0.0-history.bundle` | after the final commit: `git bundle create ../dpc-v1.0.0-history.bundle --all` (read-only for the repository; the full history, so the order of pre-specification commits and runs can be checked). It contains the author photographs, which `NOTICE.md` keeps outside the CC BY licence, so it is deposited as a **separate Zenodo record** with licence "Other (see description)", linked from the paper's record as "is supplemented by" |
 | `dpc-v1.0.0-source.zip` | from the repository root, after the final commit: `git archive --format=zip --prefix=dpc-v1.0.0/ -o ../dpc-v1.0.0-source.zip HEAD` (a read-only Git command; it packs only committed, tracked files, so `drafts/`, `.venv/` and `node_modules/` are left out) |
 
 Before uploading the archive, unzip it into an empty folder and run, from `simulator/`:

@@ -8,15 +8,15 @@ This repository collects hypotheses, formal models and reproducible simulations 
 
 ### The Distributed Perceptual Consensus hypothesis of general anaesthesia
 
-General anaesthetics are chemically unrelated and act on many molecular targets, yet they all produce the same reversible loss of consciousness. The paper proposes that consciousness requires distributed thalamocortical populations to reach timely agreement on a shared state. Inter-areal signals must arrive within a bounded integration window for that agreement to form. Anaesthetics, whatever their molecular target, increase transmission failure and timing variability until the network of timing-coherent connections falls below a percolation threshold.
+General anaesthetics are chemically unrelated and act on many molecular targets, yet they bring patients to a similar end point: unresponsiveness that reverses when the drug wears off. The paper proposes that experience requires signals between brain areas to arrive within a short window of a shared rhythm, and the connections doing so to link a quorum, a minimum share of the network (the words are borrowed from distributed computing in their everyday sense only). Anaesthetics, whatever their molecular target, would increase transmission failure and timing variability until the timing-coherent connections no longer link a quorum.
 
 ```mermaid
 flowchart LR
     A["Molecular action<br/>(GABA-A, NMDA, K2P, membrane)"] --> B["Circuit effect<br/>transmission failure p(c)<br/>timing jitter σ₀(c)"]
     B --> C["Network effect<br/>fewer timing-coherent connections"]
     C --> D{"Giant component<br/>≥ quorum?"}
-    D -- yes --> E["Integrated, reportable<br/>conscious state"]
-    D -- no --> F["Fragmented local activity<br/>(unconsciousness)"]
+    D -- yes --> E["Experience possible<br/>(connected if the senses<br/>are in the group)"]
+    D -- no --> F["Fragmented local activity<br/>(no experience)"]
     F -. "weaker phase reference<br/>(feedback λ)" .-> C
 ```
 
