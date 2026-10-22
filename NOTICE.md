@@ -31,11 +31,21 @@ Three third-party datasets are redistributed, in derived form, in the interactiv
 | Consensus structural and functional connectome from 70 young healthy adults, Zenodo record 3067849 (`Consensus_Connectomes.mat`) | Human brain in 3D in the explainer only; not used by the paper's studies | CC BY 4.0; 219-region scale redistributed in `explainer/data/` with changes stated | Shafiei, G., Markello, R. D., Talpalaru, T., Makowski, C., Kirschner, M., Devenyi, G. A., et al. (2019). [Data set]. Zenodo. https://doi.org/10.5281/zenodo.3067849; described in Shafiei, G., et al. (2020). *Biological Psychiatry*, 87(8), 727–735. https://doi.org/10.1016/j.biopsych.2019.09.031 |
 | The Virtual Brain 998-region connectivity (`connectivity_998.zip`) | Human network | GPL-3.0; used, not redistributed | Hagmann, P., et al. (2008). *PLoS Biology*, 6(7), e159; Sanz Leon, P., et al. (2013). *Frontiers in Neuroinformatics*, 7, 10 |
 
+### Open recordings reanalysed in Appendix E (used, not redistributed)
+
+Appendix E reanalyses three openly published, de-identified datasets. They are downloaded by `analysis/open_data/download.py` into `data_external/` (excluded from version control) and are not redistributed. The repository holds only derived values, per subject or session, under the datasets' own identifiers (`analysis/open_data/results/`).
+
+| Dataset | Use | Licence | Cited as |
+|---|---|---|---|
+| Michigan Human Anesthesia fMRI Dataset-1, OpenNeuro ds006623 v1.0.0, https://doi.org/10.18112/openneuro.ds006623.v1.0.0 | Functional MRI tests (Appendix E) | CC0 | Huang et al. (2025) [data set], with Huang et al. (2018a), (2021a) and (2021b), as the dataset asks |
+| PRIOS, OpenNeuro ds004370 v1.0.2, https://doi.org/10.18112/openneuro.ds004370.v1.0.2 | Single-pulse stimulation analysis (Appendix E) | CC0 | van Blooijs et al. (2023) [data set], with van Blooijs et al. (2024) and Demuru et al. (2022), as the dataset asks |
+| Neurotycho Anesthesia and Sleep task, https://neurotycho.org/anesthesia-and-sleep-task | Macaque electrocorticography tests (Appendix E) | Copyright waived on the site (CC0 wording) | RIKEN Brain Science Institute (n.d.) [data set], with Yanagawa et al. (2013) |
+
 Data that are only used are downloaded from their source, where their licence text lives. Data redistributed in derived form carry their notices at the top of `explainer/data/explainer-data.js`, as described above.
 
 ## Author photographs
 
-The photographs of the authors in `explainer/assets/` are published with the consent of the people shown. They are **not** covered by the CC BY 4.0 licence of this repository: all rights are reserved, and they may not be reused without the subject's permission.
+The photographs of the authors in `explainer/assets/` are published with the consent of the people shown. They are **not** covered by the CC BY 4.0 licence of this repository: all rights are reserved, and they may not be reused without the subject's permission. They are left out of the source archive (`.gitattributes`), but the full Git history deposited with it (`dpc-v1.0.0-history.bundle`) contains them; this notice applies to them there too.
 
 ## Algorithms and published findings
 

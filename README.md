@@ -20,18 +20,20 @@ flowchart LR
     F -. "weaker phase reference<br/>(feedback λ)" .-> C
 ```
 
-The feedback loop in the diagram can make the transition bistable, so that consciousness returns at a lower concentration than the one at which it was lost. This hysteresis is measured experimentally and is known as neural inertia. The percolation model reproduces the measured hysteresis once its feedback is calibrated, up to a ceiling below the largest measured ratio; the phase-oscillator model does not show it.
+The feedback loop in the diagram can make the transition bistable, so that consciousness returns at a lower concentration than the one at which it was lost. This hysteresis is measured experimentally and is known as neural inertia. The percolation model reproduces the measured hysteresis once its feedback is calibrated, up to a ceiling below the largest measured ratio, and on networks not used for the calibration slightly below its target; the phase-oscillator model does not show it.
 
 - **Paper:** [`white_paper_anesthesia_consensus.md`](white_paper_anesthesia_consensus.md) ([PDF](white_paper_anesthesia_consensus.pdf); Brazilian Portuguese translation: [`.pt-BR.md`](white_paper_anesthesia_consensus.pt-BR.md), [PDF](white_paper_anesthesia_consensus.pt-BR.pdf))
 - **Falsifiable predictions:** Section 8 of the paper
 - **Simulations and results:** Appendices B and C of the paper, with the model revision history in Appendix D, and the [`simulator/`](simulator/) directory
+- **Tests on open recordings:** Appendix E (pre-specifications, deviations and results, confirmatory and exploratory), and the [`analysis/open_data/`](analysis/open_data/) directory
+- **Text moved out of the main paper, with every number:** Appendix F
 
 ## Repository layout
 
 | Path | Contents |
 |---|---|
 | [`white_paper_anesthesia_consensus.md`](white_paper_anesthesia_consensus.md) | Hypothesis and theory paper, with results and code listings in Appendices B and C and the model revision history in Appendix D |
-| [`white_paper_anesthesia_consensus.pt-BR.md`](white_paper_anesthesia_consensus.pt-BR.md), [`.pdf`](white_paper_anesthesia_consensus.pt-BR.pdf) | Brazilian Portuguese translation of the paper; the English text is authoritative; Appendices B to D and the references are not translated |
+| [`white_paper_anesthesia_consensus.pt-BR.md`](white_paper_anesthesia_consensus.pt-BR.md), [`.pdf`](white_paper_anesthesia_consensus.pt-BR.pdf) | Brazilian Portuguese translation of the paper; the English text is authoritative; Appendices B onwards and the references are not translated |
 | [`figures/`](figures/) | Figures of the paper, generated from the result files |
 | [`explainer/`](explainer/) | Interactive explainer: open `explainer/index.html` in a browser to watch the percolation model break quorum on the *C. elegans* connectome. The browser model is a second implementation in JavaScript, also written with AI assistance, checked against the Python model by tests. Each figure says whether it is a live model, a schematic, data or a reported result; parameters and results are exported from the simulator by `simulator/explainer_export.py`, and every study report, current and superseded, can be opened in its results archive (`simulator/results_catalogue.py`). Tests: `node --test explainer/tests/explainer.test.js` |
 | [`simulator/`](simulator/) | Models, studies and tests (below) |
@@ -39,7 +41,8 @@ The feedback loop in the diagram can make the transition bistable, so that consc
 | [`CITATION.cff`](CITATION.cff) | Citation metadata |
 | [`LICENSE`](LICENSE), [`LICENSE-CC-BY-4.0`](LICENSE-CC-BY-4.0) | Apache 2.0 for code; CC BY 4.0 for the paper, figures and documentation |
 | [`NOTICE.md`](NOTICE.md) | Third-party software and data, with licences and attributions |
-| [`analysis/`](analysis/) | The data assessment of 20 October 2026 and the Zenodo deposit checklist |
+| [`analysis/`](analysis/) | Pre-specifications committed before each run (C.12 to C.14, Appendix E and E.15), the data assessment of 20 October 2026 and the Zenodo deposit checklist |
+| [`analysis/open_data/`](analysis/open_data/) | Code of the open-data tests (Appendix E): download with checksums, pipelines, group statistics and verdicts (`run.py`), the documented deviations (`deviations.py`, `exploratory_group.py`, `reseeded.py`), the round-3 reanalyses, and every result in `results/`. Tests: `.venv/bin/python -I analysis/open_data/run_tests.py` |
 | [`tools/audit/`](tools/audit/) | `number_trace.py` traces every number in the main text to a printed report value; `reference_check.py` checks every reference against Crossref |
 
 ### Models
@@ -94,7 +97,7 @@ cd simulator
 python3 validation_study.py --quick                       # short check, seconds
 ```
 
-Appendix C.9 of the paper lists the commands that reproduce every result in order. The full set takes several hours on a ten-core laptop, mostly for the *Drosophila* connectome. Every study prints its progress, with the share completed and the estimated time remaining.
+Appendix C.9 of the paper lists the commands that reproduce every simulation result in order, and Appendices E.11 and E.15 those of the open-data analyses. The percolation-model studies B.3, B.4 and B.7 ran on CPython 3.15.0, everything else on CPython 3.13.2. The order in which code, pre-specifications and results were committed can be checked in the full Git history, deposited with the release as `dpc-v1.0.0-history.bundle` (`git clone dpc-v1.0.0-history.bundle`). The full set takes several hours on a ten-core laptop, mostly for the *Drosophila* connectome. Every study prints its progress, with the share completed and the estimated time remaining.
 
 Each report records the start and end time, the machine model, processor, core count, memory, operating system, Python and package versions, Git commit and the SHA-256 hash of every simulator module that ran, together with every parameter. A study exits with a non-zero status when a pre-specified test fails; that is a result, recorded in the report, not an error.
 
@@ -125,7 +128,7 @@ The test suite checks the models against known analytical results (the percolati
 
 ## Scope and limitations
 
-The simulations show that the formal model is internally consistent and produces the behaviour the paper attributes to it. They cannot show that the brain works this way. That question can only be settled by the experiments proposed in Section 8 of the paper. Some parameters are taken from published physiology, one (the strength of reference feedback) is calibrated to published measurements of neural inertia, and the rest are free; the sensitivity analysis reports how the results depend on them. No experiment on humans or animals was performed for this work. The paper lists its limitations in Section 10.
+The simulations show that the formal model is internally consistent and produces the behaviour the paper attributes to it. They cannot show that the brain works this way. That question can only be settled by the experiments proposed in Section 8 of the paper. Some parameters are taken from published physiology, one (the strength of reference feedback) is calibrated to published measurements of neural inertia, and the rest are free; the sensitivity analysis reports how the results depend on them. No experiment on humans or animals was performed for this work; Appendix E reanalyses three public, de-identified datasets of humans and macaques, which are not redistributed (`NOTICE.md`). The paper lists its limitations in Section 10.
 
 ## Authors
 

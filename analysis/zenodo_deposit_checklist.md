@@ -6,7 +6,7 @@ as an archive file, not through the GitHub integration.
 ## Gate (in order)
 
 1. Gabriel reads the English and Portuguese PDFs in full.
-2. Callina approves the content and the author list.
+2. Callina approves the content and the author list (confirmed by Gabriel on 21 October 2026; re-confirm for the final version).
 3. Final commit; `git status` clean.
 
 ## Files to upload
@@ -15,11 +15,12 @@ as an archive file, not through the GitHub integration.
 |---|---|
 | `white_paper_anesthesia_consensus.pdf` | `tools/pdf/build.mjs` (already built with every commit) |
 | `white_paper_anesthesia_consensus.pt-BR.pdf` | same |
+| `dpc-v1.0.0-history.bundle` | after the final commit: `git bundle create ../dpc-v1.0.0-history.bundle --all` (read-only for the repository; the full history, so the order of pre-specification commits and runs can be checked). It contains the author photographs, which `NOTICE.md` keeps outside the CC BY licence; say so in the record's description |
 | `dpc-v1.0.0-source.zip` | from the repository root, after the final commit: `git archive --format=zip --prefix=dpc-v1.0.0/ -o ../dpc-v1.0.0-source.zip HEAD` (a read-only Git command; it packs only committed, tracked files, so `drafts/`, `.venv/` and `node_modules/` are left out) |
 
 Before uploading the archive, unzip it into an empty folder and run, from `simulator/`:
 `python3.13 -m venv ../.venv && ../.venv/bin/pip install -r requirements.txt && ../.venv/bin/python -m unittest discover -s tests -t .`
-The tests must pass from the archive alone. Checked on 20 October 2026 with the commit of that day: 188 tests ran and passed; 3 skip until the connectome datasets are downloaded, by design, since the datasets are fetched on first use and checked against pinned SHA-256 hashes rather than redistributed (`NOTICE.md`).
+Then, from the archive root: `.venv/bin/python -I analysis/open_data/run_tests.py` (open-data analysis code, synthetic data only) and `node --test explainer/tests/explainer.test.js` (explainer). The tests must pass from the archive alone. Checked on 20 October 2026 with the commit of that day: 188 tests ran and passed; 3 skip until the connectome datasets are downloaded, by design, since the datasets are fetched on first use and checked against pinned SHA-256 hashes rather than redistributed (`NOTICE.md`).
 
 ## Zenodo form
 
