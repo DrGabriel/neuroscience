@@ -52,6 +52,8 @@ function renderBody(markdown) {
   const renderer = new marked.Renderer();
   const defaultCode = renderer.code.bind(renderer);
   renderer.code = (code, language) => (language === "mermaid" ? `<pre class="mermaid">${code}</pre>` : defaultCode(code, language));
+  // Markdown keeps a figure's caption in the image's alt text, which the browser never prints, so print it beneath.
+  renderer.image = (href, title, text) => `<figure><img src="${href}" alt="${text}"><figcaption>${text}</figcaption></figure>`;
   return marked.parse(prepared, { renderer, gfm: true }).replace(/@@MATH(\d+)@@/g, (_, i) => formulas[i]);
 }
 
@@ -95,6 +97,9 @@ function htmlPage({ markdown, draft, lang, baseHref }) {
   pre:not(.mermaid) { background: #f6f6f6; padding: 6pt; font-size: 8pt; white-space: pre-wrap; }
   pre.mermaid { font-family: ${DIAGRAM_FONT}; font-size: 10.5pt; white-space: normal; text-align: center; background: none; break-inside: avoid; }
   hr { border: 0; border-top: 1px solid #ddd; margin: 14pt 0; }
+  figure { margin: 10pt 0; break-inside: avoid; text-align: center; }
+  figure img { max-width: 100%; height: auto; }
+  figcaption { font-size: 9pt; line-height: 1.35; text-align: left; margin-top: 4pt; }
   .draft { border: 1px solid #b42318; color: #b42318; padding: 6pt 8pt; font-weight: 600; }
 </style></head><body>${banner}${renderBody(markdown)}
 <script type="module">
