@@ -491,3 +491,16 @@ test("the C.14 studies carry the paper's verdicts: pulse checks are consistency 
   assert.equal(paperVerdict("validation_fresh_seeds:C1"), PaperVerdict.COULD_NOT_FAIL);
   assert.equal(paperVerdict("validation_fresh_seeds:O4"), PaperVerdict.OBSERVATION);
 });
+
+test("the C.12 construction checks and A1 are not shown as passed or failed_Regression", () => {
+  // Appendix A.5: T2a-DN, W2a and T2a-M could not fail at the maximum transmission failure chosen (they were shown as
+  // passed), and A1 could not have passed (it was shown as failed).
+  for (const key of ["dpc_readout:T2a-DN", "dpc_readout:W2a", "dpc_readout:T2a-M"]) {
+    assert.equal(paperVerdict(key), PaperVerdict.COULD_NOT_FAIL, key);
+    assert.equal(realIndex().find(key).paper.note, "noteMaxima", key);
+  }
+  const a1 = realIndex().find("glia:A1");
+  assert.equal(a1.paper.verdict, PaperVerdict.COULD_NOT_PASS);
+  assert.equal(a1.paper.note, "noteCouldNotPass");
+  assert.equal(verdictText(a1), "Check (could not pass)");
+});

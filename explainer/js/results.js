@@ -31,7 +31,7 @@
 
   // The paper's verdict, shown before the counts. Each kind has a label, a plain tooltip and a mark (styles.css).
   const PaperVerdict = Object.freeze({
-    PASSED: "passed", FAILED: "failed", NOT_EVALUABLE: "not-evaluable", MIXED: "mixed", COULD_NOT_FAIL: "could-not-fail",
+    PASSED: "passed", FAILED: "failed", NOT_EVALUABLE: "not-evaluable", MIXED: "mixed", COULD_NOT_FAIL: "could-not-fail", COULD_NOT_PASS: "could-not-pass",
     CONSISTENCY: "consistency", OBSERVATION: "observation", EXTENSION: "extension", COUNTS: "counts", NOT_APPLICABLE: "not-applicable",
   });
   const PAPER_VERDICT_MESSAGE = Object.freeze({
@@ -40,6 +40,7 @@
     [PaperVerdict.NOT_EVALUABLE]: { label: "paperNotEvaluable", tip: "tipNotEvaluable" },
     [PaperVerdict.MIXED]: { label: "paperMixed", tip: "tipMixed" },
     [PaperVerdict.COULD_NOT_FAIL]: { label: "paperCouldNotFail", tip: "tipCouldNotFail" },
+    [PaperVerdict.COULD_NOT_PASS]: { label: "paperCouldNotPass", tip: "tipCouldNotPass" },
     [PaperVerdict.CONSISTENCY]: { label: "paperConsistency", tip: "tipConsistency" },
     [PaperVerdict.OBSERVATION]: { label: "paperObservation", tip: "tipObservation" },
     [PaperVerdict.EXTENSION]: { label: "paperExtension", tip: "tipExtension" },
@@ -90,8 +91,8 @@
     // Section 6: T1b passed on fresh seeds as T1c, but the rise may reflect the low awake baseline (Appendix C.12).
     "species:P1b": { note: "noteBaseline" },
     "prespecified:P1c": { note: "noteBaseline" },
-    // Section 6 and Section 5.6: A1 failed in every seed but could not have passed.
-    "glia:A1": { verdict: PaperVerdict.FAILED, note: "noteCouldNotPass" },
+    // Section 6 and Appendix A.5: A1 is a construction check that could not have passed (Appendix B.7).
+    "glia:A1": { verdict: PaperVerdict.COULD_NOT_PASS, note: "noteCouldNotPass" },
     // Limitation 11: the pre-specified surge at the collapse (T1) failed.
     "species:P1": { verdict: PaperVerdict.FAILED },
     // Limitation 5 and Section 7.2: K1 failed as first tested.
@@ -116,6 +117,11 @@
     "dpc_readout:SP1": { verdict: PaperVerdict.CONSISTENCY, note: "noteBuiltInShare" },
     "dpc_pair_rule:SP1-1": { verdict: PaperVerdict.CONSISTENCY, note: "noteBuiltInShare" },
     "dpc_readout:T2a-D": { verdict: PaperVerdict.COULD_NOT_FAIL, note: "noteMaxima" },
+    // Appendix A.5 and C.12: the null-model, connection-carried-reference and weaker-coupling variants are construction
+    // checks for the same reason.
+    "dpc_readout:T2a-DN": { verdict: PaperVerdict.COULD_NOT_FAIL, note: "noteMaxima" },
+    "dpc_readout:W2a": { verdict: PaperVerdict.COULD_NOT_FAIL, note: "noteMaxima" },
+    "dpc_readout:T2a-M": { verdict: PaperVerdict.COULD_NOT_FAIL, note: "noteMaxima" },
     "dpc_pair_rule:T2a-1": { verdict: PaperVerdict.COULD_NOT_FAIL, note: "noteMaxima" },
     "dpc_readout:T2b-D": { note: "notePairRule" },
     "dpc_pair_rule:T2b-1": { note: "notePairRule" },

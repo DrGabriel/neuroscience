@@ -404,7 +404,8 @@ canvas.brain:active { cursor: grabbing; }
 .badge[data-kind="result"] { background: var(--wash); }
 .badge[data-kind="data"] { border-style: dotted; border-color: var(--ink); }
 /* A test's verdict is the paper's, in words with a glyph, never a colour: ✓ passed, ✕ failed, ◐ differs by organism,
-   – a check, an observation or no pass rule. The counts follow in the text. */
+   – a check (including one that could not fail or could not pass), an observation or no pass rule. The counts follow in
+   the text. */
 .outcome { font-family: var(--font-data); font-size: 0.78rem; font-style: normal; padding: 0.05rem 0.4rem; border: 1px solid var(--rule); border-radius: 3px; color: var(--ink); display: inline-block; max-width: 100%; overflow-wrap: anywhere; cursor: help; }
 .outcome[data-paper-verdict]::before { margin-right: 0.35rem; content: "–"; }
 .outcome[data-paper-verdict="passed"]::before { content: "✓"; }
