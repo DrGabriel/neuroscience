@@ -1,48 +1,39 @@
 # Zenodo deposit, v1.0.0: checklist
 
-Nothing here is done automatically. The authors make the deposit; the repository stays private, so the code goes up
-as an archive file, not through the GitHub integration.
+The release goes to Zenodo through its GitHub integration: the repository is made public, Zenodo watches it, and each
+GitHub release is archived with its own DOI. `.zenodo.json` sets the record's metadata (preprint, CC BY 4.0, both
+authors with ORCIDs, abstract, keywords). The authors make every step below; nothing is done automatically.
 
 ## Gate (in order)
 
 1. Gabriel reads the English and Portuguese PDFs in full.
-2. Callina approves the content and the author list (confirmed by Gabriel on 21 October 2026; re-confirm for the final version).
-3. Final commit; `git status` clean.
+2. Callina approves the content and the author list of this version.
+3. Set the **Date** row of both papers and `date-released` in `CITATION.cff` to the release date; rebuild both PDFs
+   (`tools/pdf/build.mjs`); commit and push; `git status` clean.
 
-## Files to upload
+## Release
 
-| File | How it is made |
-|---|---|
-| `white_paper_anesthesia_consensus.pdf` | `tools/pdf/build.mjs` (already built with every commit) |
-| `white_paper_anesthesia_consensus.pt-BR.pdf` | same |
-| `dpc-v1.0.0-history.bundle` | after the final commit: `git bundle create ../dpc-v1.0.0-history.bundle --all` (read-only for the repository; the full history, so the order of pre-specification commits and runs can be checked). It contains the author photographs, which `NOTICE.md` keeps outside the CC BY licence, so it is deposited as a **separate Zenodo record** with licence "Other (see description)", linked from the paper's record as "is supplemented by" |
-| `dpc-v1.0.0-source.zip` | from the repository root, after the final commit: `git archive --format=zip --prefix=dpc-v1.0.0/ -o ../dpc-v1.0.0-source.zip HEAD` (a read-only Git command; it packs only committed, tracked files, so `drafts/`, `.venv/` and `node_modules/` are left out) |
+1. On GitHub, make `DrGabriel/neuroscience` public (Settings, General, Danger Zone, Change visibility). Its full
+   history, including the pre-specification commits and GitHub's push records, becomes public. The author
+   photographs are in the repository and its history; `NOTICE.md` keeps them outside the CC BY licence.
+2. On Zenodo, log in with GitHub, open GitHub in the account menu, and switch the repository on.
+3. On GitHub, create a release with tag `v1.0.0` from `main`, title "v1.0.0". Zenodo archives the release's source
+   archive, which leaves the photographs out (`.gitattributes`), and mints the DOI.
+4. Check the Zenodo record: type Preprint, licence CC BY 4.0, both authors, abstract. Edit it there if needed.
 
-Before uploading the archive, unzip it into an empty folder and run, from `simulator/`:
-`python3.13 -m venv ../.venv && ../.venv/bin/pip install -r requirements.txt && ../.venv/bin/python -m unittest discover -s tests -t .`
-Then, from the archive root: `.venv/bin/python -I analysis/open_data/run_tests.py` (open-data analysis code, synthetic data only) and `node --test explainer/tests/explainer.test.js` (explainer). The tests must pass from the archive alone. Checked on 20 October 2026 with the commit of that day: 188 tests ran and passed; 3 skip until the connectome datasets are downloaded, by design, since the datasets are fetched on first use and checked against pinned SHA-256 hashes rather than redistributed (`NOTICE.md`).
+## After the DOI exists (optional, v1.0.1)
 
-## Zenodo form
+Write the DOI into both papers' "Data and code availability" line and into `CITATION.cff`, rebuild the PDFs, commit,
+and create release `v1.0.1`; Zenodo gives it its own DOI under the same concept DOI.
 
-| Field | Value |
-|---|---|
-| Resource type | Publication / Preprint |
-| Title | The Distributed Perceptual Consensus Hypothesis of General Anaesthesia |
-| Creators | Santos de Oliveira, Gabriel (Independent researcher, Rio de Janeiro, Brazil; ORCID 0009-0003-9528-9731); Gertrudes Ferreira, Callina (Independent researcher, Rio de Janeiro, Brazil; ORCID 0009-0002-8512-213X) |
-| Description | The paper's abstract |
-| Version | 1.0.0 |
-| Language | English (a Brazilian Portuguese translation is included) |
-| Licence | CC BY 4.0 for the record (text and figures); the code inside the archive is under Apache 2.0, as `LICENSE` states |
-| Keywords | as in `CITATION.cff` |
-| Related identifiers | "Is supplemented by": the source archive (same record) |
-| DOI | reserve it in the form before publishing, then write it into the paper's "Data and code availability" line and into `CITATION.cff`, rebuild the PDFs, commit, and rebuild the archive |
+## Before the release: test from the archive
 
-## After the DOI is reserved
-
-- Paper (EN, PT): replace "DOI to be added on deposit" with the DOI.
-- `CITATION.cff`: set `date-released` to the deposit date and add the DOI.
-- Paper (EN, PT): set the **Date** row of the title block to the deposit date (it says 17 October 2026, the start of the work).
-- Rebuild the PDFs and the archive from the new commit, then upload.
+From an empty folder: `git archive --format=zip --prefix=dpc-v1.0.0/ -o dpc-v1.0.0-source.zip HEAD`, unzip, then in
+`dpc-v1.0.0/`: `python3.13 -m venv .venv && .venv/bin/pip install -r simulator/requirements.txt`, and run
+`(cd simulator && ../.venv/bin/python -m unittest discover -s tests -t .)`,
+`.venv/bin/python -I analysis/open_data/run_tests.py` and `node --test explainer/tests/explainer.test.js`. Checked on
+22 October 2026 at commit `102b40a`: 356 simulator tests (3 skipped until the connectome datasets are downloaded),
+101 open-data tests and 48 explainer tests passed from the archive alone.
 
 ## Checked on 20 October 2026
 

@@ -15,7 +15,7 @@ version: 1.0.0
 date-released: 2026-10-17
 # Code (simulator/, explainer/js/, tools/) is under Apache-2.0; text, figures and results are under CC-BY-4.0.
 # Third-party items keep their own licences (NOTICE.md); the author photographs are all rights reserved,
-# also inside the deposited Git history (dpc-v1.0.0-history.bundle). Set date-released to the deposit date.
+# and are left out of release archives (.gitattributes). Set date-released to the release date.
 license:
   - Apache-2.0
   - CC-BY-4.0

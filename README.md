@@ -97,7 +97,7 @@ cd simulator
 python3 validation_study.py --quick                       # short check, seconds
 ```
 
-Appendix C.9 of the paper lists the commands that reproduce every simulation result in order, and Appendices E.11 and E.15 those of the open-data analyses. The percolation-model studies B.3, B.4 and B.7 ran on CPython 3.15.0, everything else on CPython 3.13.2. The order in which code, pre-specifications and results were committed can be checked in the full Git history, deposited with the release as `dpc-v1.0.0-history.bundle` (`git clone dpc-v1.0.0-history.bundle`). The full set takes several hours on a ten-core laptop, mostly for the *Drosophila* connectome. Every study prints its progress, with the share completed and the estimated time remaining.
+Appendix C.9 of the paper lists the commands that reproduce every simulation result in order, and Appendices E.11 and E.15 those of the open-data analyses. The percolation-model studies B.3, B.4 and B.7 ran on CPython 3.15.0, everything else on CPython 3.13.2. The order in which code, pre-specifications and results were committed can be checked in this repository's public Git history. The full set takes several hours on a ten-core laptop, mostly for the *Drosophila* connectome. Every study prints its progress, with the share completed and the estimated time remaining.
 
 Each report records the start and end time, the machine model, processor, core count, memory, operating system, Python and package versions, Git commit and the SHA-256 hash of every simulator module that ran, together with every parameter. A study exits with a non-zero status when a pre-specified test fails; that is a result, recorded in the report, not an error.
 

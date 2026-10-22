@@ -1,0 +1,38 @@
+{
+  "upload_type": "publication",
+  "publication_type": "preprint",
+  "title": "The Distributed Perceptual Consensus Hypothesis of General Anaesthesia",
+  "creators": [
+    {
+      "name": "Santos de Oliveira, Gabriel",
+      "affiliation": "Independent researcher, Rio de Janeiro, Brazil",
+      "orcid": "0009-0003-9528-9731"
+    },
+    {
+      "name": "Gertrudes Ferreira, Callina",
+      "affiliation": "Independent researcher, Rio de Janeiro, Brazil",
+      "orcid": "0009-0002-8512-213X"
+    }
+  ],
+  "description": "<p>We propose the Distributed Perceptual Consensus (DPC) hypothesis: experience requires that signals between brain areas arrive within a short window of a shared rhythm, and that the connections doing so span a quorum, a minimum share of the network. Chemically diverse anaesthetics would remove such connections by transmission failure, timing variability or both. Extending Zhou et al.'s (2015) percolation model, DPC predicts that the giant component of connections whose evoked inter-areal latency stays within the window collapses at loss of responsiveness, and that this latency's trial-to-trial variability, not its mean, rises first, a clause also expected from communication through coherence. Simulations on three connectomes show only that the mechanism can operate, when the timing window is not much narrower than the timing jitter (both 3 ms, unmeasured between areas). In a phase-oscillator model, transmission failure abolishes quorum, as the chosen maxima guarantee, but mostly only beyond the 62% failure measured in culture, except on the human connectome with both directions of a connection required on time. There, timing variability alone abolished quorum only under counting rules adopted after the pre-specified rule failed, at a free maximal timing error of 40 ms, and only because a signal a whole cycle or more late counts as lost, not as on time in a later cycle. Pre-specified open-data tests were inconclusive (macaque electrocorticography) or could not run (functional MRI); exploratorily, by a descriptive criterion, its coupling network stayed intact through loss of responsiveness but had little room to fall. Six proposed mechanisms failed.</p><p>Hypothesis and theory paper, not peer reviewed. The archive holds the paper (English, with a Brazilian Portuguese translation), the simulator, every study report, the open-data analysis code and results, and an interactive explainer. Text and figures CC BY 4.0; code Apache 2.0; third-party items under their own licences (NOTICE.md). The full version history is public at https://github.com/DrGabriel/neuroscience.</p>",
+  "license": "cc-by-4.0",
+  "language": "eng",
+  "version": "1.0.0",
+  "keywords": [
+    "general anaesthesia",
+    "consciousness",
+    "thalamocortical system",
+    "percolation",
+    "distributed consensus",
+    "neural synchrony",
+    "neural inertia",
+    "perturbational complexity index"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/DrGabriel/neuroscience",
+      "relation": "isSupplementedBy",
+      "resource_type": "software"
+    }
+  ]
+}

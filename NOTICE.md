@@ -45,7 +45,7 @@ Data that are only used are downloaded from their source, where their licence te
 
 ## Author photographs
 
-The photographs of the authors in `explainer/assets/` are published with the consent of the people shown. They are **not** covered by the CC BY 4.0 licence of this repository: all rights are reserved, and they may not be reused without the subject's permission. They are left out of the source archive (`.gitattributes`), but the full Git history deposited with it (`dpc-v1.0.0-history.bundle`) contains them; this notice applies to them there too.
+The photographs of the authors in `explainer/assets/` are published with the consent of the people shown. They are **not** covered by the CC BY 4.0 licence of this repository: all rights are reserved, and they may not be reused without the subject's permission. They are left out of release archives, including the one archived on Zenodo (`.gitattributes`), but they are in the public repository and its history; this notice applies to them there.
 
 ## Algorithms and published findings
 
