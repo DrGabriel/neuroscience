@@ -87,7 +87,8 @@ function htmlPage({ markdown, draft, lang, baseHref }) {
   h1 { font-size: 19pt; line-height: 1.2; margin: 0 0 12pt; }
   h2 { font-size: 14pt; margin: 20pt 0 6pt; border-bottom: 1px solid #ccc; padding-bottom: 3pt; break-after: avoid; }
   h3 { font-size: 11.5pt; margin: 14pt 0 4pt; break-after: avoid; }
-  p, li { text-align: justify; hyphens: auto; }
+  /* Short words such as acronyms must not be split across lines. */
+  p, li { text-align: justify; hyphens: auto; hyphenate-limit-chars: 7 3 3; }
   table { border-collapse: collapse; width: 100%; font-size: 8.8pt; margin: 8pt 0; }
   th, td { border: 1px solid #bbb; padding: 3pt 5pt; vertical-align: top; text-align: left; }
   th { background: #f0f0f0; }
