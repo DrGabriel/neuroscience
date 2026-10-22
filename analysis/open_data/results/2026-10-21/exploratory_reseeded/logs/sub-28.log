@@ -1,0 +1,6 @@
+D3: 0 of 200 null realisations left out (fit did not converge)
+D3: 0 of 200 null realisations left out (fit did not converge)
+D3: 1 of 200 null realisations left out (fit did not converge)
+D3: 0 of 200 null realisations left out (fit did not converge)
+excluded from hysteresis_test: sub-28 run 3: every window exceeds the censoring limit
+wrote analysis/open_data/results/2026-10-21/exploratory_reseeded/michigan_sub-28.json (10520.8 s)

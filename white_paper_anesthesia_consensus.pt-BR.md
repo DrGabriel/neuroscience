@@ -315,7 +315,7 @@ As simulações perguntam se os modelos se comportam como a hipótese diz, e nã
 
 | Teste | Dados | Confirmatório (código registrado) | Exploratório (desvios documentados) |
 |---|---|---|---|
-| OD1, o componente gigante colapsa num limiar (previsão 1) | RMf de Michigan | Não avaliável: o código rejeitou 19 dos 26 participantes | Pelo ponto de corte descritivo fixado em E.5, o componente gigante permaneceu intacto (mediana de 0,95 do valor de vigília; pelo menos 0,9 em 21 de 24 participantes), com a rede de vigília quase totalmente conectada, de modo que a medida tinha pouca margem para cair; teste de inclinação inconclusivo |
+| OD1, o componente gigante colapsa num limiar (previsão 1) | RMf de Michigan | Não avaliável: o código rejeitou 19 dos 26 participantes | Pelo ponto de corte descritivo fixado em E.5, o componente gigante permaneceu intacto (mediana de 0,95 do valor de vigília; pelo menos 0,9 em 21 de 24 participantes), com a rede de vigília quase totalmente conectada, de modo que a medida tinha pouca margem para cair; teste de inclinação inconclusivo; o resultado se reproduziu com um gerador por participante (Dev8, Apêndice E.15) |
 | OD2a, OD2b, desaceleração antes da LOR (previsão 2) | RMf de Michigan; ECoG do Neurotycho | OD2a não avaliável; OD2b inconclusivo (intervalo de 95% entre macacos de −0,51 a 0,52) | Ambos inconclusivos (OD2b entre macacos de −0,47 a 0,39; Apêndice E.15) |
 | OD3, a variabilidade do atraso acompanha a LOR entre agentes (previsão 3, forma com a atividade em curso) | ECoG do Neurotycho | Inconclusivo (intervalo de 95% entre macacos de −0,25 a 0,22) | Inconclusivo; área sob a curva característica de operação do receptor (AUC) de 0,92 sob cetamina, 0,47 sob propofol e 0,44 sob medetomidina (para a medetomidina, um agonista α2, não se prevê a abolição do quórum); entre macacos, de −0,26 a 0,24 (Apêndice E.15) |
 | OD4, histerese entre indução e despertar | RMf de Michigan | Não avaliável | Inconclusivo; não interpretável (Apêndice E.14) |
@@ -627,7 +627,7 @@ Os identificadores de testes aparecem apenas na tabela da Seção 6 e nos apênd
 | C1 a C7, O1 a O5, E1 a E3 em sementes disjuntas da calibração | Tipos como em B.4 | C.14 | C.14 |
 | Estimativa do limiar dirigido; estimativas de reciprocidade e de erro temporal máximo | Estimativas, sem veredicto (a segunda *post hoc* na origem) | C.14 | C.14 |
 | R1 (OD5 com controle da relação sinal-ruído), R2 (*bootstrap* entre macacos de OD2b e OD3) | Análises exploratórias, sem veredicto | E.15 | E.15 |
-| R3 (Michigan reanalisado com um gerador por sujeito, Dev8) | Análise exploratória | E.15 | [E.15 RESULT PENDING] |
+| R3 (Michigan reanalisado com um gerador por sujeito, Dev8) | Análise exploratória | E.15 | E.15 |
 
 Os identificadores de dados abertos H1 a H5a e D1 a D7 coincidem com os testes H1 e D1 de C.3; os Apêndices E.1 a E.12 são texto registrado e os mantêm, e o restante do artigo usa OD1 a OD5 e Dev1 a Dev7. A pré-especificação registrada do Apêndice E.15 chama seu novo desvio de D8; nas demais partes, ele é Dev8. R1 a R3 são as reanálises de E.15; o relatório com sementes novas de C.14 também identifica como R1 sua linha de razões entre perda e recuperação, que o artigo chama de fração de sementes dentro da faixa publicada.
 
@@ -3513,7 +3513,7 @@ Some reports name tests with labels used elsewhere: P1 to P3b, which are also th
 | congestion | G1 | B1 |
 | congestion | G2 | B2 |
 
-The open-data analyses of Appendix E are reproduced from the repository root with the commands of Appendix E.11 (`analysis/open_data/run.py`, with `run.py group` for the confirmatory verdicts), and the exploratory analyses with `analysis/open_data/deviations.py` and `analysis/open_data/exploratory_group.py` (Appendix E.13); their results are in `analysis/open_data/results/2026-10-21/`. The DPC readout and pair-rule reports are `simulator/results/dpc_readout_full_20261020T224553Z` and `simulator/results/dpc_pair_rule_full_20261021T105142Z` (Appendices C.12 and C.13). Interpreters: the calibration, validation and glial studies (Appendices B.3, B.4 and B.7) ran on CPython 3.15.0 with the standard library only; every other simulator report and every open-data result ran on CPython 3.13.2, as each report records. The C.14 reports are `simulator/results/prediction15_full_20261021T201526Z`, `directed_threshold_estimate_full_20261021T201513Z`, `reciprocity_estimate_full_20261021T201522Z` and `validation_fresh_seeds_full_20261021T201644Z`, all run on CPython 3.13.2 with the commands of Appendix C.14; the E.15 results are in `analysis/open_data/results/2026-10-21/exploratory_snr/` and `exploratory_monkey/`, reproduced with the commands of Appendix E.15.5, and the Michigan rerun is [E.15 RESULT PENDING].
+The open-data analyses of Appendix E are reproduced from the repository root with the commands of Appendix E.11 (`analysis/open_data/run.py`, with `run.py group` for the confirmatory verdicts), and the exploratory analyses with `analysis/open_data/deviations.py` and `analysis/open_data/exploratory_group.py` (Appendix E.13); their results are in `analysis/open_data/results/2026-10-21/`. The DPC readout and pair-rule reports are `simulator/results/dpc_readout_full_20261020T224553Z` and `simulator/results/dpc_pair_rule_full_20261021T105142Z` (Appendices C.12 and C.13). Interpreters: the calibration, validation and glial studies (Appendices B.3, B.4 and B.7) ran on CPython 3.15.0 with the standard library only; every other simulator report and every open-data result ran on CPython 3.13.2, as each report records. The C.14 reports are `simulator/results/prediction15_full_20261021T201526Z`, `directed_threshold_estimate_full_20261021T201513Z`, `reciprocity_estimate_full_20261021T201522Z` and `validation_fresh_seeds_full_20261021T201644Z`, all run on CPython 3.13.2 with the commands of Appendix C.14; the E.15 results are in `analysis/open_data/results/2026-10-21/exploratory_snr/` and `exploratory_monkey/`, reproduced with the commands of Appendix E.15.5, and the Michigan rerun with one generator per subject (Dev8) is in `analysis/open_data/results/2026-10-21/exploratory_reseeded/`, reproduced with the commands of Appendix E.15.
 
 Every report records the machine, operating system, Python and package versions, Git commit and the SHA-256 hash of every simulator module that ran. Since the code corrections of 19 October 2026 (Appendix D), each study records its sources when it starts, so that the record describes the code that ran; earlier reports recorded them when the run ended. The table below is generated from the reports and the repository each time the appendices are built: for every report cited in Appendices B and C it compares the hash of each simulator file the report recorded with that file in the commit the report names, and, where they differ, finds the later commit in which that code was committed unchanged. Every earlier report is kept, unedited, in `simulator/results/archive/`, with a README for each set naming its successor and the reason.
 
@@ -4931,7 +4931,7 @@ This appendix and its code were committed at 22:45:02 UTC on 20 October 2026 (co
 
 Three further facts bear on the exploratory results. First, `deviations.py` was extended as each deviation was found. A result file records the SHA-256 of the module as it was on disk when the file was written: `bfc26c8e…` for the three Neurotycho sessions of D2, `0b862f16…` for sub-PRIOS02 and `5e919a65…`, the version committed in `8971ca7`, for every Michigan subject. The module was last changed at 06:41 UTC, and the nine Michigan processes started at 09:37 UTC and the tenth at 16:20 UTC, so all 25 Michigan subjects ran that version. Second, before D6, a single process analysed sub-02 to sub-05 in turn and was then stopped; the parallel processes analysed them again, and the second analyses are the ones used. That process had loaded an earlier version of the module (`bfc26c8e…`); its files record later hashes because the hash is taken when a file is written. The first analyses of sub-03 to sub-05 remain in the repository history (commit `b370495`); that of sub-02 was overwritten before it was committed. They show how much a subject's H1 result can move between analyses that differ in their random draws (and in the module version loaded): sub-05's null A p-value was 0.025 in the first analysis and 0.065 in the second, and its observed midpoint moved by 0.005 µg/ml. Third, the committed loader refused sub-29 under a check it already made: in its run 3 the effect-site series has 2,270 samples and the BOLD 1,417 volumes. No deviation was made for it, and the exploratory Michigan analysis has 25 subjects. The committed code's refusal of 3 Neurotycho sessions and of sub-PRIOS02 is an unplanned exclusion; the confirmatory n of 20 and 5 reflects it.
 
-**Process allocation (D6).** The nine Michigan processes analysed, in this order, sub-02, sub-14 and sub-23; sub-03, sub-15 and sub-24; sub-04, sub-16 and sub-25; sub-05, sub-17 and sub-26; sub-06, sub-18 and sub-27; sub-07, sub-19 and sub-28 (sub-28 later moved); sub-11, sub-20 and sub-29 (refused); sub-12, sub-21 and sub-30; and sub-13 and sub-22. The tenth process analysed sub-28 alone (`provenance.arguments.subject` in each file of `analysis/open_data/results/2026-10-21/exploratory/`). A rerun in which each subject is seeded on its own: [E.15 RESULT PENDING].
+**Process allocation (D6).** The nine Michigan processes analysed, in this order, sub-02, sub-14 and sub-23; sub-03, sub-15 and sub-24; sub-04, sub-16 and sub-25; sub-05, sub-17 and sub-26; sub-06, sub-18 and sub-27; sub-07, sub-19 and sub-28 (sub-28 later moved); sub-11, sub-20 and sub-29 (refused); sub-12, sub-21 and sub-30; and sub-13 and sub-22. The tenth process analysed sub-28 alone (`provenance.arguments.subject` in each file of `analysis/open_data/results/2026-10-21/exploratory/`). A rerun in which each subject is seeded on its own (Dev8, Appendix E.15) left every verdict unchanged.
 
 ### E.14 Results
 
@@ -4965,7 +4965,7 @@ In H2a neither indicator rose by the smallest effect of interest (median τ −0
 
 **Notes added in the third review round (21 October 2026).** None changes an outcome.
 
-- *OD1 (H1) is exploratory and descriptive.* Its outcome rests on the cut-off of E.5, the giant component after LOR at least 0.9 of its awake size, which was fixed in advance but is a descriptive criterion. E.4 and Section 8 promised that a null result would be claimed only through an equivalence test, and this is not one. The measure was near its ceiling (the awake network close to fully connected), so it had little room to fall. Future tests of prediction 1 must fix the edge density so that the awake network lies near its own percolation threshold.
+- *OD1 (H1) is exploratory and descriptive.* Its outcome rests on the cut-off of E.5, the giant component after LOR at least 0.9 of its awake size, which was fixed in advance but is a descriptive criterion. E.4 and Section 8 promised that a null result would be claimed only through an equivalence test, and this is not one. The measure was near its ceiling (the awake network close to fully connected), so it had little room to fall. Future tests of prediction 1 must fix the edge density so that the awake network lies near its own percolation threshold. The outcome reproduced when each subject was given its own random generator (Dev8, Appendix E.15).
 - *Point-estimate rule.* E.4 also counts a test against DPC "if the estimate is at or beyond −SESOI", a rule on a point estimate without inference; it is a limitation of the committed plan.
 - *Smallest effects of interest.* Only two have a stated basis: the ±0.4 µg/ml midpoint margin is one concentration step of the protocol, and the 0.9 cut is Section 8's falsifier. The others (log 1.5, τ = 0.2, 0.05 in AUC, log 1.05, log 1.2) are conventional choices. Minimal detectable effects were not computed, so the power of the inconclusive tests is not known; H3's interval (−0.21 to 0.23 exploratory) shows that it could not have reached either verdict.
 - *OD3 (H3) tests ongoing coupling, not evoked timing.* Its lag variability is the circular standard deviation across windows, $\sqrt{-2 \ln \bar R}$, a monotonic transform of the across-window phase-locking value $\bar R$ of the window phase differences, so H3 tests the ongoing form of prediction 3, not the evoked form. Medetomidine, an α2-adrenoceptor agonist like dexmedetomidine, under which DPC predicts a giant component at or near quorum (Section 9.2), tests a prediction DPC does not make for that agent; its inclusion was fixed in advance, and this reading is post hoc. Agent-specific AUCs in the exploratory analysis: 0.92 under ketamine, 0.47 under propofol and 0.44 under medetomidine.
@@ -5200,7 +5200,7 @@ run R3 on nine).
 
 #### Results
 
-R1 and R2 were run after commit `74f9cb0` with the commands of E.15.5 and with the analysis code of that commit, unchanged. Each result file records the commit at the head of the repository when the file was written: `74f9cb0` for R2 (written at 20:15:56 and 20:16:15 UTC on 21 October 2026) and `f697899` for R1 (written from 20:32:52 to 20:33:41 UTC; that commit changed only the paper and the simulator result files). The R1 simulation took 995.4 s. The files are in `analysis/open_data/results/2026-10-21/exploratory_snr/` and `analysis/open_data/results/2026-10-21/exploratory_monkey/`. Every result below is exploratory, and none changes a verdict of E.14. R3 is still running: [E.15 RESULT PENDING].
+R1 and R2 were run after commit `74f9cb0` with the commands of E.15.5 and with the analysis code of that commit, unchanged. Each result file records the commit at the head of the repository when the file was written: `74f9cb0` for R2 (written at 20:15:56 and 20:16:15 UTC on 21 October 2026) and `f697899` for R1 (written from 20:32:52 to 20:33:41 UTC; that commit changed only the paper and the simulator result files). The R1 simulation took 995.4 s. The files are in `analysis/open_data/results/2026-10-21/exploratory_snr/` and `analysis/open_data/results/2026-10-21/exploratory_monkey/`. Every result below is exploratory, and none changes a verdict of E.14. R3 was run later and is reported in its own subsection below.
 
 **R1: H5a with a signal-to-noise control.** The H5a statistic as run reproduced E.14 (median $r$ 1.28 over six patients, p 0.031), so the reanalysis went ahead; sub-PRIOS09 again had no responding connection. Per patient (SNR is the median over connections; "propofol SNR higher" counts connections with a positive log SNR ratio; matched $r$ was undefined for 3 connections of sub-PRIOS01 and 1 of sub-PRIOS04, whose matched spread was zero):
 
@@ -5254,7 +5254,71 @@ Against the expectations stated before the run:
 
 Against the expectations stated before the run: the point estimates equal E.14's, as expected. For H2b the share of resamples at or below zero is near one half (0.52 and 0.57), as expected, and the monkey-level interval spans about −0.5 to 0.5. For H3 the monkey-level interval includes zero and is wider than the session-level one in both sets, as expected, and H3 stays inconclusive. Because three of the four agents rest on two monkeys, these intervals are a lower bound on the uncertainty at the level of the animal (E.15.3); the verdicts of E.14 stand.
 
-**R3: Michigan reanalysed with one generator per subject (D8).** [E.15 RESULT PENDING]
+**R3: Michigan reanalysed with one generator per subject (D8).** R3 was run after commit `74f9cb0` with the commands of E.15.5 and with the analysis code of that commit, unchanged: every result file records for `reseeded.py` (`d0026164…`), `deviations.py` (`5e919a65…`, the version of E.14) and the Michigan pipeline the SHA-256 of the files of that commit, and its D8 seed, which in every file is the committed seed plus the subject's number. The commit at the head of the repository when a file was written is `ad4f822` for 23 subjects and `44ecc92` for sub-25, sub-27 and the group step; neither commit changed analysis code. The staged run of sub-26 took 2,137 s and ended at 20:50:51 UTC on 21 October 2026; the other 24 subjects then ran on ten processes from 20:51 UTC to 01:25 UTC on 22 October (4.6 h, against 5.8 h expected), 0.57 to 3.17 h per subject and 40.8 h in all (D6: 0.76 to 4.42 h and 55.1 h). The launcher's report (`logs/launch_report.ndjson`) records 25 subjects done (sub-26 in the staged run, the other 24 in the second), sub-26 skipped in the second because its result existed, and no failure. The group step (3.0 s) read the 25 reseeded Michigan files and the Neurotycho and PRIOS files of E.14. The files are in `analysis/open_data/results/2026-10-21/exploratory_reseeded/`. The medians and counts of H1, H2a and H4 below were recomputed from the per-subject files with separate code and match the group file. In D3, 12 of the 20,000 null realisations were left out, as in E.14.
+
+| Test | Data | n, D6 → D8 | Effect (SESOI), D6 → D8 | p, D6 → D8 | Holm-adjusted p, D6 → D8 | Outcome, D6 → D8 |
+|---|---|---|---|---|---|---|
+| H1, the collapse is a threshold | Michigan | 25 → 25 | median log steepness ratio to null A 0.22 → 0.28 (log 1.5 = 0.41) | 0.10 → 0.048 | 0.50 → 0.24 | Counts against DPC → counts against DPC (falsifier: giant component intact through LOR) |
+| H2a, slowing before LOR | Michigan | 25 → 25 | smaller median τ −0.04 → −0.05 (0.2) | 0.42 → 0.41 | 1.0 → 1.0 | Inconclusive → inconclusive |
+| H2b, slowing before LOR | Neurotycho (same files) | 23 → 23 | smaller median τ −0.01 → −0.01 (0.2) | 0.51 → 0.51 | 1.0 → 1.0 | Inconclusive → inconclusive |
+| H3, lag variability tracks LOR across agents | Neurotycho (same files) | 23 → 23 | D = 0.085 → 0.085 AUC (0.05) | 0.22 → 0.22 | 0.88 → 0.88 | Inconclusive → inconclusive |
+| H4, induction-emergence hysteresis | Michigan | 22 → 22 | median log H 0.78 → 0.80 with the dataset's effect-site series, least favourable 0.28 → 0.26 (log 1.05 = 0.049) | 0.025 → 0.023; least favourable 0.44 → 0.42 | 1.0 → 1.0 | Inconclusive → inconclusive |
+
+H2b and H3 read the same Neurotycho files as E.14 and are unchanged by construction; the Holm family of five changes only through H1, H2a and H4. H4 excluded the same three subjects (sub-19: no sigmoid fit converged; sub-22 and sub-28: every window of run 3 exceeds the censoring limit). The secondary H1 rows, reported without verdict, moved little: null B median log ratio −0.03 → 0.00 (p 0.81 → 0.82), local amplitude 0.11 → 0.25 (p 0.26 → 0.19), midpoint minus LOR −0.47 µg/ml in both.
+
+*H1 per subject.* The measurement gate was passed again (median deep over awake BOLD coupling 0.789 under both D6 and D8). After LOR the giant component kept a median 0.947 of its awake size under both (range 0.861 to 1.036, against 0.861 to 1.033 under D6), at least 0.9 in 21 of 24 subjects under both (sub-16 again has no window after its LOR). A sigmoid was preferred over a line by the BIC margin in 1 of 25 subjects (sub-18 under both). The null-A p-value was below 0.05 in the same 8 subjects (sub-02, sub-13, sub-14, sub-17, sub-23, sub-25, sub-26 and sub-30). The fitted transition was as narrow as the fit allows (0.05 µg/ml) in 6 of 25 subjects (sub-02, sub-04, sub-05, sub-06, sub-14 and sub-25), against 8 under D6, which also had sub-24 and sub-26 there; sub-20 (0.050004) and sub-18 (0.05007) lie just above.
+
+Per subject, as pre-specified in E.15.4 (D6 value → D8 value; n/e, not evaluable, E.14):
+
+| Subject (D8 seed) | H1 null-A p | H1 steepness ratio to null A | H2a τ, variance | H2a τ, autocorrelation | H4 log H, dataset series |
+|---|---|---|---|---|---|
+| sub-02 (20261023) | 0.020 → 0.025 | 47.66 → 48.49 | −0.02 → −0.03 | 0.34 → 0.33 | −1.13 → −1.13 |
+| sub-03 (20261024) | 0.915 → 0.925 | 0.47 → 0.40 | −0.26 → −0.26 | −0.64 → −0.64 | 0.76 → 0.76 |
+| sub-04 (20261025) | 0.075 → 0.159 | 1.63 → 1.45 | 0.76 → 0.76 | 0.59 → 0.54 | −1.95 → −1.85 |
+| sub-05 (20261026) | 0.065 → 0.159 | 1.18 → 1.19 | −0.09 → −0.07 | 0.09 → 0.05 | 1.65 → 1.64 |
+| sub-06 (20261027) | 0.194 → 0.215 | 1.28 → 1.44 | −0.61 → −0.62 | −0.25 → −0.31 | 0.94 → 0.93 |
+| sub-07 (20261028) | 0.428 → 0.413 | 1.91 → 2.09 | 0.32 → 0.31 | −0.83 → −0.82 | 0.88 → 0.95 |
+| sub-11 (20261032) | 0.940 → 0.985 | 0.17 → 0.17 | −0.05 → −0.05 | 0.75 → 0.75 | 0.01 → 0.01 |
+| sub-12 (20261033) | 1.000 → 0.990 | 0.11 → 0.11 | 0.22 → 0.22 | −0.73 → −0.72 | −26.54 → −18.43 |
+| sub-13 (20261034) | 0.050 → 0.030 | 18.35 → 22.98 | 0.69 → 0.69 | 0.73 → 0.72 | 0.08 → 0.05 |
+| sub-14 (20261035) | 0.035 → 0.035 | 27.12 → 28.25 | 0.50 → 0.50 | 0.48 → 0.49 | 0.30 → 0.30 |
+| sub-15 (20261036) | 1.000 → 1.000 | 0.07 → 0.06 | −0.48 → −0.48 | −0.54 → −0.53 | 1.25 → 1.25 |
+| sub-16 (20261037) | 0.900 → 0.925 | 0.40 → 0.37 | 0.71 → 0.71 | 0.09 → 0.11 | 1.20 → 1.20 |
+| sub-17 (20261038) | 0.020 → 0.015 | 5.22 → 6.72 | 0.47 → 0.48 | −0.61 → −0.62 | 0.74 → 0.79 |
+| sub-18 (20261039) | 0.488 → 0.269 | 1.01 → 1.20 | −0.62 → −0.62 | −0.72 → −0.72 | 0.21 → 0.21 |
+| sub-19 (20261040) | 0.871 → 0.642 | 0.62 → 0.86 | −0.61 → −0.61 | −0.50 → −0.47 | n/e → n/e |
+| sub-20 (20261041) | 0.239 → 0.199 | 1.21 → 1.23 | −0.42 → −0.41 | −0.54 → −0.54 | −0.79 → −0.78 |
+| sub-21 (20261042) | 0.174 → 0.159 | 5.20 → 5.78 | 0.40 → 0.40 | 0.53 → 0.54 | 1.07 → 0.92 |
+| sub-22 (20261043) | 0.945 → 0.355 | 0.02 → 1.32 | −0.25 → −0.23 | 0.51 → 0.47 | n/e → n/e |
+| sub-23 (20261044) | 0.010 → 0.035 | 59.43 → 55.18 | 0.09 → 0.08 | 0.26 → 0.28 | 0.80 → 0.80 |
+| sub-24 (20261045) | 0.109 → 0.935 | 1.16 → 0.46 | −0.04 → −0.05 | −0.18 → −0.18 | 1.18 → 1.17 |
+| sub-25 (20261046) | 0.035 → 0.040 | 1.24 → 1.22 | 0.89 → 0.88 | 0.73 → 0.74 | 1.07 → 1.07 |
+| sub-26 (20261047) | 0.010 → 0.005 | 51.14 → 43.19 | −0.45 → −0.44 | −0.24 → −0.24 | 1.22 → 1.22 |
+| sub-27 (20261048) | 0.060 → 0.075 | 6.70 → 5.87 | −0.50 → −0.49 | 0.54 → 0.55 | 0.65 → 0.64 |
+| sub-28 (20261049) | 0.945 → 0.945 | 0.46 → 0.54 | 0.75 → 0.75 | 0.60 → 0.61 | n/e → n/e |
+| sub-30 (20261051) | 0.030 → 0.030 | 12.97 → 10.03 | −0.72 → −0.73 | 0.56 → 0.55 | 1.03 → 1.03 |
+
+**Plain reading.** With one generator per subject, so that any subject's result can be reproduced by analysing that subject alone, every verdict of E.14 is unchanged. The steepness test's p-value moved from 0.10 to 0.048 before correction and from 0.50 to 0.24 after Holm adjustment. This shows how sensitive that test is to the random draws: the edge-test surrogates set each subject's edge threshold, so a new draw changes the observed curve as well as its null. H1's outcome, however, is set by the falsifier of E.5, the share of the giant component kept after LOR, and that did not move (median 0.947 under both). As the rule of E.15.4 states, neither the D6 nor the D8 values replace the other.
+
+Against the expectations stated before the run:
+
+1. *Verdicts.* As expected, none changed: H1 counts against DPC through the falsifier (median 0.95 of the awake size), and H2a and H4 stay inconclusive.
+2. *Per-subject and group movement.* Not as expected for the H1 null-A p-values. The median change was 0.015, but 7 of 25 subjects moved by more than sub-05's 0.04 between its two D6-era analyses, most of all sub-24 (0.109 → 0.935) and sub-22 (0.945 → 0.355), whose fitted transition widths also changed (0.05 → 0.13 µg/ml and 3.27 → 0.05 µg/ml). The group median log steepness ratio moved from 0.22 to 0.28; the median share of the giant component kept after LOR moved by less than 0.001, and the H2a τ of any subject by at most 0.06.
+
+**Commands.** From the repository root; these are the commands of E.15.5 with the date of the run filled in.
+
+```
+PREVIOUS=analysis/open_data/results/2026-10-21/exploratory/group_inputs.txt
+OUT=analysis/open_data/results/2026-10-21/exploratory_reseeded
+# Staged run of sub-26, then the other 24 subjects (sub-26 is skipped because its result exists).
+.venv/bin/python -E -s -m analysis.open_data.launch_reseeded --root data_external/ds006623 --previous $PREVIOUS --out $OUT --subject sub-26 --execute
+.venv/bin/python -E -s -m analysis.open_data.launch_reseeded --root data_external/ds006623 --previous $PREVIOUS --out $OUT --execute
+# Group step.
+.venv/bin/python -E -s -m analysis.open_data.reseeded listing --previous $PREVIOUS --folder $OUT --out $OUT/group_inputs.txt
+.venv/bin/python -E -s -m analysis.open_data.exploratory_group group --inputs $OUT/group_inputs.txt --out $OUT/verdicts_reseeded.json
+# One subject alone, as the launcher runs it (here sub-05).
+.venv/bin/python -E -s -m analysis.open_data.reseeded michigan --root data_external/ds006623 --subject sub-05 --out $OUT
+```
 
 ---
 
