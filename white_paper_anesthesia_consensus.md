@@ -113,6 +113,8 @@ The timing problem is real at cortical scale: in human cortico-cortical pathways
 
 ### 3.2 Postulates of the core [H]
 
+*Postulates keep the numbers they had in earlier versions, so that every report and appendix still refers to them correctly: the core is P1 to P5, P4c and P7; P6, P8 and P9 are auxiliary proposals (Section 3.3).*
+
 **The central claim.** Experience requires *positive timing slack*: signals between populations must arrive within the window in which they can be combined, judged against a shared rhythm. Anaesthetics erode that slack by making transmission fail or arrival times vary, and when it turns negative on enough connections the populations are no longer linked into one group. The claim concerns timing margins, not a frequency: the hierarchy of brain rhythms is largely preserved across mammals that differ several-thousand-fold in brain volume, possibly through faster long-range axons in larger brains (Buzsáki et al., 2013), which would preserve timing margins [H].
 
 ```mermaid

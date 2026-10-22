@@ -115,6 +115,8 @@ O problema temporal é real na escala cortical: nas vias corticocorticais humana
 
 ### 3.2 Postulados do núcleo [H]
 
+*Os postulados mantêm a numeração das versões anteriores, para que todos os relatórios e apêndices continuem a se referir a eles corretamente: o núcleo é formado por P1 a P5, P4c e P7; P6, P8 e P9 são propostas auxiliares (Seção 3.3).*
+
 **A afirmação central.** A experiência exige *folga temporal positiva*: os sinais entre populações precisam chegar dentro da janela em que podem ser combinados, avaliados em relação a um ritmo compartilhado. Os anestésicos corroem essa folga ao fazer a transmissão falhar ou os instantes de chegada variarem, e, quando ela se torna negativa em conexões suficientes, as populações deixam de estar ligadas em um único grupo. A afirmação diz respeito a margens temporais, e não a uma frequência: a hierarquia dos ritmos cerebrais é amplamente preservada entre mamíferos cujos volumes cerebrais diferem vários milhares de vezes, possivelmente graças a axônios de longo alcance mais rápidos nos cérebros maiores (Buzsáki et al., 2013), o que preservaria as margens temporais [H].
 
 ```mermaid
