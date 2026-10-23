@@ -135,7 +135,7 @@ The simulations show that the formal model is internally consistent and produces
 - Gabriel Santos de Oliveira, staff software engineer and independent researcher. ORCID: [0009-0003-9528-9731](https://orcid.org/0009-0003-9528-9731). Lattes CV: [lattes.cnpq.br/2102695116731989](https://lattes.cnpq.br/2102695116731989). BSc in Computer Science, Universidade Federal Rural do Rio de Janeiro (UFRRJ), Brazil, 2015–2021.
 - Callina Gertrudes Ferreira, undergraduate student of psychology, Universidade Veiga de Almeida (UVA), Brazil, since February 2025. ORCID: [0009-0002-8512-213X](https://orcid.org/0009-0002-8512-213X). Lattes CV: [lattes.cnpq.br/2112739936897542](https://lattes.cnpq.br/2112739936897542).
 
-Written with the help of AI tools: Claude Opus 5.5 (Anthropic), through Claude Code, for code, text, references and translation, and Gemini in Google Search (AI Mode, Google; model version not disclosed by the service) for early exploration on 17 October 2026. The authors directed the work and take responsibility for it; see the paper's declarations.
+Written with the help of AI tools: Claude Opus 5.5 (Anthropic), through Claude Code, for code, text and references, and Gemini in Google Search (AI Mode, Google; model version not disclosed by the service) for early exploration on 17 October 2026. The authors directed the work and take responsibility for it; see the paper's declarations.
 
 ## Citing this work
 
