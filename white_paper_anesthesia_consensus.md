@@ -6,7 +6,7 @@
 |---|---|
 | **Authors** | Gabriel Santos de Oliveira<sup>1</sup> ([ORCID 0009-0003-9528-9731](https://orcid.org/0009-0003-9528-9731); [Lattes CV](https://lattes.cnpq.br/2102695116731989)); Callina Gertrudes Ferreira<sup>1</sup> ([ORCID 0009-0002-8512-213X](https://orcid.org/0009-0002-8512-213X); [Lattes CV](https://lattes.cnpq.br/2112739936897542)) |
 | **Affiliations** | <sup>1</sup> Independent researchers, Rio de Janeiro, Brazil. The work was not carried out at or funded by any institution |
-| **Date** | [DATE OF DEPOSIT] |
+| **Date** | 26 October 2026 |
 | **Version** | 1.0.0 (first public release) |
 | **Article type** | Hypothesis and theory paper (not peer reviewed) |
 | **Licence** | Text and figures: [CC BY 4.0](LICENSE-CC-BY-4.0). Code: [Apache License 2.0](LICENSE) |

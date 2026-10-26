@@ -12,10 +12,10 @@ authors:
     affiliation: Independent researcher, Rio de Janeiro, Brazil
     orcid: "https://orcid.org/0009-0002-8512-213X"
 version: 1.0.0
-date-released: 2026-10-17
+date-released: 2026-10-26
 # Code (simulator/, explainer/js/, tools/) is under Apache-2.0; text, figures and results are under CC-BY-4.0.
 # Third-party items keep their own licences (NOTICE.md); the author photographs are all rights reserved,
-# and are left out of release archives (.gitattributes). Set date-released to the release date.
+# and are left out of release archives (.gitattributes).
 license:
   - Apache-2.0
   - CC-BY-4.0

@@ -8,7 +8,7 @@
 |---|---|
 | **Autores** | Gabriel Santos de Oliveira<sup>1</sup> ([ORCID 0009-0003-9528-9731](https://orcid.org/0009-0003-9528-9731); [Currículo Lattes](https://lattes.cnpq.br/2102695116731989)); Callina Gertrudes Ferreira<sup>1</sup> ([ORCID 0009-0002-8512-213X](https://orcid.org/0009-0002-8512-213X); [Currículo Lattes](https://lattes.cnpq.br/2112739936897542)) |
 | **Afiliações** | <sup>1</sup> Pesquisadores independentes, Rio de Janeiro, Brasil. O trabalho não foi realizado em nenhuma instituição nem financiado por nenhuma |
-| **Data** | [DATE OF DEPOSIT] |
+| **Data** | 26 de outubro de 2026 |
 | **Versão** | 1.0.0 (primeira versão pública) |
 | **Tipo de artigo** | Artigo de hipótese e teoria (sem revisão por pares) |
 | **Licença** | Texto e figuras: [CC BY 4.0](LICENSE-CC-BY-4.0). Código: [Apache License 2.0](LICENSE) |
