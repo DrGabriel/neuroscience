@@ -6,7 +6,7 @@ This repository collects hypotheses, formal models and reproducible simulations 
 
 **Interactive explainer:** https://drgabriel.github.io/neuroscience/explainer/ (English, Português, Français, Español, 中文).
 
-**Cite as:** Santos de Oliveira, G., & Gertrudes Ferreira, C. (2026). *The Distributed Perceptual Consensus Hypothesis of General Anaesthesia* (Version 1.0.0) [Preprint]. Zenodo. https://doi.org/10.5281/zenodo.23670829
+**Cite as:** Santos de Oliveira, G., & Gertrudes Ferreira, C. (2026). *The Distributed Perceptual Consensus Hypothesis of General Anaesthesia* (Version 1.0.1) [Preprint]. Zenodo. https://doi.org/10.5281/zenodo.23670829
 
 ## Contents
 
