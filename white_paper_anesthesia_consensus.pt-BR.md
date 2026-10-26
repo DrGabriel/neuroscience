@@ -2,7 +2,7 @@
 
 **Um modelo de rede com restrição temporal para a inconsciência induzida por anestésicos**
 
-> **Versão em português brasileiro.** O texto original é o em inglês (`white_paper_anesthesia_consensus.pdf`), que prevalece em caso de divergência. Os apêndices a partir do B e as referências permanecem em inglês, e os títulos das obras citadas, no idioma original, como é praxe acadêmica.
+> **Versão em português brasileiro.** Em caso de divergência, prevalece o original em inglês (`white_paper_anesthesia_consensus.pdf`). Os apêndices a partir do B e as referências permanecem em inglês, e os títulos das obras citadas, no idioma original, como é praxe acadêmica.
 
 | | |
 |---|---|
