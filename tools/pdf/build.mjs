@@ -95,6 +95,8 @@ function htmlPage({ markdown, draft, lang, baseHref }) {
   tr { break-inside: avoid; }
   a { color: #1a4f8b; text-decoration: none; word-break: break-word; }
   code, pre { font-family: "IBM Plex Mono", monospace; font-size: 9pt; }
+  /* File names and identifiers must stay whole: a hyphen inside one would change it. */
+  code { hyphens: none; }
   pre:not(.mermaid) { background: #f6f6f6; padding: 6pt; font-size: 8pt; white-space: pre-wrap; }
   pre.mermaid { font-family: ${DIAGRAM_FONT}; font-size: 10.5pt; white-space: normal; text-align: center; background: none; break-inside: avoid; }
   hr { border: 0; border-top: 1px solid #ddd; margin: 14pt 0; }
