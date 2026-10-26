@@ -12,6 +12,14 @@ authors:
     affiliation: Independent researcher, Rio de Janeiro, Brazil
     orcid: "https://orcid.org/0009-0002-8512-213X"
 version: 1.0.0
+doi: 10.5281/zenodo.23670829
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.23670829
+    description: All versions (resolves to the latest)
+  - type: doi
+    value: 10.5281/zenodo.23670830
+    description: Version 1.0.0
 date-released: 2026-10-26
 # Code (simulator/, explainer/js/, tools/) is under Apache-2.0; text, figures and results are under CC-BY-4.0.
 # Third-party items keep their own licences (NOTICE.md); the author photographs are all rights reserved,
@@ -52,3 +60,4 @@ preferred-citation:
       family-names: Gertrudes Ferreira
       orcid: "https://orcid.org/0009-0002-8512-213X"
   year: 2026
+  doi: 10.5281/zenodo.23670829
